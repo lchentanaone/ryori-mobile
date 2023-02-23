@@ -5,7 +5,7 @@ import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 import {welcomeStyles} from './welcome-style';
 import ryoriLogo from './../../images/RYORI-Logo.png';
 
-export default function Welcome() {
+export default function Welcome({navigation}) {
   return (
     <SafeAreaView style={welcomeStyles.welcomes}>
       <View style={welcomeStyles.circleContainer}>
@@ -26,8 +26,7 @@ export default function Welcome() {
         <View style={welcomeStyles.getStarted}>
           <TouchableOpacity
             style={welcomeStyles.getStartedOpacity}
-            // onPress={() => handleLogin()}
-          >
+            onPress={() => navigation.navigate('login')}>
             <Text style={welcomeStyles.getStartedTextBtn}>GET STARTED</Text>
           </TouchableOpacity>
         </View>

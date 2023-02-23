@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-// import Welcome from './android/app/src/ryori-android/src/component/welcome/welcome';
-import Login from './android/app/src/ryori-android/src/component/welcome/login';
+import {NavigationContainer} from '@react-navigation/native';
+import StackNavigators from './android/app/src/ryori-android/src/navigation/stackNavigators';
+
 
 const App = () => {
 
   return (
     <>
-      <Login/>
-      {/* <Welcome/> */}
+      <NavigationContainer>
+          <StackNavigators/>
+      </NavigationContainer>
     </>
   );
 };
