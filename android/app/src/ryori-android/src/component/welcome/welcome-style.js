@@ -99,7 +99,7 @@ export const welcomeStyles = StyleSheet.create({
   welcomeLoginTextCon: {
     marginTop: -400,
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
     color: '#FFFF',
   },
@@ -122,14 +122,14 @@ export const welcomeStyles = StyleSheet.create({
   loginfield: {
     marginTop: -30,
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
   },
   textFieldContainer: {
     width: 200,
     maxWidth: 300,
-    marginTop: -140,
+    marginTop: -150,
   },
 
   input: {
@@ -147,7 +147,7 @@ export const welcomeStyles = StyleSheet.create({
 
   //------
   forgotBtn: {
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
   },
@@ -192,5 +192,69 @@ export const welcomeStyles = StyleSheet.create({
     fontSize: 10,
     color: '#4285f4',
     justifyContent: 'center',
+  },
+  //------------
+  loginFbBtn: {
+    // justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 90,
+    flexDirection: 'row',
+  },
+  FBgoogleBtn: {
+    alignItems: 'center',
+    marginTop: 5,
+    flex: 1,
+  },
+  fbBtn: {
+    width: 200,
+    height: 25,
+    shadowColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: '#395998',
+    marginTop: -150,
+  },
+  googleBtn: {
+    width: 200,
+    height: 25,
+    shadowColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    backgroundColor: '#4285F4',
+    marginTop: -150,
+  },
+  loginGoogleBtn: {
+    marginTop: 100,
+  },
+  fbGooglelogin: {
+    width: 16,
+    height: 16,
+    borderRadius: 2,
+    marginRight: 5,
+  },
+  fbgoogle: {
+    flexDirection: 'row',
+  },
+  fbText: {
+    color: 'white',
+    fontSize: 8,
+    marginTop: 3,
+    // marginRight: -40,
+  },
+  googleText: {
+    color: 'white',
+    fontSize: 8,
+    marginTop: 3,
+    marginRight: 8,
+  },
+  orTextCon: {
+    marginTop: -10,
+    alignItems: 'center',
+  },
+  orText: {
+    fontSize: 10,
+    color: '#A8A8A8',
   },
 });

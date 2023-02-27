@@ -3,7 +3,7 @@
 import React from 'react';
 import {Text, View, Image, SafeAreaView, TouchableOpacity} from 'react-native';
 import {welcomeStyles} from './welcome-style';
-import ryoriLogo from './../../images/RYORI-Logo.png';
+import ryoriLogo from './../../images/logo/RYORI-Logo.png';
 
 export default function Welcome({navigation}) {
   return (

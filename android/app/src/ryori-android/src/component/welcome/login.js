@@ -3,11 +3,12 @@
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {welcomeStyles} from './welcome-style';
-import ryoriLogo from './../../images/RYORI-Logo.png';
+import ryoriLogo from './../../images/logo/RYORI-Logo.png';
+import fbLogo from './../../images/logo/facebookLogo.png';
+import GoogleLogo from './../../images/logo/Google-Logo.jpg';
 import {OutlinedTextField} from 'rn-material-ui-textfield';
-import {FloatingLabelInput} from 'react-native-floating-label-input';
 
-export default function Login() {
+export default function Login({navigation}) {
   const [phone, setPhone] = useState('');
   return (
     <View style={welcomeStyles.welcomes}>
@@ -50,8 +51,7 @@ export default function Login() {
             <View style={welcomeStyles.loginBtnContainer}>
               <TouchableOpacity
                 style={welcomeStyles.signInBtn}
-                // onPress={() => navigation.navigate('login')}
-              >
+                onPress={() => navigation.navigate('overview')}>
                 <Text style={welcomeStyles.getStartedTextBtn}>SIGN IN</Text>
               </TouchableOpacity>
             </View>
@@ -71,6 +71,42 @@ export default function Login() {
                   <Text style={welcomeStyles.createAccText}>
                     Create new account
                   </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={welcomeStyles.orTextCon}>
+              <Text style={welcomeStyles.orText}>or</Text>
+            </View>
+            <View style={welcomeStyles.FBgoogleBtn}>
+              <View style={welcomeStyles.loginFbBtn}>
+                <TouchableOpacity
+                  style={welcomeStyles.fbBtn}
+                  onPress={() => navigation.navigate('sidebar')}>
+                  <View style={welcomeStyles.fbgoogle}>
+                    <Image
+                      source={fbLogo}
+                      style={welcomeStyles.fbGooglelogin}
+                    />
+                    <Text style={welcomeStyles.fbText}>
+                      CONNECT WITH FACEBOOK
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={welcomeStyles.loginGoogleBtn}>
+                <TouchableOpacity
+                  style={welcomeStyles.googleBtn}
+                  // onPress={() => navigation.navigate('login')}
+                >
+                  <View style={welcomeStyles.fbgoogle}>
+                    <Image
+                      source={GoogleLogo}
+                      style={welcomeStyles.fbGooglelogin}
+                    />
+                    <Text style={welcomeStyles.googleText}>
+                      CONNECT WITH GOOGLE
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             </View>
