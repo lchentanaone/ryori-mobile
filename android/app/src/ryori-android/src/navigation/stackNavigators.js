@@ -4,7 +4,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Welcome from '../component/welcome/welcome';
 import Login from '../component/welcome/login';
-import Overview from './../component/dashboard/overview/overview';
+import Overview from '../component/dashboard/overview/Dashboard';
 import Sidebar from '../component/dashboard/overview/drawer';
 
 const Stack = createStackNavigator();

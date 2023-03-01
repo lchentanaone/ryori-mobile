@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View} from 'react-native';
-import {dashboadrStyles} from './../dashboard-style';
+import {dashboadrStyles} from '../dashboard-style';
 
-export default function Overview({navigate}) {
+export default function KitchenBridge({navigate}) {
   return (
     <View style={dashboadrStyles.container}>
       <View style={dashboadrStyles.circleContainer}>
