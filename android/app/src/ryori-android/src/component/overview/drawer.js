@@ -1,25 +1,26 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {DrawerActions} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import DashBIcon from './../../../images/logo/Dashboard.png';
-import orderIcon from './../../../images/logo/orders.png';
-import MenuIcon from './../../../images/logo/Menu.png';
-import SettingIcon from './../../../images/logo/setting.png';
-import CustomersIcon from './../../../images/logo/customers.png';
-import KitchenBridgeIcon from './../../../images/logo/Analytics.png';
-import DiningSetupIcon from './../../../images/logo/DiningSet.png';
-import MethodIcon from './../../../images/logo/Method.png';
-import LogoutIcon from './../../../images/logo/LogOut.png';
-import Dashboard from './Dashboard';
-import Orders from './orders';
-import Menus from './Menu';
-import Setting from './setting';
-import Customers from './customer';
-import KitchenBridge from './kitchenBridge';
-import AddMenu from './addMenu';
-import DinigSetup from './diningSetup';
-import Methods from './Methods';
+import DashBIcon from '../../images/logo/Dashboard.png';
+import orderIcon from '../../images/logo/orders.png';
+import MenuIcon from '../../images/logo/Menu.png';
+import SettingIcon from '../../images/logo/setting.png';
+import CustomersIcon from '../../images/logo/customers.png';
+import KitchenBridgeIcon from '../../images/logo/Analytics.png';
+import DiningSetupIcon from '../../images/logo/DiningSet.png';
+import MethodIcon from '../../images/logo/Method.png';
+import LogoutIcon from '../../images/logo/LogOut.png';
+import Dashboard from './dashboard/Dashboard';
+import Orders from './orders/orders';
+import Menus from '../overview/menu/Menu';
+import Setting from './setting/setting';
+import Customers from './customer/customer';
+import KitchenBridge from './kitchen-bridge/kitchenBridge';
+import AddMenu from './add-menu/addMenu';
+import DinigSetup from './dining-setup/diningSetup';
+import Methods from './methods/Methods';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -29,7 +30,7 @@ import {
 function Logout() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Article Screen</Text>
+      <Text>Logout</Text>
     </View>
   );
 }
@@ -59,15 +60,18 @@ const RyoriDrawer = props => {
 };
 
 const Drawer = createDrawerNavigator();
-export default function Sidebar() {
+export default function Drawers({navigation}) {
   return (
     <Drawer.Navigator
+      initialRouteName="Dashboard"
       drawerContent={props => <RyoriDrawer {...props} />}
       screenOptions={{
         drawerType: 'front', // permanent/slide/front
         drawerActiveTintColor: '#FFFF',
         drawerInactiveTintColor: '#FFFF',
         drawerActiveBackgroundColor: '#876504',
+        drawerInactiveBackgroundColor: '#1a1819',
+        headerTitleContainerStyle: {right: 72},
         swipeEdgeWidth: 500,
         headerTitle: '',
         headerTintColor: '#48E891',
@@ -76,7 +80,7 @@ export default function Sidebar() {
           marginTop: -9,
           marginLeft: -25,
         },
-        headerStyle: {shadowColor: 0, backgroundColor: 'black', height: 25},
+        headerStyle: {shadowColor: 0, backgroundColor: '#000', height: 25},
         drawerItemStyle: {
           borderRadius: 10,
           width: 134,
@@ -95,6 +99,7 @@ export default function Sidebar() {
         name="Dashboard"
         component={Dashboard}
         options={{
+          headerShown: false,
           drawerIcon: () => (
             <Image
               source={DashBIcon}
@@ -107,6 +112,7 @@ export default function Sidebar() {
         name="Orders"
         component={Orders}
         options={{
+          headerShown: false,
           drawerIcon: () => (
             <Image
               source={orderIcon}

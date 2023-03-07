@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View} from 'react-native';
-import {dashboadrStyles} from '../dashboard-style';
+import {overviewStyle} from '../overview-style';
 
 export default function KitchenBridge({navigate}) {
   return (
-    <View style={dashboadrStyles.container}>
-      <View style={dashboadrStyles.circleContainer}>
-        <View style={dashboadrStyles.circle} />
+    <View style={overviewStyle.container}>
+      <View style={overviewStyle.circleContainer}>
+        <View style={overviewStyle.circle} />
       </View>
     </View>
   );

@@ -9,7 +9,6 @@ import GoogleLogo from './../../images/logo/Google-Logo.jpg';
 import {OutlinedTextField} from 'rn-material-ui-textfield';
 
 export default function Login({navigation}) {
-  const [phone, setPhone] = useState('');
   return (
     <View style={welcomeStyles.welcomes}>
       <View style={welcomeStyles.circleContainer}>
@@ -51,7 +50,7 @@ export default function Login({navigation}) {
             <View style={welcomeStyles.loginBtnContainer}>
               <TouchableOpacity
                 style={welcomeStyles.signInBtn}
-                onPress={() => navigation.navigate('overview')}>
+                onPress={() => navigation.navigate('drawer')}>
                 <Text style={welcomeStyles.getStartedTextBtn}>SIGN IN</Text>
               </TouchableOpacity>
             </View>
@@ -81,7 +80,7 @@ export default function Login({navigation}) {
               <View style={welcomeStyles.loginFbBtn}>
                 <TouchableOpacity
                   style={welcomeStyles.fbBtn}
-                  onPress={() => navigation.navigate('sidebar')}>
+                  onPress={() => navigation.navigate('drawer')}>
                   <View style={welcomeStyles.fbgoogle}>
                     <Image
                       source={fbLogo}

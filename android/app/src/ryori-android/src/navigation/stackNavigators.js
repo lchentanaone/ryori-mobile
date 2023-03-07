@@ -4,8 +4,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Welcome from '../component/welcome/welcome';
 import Login from '../component/welcome/login';
-import Overview from '../component/dashboard/overview/Dashboard';
-import Sidebar from '../component/dashboard/overview/drawer';
+import Drawers from './../component/overview/drawer';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -32,13 +31,8 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={Overview}
-          name="overview"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={Sidebar}
-          name="sidebar"
+          component={Drawers}
+          name="drawer"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

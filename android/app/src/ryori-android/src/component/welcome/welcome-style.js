@@ -6,12 +6,14 @@ export const welcomeStyles = StyleSheet.create({
     backgroundColor: '#000000',
     flex: 1,
     position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   circleContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginLeft: -140,
-    position: 'relative',
+    left: -140,
+    position: 'absolute',
   },
   circle: {
     backgroundColor: '#EEA734',
@@ -25,7 +27,8 @@ export const welcomeStyles = StyleSheet.create({
   },
   logoContainer: {
     justifyContent: 'flex-start',
-    marginTop: -320,
+    position: 'absolute',
+    top: 50,
     flex: 1,
     height: 10,
   },
@@ -43,7 +46,7 @@ export const welcomeStyles = StyleSheet.create({
     borderColor: 'red',
   },
   wcTextContainer: {
-    marginTop: -30,
+    top: 200,
     flex: 1,
     alignItems: 'center',
   },
@@ -72,7 +75,7 @@ export const welcomeStyles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     backgroundColor: '#EEA734',
-    marginTop: -150,
+    top: -60,
   },
   getStarted: {
     justifyContent: 'center',
@@ -86,20 +89,21 @@ export const welcomeStyles = StyleSheet.create({
   },
   // -----welcome 2-----
   ryoriLogoLeft: {
+    position: 'absolute',
     justifyContent: 'flex-start',
+    top: 140,
+    left: 10,
   },
   ryoriLogoLogin: {
-    width: 75,
-    height: 75,
-    marginTop: -220,
+    width: 80,
+    height: 80,
   },
   loginFormContainer: {
     alignItems: 'center',
   },
   welcomeLoginTextCon: {
-    marginTop: -400,
+    top: -20,
     flex: 1,
-    // alignItems: 'center',
     justifyContent: 'center',
     color: '#FFFF',
   },
@@ -120,9 +124,8 @@ export const welcomeStyles = StyleSheet.create({
   },
   //-------------
   loginfield: {
-    marginTop: -30,
+    top: -20,
     flex: 1,
-    // alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
   },
@@ -147,7 +150,6 @@ export const welcomeStyles = StyleSheet.create({
 
   //------
   forgotBtn: {
-    // justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
   },
@@ -195,7 +197,6 @@ export const welcomeStyles = StyleSheet.create({
   },
   //------------
   loginFbBtn: {
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: 90,
     flexDirection: 'row',
@@ -241,7 +242,6 @@ export const welcomeStyles = StyleSheet.create({
     color: 'white',
     fontSize: 8,
     marginTop: 3,
-    // marginRight: -40,
   },
   googleText: {
     color: 'white',
