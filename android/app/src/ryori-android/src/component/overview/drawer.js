@@ -173,6 +173,7 @@ export default function Drawers({navigation}) {
         name="Create New Menu"
         component={AddMenu}
         options={{
+          headerShown: false,
           drawerIcon: () => (
             <>
               <AntDesign

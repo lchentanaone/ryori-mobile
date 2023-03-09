@@ -10,9 +10,17 @@ export const welcomeStyles = StyleSheet.create({
     alignItems: 'center',
   },
   circleContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    left: -140,
+    left: -20,
+    position: 'absolute',
+  },
+  circleContainer2: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    left: -60,
     position: 'absolute',
   },
   circle: {
@@ -21,6 +29,7 @@ export const welcomeStyles = StyleSheet.create({
     width: 260,
     borderRadius: 200,
     opacity: 0.2,
+    position: 'absolute',
   },
   content: {
     alignItems: 'center',
@@ -89,14 +98,16 @@ export const welcomeStyles = StyleSheet.create({
   },
   // -----welcome 2-----
   ryoriLogoLeft: {
+    flex: 1,
     position: 'absolute',
     justifyContent: 'flex-start',
-    top: 140,
+    top: 150,
     left: 10,
   },
   ryoriLogoLogin: {
     width: 80,
     height: 80,
+    left: 70,
   },
   loginFormContainer: {
     alignItems: 'center',

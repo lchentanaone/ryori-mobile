@@ -4,8 +4,7 @@ import {StyleSheet} from 'react-native';
 export const orderStyle = StyleSheet.create({
   overAll: {
     position: 'absolute',
-    backgroundColor: '#141416',
-    opacity: 0.5,
+    backgroundColor: 'rgba(20, 20, 22, 0.5)',
     borderRadius: 40,
     top: 60,
     width: 700,
@@ -38,7 +37,7 @@ export const orderStyle = StyleSheet.create({
   tableData: {
     justifyContent: 'flex-start',
     top: 116,
-    backgroundColor: '#444444',
+    backgroundColor: 'rgba(68,68,68, 0.5)',
     borderRadius: 20,
     width: 700,
     height: 240,

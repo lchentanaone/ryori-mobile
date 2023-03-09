@@ -9,12 +9,13 @@ import GoogleLogo from './../../images/logo/Google-Logo.jpg';
 import {OutlinedTextField} from 'rn-material-ui-textfield';
 
 export default function Login({navigation}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <View style={welcomeStyles.welcomes}>
-      <View style={welcomeStyles.circleContainer}>
+      <View style={welcomeStyles.circleContainer2}>
         <View style={welcomeStyles.circle} />
-      </View>
-      <View style={welcomeStyles.ryoriLogoLeft}>
         <Image source={ryoriLogo} style={welcomeStyles.ryoriLogoLogin} />
       </View>
       <View style={welcomeStyles.loginFormContainer}>
@@ -31,12 +32,15 @@ export default function Login({navigation}) {
               mode="outlined"
               style={welcomeStyles.input}
               placeholder="Email Address"
+              value={email}
             />
             <View style={welcomeStyles.inputMargin}>
               <TextInput
                 mode="outlined"
                 style={welcomeStyles.input}
                 placeholder="Password"
+                value={password}
+                secureTextEntry={false}
               />
             </View>
             <View style={welcomeStyles.forgotBtn}>

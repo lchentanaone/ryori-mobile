@@ -12,7 +12,7 @@ export const overviewStyle = StyleSheet.create({
   circleContainer: {
     justifyContent: 'flex-end',
     left: 600,
-    top: 220,
+    top: 280,
     position: 'absolute',
   },
   circle: {
