@@ -83,17 +83,6 @@ export const addMenuStyle = StyleSheet.create({
     padding: 5,
     borderRadius: 15,
   },
-  // --------
-  //   availDropdown: {
-  //     backgroundColor: 'white',
-  //     height: 30,
-  //     width: 120,
-  //     fontSize: 10,
-  //     borderWidth: 1,
-  //     padding: 10,
-  //     borderRadius: 5,
-  //   },
-
   AvailDropdown: {
     backgroundColor: 'white',
     left: 10,
@@ -144,7 +133,8 @@ export const addMenuStyle = StyleSheet.create({
     backgroundColor: 'rgba(50,49,47, 0.5)',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    top: 25,
+    position: 'absolute',
+    top: 125,
     width: 620,
     height: 95,
   },
@@ -164,8 +154,9 @@ export const addMenuStyle = StyleSheet.create({
   addOns: {
     justifyContent: 'space-around',
     flexDirection: 'row',
-    top: 30,
-    left: 2,
+    position: 'absolute',
+    top: 225,
+    left: 40,
   },
   addOnsDropdown: {
     backgroundColor: 'white',
@@ -178,19 +169,26 @@ export const addMenuStyle = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
   },
+  bottomTextfield: {
+    flexDirection: 'row',
+    left: 70,
+  },
   textInput: {
     backgroundColor: 'white',
     height: 25,
-    width: 130,
+    width: 150,
     fontSize: 10,
     borderWidth: 1,
     padding: 5,
     borderRadius: 10,
+    left: 10,
   },
   btnContainer: {
     justifyContent: 'flex-end',
     flexDirection: 'row',
-    top: 85,
+    top: 310,
+    left: 365,
+    position: 'absolute',
   },
   //-----
   btnCancelOpacity: {

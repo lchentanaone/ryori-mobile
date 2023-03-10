@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Welcome from '../component/welcome/welcome';
 import Login from '../component/welcome/login';
 import Drawers from './../component/overview/drawer';
+import CreateAccount from '../component/welcome/createAcc/create-account';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -33,6 +34,11 @@ const StackNavigators = () => {
         <Stack.Screen
           component={Drawers}
           name="drawer"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={CreateAccount}
+          name="Create Account"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -11,7 +11,6 @@ export const welcomeStyles = StyleSheet.create({
   },
   circleContainer: {
     alignItems: 'center',
-    flex: 1,
     justifyContent: 'center',
     left: -20,
     position: 'absolute',

@@ -29,6 +29,24 @@ const categories = [
   {label: 'Test2', value: 'Test2'},
 ];
 
+const SERVER_URL = 'http://localhost:3000';
+
+const createFormData = (photo, body = {}) => {
+  const data = new FormData();
+
+  data.append('photo', {
+    name: photo.fileName,
+    type: photo.type,
+    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+  });
+
+  Object.keys(body).forEach(key => {
+    data.append(key, body[key]);
+  });
+
+  return data;
+};
+
 export default function AddMenu({navigation}) {
   const [availability, setAvailability] = useState(null);
   const [category, setCategory] = useState(null);
@@ -43,6 +61,20 @@ export default function AddMenu({navigation}) {
         setPhoto(response);
       }
     });
+  };
+
+  const handleUploadPhoto = () => {
+    fetch(`${SERVER_URL}/api/upload`, {
+      method: 'POST',
+      body: createFormData(photo, {userId: '123'}),
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log('response', response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   };
 
   return (
@@ -143,6 +175,15 @@ export default function AddMenu({navigation}) {
               </View>
             </View>
             <View style={addMenuStyle.imgContainer}>
+              {photo && (
+                <>
+                  <Image
+                    source={{uri: photo.uri}}
+                    style={{width: 80, height: 80}}
+                  />
+                  <Button title="Upload Photo" onPress={handleUploadPhoto} />
+                </>
+              )}
               <Button title="Choose Photo" onPress={handleChoosePhoto} />
             </View>
           </View>
@@ -173,21 +214,23 @@ export default function AddMenu({navigation}) {
                 setIsFocus(false);
               }}
             />
-            <TextInput
-              mode="outlined"
-              style={addMenuStyle.textInput}
-              placeholder="Calorie"
-            />
-            <TextInput
-              mode="outlined"
-              style={addMenuStyle.textInput}
-              placeholder="Cost"
-            />
-            <TextInput
-              mode="outlined"
-              style={addMenuStyle.textInput}
-              placeholder="Price"
-            />
+            <View style={addMenuStyle.bottomTextfield}>
+              <TextInput
+                mode="outlined"
+                style={addMenuStyle.textInput}
+                placeholder="Calorie"
+              />
+              <TextInput
+                mode="outlined"
+                style={addMenuStyle.textInput}
+                placeholder="Cost"
+              />
+              <TextInput
+                mode="outlined"
+                style={addMenuStyle.textInput}
+                placeholder="Price"
+              />
+            </View>
           </View>
           <View style={addMenuStyle.btnContainer}>
             <View style={addMenuStyle.cancelBtn}>

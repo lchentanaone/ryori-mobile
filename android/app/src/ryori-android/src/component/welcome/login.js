@@ -69,8 +69,7 @@ export default function Login({navigation}) {
               <View style={welcomeStyles.optionBtn}>
                 <TouchableOpacity
                   style={welcomeStyles.textBtbOpacity}
-                  // onPress={() => navigation.navigate('Forgot Password')}
-                >
+                  onPress={() => navigation.navigate('Create Account')}>
                   <Text style={welcomeStyles.createAccText}>
                     Create new account
                   </Text>
