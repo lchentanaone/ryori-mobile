@@ -19,6 +19,9 @@ import {addMenuStyle} from './addMenu-style';
 import {Dropdown} from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
+
+
 
 const data = [
   {label: 'Yes', value: 'Yes'},
@@ -30,6 +33,7 @@ const categories = [
 ];
 
 const SERVER_URL = 'http://localhost:3000';
+
 
 const createFormData = (photo, body = {}) => {
   const data = new FormData();
@@ -48,11 +52,30 @@ const createFormData = (photo, body = {}) => {
 };
 
 export default function AddMenu({navigation}) {
+  
   const [availability, setAvailability] = useState(null);
   const [category, setCategory] = useState(null);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = React.useState(null);
+  const [label, setlabel] = useState('');
+  const [image, setImage] = useState('');
+  const [food, setFood] = useState('');
+
+  const API_URL = 'http://10.0.2.2:3000';
+
+  const handlePost = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/menu-category`, {
+        label:label,
+        image:image,
+        food:food
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleChoosePhoto = () => {
     launchImageLibrary({noData: true}, response => {
@@ -102,7 +125,9 @@ export default function AddMenu({navigation}) {
                 <TextInput
                   mode="outlined"
                   style={addMenuStyle.inputName}
-                  placeholder="Menu Name"
+                  placeholder="name"
+                  value={label}
+                  onChangeText={label => setlabel(label)}
                 />
                 <Dropdown
                   style={[
@@ -134,6 +159,8 @@ export default function AddMenu({navigation}) {
                   numberOfLines={4}
                   multiline={true}
                   placeholder="Description"
+                  value={image}
+                  onChangeText={image => setImage(image)}
                 />
               </View>
               <View style={addMenuStyle.fieldsrow3}>
@@ -164,6 +191,8 @@ export default function AddMenu({navigation}) {
                     mode="outlined"
                     style={addMenuStyle.inputTime}
                     placeholder="Time"
+                    value={food}
+                  onChangeText={food => setFood(food)}
                   />
                   <MaterialCommunityIcons
                     name="timer-sand"
@@ -239,7 +268,8 @@ export default function AddMenu({navigation}) {
               </TouchableOpacity>
             </View>
             <View style={addMenuStyle.saveBtn}>
-              <TouchableOpacity style={addMenuStyle.btnCSaveOpacity}>
+              <TouchableOpacity style={addMenuStyle.btnCSaveOpacity} 
+               onPress={handlePost}>
                 <Text style={addMenuStyle.textBtn}>SAVE</Text>
               </TouchableOpacity>
             </View>

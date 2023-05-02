@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {welcomeStyles} from './../welcome-style';
@@ -10,7 +8,7 @@ export default function CreateAccount({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirsname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const [lastName, setLastname] = useState('');
 
   return (
     <View style={welcomeStyles.welcomes}>
@@ -42,8 +40,8 @@ export default function CreateAccount({navigation}) {
                 mode="outlined"
                 style={SignUpStyle.input}
                 placeholder="Last Name"
-                value={lastname}
-                onChangeText={lastname => setLastname(lastname)}
+                value={lastName}
+                onChangeText={lastName => setLastname(lastName)}
               />
             </View>
             <View style={SignUpStyle.inputMargin}></View>
