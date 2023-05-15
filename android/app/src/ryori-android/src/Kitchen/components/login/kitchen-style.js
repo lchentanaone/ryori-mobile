@@ -20,6 +20,7 @@ export const kitchenStarter = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 40,
   },
   ryoriText: {
     width: 190,
@@ -27,15 +28,20 @@ export const kitchenStarter = StyleSheet.create({
   },
   input: {
     height: 50,
-    width: 330,
+    width: '100%',
     fontSize: 16,
     borderWidth: 1,
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 10,
-    margin: 10,
+    marginBottom: 15,
     borderColor: '#757575',
     fontFamily: 'Quicksand-SemiBold',
+  },
+  loginForm: {
+    backgroundColor: '#fff',
+    width: '100%',
+    // paddingHorizontal: 10
   },
   pleaseText: {
     fontSize: 18,
@@ -68,12 +74,13 @@ export const kitchenStarter = StyleSheet.create({
 
   // Sign in btn
   SignIn: {
+
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
   },
   SignInOpacity: {
-    width: 330,
+    width: '100%',
     height: 50,
     shadowColor: 'blue',
     justifyContent: 'center',

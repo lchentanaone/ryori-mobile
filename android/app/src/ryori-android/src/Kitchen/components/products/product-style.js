@@ -5,11 +5,16 @@ export const prodStyle = StyleSheet.create({
         backgroundColor: '#fff',
         flex:1,
         position: 'relative',
-        // alignItems: 'center'
+        paddingHorizontal: 40,
+    },
+    productContent: {
+        top: 50,
+        alignItems: 'center'
     },
     ryoriIcon: {
         flexDirection: 'row',
-        left:30
+        left:0,
+        position: 'absolute'
     },
     ryori: {
         width: 40,
@@ -30,9 +35,9 @@ export const prodStyle = StyleSheet.create({
         backgroundColor: '#f6f6f8',
         height: 45,
         borderRadius: 5,
-        width: 330,
+        width: '100%',
         top: 70,
-        left: 30
+        // left: 30
     },
     searchInput: {
         backgroundColor: '#f6f6f8',
@@ -54,10 +59,11 @@ export const prodStyle = StyleSheet.create({
     Table: {
         position: 'absolute',
         top: 120,
+        width: '100%',
+       
     },
     productTable: {
-       margin: 20,
-       width: 350,
+       width: '100%',
     },
     porkHeader: {
         color: '#000',

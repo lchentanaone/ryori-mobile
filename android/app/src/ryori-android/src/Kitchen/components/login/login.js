@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
 import {kitchenStarter} from './kitchen-style';
 import ryoriText from '../../images/ryori-text.png';
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+import PushNotification from "react-native-push-notification";
+
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
@@ -10,7 +13,7 @@ export default function Login({navigation}) {
   return (
     <View style={kitchenStarter.kitchenLogin}>
       <Image source={ryoriText} style={kitchenStarter.ryoriText} />
-      <View >
+      <View style={kitchenStarter.loginForm}>
         <Text style={kitchenStarter.pleaseText}>
           Please sign in to Continue
         </Text>

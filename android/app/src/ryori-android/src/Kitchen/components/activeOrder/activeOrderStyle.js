@@ -5,11 +5,16 @@ export const aoStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    alignItems: 'center',
+    paddingHorizontal: 40,
+  },
+  aoContent: {
+    top: 50,
+    alignItems: 'center'
   },
   ryoriIcon: {
     flexDirection: 'row',
-    left: -50,
+    left:0,
+    position: 'absolute'
   },
   ryori: {
     width: 40,
@@ -24,27 +29,26 @@ export const aoStyle = StyleSheet.create({
   },
   //Accodions
   accordions: {
+    width: '100%',
+    backgroundColor: '#fff',
     top: 80,
     justifyContent: 'center',
     position: 'absolute',
   },
   accordionList: {
-    position: 'relative',
-    width: 330,
-    padding: 0,
-    alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 15,
     backgroundColor: '#fff',
-  },
-  accordionTitle: {
-    fontFamily: 'Quicksand-Medium',
-    fontSize: 16,
-    fontWeight: 'bold',
+    overflow: 'hidden'
   },
   accordItem: {
     color: '#000',
     fontSize: 16,
     fontFamily: 'Quicksand-Bold',
   },
+  itemlist: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Quicksand-Bold'
+},
 });

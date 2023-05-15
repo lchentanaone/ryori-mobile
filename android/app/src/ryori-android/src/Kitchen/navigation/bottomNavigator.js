@@ -29,9 +29,10 @@ export default function BottomNavigator() {
         },
       }}>
       <Tab.Screen
-        name=" "
+        name="Product"
         component={Products}
         options={{
+          headerShown: false,
           tabBarLabel: 'Product',
           tabBarIcon: ({focused, size}) => (
             <Entypo
@@ -43,9 +44,10 @@ export default function BottomNavigator() {
         }}
       />
       <Tab.Screen
-        name="   "
+        name="Test"
         component={TEST}
         options={{
+          headerShown: false,
           tabBarLabel: 'TEST',
           tabBarIcon: ({focused, size}) => (
             <AntDesign
@@ -57,10 +59,11 @@ export default function BottomNavigator() {
         }}
       />
       <Tab.Screen
-        name="  "
+        name="Active Order"
         component={ActiveOrder}
         options={{
-          tabBarLabel: 'Profile',
+          headerShown: false,
+          tabBarLabel: 'Active Order',
           tabBarIcon: ({focused, size}) => (
             <FontAwesome5
               name="box-open"
