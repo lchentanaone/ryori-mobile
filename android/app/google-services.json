@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "562366545037",
+    "project_id": "ryori-pushnotifications",
+    "storage_bucket": "ryori-pushnotifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562366545037:android:b7c14076219f2282d476c4",
+        "android_client_info": {
+          "package_name": "com.ryorimobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562366545037-3abkp064ra1jt9nclon126umu3141eqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8z0-Zbh6ejnJZisisSV3GMSnnA2Whfks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562366545037-3abkp064ra1jt9nclon126umu3141eqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

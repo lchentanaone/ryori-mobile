@@ -1,14 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
 import {kitchenStarter} from './kitchen-style';
 import ryoriText from '../../images/ryori-text.png';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from "react-native-push-notification";
 
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() =>{
+    createChannel()
+  },[]);
+
+  const createChannel =() => {
+    PushNotification.createChannel({
+      channelId: 'Testing',
+      channelName: 'Test Channel',
+    })
+  }
+
+  const handleNotification = () => {
+    PushNotification.localNotification({
+      channelId: 'Testing',
+      title: 'Ryori',
+      message: 'Local Notification Ryori'
+    })
+  }
 
   return (
     <View style={kitchenStarter.kitchenLogin}>
@@ -45,6 +63,14 @@ export default function Login({navigation}) {
             onPress={() => navigation.navigate('BottomNavs')}
             >
             <Text style={kitchenStarter.SignInTextBtn}>SING IN</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={kitchenStarter.SignIn}>
+          <TouchableOpacity
+            style={kitchenStarter.SignInOpacity}
+            onPress={handleNotification}
+            >
+            <Text style={kitchenStarter.SignInTextBtn}>handleNotification</Text>
           </TouchableOpacity>
         </View>
       </View>
