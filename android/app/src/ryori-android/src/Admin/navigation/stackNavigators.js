@@ -1,14 +1,13 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/self-closing-comp */
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Welcome from '../component/welcome/welcome';
-import Login from '../component/welcome/login';
+import Opening from '../component/opening/opening';
+import Login from '../component/opening/login';
 import Drawers from '../component/overview/drawer';
-import CreateAccount from '../component/welcome/createAcc/create-account';
+import Register from '../component/opening/register';
 import EditMenu from '../component/overview/menu/edit-menu';
 import Transaction from '../component/overview/transaction/transaction';
 import TransactionReport from '../component/overview/transaction/transaction-report';
+import SetupStore from '../component/opening/setupStore';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -25,13 +24,23 @@ const StackNavigators = () => {
           animationEnabled: false,
         }}>
         <Stack.Screen
-          component={Welcome}
-          name="welcome"
+          component={Opening}
+          name="opening"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Register}
+          name="Register-admin"
           options={{headerShown: false}}
         />
         <Stack.Screen
           component={Login}
-          name="login"
+          name="Login-admin"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={SetupStore}
+          name="Set up your Store"
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -39,16 +48,12 @@ const StackNavigators = () => {
           name="drawer"
           options={{headerShown: false}}
         />
-        <Stack.Screen
-          component={CreateAccount}
-          name="Create Account"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
+        
+        {/* <Stack.Screen
           component={EditMenu}
           name="Edit-menu"
           // options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           component={Transaction}
           name="Transation"
