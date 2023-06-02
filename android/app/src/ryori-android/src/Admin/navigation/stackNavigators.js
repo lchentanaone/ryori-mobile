@@ -2,12 +2,18 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
-import Drawers from '../component/overview/drawer';
+// import Drawers from '../component/overview/drawer';
 import Register from '../component/opening/register';
 import EditMenu from '../component/overview/menu/edit-menu';
 import Transaction from '../component/overview/transaction/transaction';
 import TransactionReport from '../component/overview/transaction/transaction-report';
 import SetupStore from '../component/opening/setupStore';
+import DrawersNav from '../component/drawer/drawerNavigation/drawer';
+import Menu from '../component/drawer/menu/menu';
+import AddMenu from '../component/drawer/menu/addMenu';
+import UpdateMenu from '../component/drawer/menu/updateMenu';
+import TopTabNavs from './topTabNavigation';
+import Dashboard from './../component/drawer/dashboard/dashboard';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -44,24 +50,33 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={Drawers}
-          name="drawer"
-          options={{headerShown: false}}
-        />
-        
-        {/* <Stack.Screen
-          component={EditMenu}
-          name="Edit-menu"
-          // options={{headerShown: false}}
-        /> */}
-        <Stack.Screen
-          component={Transaction}
-          name="Transation"
+          component={DrawersNav}
+          name="Drawer"
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={TransactionReport}
-          name="Reports of Transaction"
+          component={Dashboard}
+          name="Dashboard"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Menu}
+          name="Menu"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={AddMenu}
+          name="Add new menu"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={UpdateMenu}
+          name="Update Menu"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={TopTabNavs}
+          name="TopTabNavs"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

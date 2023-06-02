@@ -7,7 +7,6 @@ import axios from 'axios';
 export default function Register({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
 
-
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
@@ -51,7 +50,7 @@ export default function Register({navigation}) {
               mode="outlined"
               style={openingStyles.inputR}
               placeholder="Last name"
-              placeholderTextColor="#777777" 
+              placeholderTextColor="#777777"
               value={lastname}
               secureTextEntry={false}
               onChangeText={setLastname}
@@ -98,13 +97,11 @@ export default function Register({navigation}) {
             />
           </View>
         </View>
-        <View>
-    </View>
+        <View></View>
         <View style={openingStyles.SignUp}>
           <TouchableOpacity
             style={openingStyles.SignUpOpacity}
-            onPress={() => navigation.navigate('Set up your Store')}
-          >
+            onPress={() => navigation.navigate('Set up your Store')}>
             <Text style={openingStyles.SignUpTextBtn}>SING IN</Text>
           </TouchableOpacity>
         </View>
