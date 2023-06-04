@@ -154,11 +154,12 @@ export const setUpStoreStyles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
+    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 120,
     paddingVertical: 50,
   },
-  setUpTextC: {
+  setUpTextCon: {
     width: '100%',
     top: -5,
   },
@@ -176,12 +177,12 @@ export const setUpStoreStyles = StyleSheet.create({
     height: '100%',
     shadowColor: '#000',
     elevation: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
-  uploadLogoC11:{
-    width: '30%'
+  uploadLogoCol: {
+    width: '30%',
   },
-  uploadLogoC22:{
+  uploadLogoC: {
     top: 25,
     width: '70%',
     // alignItems: 'center'
@@ -195,7 +196,7 @@ export const setUpStoreStyles = StyleSheet.create({
     top: 5,
     backgroundColor: '#000',
     width: 140,
-    height: 140
+    height: 140,
   },
   uploadLogoBtn: {
     top: 15,
@@ -219,9 +220,7 @@ export const setUpStoreStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  singleRow: {
-
-  },
+  singleRow: {},
 
   setupInput: {
     width: '47%',

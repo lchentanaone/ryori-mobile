@@ -14,7 +14,10 @@ import AddMenu from '../component/drawer/menu/addMenu';
 import UpdateMenu from '../component/drawer/menu/updateMenu';
 import TopTabNavs from './topTabNavigation';
 import Dashboard from './../component/drawer/dashboard/dashboard';
-
+import ReportOfTransaction from '../component/drawer/Report/reportOfTransaction';
+import ReportOfFood from '../component/drawer/Report/reportOfFood';
+import Inventory from '../component/drawer/inventory/inventory';
+import StoreSetting from '../component/drawer/storeSetting.js/storeSetting';
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -77,6 +80,26 @@ const StackNavigators = () => {
         <Stack.Screen
           component={TopTabNavs}
           name="TopTabNavs"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ReportOfTransaction}
+          name="Report of Transaction"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ReportOfFood}
+          name="Report of Food"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Inventory}
+          name="Inventory"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={StoreSetting}
+          name="Store Setting"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {setUpStoreStyles as setStore} from './opening-style';
 
-export default function SetupStore() {
+export default function SetupStore({navigation}) {
   const [storename, setStorename] = useState('');
   const [email, setEmail] = useState('');
   const [branch, setBranch] = useState('');
@@ -11,11 +11,11 @@ export default function SetupStore() {
 
   return (
     <View style={setStore.setUpStore}>
-      <View style={setStore.setUpTextC}>
+      <View style={setStore.setUpTextCon}>
         <Text style={setStore.setUpText}>Setup your Store</Text>
       </View>
       <View style={setStore.setUpContent}>
-        <View style={setStore.uploadLogoC11}>
+        <View style={setStore.uploadLogoCol}>
           <Text style={setStore.storeLogoText}>Store Logo</Text>
           <View style={setStore.logo}>
             <Text> This Area for Logo</Text>
@@ -29,7 +29,7 @@ export default function SetupStore() {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={setStore.uploadLogoC22}>
+        <View style={setStore.uploadLogoC}>
           <View style={setStore.setupRow}>
             <TextInput
               mode="outlined"
@@ -83,7 +83,8 @@ export default function SetupStore() {
             <View style={setStore.saveStore}>
               <TouchableOpacity
                 style={setStore.saveStoreOpacity}
-                // onPress={() => navigation.navigate('BottomNavs')}
+                onPress={() => navigation.navigate('Store Setting')}
+                // onPress={() => navigation.navigate('Menu')}
               >
                 <Text style={setStore.saveStoreTextBtn}>Save</Text>
               </TouchableOpacity>
