@@ -48,7 +48,7 @@ export default function Dashboard() {
         </View>
         <View style={DashboardStyle.summaryRevenue}>
           <View style={DashboardStyle.orderSummaryReven}>
-            <View style={DashboardStyle.titleDate}>
+            <View style={DashboardStyle.titleFil}>
               <Text style={DashboardStyle.title}>Order Summary</Text>
               {/* <View style={DashboardStyle.filterDate}> */}
               <View style={DashboardStyle.filterDate}>
@@ -91,7 +91,7 @@ export default function Dashboard() {
           </View>
           {/* Revenue */}
           <View style={DashboardStyle.orderSummaryReven}>
-            <View style={DashboardStyle.titleDate}>
+            <View style={DashboardStyle.titleFil}>
               <Text style={DashboardStyle.title}>Order Summary</Text>
               <View style={DashboardStyle.filterDate}>
                 <TouchableOpacity
