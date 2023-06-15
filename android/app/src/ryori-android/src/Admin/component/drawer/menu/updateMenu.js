@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary} from 'react-native-image-picker';
+import axios from 'axios';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -37,13 +38,58 @@ const createFormData = (photo, body = {}) => {
 
   return data;
 };
-export default function UpdateMenu({navigation}) {
+
+export default function UpdateMenu({route, navigation}) {
+  const API_URL = 'http://10.0.2.2:3000';
+  const itembyId = route.params;
+  // console.log('updateMenu', itembyId);
+
   const [foodName, setFoodName] = useState('');
   const [category, setCategory] = useState('All');
   const [availability, setAvailability] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [photo, setPhoto] = React.useState(null);
+  const [photo, setPhoto] = useState(null);
   const [image, setImage] = useState('');
+  const [items, setItems] = useState(itembyId.item);
+  const [label, setLabel] = useState('');
+  const [food, setFood] = useState('1');
+  const [editId, setEditId] = useState();
+  const [time, setTime] = useState('');
+
+  // update one by id
+  const handleUpdate = async () => {
+    try {
+      console.log(`${API_URL}/menu-category/` + itembyId.item.id);
+      const response = await axios.patch(
+        `${API_URL}/menu-category/` + itembyId.item.id,
+        {
+          label,
+          image,
+          food,
+        },
+      );
+      setLabel(response.label);
+      setImage(response.image);
+      setFood(response.food);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    navigation.navigate('Menu');
+  };
+
+  // delete one by id
+  const handleDelete = async item => {
+    try {
+      const response = await axios.delete(
+        `${API_URL}/menu-category/` + item.id,
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    navigation.navigate('Menu');
+  };
 
   const handleChoosePhoto = () => {
     launchImageLibrary({noData: true}, response => {
@@ -67,30 +113,110 @@ export default function UpdateMenu({navigation}) {
         console.log('error', error);
       });
   };
+
   return (
     <View style={AddMenuStyle.addMenuCon}>
       <View style={AddMenuStyle.addMenuContent}>
-        <View style={AddMenuStyle.addMenuForm}>
-          <Text style={AddMenuStyle.addMenuTitle}>Edit Menu</Text>
-          <TextInput
-            mode="outlined"
-            style={AddMenuStyle.addMenuInput}
-            placeholder="Store Name"
-            placeholderTextColor="#777777"
-            value={foodName}
-            secureTextEntry={false}
-            onChangeText={setFoodName}
-          />
-          <View style={AddMenuStyle.inputRow}>
+        <Text style={AddMenuStyle.addMenuTitle}>Edit Menu</Text>
+        <View style={AddMenuStyle.InputAndImageCont}>
+          <View style={AddMenuStyle.addMenuForm}>
             <TextInput
               mode="outlined"
-              style={AddMenuStyle.foodPrice}
-              placeholder="Price"
+              style={AddMenuStyle.addMenuInput}
+              placeholder="Food name"
+              placeholderTextColor="#777777"
+              // value={itembyId.label}
+              defaultValue={items.label}
+              onChangeText={label => setLabel(label)}
+            />
+            <TextInput
+              mode="outlined"
+              style={AddMenuStyle.addMenuInput}
+              placeholder="Food"
+              placeholderTextColor="#777777"
+              value={food}
+              onChangeText={food => setFood(food)}
+            />
+            <View style={AddMenuStyle.inputRow}>
+              <TextInput
+                mode="outlined"
+                style={AddMenuStyle.foodPrice}
+                placeholder="Price"
+                placeholderTextColor="#777777"
+                defaultValue={items.image}
+                onChangeText={image => setImage(image)}
+              />
+              <View style={DropdownStyle.DropdownContainer}>
+                <Dropdown
+                  style={[
+                    DropdownStyle.dropdown,
+                    isFocus && {borderColor: '#007FFF'},
+                  ]}
+                  placeholderStyle={DropdownStyle.placeholderStyle}
+                  selectedTextStyle={DropdownStyle.selectedTextStyle}
+                  inputSearchStyle={DropdownStyle.inputSearchStyle}
+                  iconStyle={DropdownStyle.iconStyle}
+                  data={filterAvalable}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={'Availability'}
+                  value={availability}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setAvailability(item.availability);
+                    setIsFocus(false);
+                  }}
+                />
+              </View>
+            </View>
+            <TextInput
+              mode="outlined"
+              style={AddMenuStyle.descriptInput}
+              numberOfLines={4}
+              multiline={true}
+              placeholder="Descriptions"
               placeholderTextColor="#777777"
               value={foodName}
               secureTextEntry={false}
               onChangeText={setFoodName}
             />
+            <View style={AddMenuStyle.inputRow}>
+              <View style={DropdownStyle.DropdownContainer}>
+                <Dropdown
+                  style={[
+                    DropdownStyle.dropdown,
+                    isFocus && {borderColor: '#007FFF'},
+                  ]}
+                  placeholderStyle={DropdownStyle.placeholderStyle}
+                  selectedTextStyle={DropdownStyle.selectedTextStyle}
+                  inputSearchStyle={DropdownStyle.inputSearchStyle}
+                  iconStyle={DropdownStyle.iconStyle}
+                  data={categories}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={'Category'}
+                  value={categories}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setCategory(item.availability);
+                    setIsFocus(false);
+                  }}
+                />
+              </View>
+              <TextInput
+                mode="outlined"
+                style={AddMenuStyle.foodPrice}
+                placeholder="Cooking Time"
+                placeholderTextColor="#777777"
+                value={time}
+                secureTextEntry={false}
+                onChangeText={setTime}
+              />
+            </View>
             <View style={DropdownStyle.DropdownContainer}>
               <Dropdown
                 style={[
@@ -116,114 +242,45 @@ export default function UpdateMenu({navigation}) {
               />
             </View>
           </View>
-          <TextInput
-            mode="outlined"
-            style={AddMenuStyle.descriptInput}
-            numberOfLines={4}
-            multiline={true}
-            placeholder="Descriptions"
-            placeholderTextColor="#777777"
-            value={foodName}
-            secureTextEntry={false}
-            onChangeText={setFoodName}
-          />
-          <View style={AddMenuStyle.inputRow}>
-            <View style={DropdownStyle.DropdownContainer}>
-              <Dropdown
-                style={[
-                  DropdownStyle.dropdown,
-                  isFocus && {borderColor: '#007FFF'},
-                ]}
-                placeholderStyle={DropdownStyle.placeholderStyle}
-                selectedTextStyle={DropdownStyle.selectedTextStyle}
-                inputSearchStyle={DropdownStyle.inputSearchStyle}
-                iconStyle={DropdownStyle.iconStyle}
-                data={categories}
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={'Category'}
-                value={categories}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setCategory(item.availability);
-                  setIsFocus(false);
-                }}
-              />
-            </View>
-            <TextInput
-              mode="outlined"
-              style={AddMenuStyle.foodPrice}
-              placeholder="Cooking Time"
-              placeholderTextColor="#777777"
-              value={foodName}
-              secureTextEntry={false}
-              onChangeText={setFoodName}
-            />
-          </View>
-          <View style={DropdownStyle.DropdownContainer}>
-            <Dropdown
-              style={[
-                DropdownStyle.dropdown,
-                isFocus && {borderColor: '#007FFF'},
-              ]}
-              placeholderStyle={DropdownStyle.placeholderStyle}
-              selectedTextStyle={DropdownStyle.selectedTextStyle}
-              inputSearchStyle={DropdownStyle.inputSearchStyle}
-              iconStyle={DropdownStyle.iconStyle}
-              data={filterAvalable}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={'Availability'}
-              value={availability}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setAvailability(item.availability);
-                setIsFocus(false);
-              }}
-            />
-          </View>
-          <View style={AddMenuStyle.buttons}>
-            <View style={AddMenuStyle.updateMenuBtn}>
-              <TouchableOpacity
-                style={AddMenuStyle.cancelOpacity}
-                onPress={() => navigation.navigate('Menu')}>
-                <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={AddMenuStyle.updateMenuBtn}>
-              <TouchableOpacity
-                style={AddMenuStyle.addMenuOpacity}
-                onPress={() => navigation.navigate('Add new menu')}>
-                <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={AddMenuStyle.updateMenuBtn}>
-              <TouchableOpacity
-                style={AddMenuStyle.deleteMenuOpacity}
-                onPress={() => navigation.navigate('TopTabNavs')}>
-                <Text style={AddMenuStyle.addMenuTextBtn}>Delete</Text>
-              </TouchableOpacity>
+          <View style={AddMenuStyle.uploadMenuImg}>
+            <View style={AddMenuStyle.uploadIm2}>
+              <Text>Heelo</Text>
+              <View style={AddMenuStyle.imgContainer}>
+                {photo && (
+                  <>
+                    {this.state.ImageURI !== '' ? (
+                      <Image source={this.state.ImageURI} />
+                    ) : null}
+                    <Button title="Upload Photo" onPress={handleUploadPhoto} />
+                  </>
+                )}
+                <Button title="Choose Photo" onPress={handleChoosePhoto} />
+              </View>
             </View>
           </View>
         </View>
-        <View style={AddMenuStyle.uploadMenuImg}>
-          <View style={AddMenuStyle.uploadIm2}>
-            <Text>Heelo</Text>
-            <View style={AddMenuStyle.imgContainer}>
-              {photo && (
-                <>
-                  {this.state.ImageURI !== '' ? (
-                    <Image source={this.state.ImageURI} />
-                  ) : null}
-                  <Button title="Upload Photo" onPress={handleUploadPhoto} />
-                </>
-              )}
-              <Button title="Choose Photo" onPress={handleChoosePhoto} />
-            </View>
+
+        <View style={AddMenuStyle.buttons}>
+          <View style={AddMenuStyle.updateMenuBtn}>
+            <TouchableOpacity
+              style={AddMenuStyle.cancelOpacity}
+              onPress={() => navigation.navigate('Menu')}>
+              <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={AddMenuStyle.updateMenuBtn}>
+            <TouchableOpacity
+              style={AddMenuStyle.addMenuOpacity}
+              onPress={() => handleUpdate(items)}>
+              <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={AddMenuStyle.updateMenuBtn}>
+            <TouchableOpacity
+              style={AddMenuStyle.deleteMenuOpacity}
+              onPress={() => handleDelete(items)}>
+              <Text style={AddMenuStyle.addMenuTextBtn}>Delete</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

@@ -3,7 +3,7 @@ import React from 'react';
 import {StoreSetStyle} from './storeSettingStyle';
 import tempoLogo from '../../../images/tempoLogo.png';
 
-export default function StoreSetting() {
+export default function StoreSetting({navigation}) {
   return (
     <View style={StoreSetStyle.storeSetting}>
       <View style={StoreSetStyle.storeSetContent}>
@@ -30,16 +30,16 @@ export default function StoreSetting() {
               </View>
             </View>
             <View style={StoreSetStyle.storePhoto}>
-              <View style={StoreSetStyle.storeLogo}>
-                <Image source={tempoLogo} />
-              </View>
+              <Image style={StoreSetStyle.storeLogo} source={tempoLogo} />
             </View>
           </View>
           <View style={StoreSetStyle.buttons}>
             {/* <TouchableOpacity style={StoreSetStyle.buttonsOpacity}>
               <Text style={StoreSetStyle.buttonsText}> Add new Store</Text>
             </TouchableOpacity> */}
-            <TouchableOpacity style={StoreSetStyle.buttonsOpacity}>
+            <TouchableOpacity
+              style={StoreSetStyle.buttonsOpacity}
+              onPress={() => navigation.navigate('Update Store')}>
               <Text style={StoreSetStyle.buttonsText}>Edit this store</Text>
             </TouchableOpacity>
           </View>

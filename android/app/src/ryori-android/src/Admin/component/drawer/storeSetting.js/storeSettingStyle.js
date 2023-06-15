@@ -25,13 +25,13 @@ export const StoreSetStyle = StyleSheet.create({
   },
   storeDetailsContainer: {
     backgroundColor: '#fff',
-
     shadowColor: '#000',
     elevation: 5,
     borderRadius: 10,
     paddingHorizontal: 30,
     paddingVertical: 20,
     top: 10,
+    alignItems: 'center',
   },
   storeDetails: {
     width: '65%',
@@ -63,8 +63,8 @@ export const StoreSetStyle = StyleSheet.create({
     alignItems: 'center',
   },
   storeLogo: {
-    height: 150,
-    width: 150,
+    height: '50%',
+    width: '60%',
     backgroundColor: '#fff',
   },
   buttons: {
@@ -80,7 +80,76 @@ export const StoreSetStyle = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonsText: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#fff',
+    fontFamily: 'Quicksand-Meduim',
+  },
+});
+
+export const updateStoreStyle = StyleSheet.create({
+  storeFormDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  storeFormInputCont: {
+    width: '65%',
+  },
+  FormInput: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  storeInput: {
+    width: '48%',
+    fontSize: 15,
+    height: 40,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 10,
+    shadowColor: '#000',
+    elevation: 5,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  storeInputAddress: {
+    width: '100%',
+    fontSize: 15,
+    height: 35,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 10,
+    shadowColor: '#000',
+    elevation: 5,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  updateLogo: {
+    width: '35%',
+    alignItems: 'center',
+  },
+  storeLogo: {
+    height: '10%',
+    width: '10%',
+    backgroundColor: 'red',
+  },
+  updatebtnOpacity: {
+    width: 150,
+    height: 30,
+    top: 10,
+    backgroundColor: '#12BF38',
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  saveUpdateOpacity: {
+    width: 200,
+    height: 30,
+    top: 10,
+    backgroundColor: '#4285F4',
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

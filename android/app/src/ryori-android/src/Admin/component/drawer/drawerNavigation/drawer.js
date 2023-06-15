@@ -4,18 +4,29 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {DrawerActions} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ryoriRed from './../../../images/ryori-red.png';
-
+import Menu from '../menu/menu';
+import TransactionTab from '../Transactions/transactionNav';
+import ReportOfFood from '../Report/reportOfFood';
+import ReportOfTransaction from '../Report/reportOfTransaction';
+import StoreSetting from '../storeSetting.js/storeSetting';
+import Inventory from '../inventory/inventory';
+import Dashboard from '../dashboard/dashboard';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
+  DrawerItem,
 } from '@react-navigation/drawer';
-import {color} from 'react-native-reanimated';
-import Menu from '../menu/menu';
-import TopTabNavs from '../../../navigation/topTabNavigation';
-
-function Dashboard() {
+import {drawerStyle} from './drawerStyle';
+import {useNavigation} from '@react-navigation/native';
+import userAvatar from '../../../images/male3.png';
+function Logout() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text style={{color: 'red'}}>DASHBOARD HERE ....</Text>
@@ -23,6 +34,7 @@ function Dashboard() {
   );
 }
 const RyoriDrawer = props => {
+  const navigation = useNavigation();
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -30,6 +42,17 @@ const RyoriDrawer = props => {
           source={ryoriRed}
           style={{width: 100, height: 30, marginTop: 2, marginLeft: 20}}
         />
+        <TouchableOpacity
+          style={drawerStyle.drawerProfile}
+          onPress={() => navigation.navigate('Profile')}>
+          <View style={drawerStyle.profileAdmin}>
+            <Image source={userAvatar} style={drawerStyle.profilepic} />
+            <View style={drawerStyle.welcomeAdmin}>
+              <Text style={drawerStyle.welcomeAdminText}>Welcome!</Text>
+              <Text style={drawerStyle.adminName}>{'John Doe'}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
         <DrawerItemList {...props} />
         {/* <DrawerItem
           label="Logout"
@@ -47,38 +70,37 @@ export default function DrawersNav({navigation}) {
       initialRouteName="Dashboard"
       drawerContent={props => <RyoriDrawer {...props} />}
       screenOptions={{
-        drawerType: 'front', // permanent/slide/front
+        drawerType: 'permanent', // permanent/slide/front/back
         drawerActiveTintColor: '#DB1B1B',
         drawerInactiveTintColor: '#000',
         drawerActiveBackgroundColor: '#fff',
         drawerInactiveBackgroundColor: '#fff',
         headerTitleContainerStyle: {right: 72},
         swipeEdgeWidth: 500,
-        headerTitle: '',
         headerTintColor: '#48E891',
         drawerLabelStyle: {
-          fontSize: 16,
+          fontFamily: 'Quicksand-Bold',
           marginLeft: -20,
         },
         headerStyle: {shadowColor: 0, backgroundColor: '#fff', height: 25},
-
         drawerStyle: {
-          backgroundColor: '#fff',
           width: '25%',
-          // paddingHorizontal: 15,
         },
       }}>
       <Drawer.Screen
         name="Dashboard"
         component={Dashboard}
+        style={{top: -50}}
         options={{
-          height: 20,
+          headerShown: false,
           drawerIcon: ({focused, size}) => (
-            <Entypo
-              name="home"
-              color={focused ? '#DB1B1B' : '#000'}
-              size={18}
-            />
+            <>
+              <FontAwesome
+                name="bar-chart-o"
+                color={focused ? '#DB1B1B' : '#000'}
+                size={15}
+              />
+            </>
           ),
         }}
       />
@@ -86,9 +108,24 @@ export default function DrawersNav({navigation}) {
         name="Menu"
         component={Menu}
         options={{
+          headerShown: false,
           drawerIcon: ({focused, size}) => (
             <Feather
               name="menu"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={15}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Transactions"
+        component={TransactionTab}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <Foundation
+              name="clipboard-notes"
               color={focused ? '#DB1B1B' : '#000'}
               size={18}
             />
@@ -96,31 +133,62 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="TopTabNavs"
-        component={TopTabNavs}
+        name="ReportOfTransaction"
+        component={ReportOfTransaction}
         options={{
+          headerShown: false,
           drawerIcon: ({focused, size}) => (
-            <Feather
-              name="menu"
+            <Ionicons
+              name="newspaper-outline"
               color={focused ? '#DB1B1B' : '#000'}
               size={18}
             />
           ),
         }}
       />
-      {/* <Drawer.Screen
-        name="Menus"
-        // component={Menus}
+      <Drawer.Screen
+        name="ReportOfFood"
+        component={ReportOfFood}
         options={{
-          drawerIcon: () => (
-            <Image
-              source={MenuIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <Ionicons
+              name="newspaper-outline"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={18}
             />
           ),
         }}
       />
       <Drawer.Screen
+        name="Inventory"
+        component={Inventory}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <FontAwesome5
+              name="box-open"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={18}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Store Setting"
+        component={StoreSetting}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <AntDesign
+              name="setting"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={18}
+            />
+          ),
+        }}
+      />
+      {/*<Drawer.Screen
         name="Setting"
         // component={Setting}
         options={{
@@ -222,18 +290,8 @@ export default function DrawersNav({navigation}) {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Logout"
-        // component={Logout}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={LogoutIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
-            />
-          ),
-        }}
-      /> */}
+      */}
+      {/* <Drawer.Screen name="Logout" component={Logout} /> */}
     </Drawer.Navigator>
   );
 }

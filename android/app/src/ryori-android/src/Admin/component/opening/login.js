@@ -4,25 +4,27 @@ import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
+import axios from 'axios';
 
 export default function Login({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('ryoriapp@gmail.com');
+  const [password, setPassword] = useState('ryori2023');
 
-  // const handleLogin = () => {
-  //   axios.post(`${API_URL}/auth/login`, { email, password })
-  //     .then(response => {
-  //       console.log('Login successful:', response.data);
-  //       // handle successful login, such as storing authentication token in AsyncStorage and navigating to homepage
-  //       navigation.navigate('drawer');
-  //     })
-  //     .catch(error => {
-  //       console.error('Error logging in:', error);
-  //       // handle login error, such as displaying error message to user
-  //     });
-  // }
+  const handleLogin = () => {
+    axios
+      .post(`${API_URL}/auth/login`, {email, password})
+      .then(response => {
+        console.log('Login successful:', response.data);
+        // handle successful login, such as storing authentication token in AsyncStorage and navigating to homepage
+        navigation.navigate('Drawer');
+      })
+      .catch(error => {
+        console.error('Error logging in:', error);
+        // handle login error, such as displaying error message to user
+      });
+  };
 
   return (
     <View style={openingStyles.login}>
@@ -54,16 +56,15 @@ export default function Login({navigation}) {
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            onPress={() => navigation.navigate('Set up your Store')}
-          >
+            // onPress={handleLogin}
+            onPress={() => navigation.navigate('Setup your Store')}>
             <Text style={openingStyles.SignInTextBtn}>Sign in</Text>
           </TouchableOpacity>
         </View>
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            onPress={() => navigation.navigate('Register-admin')}
-          >
+            onPress={() => navigation.navigate('Profile')}>
             <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
           </TouchableOpacity>
         </View>

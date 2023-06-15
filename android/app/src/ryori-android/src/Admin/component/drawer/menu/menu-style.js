@@ -121,15 +121,105 @@ export const MenuStyle = StyleSheet.create({
     fontSize: 14,
   },
   menuList: {
-    top: 15,
+    top: 5,
   },
+
   menuItem: {
     backgroundColor: '#fff',
     shadowColor: '#000',
     elevation: 6,
     marginBottom: 10,
     height: 130,
-    width: 130,
+    width: 200,
+    borderRadius: 10,
+    margin: 5,
+    paddingHorizontal: 5,
+    // alignItems: 'center',
+  },
+  menuItemIcon: {
+    alignItems: 'flex-end',
+  },
+  ImageLabe: {
+    flexDirection: 'row',
+    left: 10,
+  },
+  menuImage: {
+    top: -15,
+    height: 70,
+    width: 70,
+    borderRadius: 35,
+  },
+  menuLabelPrice: {
+    top: -15,
+    left: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuLabel: {
+    color: '#000',
+    fontSize: 18,
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  menuPrice: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Quicksand-Medium',
+  },
+  menuDescrip: {
+    top: -10,
+    fontSize: 14,
+  },
+  menuItemRow: {
+    flexDirection: 'row',
+  },
+  menuTable: {
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    elevation: 5,
+    borderRadius: 5,
+    width: '100%',
+    height: 280,
+    top: 10,
+  },
+  tableHeader: {
+    backgroundColor: '#E3E7EB',
+  },
+  menuData: {
+    fontSize: 16,
+    fontWeight: 500,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  menuCellData: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+
+  // MODAL
+  Modal: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    width: '100%',
+    margin: 20,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 export const DropdownStyle = StyleSheet.create({
@@ -175,6 +265,8 @@ export const AddMenuStyle = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 15,
+  },
+  InputAndImageCont: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -237,9 +329,10 @@ export const AddMenuStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: 20,
+    width: '50%',
   },
   addMenuBtn: {
-    width: '48%',
+    width: '30%',
     left: 0,
   },
   updateMenuBtn: {
@@ -292,5 +385,17 @@ export const AddMenuStyle = StyleSheet.create({
     left: 100,
     width: 200,
     height: 60,
+  },
+  actionOpacity: {
+    width: 40,
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionText: {
+    fontWeight: 500,
+    fontSize: 10,
+    color: '#f6be00',
+    justifyContent: 'center',
   },
 });

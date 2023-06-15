@@ -83,7 +83,7 @@ export default function SetupStore({navigation}) {
             <View style={setStore.saveStore}>
               <TouchableOpacity
                 style={setStore.saveStoreOpacity}
-                onPress={() => navigation.navigate('Store Setting')}
+                onPress={() => navigation.navigate('Drawer')}
                 // onPress={() => navigation.navigate('Menu')}
               >
                 <Text style={setStore.saveStoreTextBtn}>Save</Text>

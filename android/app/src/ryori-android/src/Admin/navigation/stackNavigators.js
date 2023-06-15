@@ -12,12 +12,16 @@ import DrawersNav from '../component/drawer/drawerNavigation/drawer';
 import Menu from '../component/drawer/menu/menu';
 import AddMenu from '../component/drawer/menu/addMenu';
 import UpdateMenu from '../component/drawer/menu/updateMenu';
-import TopTabNavs from './topTabNavigation';
+import TransactionTab from '../component/drawer/Transactions/transactionNav';
 import Dashboard from './../component/drawer/dashboard/dashboard';
 import ReportOfTransaction from '../component/drawer/Report/reportOfTransaction';
 import ReportOfFood from '../component/drawer/Report/reportOfFood';
 import Inventory from '../component/drawer/inventory/inventory';
 import StoreSetting from '../component/drawer/storeSetting.js/storeSetting';
+import UpdateStore from '../component/drawer/storeSetting.js/updateStore';
+import Employees from '../component/drawer/employee/employee';
+import ProfileAdmin from '../component/drawer/profileAdmin/profile';
+import UpdateProfileAdmin from '../component/drawer/profileAdmin/updateProfile';
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -49,7 +53,7 @@ const StackNavigators = () => {
         />
         <Stack.Screen
           component={SetupStore}
-          name="Set up your Store"
+          name="Setup your Store"
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -78,7 +82,7 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={TopTabNavs}
+          component={TransactionTab}
           name="TopTabNavs"
           options={{headerShown: false}}
         />
@@ -100,6 +104,26 @@ const StackNavigators = () => {
         <Stack.Screen
           component={StoreSetting}
           name="Store Setting"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={UpdateStore}
+          name="Update Store"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Employees}
+          name="Employees"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ProfileAdmin}
+          name="Profile"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={UpdateProfileAdmin}
+          name="Update Admin"
           options={{headerShown: false}}
         />
       </Stack.Navigator>
