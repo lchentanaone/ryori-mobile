@@ -70,7 +70,7 @@ export default function DrawersNav({navigation}) {
       initialRouteName="Dashboard"
       drawerContent={props => <RyoriDrawer {...props} />}
       screenOptions={{
-        drawerType: 'permanent', // permanent/slide/front/back
+        drawerType: 'slide', // permanent/slide/front/back
         drawerActiveTintColor: '#DB1B1B',
         drawerInactiveTintColor: '#000',
         drawerActiveBackgroundColor: '#fff',

@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Products from '../components/products/product';
 import ActiveOrder from '../components/activeOrder/activeOrder';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import TopNavigation from '../components/activeOrder/topNavigator';
 
 function TEST() {
   return (
@@ -59,8 +60,8 @@ export default function BottomNavigator() {
         }}
       />
       <Tab.Screen
-        name="Active Order"
-        component={ActiveOrder}
+        name="Order Top Navigation"
+        component={TopNavigation}
         options={{
           headerShown: false,
           tabBarLabel: 'Active Order',
