@@ -4,9 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Products from '../components/products/product';
-import ActiveOrder from '../components/activeOrder/activeOrder';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import TopNavigation from '../components/activeOrder/topNavigator';
+import OrderTopTab from '../components/activeOrder/topNavigator';
 
 function TEST() {
   return (
@@ -61,7 +60,7 @@ export default function BottomNavigator() {
       />
       <Tab.Screen
         name="Order Top Navigation"
-        component={TopNavigation}
+        component={OrderTopTab}
         options={{
           headerShown: false,
           tabBarLabel: 'Active Order',

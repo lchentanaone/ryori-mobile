@@ -1,29 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 export const PrepareStyle = StyleSheet.create({
-  prepare: {
-    backgroundColor: '#fff',
-    flex: 1,
-    position: 'relative',
-    paddingHorizontal: 40,
-  },
-  ryoriIcon: {
-    top: 50,
-    flexDirection: 'row',
-    left: 0,
-    width: '100%',
-  },
-  ryori: {
-    width: 40,
-    height: 50,
-  },
-  ryoriIconText: {
-    fontFamily: 'Quicksand-Bold',
-    color: '#000',
-    fontSize: 27,
-    top: 6,
-    left: 10,
-  },
   table: {
     top: 60,
   },

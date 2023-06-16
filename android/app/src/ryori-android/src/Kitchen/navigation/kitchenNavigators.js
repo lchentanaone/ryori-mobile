@@ -3,8 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import KitchenStarter from '../components/login/KitchenStarter';
 import Login from '../components/login/login';
 import BottomNavigator from './bottomNavigator';
-import PreparingOrderTable from '../components/preparing/preparing';
-import PreparingOrder from '../components/preparing/prepareOrder';
+import PreparingOrderTable from '../components/activeOrder/preparing/preparing';
 
 const Stack = createStackNavigator();
 const KitchenNavigators = () => {
@@ -38,11 +37,6 @@ const KitchenNavigators = () => {
         <Stack.Screen
           component={PreparingOrderTable}
           name="Prepare Table"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={PreparingOrder}
-          name="Preparing Order"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

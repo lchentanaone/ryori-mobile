@@ -76,8 +76,8 @@ export const aoStyle = StyleSheet.create({
   },
   table: {
     width: '100%',
-    top: 1,
-    left: -45,
+    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
   },
   quantity: {
@@ -97,6 +97,14 @@ export const aoStyle = StyleSheet.create({
     backgroundColor: '#777777',
     borderRadius: 4,
     width: 80,
+    height: 30,
+  },
+  readyServeBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4285F4',
+    borderRadius: 4,
+    width: 110,
     height: 30,
   },
   btnText: {
