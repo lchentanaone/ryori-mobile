@@ -2,31 +2,30 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
 import {kitchenStarter} from './kitchen-style';
 import ryoriText from '../../images/ryori-text.png';
-import PushNotification from "react-native-push-notification";
-
+import PushNotification from 'react-native-push-notification';
 
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() =>{
-    createChannel()
-  },[]);
+  useEffect(() => {
+    createChannel();
+  }, []);
 
-  const createChannel =() => {
+  const createChannel = () => {
     PushNotification.createChannel({
       channelId: 'Testing',
       channelName: 'Test Channel',
-    })
-  }
+    });
+  };
 
   const handleNotification = () => {
     PushNotification.localNotification({
       channelId: 'Testing',
       title: 'Ryori',
-      message: 'Local Notification Ryori'
-    })
-  }
+      message: 'Local Notification Ryori',
+    });
+  };
 
   return (
     <View style={kitchenStarter.kitchenLogin}>
@@ -53,23 +52,21 @@ export default function Login({navigation}) {
         <View style={kitchenStarter.forgotBtn}>
           <TouchableOpacity
             style={kitchenStarter.textBtbOpacity}
-          >
+            onPress={() => navigation.navigate('Profile')}>
             <Text style={kitchenStarter.forgotText}>Forgot Password</Text>
           </TouchableOpacity>
         </View>
         <View style={kitchenStarter.SignIn}>
           <TouchableOpacity
             style={kitchenStarter.SignInOpacity}
-            onPress={() => navigation.navigate('BottomNavs')}
-            >
+            onPress={() => navigation.navigate('BottomNavs')}>
             <Text style={kitchenStarter.SignInTextBtn}>SING IN</Text>
           </TouchableOpacity>
         </View>
         <View style={kitchenStarter.SignIn}>
           <TouchableOpacity
             style={kitchenStarter.SignInOpacity}
-            onPress={handleNotification}
-            >
+            onPress={handleNotification}>
             <Text style={kitchenStarter.SignInTextBtn}>handleNotification</Text>
           </TouchableOpacity>
         </View>

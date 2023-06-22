@@ -6,15 +6,35 @@ export const prodStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingHorizontal: 40,
+    paddingVertical: 40,
   },
   productContent: {
-    top: 50,
-    alignItems: 'center',
+    width: '100%',
   },
-  ryoriIcon: {
+  crewHeader: {
     flexDirection: 'row',
-    left: 0,
-    position: 'absolute',
+    justifyContent: 'space-between',
+  },
+  ryoriIconTitle: {
+    flexDirection: 'row',
+  },
+  crewImage: {
+    height: 40,
+    width: 40,
+  },
+  viewProfile: {
+    flexDirection: 'row',
+  },
+  crewName: {
+    marginTop: 5,
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 16,
+  },
+  viewProfileText: {
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 12,
   },
   ryori: {
     width: 40,

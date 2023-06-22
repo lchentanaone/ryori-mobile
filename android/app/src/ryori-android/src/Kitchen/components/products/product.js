@@ -1,17 +1,29 @@
 import React from 'react';
 import {prodStyle as styles} from './product-style';
-import {View, Text, Image, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import redRyori from '../../images/redRyori.png';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {DataTable} from 'react-native-paper';
+import male from '../../images/male3.png';
 
-export default function Products() {
+export default function Products({navigation}) {
   return (
     <View style={styles.products}>
       <View style={styles.productContent}>
-        <View style={styles.ryoriIcon}>
-          <Image source={redRyori} style={styles.ryori} />
-          <Text style={styles.ryoriIconText}>Products</Text>
+        <View style={styles.crewHeader}>
+          <View style={styles.ryoriIconTitle}>
+            <Image source={redRyori} style={styles.ryori} />
+            <Text style={styles.ryoriIconText}>Products</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.viewProfile}
+            onPress={() => navigation.navigate('Profile')}>
+            <Image source={male} style={styles.crewImage} />
+            <View style={{top: -5, left: 5}}>
+              <Text style={styles.crewName}>{'John Doe'}</Text>
+              <Text style={styles.viewProfileText}>View Profile</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.searchbar}>
           <FontAwesome name="search" size={20} style={styles.SearchIcon} />
