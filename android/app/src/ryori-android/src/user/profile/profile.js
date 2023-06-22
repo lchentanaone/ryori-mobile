@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import {ProfileStyle as styles} from './profileStyle';
-import redRyori from '../../images/redRyori.png';
-import male from '../../images/male3.png';
+import redRyori from '../images/redRyori.png';
+import male from '../images/male3.png';
 
 export default function Profile({navigation}) {
   return (

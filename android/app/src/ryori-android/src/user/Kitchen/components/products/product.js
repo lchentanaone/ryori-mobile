@@ -1,10 +1,10 @@
 import React from 'react';
 import {prodStyle as styles} from './product-style';
 import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
-import redRyori from '../../images/redRyori.png';
+import redRyori from '../../../images/redRyori.png';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {DataTable} from 'react-native-paper';
-import male from '../../images/male3.png';
+import male from '../../../images/male3.png';
 
 export default function Products({navigation}) {
   return (
@@ -89,6 +89,13 @@ export default function Products({navigation}) {
               </DataTable.Row>
             </DataTable>
           </View>
+        </View>
+        <View style={styles.invenBtn}>
+          <TouchableOpacity
+            style={styles.inventoryBtn}
+            onPress={() => navigation.navigate('Inventory')}>
+            <Text style={styles.btnText}>Open Inventory</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

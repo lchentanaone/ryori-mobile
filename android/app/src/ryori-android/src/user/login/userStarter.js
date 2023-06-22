@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
-import {kitchenStarter} from './kitchen-style';
-import ryori from '../../images/ryori.png';
+import {OpeningSytle as styles} from './openingStyle';
+import ryori from '../images/ryori.png';
 import {useNavigation} from '@react-navigation/native';
 
-export default function KitchenStarter() {
+export default function UserStarter() {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
@@ -17,8 +17,8 @@ export default function KitchenStarter() {
   }, []);
 
   return (
-    <View style={kitchenStarter.starter}>
-      <Image source={ryori} style={kitchenStarter.ryoriStarter} />
+    <View style={styles.starter}>
+      <Image source={ryori} style={styles.ryoriStarter} />
     </View>
   );
 }

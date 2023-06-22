@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
-import {kitchenStarter} from './kitchen-style';
-import ryoriText from '../../images/ryori-text.png';
+import {OpeningSytle as styles} from './openingStyle';
+import ryoriText from '../images/ryori-text.png';
 import PushNotification from 'react-native-push-notification';
 
 export default function Login({navigation}) {
@@ -28,46 +28,44 @@ export default function Login({navigation}) {
   };
 
   return (
-    <View style={kitchenStarter.kitchenLogin}>
-      <Image source={ryoriText} style={kitchenStarter.ryoriText} />
-      <View style={kitchenStarter.loginForm}>
-        <Text style={kitchenStarter.pleaseText}>
-          Please sign in to Continue
-        </Text>
+    <View style={styles.kitchenLogin}>
+      <Image source={ryoriText} style={styles.ryoriText} />
+      <View style={styles.loginForm}>
+        <Text style={styles.pleaseText}>Please sign in to Continue</Text>
         <TextInput
           mode="outlined"
-          style={kitchenStarter.input}
+          style={styles.input}
           placeholder="Email Address"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           mode="outlined"
-          style={kitchenStarter.input}
+          style={styles.input}
           placeholder="Password"
           value={password}
           secureTextEntry={false}
           onChangeText={setPassword}
         />
-        <View style={kitchenStarter.forgotBtn}>
+        <View style={styles.forgotBtn}>
           <TouchableOpacity
-            style={kitchenStarter.textBtbOpacity}
-            onPress={() => navigation.navigate('Profile')}>
-            <Text style={kitchenStarter.forgotText}>Forgot Password</Text>
+            style={styles.textBtbOpacity}
+            onPress={() => navigation.navigate('Inventory')}>
+            <Text style={styles.forgotText}>Forgot Password</Text>
           </TouchableOpacity>
         </View>
-        <View style={kitchenStarter.SignIn}>
+        <View style={styles.SignIn}>
           <TouchableOpacity
-            style={kitchenStarter.SignInOpacity}
+            style={styles.SignInOpacity}
             onPress={() => navigation.navigate('BottomNavs')}>
-            <Text style={kitchenStarter.SignInTextBtn}>SING IN</Text>
+            <Text style={styles.SignInTextBtn}>SING IN</Text>
           </TouchableOpacity>
         </View>
-        <View style={kitchenStarter.SignIn}>
+        <View style={styles.SignIn}>
           <TouchableOpacity
-            style={kitchenStarter.SignInOpacity}
+            style={styles.SignInOpacity}
             onPress={handleNotification}>
-            <Text style={kitchenStarter.SignInTextBtn}>handleNotification</Text>
+            <Text style={styles.SignInTextBtn}>handleNotification</Text>
           </TouchableOpacity>
         </View>
       </View>

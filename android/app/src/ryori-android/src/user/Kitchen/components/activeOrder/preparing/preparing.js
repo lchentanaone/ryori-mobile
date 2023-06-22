@@ -1,15 +1,15 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import redRyori from '../../../images/redRyori.png';
+import redRyori from '../../../../images/redRyori.png';
 import {PrepareStyle as pstyles} from './prepareStyle';
-import {aoStyle as oStyles} from '../orderStyle';
+import {OrderStyle as styles} from '../orderStyle';
 
 export default function PreparingOrderTable({navigation}) {
   return (
-    <View style={oStyles.activeOrder}>
-      <View style={oStyles.ryoriIcon}>
-        <Image source={redRyori} style={oStyles.ryori} />
-        <Text style={oStyles.ryoriIconText}>Table {'7'}</Text>
+    <View style={styles.activeOrder}>
+      <View style={styles.ryoriIcon}>
+        <Image source={redRyori} style={styles.ryori} />
+        <Text style={styles.ryoriIconText}>Table {'7'}</Text>
       </View>
       <View style={pstyles.table}>
         <View style={{flexDirection: 'row'}}>

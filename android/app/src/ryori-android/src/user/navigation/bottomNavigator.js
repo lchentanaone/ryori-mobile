@@ -3,9 +3,9 @@ import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Products from '../components/products/product';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import OrderTopTab from '../components/activeOrder/topNavigator';
+import Products from '../Kitchen/components/products/product';
+import OrderTopTab from '../Kitchen/components/activeOrder/topNavigator';
 
 function TEST() {
   return (

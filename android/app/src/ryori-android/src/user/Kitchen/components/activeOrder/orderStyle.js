@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const aoStyle = StyleSheet.create({
+export const OrderStyle = StyleSheet.create({
   activeOrder: {
     backgroundColor: '#fff',
     flex: 1,

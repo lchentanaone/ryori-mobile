@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
-import {aoStyle as styles} from '../orderStyle';
+import {OrderStyle as styles} from '../orderStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 
@@ -36,7 +36,7 @@ export default function NewOrderTab() {
                 }}>
                 <TouchableOpacity
                   style={styles.toPreparing}
-                  onPress={() => navigation.navigate('Prepare Table')}>
+                  onPress={() => navigation.navigate('Prepare Table Tab')}>
                   <Text style={styles.preparingText}>Preparing</Text>
                 </TouchableOpacity>
                 <DataTable style={{width: '100%'}}>

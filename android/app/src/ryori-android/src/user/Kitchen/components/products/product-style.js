@@ -34,7 +34,7 @@ export const prodStyle = StyleSheet.create({
   viewProfileText: {
     fontFamily: 'Quicksand-SemiBold',
     color: '#000',
-    fontSize: 12,
+    fontSize: 10,
   },
   ryori: {
     width: 40,
@@ -49,14 +49,13 @@ export const prodStyle = StyleSheet.create({
   },
   // SearchBar
   searchbar: {
-    position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f6f6f8',
     height: 45,
     borderRadius: 5,
     width: '100%',
-    top: 70,
+    marginTop: 20,
     // left: 30
   },
   searchInput: {
@@ -77,8 +76,7 @@ export const prodStyle = StyleSheet.create({
   },
   //Tables
   Table: {
-    position: 'absolute',
-    top: 120,
+    marginTop: 20,
     width: '100%',
   },
   productTable: {
@@ -103,5 +101,21 @@ export const prodStyle = StyleSheet.create({
     color: '#000',
     fontSize: 15,
     fontFamily: 'Quicksand-Bold',
+  },
+  invenBtn: {
+    width: '100%',
+    marginTop: 100,
+    alignItems: 'center',
+  },
+  inventoryBtn: {
+    width: '60%',
+    height: 48,
+    borderRadius: 5,
+    backgroundColor: '#DB1B1B',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
   },
 });

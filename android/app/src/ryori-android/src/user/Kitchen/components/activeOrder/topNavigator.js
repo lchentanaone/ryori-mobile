@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Text, View, Image} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {aoStyle as styles} from './orderStyle';
-import redRyori from '../../images/redRyori.png';
+import {OrderStyle as styles} from './orderStyle';
+import redRyori from '../../../images/redRyori.png';
 import DoneOrder from './orderTopTab/doneOrderTab';
 import NewOrderTab from './orderTopTab/newOrderTab';
 import PreparingOrderTab from './orderTopTab/preparingOrderTab';

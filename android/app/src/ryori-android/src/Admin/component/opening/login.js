@@ -64,7 +64,7 @@ export default function Login({navigation}) {
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            onPress={() => navigation.navigate('Profile')}>
+            onPress={() => navigation.navigate('Menu')}>
             <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
           </TouchableOpacity>
         </View>

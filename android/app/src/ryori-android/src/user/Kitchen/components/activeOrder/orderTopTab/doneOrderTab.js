@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
-import {aoStyle as styles} from '../orderStyle';
+import {OrderStyle as styles} from '../orderStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function PreparingOrderTab() {
+export default function DoneOrder() {
   const [expanded, setExpanded] = React.useState(true);
   const handlePress = () => setExpanded(!expanded);
+
   return (
     <View
       style={{
@@ -37,8 +38,8 @@ export default function PreparingOrderTab() {
                     <Text style={styles.item}>Pork Combo 1</Text>
                   </View>
                   <View style={styles.buttons}>
-                    <TouchableOpacity style={styles.readyServeBtn}>
-                      <Text style={styles.btnText}>Ready to serve</Text>
+                    <TouchableOpacity style={styles.doneBtn}>
+                      <Text style={styles.btnText}>Done</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

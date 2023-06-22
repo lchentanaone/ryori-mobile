@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, Image, Text, TextInput, TouchableOpacity} from 'react-native';
 import {ProfileStyle as styles} from './profileStyle';
-import redRyori from '../../images/redRyori.png';
-import male from '../../images/male3.png';
+import redRyori from '../images/redRyori.png';
+import male from '../images/male3.png';
 
 export default function ProfileEdit({navigation}) {
   const [fistName, setFistName] = useState('');

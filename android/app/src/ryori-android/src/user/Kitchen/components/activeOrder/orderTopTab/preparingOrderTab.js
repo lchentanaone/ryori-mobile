@@ -1,13 +1,12 @@
 import React from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
-import {aoStyle as styles} from '../orderStyle';
+import {OrderStyle as styles} from '../orderStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default function DoneOrder() {
+export default function PreparingOrderTab() {
   const [expanded, setExpanded] = React.useState(true);
   const handlePress = () => setExpanded(!expanded);
-
   return (
     <View
       style={{
@@ -18,7 +17,7 @@ export default function DoneOrder() {
           <List.Section>
             <View style={styles.accordionList}>
               <List.Accordion
-                title={'Table #2'}
+                title={'Table #2s'}
                 titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 18}}
                 theme={{colors: {primary: '#000'}}}
                 expanded={expanded}
@@ -38,8 +37,8 @@ export default function DoneOrder() {
                     <Text style={styles.item}>Pork Combo 1</Text>
                   </View>
                   <View style={styles.buttons}>
-                    <TouchableOpacity style={styles.doneBtn}>
-                      <Text style={styles.btnText}>Done</Text>
+                    <TouchableOpacity style={styles.readyServeBtn}>
+                      <Text style={styles.btnText}>Ready to serve</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

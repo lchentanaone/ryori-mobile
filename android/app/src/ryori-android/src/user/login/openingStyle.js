@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 
-export const kitchenStarter = StyleSheet.create({
+export const OpeningSytle = StyleSheet.create({
   starter: {
     backgroundColor: '#db1a1b',
     flex: 1,
@@ -74,7 +73,6 @@ export const kitchenStarter = StyleSheet.create({
 
   // Sign in btn
   SignIn: {
-
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
