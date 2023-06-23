@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,75 +8,112 @@ import {
   Image,
 } from 'react-native';
 import {AddMenuStyle, DropdownStyle} from './menu-style';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import axios from 'axios';
 
-const filterAvalable = [
-  {label: 'Available', value: 'Available'},
-  {label: 'Not Available', value: 'Not Available'},
-];
-const categories = [
-  {label: 'Pork', value: 'Pork'},
-  {label: 'Drinks', value: 'Drinks'},
-];
+export default function AddMenu({route, navigation}) {
+  const {type, item} = route.params || {
+    type: 'new',
+    item: null
+  };
+  let pageTitle = '';
 
-const createFormData = (photo, body = {}) => {
-  const data = new FormData();
-  data.append('photo', {
-    name: photo.fileName,
-    type: photo.type,
-    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-  });
-  Object.keys(body).forEach(key => {
-    data.append(key, body[key]);
-  });
-  return data;
-};
+  if(type === 'edit') {
+    // console.log({item})
+    pageTitle = "Edit menu #"+item.id
 
-export default function AddMenu({navigation}) {
-  const SERVER_URL = 'http://localhost:3000';
+    
+  }
+  else {
+    pageTitle = "Add menu item"
+  }
+
   const API_URL = 'http://10.0.2.2:3000';
 
-  const [foodName, setFoodName] = useState('');
+  const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
-  const [availability, setAvailability] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = useState('');
-  const [image, setImage] = useState('');
   const [title, setTitle] = useState('');
-  const [food, setFood] = useState('1');
-
   const [price, setPrice] = useState(0);
   const [qty, setQty] = useState(1);
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState('');
 
+  const fetchCategory = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/menuCategory/`);
+      // console.log('categories: ', response.data)
+      const dropdownCategories = response.data.map(item => ({
+        label: item.title,
+        value: item.id  
+      }))
+      setCategories(dropdownCategories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDetail = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/menuItem/${item.id}`);
+      console.log({data : response.data})
+      setTitle(response.data.title)
+      setPrice(response.data.price)
+      setQty(response.data.quantity)
+      setDescription(response.data.description)
+      setCookingTime(response.data.cookingTime)
+      setPhoto(response.data.photo);
+      setCategory(response.data.menuCategory.length > 0 ? response.data.menuCategory[0].id : '')
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+    if(type === 'edit') {
+      fetchDetail();
+      
+    }
+  }, [item])
   const handlePost = async () => {
     try {
-      console.log("HERE I AM", {
-        title,
-        photo,
-        price,
-        quantity: qty,
-        description,
-        cookingTime,
-        branch_Id: 1,
-        category_Id: 1
-      })
-      const response = await axios.post(`${API_URL}/menuItem`, {
-        title,
-        price,
-        photo,
-        quantity: qty,
-        description,
-        cookingTime,
-        branch_Id: 1,
-        category_Id: 1
-      });
-      console.log(response.data);
+      if(type === 'edit') {
+        const response = await axios.patch(`${API_URL}/menuItem/${item.id}`, {
+          title,
+          price,
+          photo,
+          quantity: qty,
+          description,
+          cookingTime,
+          branch_Id: 1,
+          category_Id: category
+        });
+        console.log({
+          title,
+          price,
+          photo,
+          quantity: qty,
+          description,
+          cookingTime,
+          branch_Id: 1,
+          category_Id: category
+        })
+      }
+      else {
+        await axios.post(`${API_URL}/menuItem`, {
+          title,
+          price,
+          photo,
+          quantity: qty,
+          description,
+          cookingTime,
+          branch_Id: 1,
+          category_Id: 1
+        });
+      }
       navigation.navigate('Menu');
     } catch (error) {
       console.error(error);
@@ -89,9 +126,8 @@ export default function AddMenu({navigation}) {
       quality: 0.5,
       includeBase64: false,
     }, response => {
-      console.log(response);
       if (response) {
-        setPhoto(response);
+        setPhoto(response.assets[0].uri);
       }
     });
   };
@@ -109,28 +145,27 @@ export default function AddMenu({navigation}) {
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        setPhoto(response.assets[0].uri);
+        setPhoto( response.assets[0].uri);
       }
     });
   };
 
-  const handleUploadPhoto = () => {
-    fetch(`${SERVER_URL}/api/upload`, {
-      method: 'POST',
-      body: createFormData(photo, {userId: '123'}),
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${API_URL}/menuItem/${item.id}`,
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    navigation.navigate('Menu');
   };
+
   return (
     <View style={AddMenuStyle.addMenuCon}>
       <View style={AddMenuStyle.addMenuContent}>
-        <Text style={AddMenuStyle.addMenuTitle}>Add new Menu</Text>
+        <Text style={AddMenuStyle.addMenuTitle}>{pageTitle}</Text>
         <View style={AddMenuStyle.InputAndImageCont}>
           <View style={AddMenuStyle.addMenuForm}>
             <TextInput
@@ -146,44 +181,24 @@ export default function AddMenu({navigation}) {
               <TextInput
                 mode="outlined"
                 style={AddMenuStyle.foodPrice}
+                keyboardType='numeric'
                 placeholder="Price"
                 placeholderTextColor="#777777"
-                value={price}
+                value={price.toString()}
                 secureTextEntry={false}
                 onChangeText={setPrice}
               />
               <View style={DropdownStyle.DropdownContainer}>
                 <TextInput
                   mode="outlined"
+                  keyboardType='numeric'
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
-                  value={qty}
+                  value={qty.toString()}
                   secureTextEntry={false}
                   onChangeText={setQty}
                 />
-                {/* <Dropdown
-                  style={[
-                    DropdownStyle.dropdown,
-                    isFocus && {borderColor: '#007FFF'},
-                  ]}
-                  placeholderStyle={DropdownStyle.placeholderStyle}
-                  selectedTextStyle={DropdownStyle.selectedTextStyle}
-                  inputSearchStyle={DropdownStyle.inputSearchStyle}
-                  iconStyle={DropdownStyle.iconStyle}
-                  data={filterAvalable}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={'Quantity'}
-                  value={availability}
-                  onFocus={() => setIsFocus(true)}
-                  onBlur={() => setIsFocus(false)}
-                  onChange={item => {
-                    setQty(item.availability);
-                    setIsFocus(false);
-                  }}
-                /> */}
               </View>
             </View>
             <TextInput
@@ -213,11 +228,12 @@ export default function AddMenu({navigation}) {
                   labelField="label"
                   valueField="value"
                   placeholder={'Category'}
-                  value={categories}
+                  value={category}
                   onFocus={() => setIsFocus(true)}
                   onBlur={() => setIsFocus(false)}
                   onChange={item => {
-                    setCategory(item.availability);
+                    console.log({item})
+                    setCategory(item.value);
                     setIsFocus(false);
                   }}
                 />
@@ -277,6 +293,13 @@ export default function AddMenu({navigation}) {
               style={AddMenuStyle.cancelOpacity}
               onPress={() => navigation.navigate('Menu')}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={AddMenuStyle.updateMenuBtn}>
+            <TouchableOpacity
+              style={AddMenuStyle.deleteMenuOpacity}
+              onPress={handleDelete}>
+              <Text style={AddMenuStyle.addMenuTextBtn}>Delete</Text>
             </TouchableOpacity>
           </View>
           <View style={AddMenuStyle.addMenuBtn}>

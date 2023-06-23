@@ -4,13 +4,14 @@ import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
 // import Drawers from '../component/overview/drawer';
 import Register from '../component/opening/register';
-import EditMenu from '../component/overview/menu/edit-menu';
-import Transaction from '../component/overview/transaction/transaction';
-import TransactionReport from '../component/overview/transaction/transaction-report';
+// import EditMenu from '../component/overview/menu/edit-menu';
+// import Transaction from '../component/overview/transaction/transaction';
+// import TransactionReport from '../component/overview/transaction/transaction-report';
 import SetupStore from '../component/opening/setupStore';
 import DrawersNav from '../component/drawer/drawerNavigation/drawer';
 import Menu from '../component/drawer/menu/menu';
 import AddMenu from '../component/drawer/menu/addMenu';
+import MenuDetails from '../component/drawer/menu/addMenu';
 import UpdateMenu from '../component/drawer/menu/updateMenu';
 import TransactionTab from '../component/drawer/Transactions/transactionNav';
 import Dashboard from './../component/drawer/dashboard/dashboard';
@@ -74,6 +75,11 @@ const StackNavigators = () => {
         <Stack.Screen
           component={AddMenu}
           name="Add new menu"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={MenuDetails}
+          name="menu-details"
           options={{headerShown: false}}
         />
         <Stack.Screen
