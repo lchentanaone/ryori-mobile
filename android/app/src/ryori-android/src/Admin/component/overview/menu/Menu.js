@@ -31,8 +31,8 @@ export default function Menus({navigation, itemId}) {
 
   useEffect(() => {
     const fetchItems = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/menu-category/`);
+      try {  
+        const response = await axios.get(`${API_URL}/menuItem/`);
         setItems(response.data);
       } catch (error) {
         console.error(error);
@@ -106,7 +106,7 @@ export default function Menus({navigation, itemId}) {
       <View style={overviewStyle.circleContainer}>
         <View style={overviewStyle.circle} />
       </View>
-      <View style={orderStyle.tableData}>
+      {/* <View style={orderStyle.tableData}>
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>
@@ -139,10 +139,10 @@ export default function Menus({navigation, itemId}) {
                     <Text style={orderStyle.orderCellData}>{item.id}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell>
-                    <Text style={orderStyle.orderCellData}>{item.label}</Text>
+                    <Text style={orderStyle.orderCellData}>{item.title}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell>
-                    <Text style={orderStyle.orderCellData}>{item.image}</Text>
+                    <Text style={orderStyle.orderCellData}>{item.photo}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell>
                     <Text style={orderStyle.orderCellData}></Text>
@@ -205,7 +205,7 @@ export default function Menus({navigation, itemId}) {
             </View>
           ))}
         </Modal>
-      </View>
+      </View> */}
     </View>
   );
 }

@@ -11,8 +11,8 @@ const App = () => {
      {/* to hide status bar <StatusBar hidden/>  */}
     <StatusBar/>
       <NavigationContainer>
-          {/* <StackNavigators/> */}
-          <KitchenNavigators/>
+          <StackNavigators/>
+          {/* <KitchenNavigators/> */}
       </NavigationContainer>
     </>
   );

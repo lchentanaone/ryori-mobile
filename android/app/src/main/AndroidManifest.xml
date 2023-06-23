@@ -17,7 +17,7 @@ package='com.ryorimobile'>
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|screenLayout|orientation|screenSize|smallestScreenSize|uiMode"
         android:launchMode="singleTask"
-        android:screenOrientation="portrait"
+        android:screenOrientation="landscape"
         android:windowSoftInputMode="adjustResize"
         android:exported="true">
         <intent-filter>

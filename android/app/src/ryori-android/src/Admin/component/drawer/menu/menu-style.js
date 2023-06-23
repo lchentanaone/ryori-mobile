@@ -385,6 +385,8 @@ export const AddMenuStyle = StyleSheet.create({
     left: 100,
     width: 200,
     height: 60,
+    marginTop:50,
+    marginBottom:50
   },
   actionOpacity: {
     width: 40,
