@@ -52,7 +52,7 @@ export default function Menu({navigation}) {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API_URL}/menu-category/`);
+        const response = await axios.get(`${API_URL}/menuItem/`);
         setItems(response.data);
       } catch (error) {
         console.error(error);
@@ -187,20 +187,18 @@ export default function Menu({navigation}) {
                     />
                   </TouchableOpacity>
                   <View style={MenuStyle.ImageLabe}>
-                    <Image source={menuImage} style={MenuStyle.menuImage} />
+                  {/* <Text style={MenuStyle.menuLabel}>{(item.photo)}</Text> */}
+                    <Image source={{ uri:item.photo}} style={MenuStyle.menuImage} />
                     <View style={MenuStyle.menuLabelPrice}>
-                      <Text style={MenuStyle.menuLabel}>{item.label}</Text>
-                      <Text style={MenuStyle.menuPrice}>{item.id}</Text>
+                      <Text style={MenuStyle.menuLabel}>{item.title}</Text>
+                      <Text style={MenuStyle.menuLabel}>{item.description}</Text>
+                      <Text style={MenuStyle.menuPrice}>{item.price}</Text>
                     </View>
                   </View>
                   <Text style={MenuStyle.menuDescrip}>{item.image}</Text>
                 </View>
               </View>
             ))}
-            <View style={MenuStyle.menuItem}>
-              <Text style={MenuStyle.menuData}>ID</Text>
-              <Text style={MenuStyle.menuData}>ID</Text>
-            </View>
           </View>
         </View>
       </View>

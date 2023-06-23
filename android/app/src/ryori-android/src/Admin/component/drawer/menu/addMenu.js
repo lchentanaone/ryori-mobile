@@ -11,7 +11,7 @@ import {AddMenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-element-dropdown';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import axios from 'axios';
 
 const filterAvalable = [
@@ -46,15 +46,35 @@ export default function AddMenu({navigation}) {
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = useState('');
   const [image, setImage] = useState('');
-  const [label, setLabel] = useState('');
+  const [title, setTitle] = useState('');
   const [food, setFood] = useState('1');
+
+  const [price, setPrice] = useState(0);
+  const [qty, setQty] = useState(1);
+  const [description, setDescription] = useState('');
+  const [cookingTime, setCookingTime] = useState('');
 
   const handlePost = async () => {
     try {
-      const response = await axios.post(`${API_URL}/menu-category`, {
-        label: label,
-        image: image,
-        food: food,
+      console.log("HERE I AM", {
+        title,
+        photo,
+        price,
+        quantity: qty,
+        description,
+        cookingTime,
+        branch_Id: 1,
+        category_Id: 1
+      })
+      const response = await axios.post(`${API_URL}/menuItem`, {
+        title,
+        price,
+        photo,
+        quantity: qty,
+        description,
+        cookingTime,
+        branch_Id: 1,
+        category_Id: 1
       });
       console.log(response.data);
       navigation.navigate('Menu');
@@ -64,10 +84,32 @@ export default function AddMenu({navigation}) {
   };
 
   const handleChoosePhoto = () => {
-    launchImageLibrary({noData: true}, response => {
-      // console.log(response);
+    launchImageLibrary({
+      mediaType: 'photo',
+      quality: 0.5,
+      includeBase64: false,
+    }, response => {
+      console.log(response);
       if (response) {
         setPhoto(response);
+      }
+    });
+  };
+
+  const handleOpenCamera = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.5,
+      includeBase64: false,
+    };
+
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled camera picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        setPhoto(response.assets[0].uri);
       }
     });
   };
@@ -94,11 +136,11 @@ export default function AddMenu({navigation}) {
             <TextInput
               mode="outlined"
               style={AddMenuStyle.addMenuInput}
-              placeholder="Store Name"
+              placeholder="Title"
               placeholderTextColor="#777777"
-              value={label}
+              value={title}
               secureTextEntry={false}
-              onChangeText={setLabel}
+              onChangeText={setTitle}
             />
             <View style={AddMenuStyle.inputRow}>
               <TextInput
@@ -106,12 +148,21 @@ export default function AddMenu({navigation}) {
                 style={AddMenuStyle.foodPrice}
                 placeholder="Price"
                 placeholderTextColor="#777777"
-                value={image}
+                value={price}
                 secureTextEntry={false}
-                onChangeText={setImage}
+                onChangeText={setPrice}
               />
               <View style={DropdownStyle.DropdownContainer}>
-                <Dropdown
+                <TextInput
+                  mode="outlined"
+                  style={AddMenuStyle.foodPrice}
+                  placeholder="Quantity"
+                  placeholderTextColor="#777777"
+                  value={qty}
+                  secureTextEntry={false}
+                  onChangeText={setQty}
+                />
+                {/* <Dropdown
                   style={[
                     DropdownStyle.dropdown,
                     isFocus && {borderColor: '#007FFF'},
@@ -124,15 +175,15 @@ export default function AddMenu({navigation}) {
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
-                  placeholder={'Availability'}
+                  placeholder={'Quantity'}
                   value={availability}
                   onFocus={() => setIsFocus(true)}
                   onBlur={() => setIsFocus(false)}
                   onChange={item => {
-                    setAvailability(item.availability);
+                    setQty(item.availability);
                     setIsFocus(false);
                   }}
-                />
+                /> */}
               </View>
             </View>
             <TextInput
@@ -140,11 +191,11 @@ export default function AddMenu({navigation}) {
               style={AddMenuStyle.descriptInput}
               numberOfLines={4}
               multiline={true}
-              placeholder="Descriptions"
+              placeholder="Description"
               placeholderTextColor="#777777"
-              value={food}
+              value={description}
               secureTextEntry={false}
-              onChangeText={setFood}
+              onChangeText={setDescription}
             />
             <View style={AddMenuStyle.inputRow}>
               <View style={DropdownStyle.DropdownContainer}>
@@ -176,12 +227,14 @@ export default function AddMenu({navigation}) {
                 style={AddMenuStyle.foodPrice}
                 placeholder="Cooking Time"
                 placeholderTextColor="#777777"
-                value={foodName}
+                value={cookingTime}
                 secureTextEntry={false}
-                onChangeText={setFoodName}
+                onChangeText={setCookingTime}
               />
             </View>
             <View style={DropdownStyle.DropdownContainer}>
+              {/* 
+              For Future
               <Dropdown
                 style={[
                   DropdownStyle.dropdown,
@@ -195,33 +248,27 @@ export default function AddMenu({navigation}) {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={'Availability'}
-                value={availability}
+                placeholder={'Add-ons'}
+                value={addons}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
                   setAvailability(item.availability);
                   setIsFocus(false);
                 }}
-              />
+              /> */}
             </View>
           </View>
           <View style={AddMenuStyle.uploadMenuImg}>
-            <View style={AddMenuStyle.uploadIm2}>
-              <Text>Heelo</Text>
               <View style={AddMenuStyle.imgContainer}>
-                {photo && (
-                  <>
-                    <Image
-                      source={{uri: photo.uri}}
-                      style={{width: 80, height: 80}}
-                    />
-                    <Button title="Upload Photo" onPress={handleUploadPhoto} />
-                  </>
-                )}
+                <View style={{ marginBottom: 10 }}>
+                  {photo && <Image source={{ uri: photo }} style={{ width: 200, height: 200 }} />}    
+                </View>
+                <View style={{ marginBottom: 5 }}>
+                  <Button title="Open Camera" onPress={handleOpenCamera} />
+                </View>
                 <Button title="Choose Photo" onPress={handleChoosePhoto} />
               </View>
-            </View>
           </View>
         </View>
         <View style={AddMenuStyle.buttons}>
