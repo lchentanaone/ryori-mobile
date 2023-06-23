@@ -8,6 +8,8 @@ import Profile from '../profile/profile';
 import ProfileEdit from '../profile/profileEdit';
 import Inventory from '../Kitchen/components/inventory/inventory';
 import PreparingOrderTable from '../Kitchen/components/activeOrder/preparing/preparing';
+import OrderProductList from '../dining/components/productList/orderProductList';
+import OrderTableNumber from '../dining/components/orderPage/orderTableNumber';
 
 const Stack = createStackNavigator();
 const UserNavigators = () => {
@@ -61,6 +63,16 @@ const UserNavigators = () => {
         <Stack.Screen
           component={Inventory}
           name="Inventory"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={OrderProductList}
+          name="OrderProductList"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={OrderTableNumber}
+          name="OrderTableNumber"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

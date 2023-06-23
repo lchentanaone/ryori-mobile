@@ -10,15 +10,13 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import {MenuStyle, DropdownStyle, AddMenuStyle} from './menu-style';
+import {MenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Dropdown} from 'react-native-element-dropdown';
-import {DataTable} from 'react-native-paper';
 import menuImage from '../../../images/Chicken.jpg';
 import axios from 'axios';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},

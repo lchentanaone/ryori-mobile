@@ -50,7 +50,7 @@ export default function Login({navigation}) {
         <View style={styles.forgotBtn}>
           <TouchableOpacity
             style={styles.textBtbOpacity}
-            onPress={() => navigation.navigate('Inventory')}>
+            onPress={() => navigation.navigate('OrderProductList')}>
             <Text style={styles.forgotText}>Forgot Password</Text>
           </TouchableOpacity>
         </View>

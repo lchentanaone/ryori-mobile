@@ -16,7 +16,6 @@ export default function PreparingOrderTable({navigation}) {
           <Text style={pstyles.quantity}>1 x </Text>
           <Text style={pstyles.item}>Pork Combo 1</Text>
         </View>
-
         <View style={pstyles.buttonsContainer}>
           <View style={pstyles.buttons}>
             <TouchableOpacity

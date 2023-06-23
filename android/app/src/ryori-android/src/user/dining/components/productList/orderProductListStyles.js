@@ -1,20 +1,40 @@
 import {StyleSheet} from 'react-native';
 
-export const OrderStyle = StyleSheet.create({
-  activeOrder: {
+export const OrderListStyles = StyleSheet.create({
+  orderProducts: {
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
     paddingHorizontal: 40,
+    paddingVertical: 40,
   },
-  aoContent: {
-    alignItems: 'flex-start',
-  },
-  ryoriIcon: {
-    top: 50,
-    flexDirection: 'row',
-    left: 0,
+  productContent: {
     width: '100%',
+  },
+  crewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ryoriIconTitle: {
+    flexDirection: 'row',
+  },
+  crewImage: {
+    height: 40,
+    width: 40,
+  },
+  viewProfile: {
+    flexDirection: 'row',
+  },
+  crewName: {
+    marginTop: 5,
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 16,
+  },
+  viewProfileText: {
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 10,
   },
   ryori: {
     width: 40,
@@ -27,12 +47,8 @@ export const OrderStyle = StyleSheet.create({
     top: 6,
     left: 10,
   },
-  topBtns: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  //Accodions
+
+  //-----------
   accordions: {
     width: '100%',
     backgroundColor: '#fff',
@@ -90,18 +106,10 @@ export const OrderStyle = StyleSheet.create({
     width: '60%',
     alignItems: 'flex-end',
   },
-  doneBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#777777',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
   readyServeBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4285F4',
+    backgroundColor: '#FF7A00',
     borderRadius: 4,
     width: 110,
     height: 30,
