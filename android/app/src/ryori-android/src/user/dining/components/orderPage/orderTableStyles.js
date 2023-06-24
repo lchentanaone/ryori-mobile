@@ -6,7 +6,7 @@ export const OrderTableStyles = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingVertical: 40,
-    paddingHorizontal: 15,
+    paddingHorizontal: 30,
   },
   ryoriIcon: {
     flexDirection: 'row',
@@ -24,6 +24,7 @@ export const OrderTableStyles = StyleSheet.create({
     marginLeft: 10,
   },
   orderItem: {
+    marginTop: 20,
     padding: 10,
     backgroundColor: '#fff',
     width: '100%',
@@ -50,13 +51,13 @@ export const OrderTableStyles = StyleSheet.create({
   addOns: {
     fontFamily: 'Quicksand-Medium',
     color: '#000',
-    fontSize: 15,
+    fontSize: 12,
   },
   qtyContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F6F6F8',
-    height: 40,
+    height: 35,
     borderRadius: 20,
   },
   input: {
@@ -69,5 +70,46 @@ export const OrderTableStyles = StyleSheet.create({
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  priceContainer: {
+    width: '40%',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  priceText: {
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 15,
+  },
+  buttonCon: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  checkoutBtn: {
+    backgroundColor: '#DB1B1B',
+    height: 40,
+    borderRadius: 20,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkoutText: {
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#fff',
+    fontSize: 15,
+  },
+  totalAmount: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: '100%',
+    paddingHorizontal: 10,
+    padding: 20,
+  },
+  totalAmountText: {
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    fontSize: 18,
   },
 });

@@ -10,6 +10,7 @@ import Inventory from '../Kitchen/components/inventory/inventory';
 import PreparingOrderTable from '../Kitchen/components/activeOrder/preparing/preparing';
 import OrderProductList from '../dining/components/productList/orderProductList';
 import OrderTableNumber from '../dining/components/orderPage/orderTableNumber';
+import PaymentReceived from '../dining/components/pamentReceived/paymentRec';
 
 const Stack = createStackNavigator();
 const UserNavigators = () => {
@@ -73,6 +74,11 @@ const UserNavigators = () => {
         <Stack.Screen
           component={OrderTableNumber}
           name="OrderTableNumber"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PaymentReceived}
+          name="PaymentReceived"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

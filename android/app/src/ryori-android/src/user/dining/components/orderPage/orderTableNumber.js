@@ -41,7 +41,12 @@ export default function OrderTableNumber({navigation}) {
             <Text style={styles.menuTitle}>{'Chicken Combo 1'}</Text>
             <Text style={styles.addOns}>{'With rice and drink (12 oz)'}</Text>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10,
+            }}>
             <View style={styles.qtyContainer}>
               <TouchableOpacity onPress={handleDecrease} style={styles.qtyIcon}>
                 <Entypo name="minus" size={18} />
@@ -56,9 +61,22 @@ export default function OrderTableNumber({navigation}) {
                 <Entypo name="plus" size={18} />
               </TouchableOpacity>
             </View>
-            <Text style={{color: 'red'}}>Hello</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.priceText}>₱ {'1799'}</Text>
+            </View>
           </View>
         </View>
+      </View>
+      <View style={styles.buttonCon}>
+        <View style={styles.totalAmount}>
+          <Text style={styles.totalAmountText}>Total</Text>
+          <Text style={styles.totalAmountText}>₱ {'1799'}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.checkoutBtn}
+          onPress={() => navigation.navigate('PaymentReceived')}>
+          <Text style={styles.checkoutText}>Checkout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
