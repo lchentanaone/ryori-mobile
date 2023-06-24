@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DrawerActions} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -26,15 +27,18 @@ import {
 import {drawerStyle} from './drawerStyle';
 import {useNavigation} from '@react-navigation/native';
 import userAvatar from '../../../images/male3.png';
-function Logout() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: 'red'}}>DASHBOARD HERE ....</Text>
-    </View>
-  );
-}
+import Employees from '../employee/employee';
+
 const RyoriDrawer = props => {
   const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    // // Clear user session data (e.g., token) from AsyncStorage or any other storage mechanism
+    // await AsyncStorage.removeItem('token');
+    // // Navigate back to the login screen
+    // navigation.navigate('Login-admin');
+  };
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -54,10 +58,7 @@ const RyoriDrawer = props => {
           </View>
         </TouchableOpacity>
         <DrawerItemList {...props} />
-        {/* <DrawerItem
-          label="Logout"
-          onPress={() => props.navigation.navigate('Login')}
-        /> */}
+        <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     </View>
   );
@@ -188,19 +189,21 @@ export default function DrawersNav({navigation}) {
           ),
         }}
       />
-      {/*<Drawer.Screen
-        name="Setting"
-        // component={Setting}
+      <Drawer.Screen
+        name="Employees"
+        component={Employees}
         options={{
-          drawerIcon: () => (
-            <Image
-              source={SettingIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <AntDesign
+              name="setting"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={18}
             />
           ),
         }}
       />
-      <Drawer.Screen
+      {/*<Drawer.Screen
         name="Customers"
         // component={Customers}
         options={{
