@@ -23,8 +23,12 @@ export const OrderTableStyles = StyleSheet.create({
     top: 6,
     marginLeft: 10,
   },
-  orderItem: {
+  orderItemTable: {
     marginTop: 20,
+    height: '78%',
+  },
+  orderItem: {
+    marginBottom: 5,
     padding: 10,
     backgroundColor: '#fff',
     width: '100%',

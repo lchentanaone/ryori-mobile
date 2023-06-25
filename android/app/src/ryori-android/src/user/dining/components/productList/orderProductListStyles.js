@@ -53,6 +53,7 @@ export const OrderListStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     justifyContent: 'center',
+    height: '98%',
   },
   accordionList: {
     borderWidth: 0.7,

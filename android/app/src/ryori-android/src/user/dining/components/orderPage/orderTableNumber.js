@@ -2,7 +2,7 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  ScrollView,
   Image,
   TouchableOpacity,
 } from 'react-native';
@@ -32,40 +32,50 @@ export default function OrderTableNumber({navigation}) {
         <Image source={redRyori} style={styles.ryori} />
         <Text style={styles.ryoriIconText}>Table {'7'}</Text>
       </View>
-      <View style={styles.orderItem}>
-        <View>
-          <Image source={menuPhotos} style={styles.menuPhoto} />
-        </View>
-        <View style={styles.orderItemDetails}>
-          <View>
-            <Text style={styles.menuTitle}>{'Chicken Combo 1'}</Text>
-            <Text style={styles.addOns}>{'With rice and drink (12 oz)'}</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <View style={styles.qtyContainer}>
-              <TouchableOpacity onPress={handleDecrease} style={styles.qtyIcon}>
-                <Entypo name="minus" size={18} />
-              </TouchableOpacity>
-              <TextInput
-                style={styles.input}
-                value={quantity}
-                onChangeText={text => setQuantity(text)}
-                keyboardType="numeric"
-              />
-              <TouchableOpacity onPress={handleIncrease} style={styles.qtyIcon}>
-                <Entypo name="plus" size={18} />
-              </TouchableOpacity>
+      <View style={styles.orderItemTable}>
+        <ScrollView>
+          <View style={styles.orderItem}>
+            <View>
+              <Image source={menuPhotos} style={styles.menuPhoto} />
             </View>
-            <View style={styles.priceContainer}>
-              <Text style={styles.priceText}>₱ {'1799'}</Text>
+            <View style={styles.orderItemDetails}>
+              <View>
+                <Text style={styles.menuTitle}>{'Chicken Combo 1'}</Text>
+                <Text style={styles.addOns}>
+                  {'With rice and drink (12 oz)'}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 10,
+                }}>
+                <View style={styles.qtyContainer}>
+                  <TouchableOpacity
+                    onPress={handleDecrease}
+                    style={styles.qtyIcon}>
+                    <Entypo name="minus" size={18} />
+                  </TouchableOpacity>
+                  <TextInput
+                    style={styles.input}
+                    value={quantity}
+                    onChangeText={text => setQuantity(text)}
+                    keyboardType="numeric"
+                  />
+                  <TouchableOpacity
+                    onPress={handleIncrease}
+                    style={styles.qtyIcon}>
+                    <Entypo name="plus" size={18} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.priceContainer}>
+                  <Text style={styles.priceText}>₱ {'1799'}</Text>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </View>
       <View style={styles.buttonCon}>
         <View style={styles.totalAmount}>
