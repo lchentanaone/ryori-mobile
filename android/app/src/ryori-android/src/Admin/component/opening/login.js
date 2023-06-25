@@ -10,16 +10,17 @@ export default function Login({navigation}) {
   const [email, setEmail] = useState('ryoriapp@gmail.com');
   const [password, setPassword] = useState('ryori2023');
 
-  const handleLogin = () => {
-    axios
-      .post(`${API_URL}/auth/login`, {email, password})
-      .then(response => {
-        console.log('Login successful:', response.data);
-        navigation.navigate('Drawer');
-      })
-      .catch(error => {
-        console.error('Error logging in:', error);
-      });
+  const handleLogin = async () => {
+    try {
+      const response = axios
+        .post(`${API_URL}/auth/login`, {email, password})
+        .then(response => {
+          console.log('Login successful:', response.data);
+          navigation.navigate('Drawer');
+        });
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
@@ -53,7 +54,7 @@ export default function Login({navigation}) {
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
             onPress={handleLogin}
-            // onPress={() => navigation.navigate('Menu')}
+            // onPress={() => navigation.navigate('Drawer')}
           >
             <Text style={openingStyles.SignInTextBtn}>Sign in</Text>
           </TouchableOpacity>

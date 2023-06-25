@@ -1,13 +1,28 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {setUpStoreStyles as setStore} from './opening-style';
+import axios from 'axios';
 
 export default function SetupStore({navigation}) {
+  const API_URL = 'http://10.0.2.2:3000';
+
   const [storename, setStorename] = useState('');
   const [email, setEmail] = useState('');
   const [branch, setBranch] = useState('');
   const [address, setAddress] = useState('');
   const [contactNumber, setContactNumber] = useState('');
+
+  // const handleAddStore = async () => {
+  //   try {
+  //     const response = await axios.post(`${API_URL}/menuItem`, {
+  //       storename,
+  //     });
+  //     console.log(response.data);
+  //     navigation.navigate('Menu');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <View style={setStore.setUpStore}>
@@ -83,9 +98,7 @@ export default function SetupStore({navigation}) {
             <View style={setStore.saveStore}>
               <TouchableOpacity
                 style={setStore.saveStoreOpacity}
-                onPress={() => navigation.navigate('Drawer')}
-                // onPress={() => navigation.navigate('Menu')}
-              >
+                onPress={() => navigation.navigate('Menu')}>
                 <Text style={setStore.saveStoreTextBtn}>Save</Text>
               </TouchableOpacity>
             </View>

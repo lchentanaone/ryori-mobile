@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigators from './android/app/src/ryori-android/src/Admin/navigation/stackNavigators';
@@ -12,7 +11,7 @@ const App = () => {
       <StatusBar hidden />
       <NavigationContainer>
         <StackNavigators />
-        {/* <UserNavigators/> */}
+        {/* <UserNavigators /> */}
       </NavigationContainer>
     </>
   );
