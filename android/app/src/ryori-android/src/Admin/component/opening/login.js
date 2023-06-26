@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {openingStyles} from './opening-style';
@@ -12,18 +10,17 @@ export default function Login({navigation}) {
   const [email, setEmail] = useState('ryoriapp@gmail.com');
   const [password, setPassword] = useState('ryori2023');
 
-  const handleLogin = () => {
-    axios
-      .post(`${API_URL}/auth/login`, {email, password})
-      .then(response => {
-        console.log('Login successful:', response.data);
-        // handle successful login, such as storing authentication token in AsyncStorage and navigating to homepage
-        navigation.navigate('Drawer');
-      })
-      .catch(error => {
-        console.error('Error logging in:', error);
-        // handle login error, such as displaying error message to user
-      });
+  const handleLogin = async () => {
+    try {
+      const response = axios
+        .post(`${API_URL}/auth/login`, {email, password})
+        .then(response => {
+          console.log('Login successful:', response.data);
+          navigation.navigate('Drawer');
+        });
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   return (
@@ -56,15 +53,16 @@ export default function Login({navigation}) {
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            // onPress={handleLogin}
-            onPress={() => navigation.navigate('Setup your Store')}>
+            onPress={handleLogin}
+            // onPress={() => navigation.navigate('Drawer')}
+          >
             <Text style={openingStyles.SignInTextBtn}>Sign in</Text>
           </TouchableOpacity>
         </View>
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            onPress={() => navigation.navigate('Profile')}>
+            onPress={() => navigation.navigate('Register-admin')}>
             <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
           </TouchableOpacity>
         </View>

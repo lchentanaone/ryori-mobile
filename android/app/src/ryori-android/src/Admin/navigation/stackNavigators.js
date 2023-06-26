@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
-// import Drawers from '../component/overview/drawer';
 import Register from '../component/opening/register';
 // import EditMenu from '../component/overview/menu/edit-menu';
 // import Transaction from '../component/overview/transaction/transaction';

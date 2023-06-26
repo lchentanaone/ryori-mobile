@@ -9,24 +9,30 @@ export default function Register() {
   const navigation = useNavigation();
   const API_URL = 'http://10.0.2.2:3000';
 
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstname] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleRegister = async () => {
     axios
-      .post(`${API_URL}/auth/register`, {name, lastName, email, password})
+      .post(`${API_URL}/auth/register`, {
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        address,
+      })
       .then(response => {
         console.log('Registration successful:', response.data);
-        // handle successful registration, such as storing authentication token in AsyncStorage and navigating to homepage
         navigation.navigate('Setup your Store');
       })
       .catch(error => {
         console.error('Error registering:', error);
-        // handle registration error, such as displaying error message to user
       });
   };
 
@@ -42,11 +48,29 @@ export default function Register() {
             <TextInput
               mode="outlined"
               style={openingStyles.inputR}
-              placeholder="First name"
+              placeholder="Username"
               placeholderTextColor="#777777"
-              value={name}
-              secureTextEntry={false}
-              onChangeText={setName}
+              value={username}
+              onChangeText={setUsername}
+            />
+            <TextInput
+              mode="outlined"
+              style={openingStyles.inputR}
+              placeholder="Email"
+              placeholderTextColor="#777777"
+              value={email}
+              keyboardType="email-address"
+              onChangeText={setEmail}
+            />
+          </View>
+          <View style={openingStyles.registerRow}>
+            <TextInput
+              mode="outlined"
+              style={openingStyles.inputR}
+              placeholder="First Name"
+              placeholderTextColor="#777777"
+              value={firstName}
+              onChangeText={setFirstname}
             />
             <TextInput
               mode="outlined"
@@ -54,7 +78,6 @@ export default function Register() {
               placeholder="Last name"
               placeholderTextColor="#777777"
               value={lastName}
-              secureTextEntry={false}
               onChangeText={setLastName}
             />
           </View>
@@ -62,39 +85,18 @@ export default function Register() {
             <TextInput
               mode="outlined"
               style={openingStyles.inputR}
-              placeholder="Email"
-              placeholderTextColor="#777777"
-              value={email}
-              secureTextEntry={false}
-              onChangeText={setEmail}
-            />
-            <TextInput
-              mode="outlined"
-              style={openingStyles.inputR}
               placeholder="Password"
               placeholderTextColor="#777777"
               value={password}
-              secureTextEntry={false}
               onChangeText={setPassword}
             />
-          </View>
-          <View style={openingStyles.registerRow}>
             <TextInput
               mode="outlined"
               style={openingStyles.inputR}
-              placeholder="Confirm Password"
-              placeholderTextColor="#777777"
-              value={confirmPassword}
-              secureTextEntry={false}
-              onChangeText={setConfirmPassword}
-            />
-            <TextInput
-              mode="outlined"
-              style={openingStyles.inputR}
-              placeholder="Phone Number"
+              placeholder="Contact Number"
               placeholderTextColor="#777777"
               value={phoneNumber}
-              secureTextEntry={false}
+              keyboardType="numeric"
               onChangeText={setPhoneNumber}
             />
           </View>
