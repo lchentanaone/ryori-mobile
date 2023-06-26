@@ -18,14 +18,22 @@ export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleRegister = async () => {
+    console.log({
+      username,
+      email,
+      firstName,
+      lastName,
+      password,
+      phoneNumber,
+    })
     axios
       .post(`${API_URL}/auth/register`, {
         username,
+        email,
         firstName,
         lastName,
-        email,
         password,
-        address,
+        phone: phoneNumber,
       })
       .then(response => {
         console.log('Registration successful:', response.data);
