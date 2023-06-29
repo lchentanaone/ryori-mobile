@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DrawerActions} from '@react-navigation/native';
@@ -28,17 +27,33 @@ import {drawerStyle} from './drawerStyle';
 import {useNavigation} from '@react-navigation/native';
 import userAvatar from '../../../images/male3.png';
 import Employees from '../employee/employee';
+import axios from 'axios';
 
 const RyoriDrawer = props => {
+  const API_URL = 'http://10.0.2.2:3000';
   const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
 
   const handleLogout = async () => {
-    // // Clear user session data (e.g., token) from AsyncStorage or any other storage mechanism
-    // await AsyncStorage.removeItem('token');
-    // // Navigate back to the login screen
-    // navigation.navigate('Login-admin');
+    await AsyncStorage.removeItem('access_token');
+    navigation.navigate('Login-admin');
   };
-
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const response = await axios.get(`${API_URL}/user/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -49,13 +64,21 @@ const RyoriDrawer = props => {
         <TouchableOpacity
           style={drawerStyle.drawerProfile}
           onPress={() => navigation.navigate('Profile')}>
-          <View style={drawerStyle.profileAdmin}>
-            <Image source={userAvatar} style={drawerStyle.profilepic} />
-            <View style={drawerStyle.welcomeAdmin}>
-              <Text style={drawerStyle.welcomeAdminText}>Welcome!</Text>
-              <Text style={drawerStyle.adminName}>{'John Doe'}</Text>
-            </View>
-          </View>
+          {userData ? (
+            <>
+              <View style={drawerStyle.profileAdmin}>
+                <Image source={userAvatar} style={drawerStyle.profilepic} />
+                <View style={drawerStyle.welcomeAdmin}>
+                  <Text style={drawerStyle.welcomeAdminText}>Welcome!</Text>
+                  <Text style={drawerStyle.adminName}>
+                    {userData.firstName} {userData.lastName}
+                  </Text>
+                </View>
+              </View>
+            </>
+          ) : (
+            <Text>Loading ...</Text>
+          )}
         </TouchableOpacity>
         <DrawerItemList {...props} />
         <DrawerItem label="Logout" onPress={handleLogout} />
@@ -203,97 +226,6 @@ export default function DrawersNav({navigation}) {
           ),
         }}
       />
-      {/*<Drawer.Screen
-        name="Customers"
-        // component={Customers}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={CustomersIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Food"
-        // component={Food}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={KitchenBridgeIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Create New Menu"
-        // component={AddMenu}
-        options={{
-          headerShown: false,
-          drawerIcon: () => (
-            <>
-              <AntDesign
-                name="pluscircle"
-                size={27}
-                color={'#f8bd07'}
-                marginTop={15.5}
-                marginLeft={6}
-              />
-              <Text
-                style={{
-                  fontSize: 10,
-                  marginTop: 10,
-                  marginLeft: 7,
-                  color: '#ffff',
-                  fontWeight: 600,
-                }}>
-                ADD{'\n'}MENU
-              </Text>
-            </>
-          ),
-          drawerItemStyle: {
-            borderRadius: 10,
-            width: 134,
-            marginLeft: 10,
-            height: 58,
-            borderWidth: 0.3,
-            backgroundColor: '#34a853',
-          },
-          drawerLabelStyle: {
-            fontSize: 7,
-            marginTop: -20,
-            marginLeft: -90,
-            opacity: 0.6,
-          },
-        }}
-      />
-      <Drawer.Screen
-        name="Dining Setup"
-        // component={DinigSetup}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={DiningSetupIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Methods"
-        // component={Methods}
-        options={{
-          drawerIcon: () => (
-            <Image
-              source={MethodIcon}
-              style={{width: 20, height: 20, marginTop: -8}}
-            />
-          ),
-        }}
-      />
-      */}
       {/* <Drawer.Screen name="Logout" component={Logout} /> */}
     </Drawer.Navigator>
   );

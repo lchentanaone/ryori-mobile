@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export default function Login({navigation}) {
@@ -14,9 +15,10 @@ export default function Login({navigation}) {
     try {
       const response = axios
         .post(`${API_URL}/auth/login`, {email, password})
-        .then(response => {
-          console.log('Login successful:', response.data);
-          navigation.navigate('Drawer');
+        .then(async response => {
+          const token = response.data.access_token;
+          await AsyncStorage.setItem('access_token', token);
+          navigation.navigate('Setup your Store');
         });
     } catch (error) {
       console.error('Error logging in:', error);
@@ -42,20 +44,20 @@ export default function Login({navigation}) {
           style={openingStyles.input}
           placeholder="Password"
           value={password}
-          secureTextEntry={false}
+          secureTextEntry={true}
           onChangeText={setPassword}
         />
         <View style={openingStyles.forgotBtn}>
-          <TouchableOpacity style={openingStyles.textBtbOpacity}>
+          <TouchableOpacity
+            style={openingStyles.textBtbOpacity}
+            onPress={checkToken}>
             <Text style={openingStyles.forgotText}>Forgot Password</Text>
           </TouchableOpacity>
         </View>
         <View style={openingStyles.SignIn}>
           <TouchableOpacity
             style={openingStyles.SignInOpacity}
-            onPress={handleLogin}
-            // onPress={() => navigation.navigate('Drawer')}
-          >
+            onPress={handleLogin}>
             <Text style={openingStyles.SignInTextBtn}>Sign in</Text>
           </TouchableOpacity>
         </View>

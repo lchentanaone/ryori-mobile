@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
 
 export const openingStyles = StyleSheet.create({
@@ -26,8 +25,6 @@ export const openingStyles = StyleSheet.create({
   },
   loginContent: {
     width: '100%',
-    position: 'absolute',
-    top: 15,
   },
   forLogo: {
     with: '100%',
@@ -107,8 +104,6 @@ export const openingStyles = StyleSheet.create({
   },
   registerContent: {
     width: '100%',
-    position: 'absolute',
-    top: 15,
   },
   inputR: {
     width: '47%',

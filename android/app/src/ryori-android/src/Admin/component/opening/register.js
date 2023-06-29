@@ -14,8 +14,8 @@ export default function Register() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [address, setAddress] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  // const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleRegister = async () => {
     console.log({
@@ -103,9 +103,9 @@ export default function Register() {
               style={openingStyles.inputR}
               placeholder="Contact Number"
               placeholderTextColor="#777777"
-              value={phoneNumber}
+              value={address}
               keyboardType="numeric"
-              onChangeText={setPhoneNumber}
+              onChangeText={setAddress}
             />
           </View>
         </View>
