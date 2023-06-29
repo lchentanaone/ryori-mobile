@@ -18,6 +18,7 @@ export default function Login({navigation}) {
         .then(async response => {
           const token = response.data.access_token;
           await AsyncStorage.setItem('access_token', token);
+          console.log('-----Token-----:', token);
           navigation.navigate('Setup your Store');
         });
     } catch (error) {
@@ -50,7 +51,8 @@ export default function Login({navigation}) {
         <View style={openingStyles.forgotBtn}>
           <TouchableOpacity
             style={openingStyles.textBtbOpacity}
-            onPress={checkToken}>
+            // onPress={checkToken}
+          >
             <Text style={openingStyles.forgotText}>Forgot Password</Text>
           </TouchableOpacity>
         </View>
