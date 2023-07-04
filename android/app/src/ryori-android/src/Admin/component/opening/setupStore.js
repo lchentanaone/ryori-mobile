@@ -8,46 +8,59 @@ export default function SetupStore({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
 
   const [storeName, setStoreName] = useState('');
-
+  const [store_Id, setStore_Id] = useState('');
   const [email, setEmail] = useState('');
-  const [branch, setBranch] = useState('');
+  const [branchName, setBranchName] = useState('');
   const [address, setAddress] = useState('');
   const [contactNumber, setContactNumber] = useState('');
-
-  const handlePost = async () => {
-    try {
-      const response = await axios.post(`${API_URL}/branch`, {
-        email,
-        contactNumber,
-        address,
-      });
-      console.log(response.data);
-      // navigation.navigate('Menu');
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleAddStore = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
+
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.post(
         `${API_URL}/store`,
-        {storeName},
+        {storeName, store_Id},
         {headers},
       );
       console.log(response.data);
-      // navigation.navigate('Drawer');
+      AsyncStorage.setItem('store_Id', response.data.id.toString());
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleAddBranch = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post(
+        `${API_URL}/branch`,
+        {
+          branchName,
+          email,
+          contactNumber,
+          address,
+          store_Id,
+        },
+        {headers},
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSave = async () => {
-    handlePost();
-    handleAddStore();
+    await handleAddStore();
+    handleAddBranch();
     navigation.navigate('Drawer');
   };
 
@@ -79,7 +92,6 @@ export default function SetupStore({navigation}) {
               placeholder="Store Name"
               placeholderTextColor="#777777"
               value={storeName}
-              secureTextEntry={false}
               onChangeText={setStoreName}
             />
             <TextInput
@@ -88,7 +100,6 @@ export default function SetupStore({navigation}) {
               placeholder="Email"
               placeholderTextColor="#777777"
               value={email}
-              secureTextEntry={false}
               onChangeText={setEmail}
             />
           </View>
@@ -96,11 +107,10 @@ export default function SetupStore({navigation}) {
             <TextInput
               mode="outlined"
               style={setStore.setupInput}
-              placeholder="Branch"
+              placeholder="Branch Name"
               placeholderTextColor="#777777"
-              value={branch}
-              secureTextEntry={false}
-              onChangeText={setBranch}
+              value={branchName}
+              onChangeText={setBranchName}
             />
             <TextInput
               mode="outlined"
@@ -108,7 +118,6 @@ export default function SetupStore({navigation}) {
               placeholder="Address"
               placeholderTextColor="#777777"
               value={address}
-              secureTextEntry={false}
               onChangeText={setAddress}
             />
           </View>
@@ -119,7 +128,6 @@ export default function SetupStore({navigation}) {
               placeholder="Contact Number"
               placeholderTextColor="#777777"
               value={contactNumber}
-              secureTextEntry={false}
               onChangeText={setContactNumber}
             />
             <View style={setStore.saveStore}>

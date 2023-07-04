@@ -9,6 +9,15 @@ export default function Opening() {
   const navigation = useNavigation();
 
   useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('Login-admin');
+    }, 2000);
+    let isMounted = true;
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+  useEffect(() => {
     async function checkIfTokenExist() {
       const token = await AsyncStorage.getItem('access_token');
       if (token) {

@@ -18,7 +18,11 @@ export default function Login({navigation}) {
         .then(async response => {
           const token = response.data.access_token;
           await AsyncStorage.setItem('access_token', token);
-          console.log('-----Token-----:', token);
+          response.data.store_Id &&
+            (await AsyncStorage.setItem(
+              'store_Id',
+              response.data.store_Id.toString(),
+            ));
           navigation.navigate('Setup your Store');
         });
     } catch (error) {
@@ -45,7 +49,7 @@ export default function Login({navigation}) {
           style={openingStyles.input}
           placeholder="Password"
           value={password}
-          secureTextEntry={true}
+          // secureTextEntry={true}
           onChangeText={setPassword}
         />
         <View style={openingStyles.forgotBtn}>
