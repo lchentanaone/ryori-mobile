@@ -1,16 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
 import {MenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Dropdown} from 'react-native-element-dropdown';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const filterAvalable = [
@@ -23,7 +18,7 @@ const categories = [
 ];
 export default function Menu({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
-  
+
   const [category, setCategory] = useState('All');
   const [availability, setAvailability] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -31,7 +26,17 @@ export default function Menu({navigation}) {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get(`${API_URL}/menuItem/`);
+      const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const response = await axios.get(
+        `${API_URL}/menuItem/?store_Id=${store_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          store_Id,
+        },
+      );
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -127,18 +132,25 @@ export default function Menu({navigation}) {
                   <TouchableOpacity
                     style={MenuStyle.menuItemIcon}
                     key={item}
-                    onPress={() => navigation.navigate('menu-details', { item, type: 'edit' })}
-                  >
+                    onPress={() =>
+                      navigation.navigate('menu-details', {item, type: 'edit'})
+                    }>
                     <MaterialCommunityIcons
                       name="pencil-box-outline"
                       size={25}
                     />
                   </TouchableOpacity>
                   <View style={MenuStyle.ImageLabe}>
-                    <Image source={{ uri:item.photo}} style={MenuStyle.menuImage} />
+                    <Image
+                      source={{uri: item.photo}}
+                      style={MenuStyle.menuImage}
+                    />
                     <View style={MenuStyle.menuLabelPrice}>
                       <Text style={MenuStyle.menuLabel}>{item.title}</Text>
-                      <Text style={MenuStyle.menuLabel}>{item.description}</Text>
+                      <Text style={MenuStyle.menuLabel}>
+                        {item.description}
+                      </Text>
+                      <Text style={MenuStyle.menuLabel}>{item.quantity}</Text>
                       <Text style={MenuStyle.menuPrice}>{item.price}</Text>
                     </View>
                   </View>

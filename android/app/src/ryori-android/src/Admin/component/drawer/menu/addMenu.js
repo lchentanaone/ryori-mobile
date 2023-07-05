@@ -10,23 +10,21 @@ import {
 import {AddMenuStyle, DropdownStyle} from './menu-style';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
     type: 'new',
-    item: null
+    item: null,
   };
   let pageTitle = '';
 
-  if(type === 'edit') {
+  if (type === 'edit') {
     // console.log({item})
-    pageTitle = "Edit menu #"+item.id
-
-    
-  }
-  else {
-    pageTitle = "Add menu item"
+    pageTitle = 'Edit menu #' + item.id;
+  } else {
+    pageTitle = 'Add menu item';
   }
 
   const API_URL = 'http://10.0.2.2:3000';
@@ -43,12 +41,17 @@ export default function AddMenu({route, navigation}) {
 
   const fetchCategory = async () => {
     try {
-      const response = await axios.get(`${API_URL}/menuCategory/`);
+      const token = await AsyncStorage.getItem('access_token');
+      const response = await axios.get(`${API_URL}/menuCategory/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       // console.log('categories: ', response.data)
       const dropdownCategories = response.data.map(item => ({
         label: item.title,
-        value: item.id  
-      }))
+        value: item.id,
+      }));
       setCategories(dropdownCategories);
     } catch (error) {
       console.error(error);
@@ -57,15 +60,24 @@ export default function AddMenu({route, navigation}) {
 
   const fetchDetail = async () => {
     try {
-      const response = await axios.get(`${API_URL}/menuItem/${item.id}`);
-      console.log({data : response.data})
-      setTitle(response.data.title)
-      setPrice(response.data.price)
-      setQty(response.data.quantity)
-      setDescription(response.data.description)
-      setCookingTime(response.data.cookingTime)
+      const token = await AsyncStorage.getItem('access_token');
+      const response = await axios.get(`${API_URL}/menuItem/${item.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log({data: response.data});
+      setTitle(response.data.title);
+      setPrice(response.data.price);
+      setQty(response.data.quantity);
+      setDescription(response.data.description);
+      setCookingTime(response.data.cookingTime);
       setPhoto(response.data.photo);
-      setCategory(response.data.menuCategory.length > 0 ? response.data.menuCategory[0].id : '')
+      setCategory(
+        response.data.menuCategory.length > 0
+          ? response.data.menuCategory[0].id
+          : '',
+      );
     } catch (error) {
       console.error(error);
     }
@@ -73,24 +85,31 @@ export default function AddMenu({route, navigation}) {
 
   useEffect(() => {
     fetchCategory();
-    if(type === 'edit') {
+    if (type === 'edit') {
       fetchDetail();
-      
     }
-  }, [item])
+  }, [item]);
   const handlePost = async () => {
     try {
-      if(type === 'edit') {
-        const response = await axios.patch(`${API_URL}/menuItem/${item.id}`, {
-          title,
-          price,
-          photo,
-          quantity: qty,
-          description,
-          cookingTime,
-          branch_Id: 1,
-          category_Id: category
-        });
+      if (type === 'edit') {
+        const token = await AsyncStorage.getItem('access_token');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        const response = await axios.patch(
+          `${API_URL}/menuItem/${item.id}`,
+          {
+            title,
+            price,
+            photo,
+            quantity: qty,
+            description,
+            cookingTime,
+            branch_Id: 1,
+            category_Id: category,
+          },
+          {headers},
+        );
         console.log({
           title,
           price,
@@ -99,20 +118,32 @@ export default function AddMenu({route, navigation}) {
           description,
           cookingTime,
           branch_Id: 1,
-          category_Id: category
-        })
-      }
-      else {
-        await axios.post(`${API_URL}/menuItem`, {
-          title,
-          price,
-          photo,
-          quantity: qty,
-          description,
-          cookingTime,
-          branch_Id: 1,
-          category_Id: 1
+          category_Id: category,
         });
+      } else {
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_Id');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        await axios.post(
+          `${API_URL}/menuItem`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            title,
+            price,
+            photo,
+            quantity: qty,
+            description,
+            cookingTime,
+            branch_Id: 1,
+            category_Id: 1,
+            store_Id,
+          },
+          {headers},
+        );
       }
       navigation.navigate('Menu');
     } catch (error) {
@@ -121,15 +152,18 @@ export default function AddMenu({route, navigation}) {
   };
 
   const handleChoosePhoto = () => {
-    launchImageLibrary({
-      mediaType: 'photo',
-      quality: 0.5,
-      includeBase64: false,
-    }, response => {
-      if (response) {
-        setPhoto(response.assets[0].uri);
-      }
-    });
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
+        includeBase64: false,
+      },
+      response => {
+        if (response) {
+          setPhoto(response.assets[0].uri);
+        }
+      },
+    );
   };
 
   const handleOpenCamera = () => {
@@ -139,22 +173,20 @@ export default function AddMenu({route, navigation}) {
       includeBase64: false,
     };
 
-    launchCamera(options, (response) => {
+    launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        setPhoto( response.assets[0].uri);
+        setPhoto(response.assets[0].uri);
       }
     });
   };
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(
-        `${API_URL}/menuItem/${item.id}`,
-      );
+      const response = await axios.delete(`${API_URL}/menuItem/${item.id}`);
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -181,7 +213,7 @@ export default function AddMenu({route, navigation}) {
               <TextInput
                 mode="outlined"
                 style={AddMenuStyle.foodPrice}
-                keyboardType='numeric'
+                keyboardType="numeric"
                 placeholder="Price"
                 placeholderTextColor="#777777"
                 value={price.toString()}
@@ -191,7 +223,7 @@ export default function AddMenu({route, navigation}) {
               <View style={DropdownStyle.DropdownContainer}>
                 <TextInput
                   mode="outlined"
-                  keyboardType='numeric'
+                  keyboardType="numeric"
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
@@ -232,7 +264,7 @@ export default function AddMenu({route, navigation}) {
                   onFocus={() => setIsFocus(true)}
                   onBlur={() => setIsFocus(false)}
                   onChange={item => {
-                    console.log({item})
+                    console.log({item});
                     setCategory(item.value);
                     setIsFocus(false);
                   }}
@@ -244,7 +276,7 @@ export default function AddMenu({route, navigation}) {
                 placeholder="Cooking Time"
                 placeholderTextColor="#777777"
                 value={cookingTime}
-                secureTextEntry={false}
+                keyboardType="numeric"
                 onChangeText={setCookingTime}
               />
             </View>
@@ -276,15 +308,20 @@ export default function AddMenu({route, navigation}) {
             </View>
           </View>
           <View style={AddMenuStyle.uploadMenuImg}>
-              <View style={AddMenuStyle.imgContainer}>
-                <View style={{ marginBottom: 10 }}>
-                  {photo && <Image source={{ uri: photo }} style={{ width: 200, height: 200 }} />}    
-                </View>
-                <View style={{ marginBottom: 5 }}>
-                  <Button title="Open Camera" onPress={handleOpenCamera} />
-                </View>
-                <Button title="Choose Photo" onPress={handleChoosePhoto} />
+            <View style={AddMenuStyle.imgContainer}>
+              <View style={{marginBottom: 10}}>
+                {photo && (
+                  <Image
+                    source={{uri: photo}}
+                    style={{width: 200, height: 200}}
+                  />
+                )}
               </View>
+              <View style={{marginBottom: 5}}>
+                <Button title="Open Camera" onPress={handleOpenCamera} />
+              </View>
+              <Button title="Choose Photo" onPress={handleChoosePhoto} />
+            </View>
           </View>
         </View>
         <View style={AddMenuStyle.buttons}>
