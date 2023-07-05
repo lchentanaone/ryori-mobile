@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {TransacStyle} from './../Transactions/transactionStyle';
 import {DataTable} from 'react-native-paper';
+import {Styles} from './../../../../layoutStyles'
+import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
 
 const filterAvalable = [
@@ -23,7 +25,7 @@ export default function Category({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
 
   const [categoryName, setCategoryName] = useState('')
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState(ryoriLogo);
   // const [category, setCategory] = useState('All');
   // const [availability, setAvailability] = useState(null);
   // const [isFocus, setIsFocus] = useState(false);
@@ -32,8 +34,9 @@ export default function Category({navigation}) {
 
   const fetchItems = async () => {
     try {
-      const token = await AsyncStorage.getItem('access_token');
+      const token = await AsyncStorage.getItem('access_token');      
       const store_Id = await AsyncStorage.getItem('store_Id');
+
       const response = await axios.get(`${API_URL}/menuCategory/?store_Id=${store_Id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,7 +61,7 @@ export default function Category({navigation}) {
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        setPhoto(response.assets[0].uri);
+        setPhoto({uri: response.assets[0].uri});
       }
     });
   };
@@ -71,36 +74,33 @@ export default function Category({navigation}) {
       },
       response => {
         if (response.assets) {
-          setPhoto(response.assets[0].uri);
+          setPhoto({uri: response.assets[0].uri});
         }
       },
     );
   };
   const addCategory = async () => {
+    
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
       // Edit
       if(itemOnEdit !== '') {
         await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           title: categoryName,
-          photo: photo
-        });
+          photo: photo.uri
+        }, {headers});
         fetchItems();
       }
       else { // New
-        
-        await axios.post(`${API_URL}/menuCategory`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        await axios.post(`${API_URL}/menuCategory/`, {          
           title: categoryName,
-          photo: photo
-        });
+          photo: photo.uri
+        }, {headers});
         fetchItems();
       }      
     } catch (error) {
@@ -109,14 +109,14 @@ export default function Category({navigation}) {
   }
   const cancelEdit = () => {
     setCategoryName('')
-    setPhoto('')
+    setPhoto(ryoriLogo)
     setItemOnEdit('')
   }
 
   const handleEdit = (item) => {
     setItemOnEdit(item.id)
     setCategoryName(item.title)
-    setPhoto(item.photo)
+    setPhoto({uri: item.photo})
   }
 
   const handleDelete = async (id) => {
@@ -165,21 +165,19 @@ export default function Category({navigation}) {
                     <Text style={TransacStyle.textCell}>{item.title}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell>
-                    <View style={{marginBottom: 5}}>
+                    <View style={Styles.horContainer}>
                       <TouchableOpacity
-                        style={styles.button}
+                        style={{...Styles.btn, ...Styles.btnTertiary}}
                         onPress={() => handleEdit(item)}
                       >
-                        <Text style={styles.buttonText}>Edit</Text>
+                        <Text style={Styles.btnText}>Edit</Text>
                       </TouchableOpacity>
-                    </View>
-                    <View style={{marginBottom: 5}}>
                       <TouchableOpacity
-                        style={styles.button}
+                        style={{...Styles.btn, ...Styles.btnWarning}}
                         onPress={() => handleDelete(item.id)}
                       >
                         <Text 
-                        style={styles.buttonText}
+                        style={Styles.btnText}
                         >Delete</Text>
                       </TouchableOpacity>
                     </View>
@@ -197,42 +195,34 @@ export default function Category({navigation}) {
             </DataTable>
             
           </View>
-          <View style={CategoryStyle.menuC2}>
-            <ScrollView>
-              <View style={{marginBottom: 10}}>
-                {photo && (
-                  <Image
-                    source={{uri: photo}}
-                    style={{width: 200, height: 200}}
-                  />
-                )}
-              </View>
-              <View style={{marginBottom: 5}}>
-                <Button title="Open Camera" onPress={handleOpenCamera} />
-              </View>
-              <View style={{marginBottom: 5}}>
-                <Button title="Choose Photo" onPress={handleChoosePhoto} />
-              </View>
-              <View style={{marginBottom: 5}}>
-                <TextInput
-                  mode="outlined"
-                  style={AddMenuStyle.foodPrice}
-                  // keyboardType="numeric"
-                  placeholder="Category Name"
-                  placeholderTextColor="#777777"
-                  value={categoryName.toString()}
-                  secureTextEntry={false}
-                  onChangeText={setCategoryName}
+          <ScrollView style={{...CategoryStyle.menuC2}}>
+            <View style={Styles.verContainer}>
+              <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
+                <Image
+                  source={photo}
+                  style={{width: '100%', height: 150}}
                 />
               </View>
-              <View style={{marginBottom: 5}}>
-                <Button title="Save" onPress={addCategory} />
+              <View style={Styles.horContainer}>
+                <Button style={Styles.btn} title="Open Camera" onPress={handleOpenCamera} />
+                <Button title="Choose Photo" onPress={handleChoosePhoto} />
               </View>
-              <View style={{marginBottom: 5}}>
-                <Button title="Cancel" onPress={cancelEdit} />
+              <TextInput
+                mode="outlined"
+                style={{...Styles.textInput, width: '100%'}}
+                // keyboardType="numeric"
+                placeholder="Category Name"
+                placeholderTextColor="#777777"
+                value={categoryName.toString()}
+                secureTextEntry={false}
+                onChangeText={setCategoryName}
+              />
+              <View style={Styles.horContainer}>
+                <TouchableOpacity style={{...Styles.btn, ...Styles.btnPrimary}} onPress={addCategory}><Text style={Styles.btnText}>Save</Text></TouchableOpacity>
+                <TouchableOpacity style={{...Styles.btn, ...Styles.btnSecondary}} onPress={cancelEdit}><Text style={Styles.btnText}>Cancel</Text></TouchableOpacity>
               </View>
-            </ScrollView>
-          </View>
+            </View>
+          </ScrollView>
           
         </View>
         

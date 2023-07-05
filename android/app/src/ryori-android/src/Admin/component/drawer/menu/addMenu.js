@@ -129,9 +129,6 @@ export default function AddMenu({route, navigation}) {
         await axios.post(
           `${API_URL}/menuItem`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
             title,
             price,
             photo,

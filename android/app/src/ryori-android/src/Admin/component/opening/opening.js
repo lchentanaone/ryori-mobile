@@ -29,7 +29,6 @@ export default function Opening() {
           navigation.navigate('Login-admin');
         }, 2000);
       }
-      console.log('access_tokn:', token);
       let isMounted = true;
       return () => {
         isMounted = false;
