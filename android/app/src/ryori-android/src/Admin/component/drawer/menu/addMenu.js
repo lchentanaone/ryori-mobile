@@ -159,7 +159,7 @@ export default function AddMenu({route, navigation}) {
         includeBase64: false,
       },
       response => {
-        if (response) {
+        if (response.assets) {
           setPhoto(response.assets[0].uri);
         }
       },
