@@ -64,3 +64,4 @@ yarn-error.log
 
 yarn.lock
 android/gradlew
+.env

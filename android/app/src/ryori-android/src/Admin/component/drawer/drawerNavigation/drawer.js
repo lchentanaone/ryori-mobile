@@ -11,6 +11,7 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ryoriRed from './../../../images/ryori-red.png';
 import Menu from '../menu/menu';
+import Category from '../category/category';
 import TransactionTab from '../Transactions/transactionNav';
 import ReportOfFood from '../Report/reportOfFood';
 import ReportOfTransaction from '../Report/reportOfTransaction';
@@ -131,6 +132,20 @@ export default function DrawersNav({navigation}) {
       <Drawer.Screen
         name="Menu"
         component={Menu}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <Feather
+              name="menu"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={15}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Menu Category"
+        component={Category}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (

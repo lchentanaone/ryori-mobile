@@ -129,9 +129,6 @@ export default function AddMenu({route, navigation}) {
         await axios.post(
           `${API_URL}/menuItem`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
             title,
             price,
             photo,
@@ -159,7 +156,7 @@ export default function AddMenu({route, navigation}) {
         includeBase64: false,
       },
       response => {
-        if (response) {
+        if (response.assets) {
           setPhoto(response.assets[0].uri);
         }
       },
