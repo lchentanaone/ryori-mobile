@@ -24,14 +24,25 @@ export default function StoreSetting({navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
+
   const fetchBranchData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/branch`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      console.log('----storeId', {store_Id});
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(
+        `${API_URL}/branch/?store_Id=${store_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          store_Id,
         },
-      });
+        {headers},
+      );
       setBranchData(response.data[0]);
       console.log(response.data);
     } catch (error) {
