@@ -26,6 +26,7 @@ export default function Inventory() {
   const API_URL = 'http://10.0.2.2:3000';
 
   const [category, setCategory] = useState('All');
+  const [itemOnEdit, setItemOnEdit] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [item, setItem] = useState('');
   const [weight, setWeight] = useState('');
@@ -34,34 +35,32 @@ export default function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [updateItem, setUpdateItem] = useState();
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const store_Id = await AsyncStorage.getItem('store_Id');
-        const branch_Id = await AsyncStorage.getItem('branch_Id');
-        console.log(branch_Id);
-        // const headers = {
-        //   Authorization: `Bearer ${token}`,
-        // };
-        const response = await axios.get(
-          `${API_URL}/inventory/rawgrocery/?branch_Id=${branch_Id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+  const fetchItems = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      console.log(branch_Id);
+      // const headers = {
+      //   Authorization: `Bearer ${token}`,
+      // };
+      const response = await axios.get(
+        `${API_URL}/inventory/rawgrocery/?branch_Id=${branch_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-          // {headers},
-        );
-        setInventory(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchItems();
-  }, []);
+        },
+        // {headers},
+      );
+      setInventory(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const handleGetItem = items => {
+  const handleEdit = items => {
+    setItemOnEdit(items.id);
     setItem(items.item);
     setWeight(items.weight);
     setQuantity(items.quantity);
@@ -76,18 +75,35 @@ export default function Inventory() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.post(
-        `${API_URL}/inventory/rawgrocery`,
-        {
-          branch_Id,
-          item,
-          weight,
-          quantity,
-        },
-        {headers},
-      );
-      setInventory(newData);
-      console.log(response.data);
+
+      if (itemOnEdit !== '') {
+        await axios.patch(
+          `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
+          {
+            branch_Id,
+            item,
+            weight,
+            quantity,
+          },
+          {headers},
+        );
+        fetchItems();
+        setInventory(newData);
+      } else {
+        // New
+        await axios.post(
+          `${API_URL}/inventory/rawgrocery`,
+          {
+            branch_Id,
+            item,
+            weight,
+            quantity,
+          },
+          {headers},
+        );
+        fetchItems();
+        setInventory(newData);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -96,37 +112,26 @@ export default function Inventory() {
     setQuantity('');
   };
 
-  const handleUpdateItem = async items => {
+  const handleDeleteItem = async id => {
     try {
-      console.log(`${API_URL}/menu-category/` + item.id);
-      console.log({item});
-      const response = await axios.patch(
-        `${API_URL}/inventory/rawgrocery/` + updateItem,
-        {
-          item,
-          weight,
-          quantity,
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      await axios.delete(`${API_URL}/inventory/rawgrocery/${id}`, {
+        branch_Id,
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-      setItem(response.item);
-      setWeight(response.weight);
-      setQuantity(response.quantity);
-      console.log(response.data);
+      });
+      fetchItems();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleDeleteItem = async items => {
-    try {
-      const response = await axios.delete(
-        `${API_URL}/inventory/rawgrocery/` + items.id,
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   return (
     <View style={InventoryStyle.inventContainer}>
       <View style={InventoryStyle.inventContent}>
@@ -186,7 +191,7 @@ export default function Inventory() {
             <TouchableOpacity
               style={InventoryStyle.addInvetoryOpacity}
               onPress={handlePostInventory}>
-              <Text style={InventoryStyle.addInventTextBtn}>Add</Text>
+              <Text style={InventoryStyle.addInventTextBtn}>Save</Text>
             </TouchableOpacity>
           </View>
           <View style={InventoryStyle.invetoryFilter}>
@@ -254,7 +259,7 @@ export default function Inventory() {
                       <View style={InventoryStyle.itemBtn}>
                         <TouchableOpacity
                           style={InventoryStyle.manageBtnOpacity}
-                          onPress={() => handleGetItem(items)}>
+                          onPress={() => handleEdit(items)}>
                           <FontAwesome
                             name="pencil-square-o"
                             color={'#12BF38'}
@@ -263,7 +268,7 @@ export default function Inventory() {
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={InventoryStyle.manageBtnOpacity}
-                          onPress={() => handleDeleteItem(items)}>
+                          onPress={() => handleDeleteItem(items.id)}>
                           <FontAweMaterialCommunityIconssome5
                             name="delete"
                             color={'#DB1B1B'}
@@ -278,87 +283,6 @@ export default function Inventory() {
             </ScrollView>
           </DataTable>
         </View>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={InventoryStyle.invetoryModal}>
-            <View style={InventoryStyle.modalView}>
-              <View style={InventoryStyle.modalContent}>
-                <Dropdown
-                  style={[
-                    InventoryStyle.modalDropdown,
-                    isFocus && {borderColor: '#007FFF'},
-                  ]}
-                  placeholderStyle={InventoryStyle.placeholderStyle}
-                  selectedTextStyle={InventoryStyle.selectedTextStyle}
-                  inputSearchStyle={InventoryStyle.inputSearchStyle}
-                  iconStyle={InventoryStyle.iconStyle}
-                  data={categories}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder={'All'}
-                  value={category}
-                  onFocus={() => setIsFocus(true)}
-                  onBlur={() => setIsFocus(false)}
-                  onChange={item => {
-                    setCategory(item.category);
-                    setIsFocus(false);
-                  }}
-                />
-                <TextInput
-                  mode="outlined"
-                  style={InventoryStyle.modalInput}
-                  placeholder="Title"
-                  placeholderTextColor="#777777"
-                  value={item}
-                  onChangeText={setItem}
-                />
-                <View style={InventoryStyle.modalNetWQty}>
-                  <TextInput
-                    mode="outlined"
-                    style={InventoryStyle.modalNetWQtyInput}
-                    placeholder="New Weight"
-                    placeholderTextColor="#777777"
-                    value={weight}
-                    onChangeText={weight => setWeight(weight)}
-                  />
-                  <TextInput
-                    mode="outlined"
-                    style={InventoryStyle.modalNetWQtyInput}
-                    placeholder="Qty"
-                    placeholderTextColor="#777777"
-                    value={quantity.toString()}
-                    keyboardType="numeric"
-                    onChangeText={setQuantity}
-                  />
-                </View>
-                <View style={InventoryStyle.modalButton}>
-                  <TouchableOpacity
-                    style={InventoryStyle.updateInvetoryOpacity}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={InventoryStyle.filterTextBtn}>Save</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={InventoryStyle.delInvetoryOpacity}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={InventoryStyle.filterTextBtn}>Delete</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              {/* <TouchableOpacity
-                  style={InventoryStyle.button}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={InventoryStyle.textStyle}>Hide Modal</Text>
-                </TouchableOpacity> */}
-            </View>
-          </View>
-        </Modal>
       </View>
     </View>
   );
