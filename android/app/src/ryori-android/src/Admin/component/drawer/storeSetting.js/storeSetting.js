@@ -13,13 +13,22 @@ export default function StoreSetting({navigation}) {
   const fetchStoreData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/store`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(
+        `${API_URL}/store/${store_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
-      setStoreData(response.data[0]);
-      console.log(response.data);
+
+        {headers},
+      );
+      setStoreData(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -29,12 +38,12 @@ export default function StoreSetting({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('----storeId', {store_Id});
+      const getBranch_Id = await AsyncStorage.getItem('branch_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(
-        `${API_URL}/branch/?store_Id=${store_Id}`,
+        `${API_URL}/branch/${getBranch_Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,16 +52,18 @@ export default function StoreSetting({navigation}) {
         },
         {headers},
       );
-      setBranchData(response.data[0]);
-      console.log(response.data);
+      setBranchData(response.data);
+      console.log('=============', response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-
-  useEffect(() => {
-    fetchStoreData();
+  const init = async () => {
+    await fetchStoreData();
     fetchBranchData();
+  };
+  useEffect(() => {
+    init();
   }, []);
 
   return (
@@ -111,10 +122,7 @@ export default function StoreSetting({navigation}) {
             </TouchableOpacity> */}
             <TouchableOpacity
               style={StoreSetStyle.buttonsOpacity}
-              onPress={
-                // () => navigation.navigate('Update Store')
-                fetchStoreData
-              }>
+              onPress={() => navigation.navigate('Update Store')}>
               <Text style={StoreSetStyle.buttonsText}>Edit this store</Text>
             </TouchableOpacity>
           </View>

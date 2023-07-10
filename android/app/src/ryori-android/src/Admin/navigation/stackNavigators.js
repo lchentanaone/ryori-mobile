@@ -22,6 +22,7 @@ import UpdateStore from '../component/drawer/storeSetting.js/updateStore';
 import Employees from '../component/drawer/employee/employee';
 import ProfileAdmin from '../component/drawer/profileAdmin/profile';
 import UpdateProfileAdmin from '../component/drawer/profileAdmin/updateProfile';
+import Branches from '../component/opening/selectBranch/selectBranch';
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -129,6 +130,11 @@ const StackNavigators = () => {
         <Stack.Screen
           component={UpdateProfileAdmin}
           name="Update Admin"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Branches}
+          name="Select Branch"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

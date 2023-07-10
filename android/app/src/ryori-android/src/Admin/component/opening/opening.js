@@ -22,7 +22,7 @@ export default function Opening() {
       const token = await AsyncStorage.getItem('access_token');
       if (token) {
         setTimeout(() => {
-          navigation.navigate('Drawer');
+          navigation.navigate('Select Branch');
         }, 2000);
       } else {
         setTimeout(() => {

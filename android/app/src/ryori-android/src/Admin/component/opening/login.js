@@ -23,7 +23,8 @@ export default function Login({navigation}) {
               'store_Id',
               response.data.store_Id.toString(),
             ));
-          navigation.navigate('Setup your Store');
+          // navigation.navigate('Setup your Store');
+          navigation.navigate('Select Branch');
         });
     } catch (error) {
       console.error('Error logging in:', error);
@@ -55,7 +56,7 @@ export default function Login({navigation}) {
         <View style={openingStyles.forgotBtn}>
           <TouchableOpacity
             style={openingStyles.textBtbOpacity}
-            // onPress={checkToken}
+            // onPress={() => navigation.navigate('Select Branch')}
           >
             <Text style={openingStyles.forgotText}>Forgot Password</Text>
           </TouchableOpacity>

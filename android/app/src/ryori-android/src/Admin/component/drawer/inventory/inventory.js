@@ -14,6 +14,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const categories = [
   {label: 'All', value: 'All'},
@@ -36,7 +37,22 @@ export default function Inventory() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${API_URL}/inventory/rawgrocery`);
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_Id');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        console.log(branch_Id);
+        // const headers = {
+        //   Authorization: `Bearer ${token}`,
+        // };
+        const response = await axios.get(
+          `${API_URL}/inventory/rawgrocery/?branch_Id=${branch_Id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+          // {headers},
+        );
         setInventory(response.data);
       } catch (error) {
         console.error(error);
@@ -54,12 +70,22 @@ export default function Inventory() {
 
   const handlePostInventory = async () => {
     try {
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
       const newData = [...inventory, {item, weight, quantity}];
-      const response = await axios.post(`${API_URL}/inventory/rawgrocery`, {
-        item,
-        weight,
-        quantity,
-      });
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post(
+        `${API_URL}/inventory/rawgrocery`,
+        {
+          branch_Id,
+          item,
+          weight,
+          quantity,
+        },
+        {headers},
+      );
       setInventory(newData);
       console.log(response.data);
     } catch (error) {
