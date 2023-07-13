@@ -14,7 +14,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {API_URL} from '../../../../utils/constants'
 const categories = [
   {label: 'All', value: 'All'},
   {label: 'Pork', value: 'Pork'},
@@ -22,7 +22,6 @@ const categories = [
 ];
 
 export default function Inventory() {
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [category, setCategory] = useState('All');
   const [isFocus, setIsFocus] = useState(false);
@@ -72,8 +71,7 @@ export default function Inventory() {
 
   const handleUpdateItem = async items => {
     try {
-      console.log(`${API_URL}/menu-category/` + item.id);
-      console.log({item});
+      
       const response = await axios.patch(
         `${API_URL}/inventory/rawgrocery/` + updateItem,
         {

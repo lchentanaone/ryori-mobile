@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,10 @@ import {
   Image,
 } from 'react-native';
 import {AddMenuStyle, DropdownStyle} from './menu-style';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
-
+import {API_URL} from '../../../../utils/constants'
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
   {label: 'Not Available', value: 'Not Available'},
@@ -40,7 +38,6 @@ const createFormData = (photo, body = {}) => {
 };
 
 export default function UpdateMenu({route, navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
   const itembyId = route.params;
   // console.log('updateMenu', itembyId);
 
@@ -59,7 +56,6 @@ export default function UpdateMenu({route, navigation}) {
   // update one by id
   const handleUpdate = async () => {
     try {
-      console.log(`${API_URL}/menu-category/` + itembyId.item.id);
       const response = await axios.patch(
         `${API_URL}/menu-category/` + itembyId.item.id,
         {

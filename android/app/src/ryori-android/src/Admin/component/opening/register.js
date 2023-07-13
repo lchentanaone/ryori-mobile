@@ -4,10 +4,9 @@ import ryoriText from '../../images/ryori-text.png';
 import {openingStyles} from './opening-style';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-
+import {API_URL} from '../../../../utils/constants'
 export default function Register() {
   const navigation = useNavigation();
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstname] = useState('');

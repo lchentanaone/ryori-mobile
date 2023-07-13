@@ -1,10 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, TextInput, Image, Button, StyleSheet, ScrollView} from 'react-native';
-import {CategoryStyle, DropdownStyle, AddMenuStyle} from './category-style';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Dropdown} from 'react-native-element-dropdown';
+import {CategoryStyle} from './category-style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import {TransacStyle} from './../Transactions/transactionStyle';
@@ -12,6 +8,7 @@ import {DataTable} from 'react-native-paper';
 import {Styles} from './../../../../layoutStyles'
 import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
+import {API_URL} from '../../../../utils/constants'
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -22,13 +19,9 @@ const categories = [
   {label: 'Drinks', value: 'Drinks'},
 ];
 export default function Category({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [categoryName, setCategoryName] = useState('')
   const [photo, setPhoto] = useState(ryoriLogo);
-  // const [category, setCategory] = useState('All');
-  // const [availability, setAvailability] = useState(null);
-  // const [isFocus, setIsFocus] = useState(false);
   const [itemOnEdit, setItemOnEdit] = useState('')
   const [items, setItems] = useState([]);
 

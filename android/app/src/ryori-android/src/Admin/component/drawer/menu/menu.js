@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
+import {API_URL} from '../../../../utils/constants'
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
   {label: 'Not Available', value: 'Not Available'},
@@ -17,7 +17,6 @@ const categories = [
   {label: 'Drinks', value: 'Drinks'},
 ];
 export default function Menu({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [category, setCategory] = useState('All');
   const [availability, setAvailability] = useState(null);

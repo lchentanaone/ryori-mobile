@@ -12,7 +12,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
+import {API_URL} from '../../../../utils/constants'
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
     type: 'new',
@@ -26,8 +26,6 @@ export default function AddMenu({route, navigation}) {
   } else {
     pageTitle = 'Add menu item';
   }
-
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
