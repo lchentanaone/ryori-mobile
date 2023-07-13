@@ -26,7 +26,7 @@ import {drawerStyle} from './drawerStyle';
 import {useNavigation} from '@react-navigation/native';
 import userAvatar from '../../../images/male3.png';
 import Employees from '../employee/employee';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../../utils/constants';
 import axios from 'axios';
 import InventoryCategory from '../inventory/inventoryCategory';
 
@@ -35,8 +35,12 @@ const RyoriDrawer = props => {
   const [userData, setUserData] = useState(null);
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('access_token');
-    navigation.navigate('Login-admin');
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate('Login-admin');
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     const fetchUserData = async () => {

@@ -56,6 +56,9 @@ export default function Branches({navigation}) {
         {headers},
       );
       setBranchData(response.data);
+      // if (response.data.length === 1) {
+      //   navigation.navigate('Drawer');
+      // }
       console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);

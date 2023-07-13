@@ -4,8 +4,9 @@ import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../utils/constants'
+
 export default function Login({navigation}) {
+  const API_URL = 'http://10.0.2.2:3000';
 
   const [email, setEmail] = useState('ryoriapp@gmail.com');
   const [password, setPassword] = useState('ryori2023');
@@ -17,13 +18,16 @@ export default function Login({navigation}) {
         .then(async response => {
           const token = response.data.access_token;
           await AsyncStorage.setItem('access_token', token);
-          response.data.store_Id &&
-            (await AsyncStorage.setItem(
+
+          if (response.data.store_Id) {
+            await AsyncStorage.setItem(
               'store_Id',
               response.data.store_Id.toString(),
-            ));
-          // navigation.navigate('Setup your Store');
-          navigation.navigate('Select Branch');
+            );
+            navigation.navigate('Select Branch');
+          } else {
+            navigation.navigate('Setup your Store');
+          }
         });
     } catch (error) {
       console.error('Error logging in:', error);
