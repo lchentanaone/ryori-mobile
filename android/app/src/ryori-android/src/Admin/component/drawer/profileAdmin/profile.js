@@ -4,9 +4,8 @@ import {ProfileStyle} from './profileStyle';
 import userProfile from '../../../images/male3.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
+import {API_URL} from '../../../../utils/constants'
 export default function ProfileAdmin({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {

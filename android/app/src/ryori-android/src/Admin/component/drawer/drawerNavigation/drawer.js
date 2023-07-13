@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DrawerActions} from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -28,10 +26,10 @@ import {drawerStyle} from './drawerStyle';
 import {useNavigation} from '@react-navigation/native';
 import userAvatar from '../../../images/male3.png';
 import Employees from '../employee/employee';
+import {API_URL} from '../../../../utils/constants'
 import axios from 'axios';
 
 const RyoriDrawer = props => {
-  const API_URL = 'http://10.0.2.2:3000';
   const navigation = useNavigation();
   const [userData, setUserData] = useState(null);
 

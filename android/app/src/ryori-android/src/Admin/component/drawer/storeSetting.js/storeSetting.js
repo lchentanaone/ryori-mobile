@@ -4,9 +4,8 @@ import {StoreSetStyle} from './storeSettingStyle';
 import tempoLogo from '../../../images/tempoLogo.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
+import {API_URL} from '../../../../utils/constants'
 export default function StoreSetting({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
   const [storeData, setStoreData] = useState(null);
   const [branchData, setBranchData] = useState(null);
 
