@@ -3,7 +3,7 @@ import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {setUpStoreStyles as setStore} from './opening-style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../utils/constants'
 export default function SetupStore({navigation}) {
 
   const [storeName, setStoreName] = useState('');

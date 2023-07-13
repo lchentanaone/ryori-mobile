@@ -21,7 +21,7 @@ const categories = [
 export default function Category({navigation}) {
 
   const [categoryName, setCategoryName] = useState('')
-  const [photo, setPhoto] = useState(ryoriLogo);
+  const [photo, setPhoto] = useState({uri:'file:///data/user/0/com.ryorimobile/cache/rn_image_picker_lib_temp_e3839c4b-7d41-42aa-adfc-7e1ddc7c850a.jpg'});
   const [itemOnEdit, setItemOnEdit] = useState('')
   const [items, setItems] = useState([]);
 
@@ -54,7 +54,7 @@ export default function Category({navigation}) {
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        setPhoto({uri: response.assets[0].uri});
+        setPhoto(response.assets[0]);
       }
     });
   };
@@ -67,7 +67,8 @@ export default function Category({navigation}) {
       },
       response => {
         if (response.assets) {
-          setPhoto({uri: response.assets[0].uri});
+          console.log('the photo', response.assets[0])
+          setPhoto(response.assets[0]);
         }
       },
     );
@@ -90,10 +91,14 @@ export default function Category({navigation}) {
         fetchItems();
       }
       else { // New
-        await axios.post(`${API_URL}/menuCategory/`, {          
-          title: categoryName,
-          photo: photo.uri
-        }, {headers});
+        let data = new FormData();
+        data.append('title', 'Chicken');
+        data.append('photo', {
+          uri: photo.uri,
+          name: photo.fileName,
+          type: photo.type,
+        });
+        await axios.post(`${API_URL}/menuCategory/`, data, {headers});
         fetchItems();
       }      
     } catch (error) {
@@ -102,7 +107,7 @@ export default function Category({navigation}) {
   }
   const cancelEdit = () => {
     setCategoryName('')
-    setPhoto(ryoriLogo)
+    setPhoto({uri: ryoriLogo})
     setItemOnEdit('')
   }
 
@@ -191,8 +196,9 @@ export default function Category({navigation}) {
           <ScrollView style={{...CategoryStyle.menuC2}}>
             <View style={Styles.verContainer}>
               <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
+                
                 <Image
-                  source={photo}
+                  source={photo.uri}
                   style={{width: '100%', height: 150}}
                 />
               </View>
