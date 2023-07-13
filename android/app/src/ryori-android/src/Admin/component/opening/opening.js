@@ -20,11 +20,18 @@ export default function Opening() {
   useEffect(() => {
     async function checkIfTokenExist() {
       const token = await AsyncStorage.getItem('access_token');
-      if (token) {
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      if (store_Id) {
         setTimeout(() => {
           navigation.navigate('Select Branch');
         }, 2000);
-      } else {
+      } 
+      else if(token) {        
+        setTimeout(() => {
+          navigation.navigate('Setup your Store');
+        }, 2000);
+      }
+      else {
         setTimeout(() => {
           navigation.navigate('Login-admin');
         }, 2000);

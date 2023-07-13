@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import {setUpStoreStyles as setStore} from './opening-style';
+import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../utils/constants'
+import defaultPhoto from '../../../Admin/images/redRyori.png';
+
 export default function SetupStore({navigation}) {
+  const [photo, setPhoto] = useState(null)
 
   const [storeName, setStoreName] = useState('');
   const [store_Id, setStore_Id] = useState('');
@@ -13,48 +17,82 @@ export default function SetupStore({navigation}) {
   const [address, setAddress] = useState('');
   const [contactNumber, setContactNumber] = useState('');
 
+  const handleChoosePhoto = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 0.5,
+        includeBase64: false,
+      },
+      response => {
+        if (response.assets) {
+          setPhoto(response.assets[0].uri);
+        }
+      },
+    );
+  };
   const handleAddStore = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await AsyncStorage.getItem('access_token');
 
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const response = await axios.post(
-        `${API_URL}/store`,
-        {storeName, store_Id},
-        {headers},
-      );
-      console.log(response.data);
-      AsyncStorage.setItem('store_Id', response.data.id.toString());
-    } catch (error) {
-      console.error(error);
-    }
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        };
+
+        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
+        const randomFileName = (new Date().valueOf()).toString() + "." +fileType
+        const formData = new FormData();
+        formData.append('storeName', storeName);
+        formData.append('photo', {
+          uri: photo,
+          name: randomFileName,
+          type: 'image/jpeg',
+        });
+
+        const response = await axios.post(
+          `${API_URL}/store`,
+          formData,
+          {headers},
+        );
+        console.log(response.data);
+        AsyncStorage.setItem('store_Id', response.data.id.toString());
+        resolve('done')
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
   };
 
   const handleAddBranch = async () => {
+    return new Promise(async (resolve, reject) => {
     try {
-      const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const response = await axios.post(
-        `${API_URL}/branch`,
-        {
-          branchName,
-          email,
-          contactNumber,
-          address,
-          store_Id,
-        },
-        {headers},
-      );
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_Id');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        const response = await axios.post(
+          `${API_URL}/branch`,
+          {
+            branchName,
+            email,
+            contactNumber,
+            address,
+            store_Id,
+          },
+          {headers},
+        );
 
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+        console.log(response.data);
+        resolve('done')
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
   };
 
   const handleSave = async () => {
@@ -72,11 +110,15 @@ export default function SetupStore({navigation}) {
         <View style={setStore.uploadLogoCol}>
           <Text style={setStore.storeLogoText}>Store Logo</Text>
           <View style={setStore.logo}>
-            <Text> This Area for Logo</Text>
+            <Image
+              source={ photo ? {uri: photo} : defaultPhoto}
+              style={{width: '100%', height: 150}}
+            />
           </View>
           <View style={setStore.uploadLogoBtn}>
             <TouchableOpacity
               style={setStore.uploadLogoOpacity}
+              onPress={handleChoosePhoto}
               // onPress={() => navigation.navigate('BottomNavs')}
             >
               <Text style={setStore.uploadLogoTextBtn}>Upload</Text>
