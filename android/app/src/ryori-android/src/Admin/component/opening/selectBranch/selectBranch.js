@@ -64,7 +64,14 @@ export default function Branches({navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
-
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate('Login-admin');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const init = async () => {
     await fetchStoreData();
     fetchBranchData();
@@ -96,7 +103,12 @@ export default function Branches({navigation}) {
           <Text>Loading Store data...</Text>
         )}
         <Text style={styles.selectText}>Select which Branch</Text>
-        <View style={{width: '100%', paddingHorizontal: 40, marginTop: 15}}>
+        <View
+          style={{
+            width: '100%',
+            paddingHorizontal: 40,
+            marginTop: 15,
+          }}>
           {branchData.map((branch, index) => (
             <View key={index}>
               <TouchableOpacity
@@ -112,6 +124,13 @@ export default function Branches({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        style={{alignItems: 'center', marginTop: 30}}
+        onPress={handleLogout}>
+        <Text style={{fontSize: 15, fontFamily: 'Quicksand-SemiBold'}}>
+          Logout
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
