@@ -10,18 +10,10 @@ import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants'
 
-const filterAvalable = [
-  {label: 'Available', value: 'Available'},
-  {label: 'Not Available', value: 'Not Available'},
-];
-const categories = [
-  {label: 'Pork', value: 'Pork'},
-  {label: 'Drinks', value: 'Drinks'},
-];
-export default function Category({navigation}) {
-
+export default function Category() {
+  
   const [categoryName, setCategoryName] = useState('')
-  const [photo, setPhoto] = useState(ryoriLogo);
+  const [photo, setPhoto] = useState(null)
   const [itemOnEdit, setItemOnEdit] = useState('')
   const [items, setItems] = useState([]);
 
@@ -29,7 +21,6 @@ export default function Category({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');      
       const store_Id = await AsyncStorage.getItem('store_Id');
-
       const response = await axios.get(`${API_URL}/menuCategory/?store_Id=${store_Id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,7 +45,7 @@ export default function Category({navigation}) {
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        setPhoto(response.assets[0]);
+        setPhoto(response.assets[0].uri);
       }
     });
   };
@@ -67,8 +58,7 @@ export default function Category({navigation}) {
       },
       response => {
         if (response.assets) {
-          console.log('the photo', response.assets[0])
-          setPhoto(response.assets[0]);
+          setPhoto(response.assets[0].uri);
         }
       },
     );
@@ -76,24 +66,27 @@ export default function Category({navigation}) {
   const addCategory = async () => {
     
     try {
-      const token = await AsyncStorage.getItem('access_token');
+      const token = await AsyncStorage.getItem('access_token');      
       const store_Id = await AsyncStorage.getItem('store_Id');
       
-      let formData = new FormData();
+      const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
+      const randomFileName = (new Date().valueOf()).toString() + "." +fileType
+      
+      const formData = new FormData();
+        
       formData.append('title', categoryName);
       formData.append('photo', {
-        uri: photo.uri,
-        name: photo.fileName,
-        type: photo.type,
+        uri: photo,
+        name: randomFileName,
+        type: 'image/jpeg',
       });
       formData.append('store_Id', store_Id)
+      
 
       // Edit
       if(itemOnEdit !== '') {
-        await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, {
-          title: categoryName,
-          photo: photo.uri
-        }, {headers});
+        // Need to double check Edit bugs... still haveing issues found.
+        await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, formData, {headers});
         fetchItems();
       }
       else { // New
@@ -106,25 +99,31 @@ export default function Category({navigation}) {
         fetchItems();
       }      
     } catch (error) {
-      console.error(error);
+      console.error(JSON.stringify(error));
     }
   }
   const cancelEdit = () => {
     setCategoryName('')
-    setPhoto(ryoriLogo)
+    setPhoto(null)
     setItemOnEdit('')
   }
 
-  const handleEdit = (item) => {
+  const handleEdit = async (item) => {
+    const token = await AsyncStorage.getItem('access_token');
+
+    const responsePhoto = await axios.get(`${API_URL}/menuCategory/${item.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     setItemOnEdit(item.id)
     setCategoryName(item.title)
-    setPhoto(item.photo)
+    setPhoto(responsePhoto.data.photo)
   }
 
   const handleDelete = async (id) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       await axios.delete(`${API_URL}/menuCategory/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -162,7 +161,7 @@ export default function Category({navigation}) {
 
               {/* <View key={item.id}> */}
               {items.map((item, index) => (
-                <DataTable.Row>
+                <DataTable.Row key={index}>
                   <DataTable.Cell>
                     <Text style={TransacStyle.textCell}>{item.title}</Text>
                   </DataTable.Cell>
@@ -200,9 +199,8 @@ export default function Category({navigation}) {
           <ScrollView style={{...CategoryStyle.menuC2}}>
             <View style={Styles.verContainer}>
               <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
-                
                 <Image
-                  source={photo}
+                  source={ photo ? {uri: photo} : ryoriLogo}
                   style={{width: '100%', height: 150}}
                 />
               </View>
@@ -234,41 +232,4 @@ export default function Category({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 40,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  dataRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  dataText: {
-    flex: 1,
-    fontSize: 14,
-  },
-  button: {
-    backgroundColor: 'blue',
-    borderRadius: 4,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    marginLeft: 8,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
 
