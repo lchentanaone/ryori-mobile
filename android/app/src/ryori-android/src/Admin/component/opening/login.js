@@ -4,7 +4,7 @@ import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../utils/constants'
 export default function Login({navigation}) {
 
   const [email, setEmail] = useState('ryoriapp@gmail.com');
