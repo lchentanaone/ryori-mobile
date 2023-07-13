@@ -21,7 +21,7 @@ const categories = [
 export default function Category({navigation}) {
 
   const [categoryName, setCategoryName] = useState('')
-  const [photo, setPhoto] = useState({uri:'file:///data/user/0/com.ryorimobile/cache/rn_image_picker_lib_temp_e3839c4b-7d41-42aa-adfc-7e1ddc7c850a.jpg'});
+  const [photo, setPhoto] = useState(ryoriLogo);
   const [itemOnEdit, setItemOnEdit] = useState('')
   const [items, setItems] = useState([]);
 
@@ -78,9 +78,15 @@ export default function Category({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      
+      let formData = new FormData();
+      formData.append('title', categoryName);
+      formData.append('photo', {
+        uri: photo.uri,
+        name: photo.fileName,
+        type: photo.type,
+      });
+      formData.append('store_Id', store_Id)
 
       // Edit
       if(itemOnEdit !== '') {
@@ -91,14 +97,12 @@ export default function Category({navigation}) {
         fetchItems();
       }
       else { // New
-        let data = new FormData();
-        data.append('title', 'Chicken');
-        data.append('photo', {
-          uri: photo.uri,
-          name: photo.fileName,
-          type: photo.type,
+        await axios.post(`${API_URL}/menuCategory/`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          }
         });
-        await axios.post(`${API_URL}/menuCategory/`, data, {headers});
         fetchItems();
       }      
     } catch (error) {
@@ -107,14 +111,14 @@ export default function Category({navigation}) {
   }
   const cancelEdit = () => {
     setCategoryName('')
-    setPhoto({uri: ryoriLogo})
+    setPhoto(ryoriLogo)
     setItemOnEdit('')
   }
 
   const handleEdit = (item) => {
     setItemOnEdit(item.id)
     setCategoryName(item.title)
-    setPhoto({uri: item.photo})
+    setPhoto(item.photo)
   }
 
   const handleDelete = async (id) => {
@@ -198,7 +202,7 @@ export default function Category({navigation}) {
               <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
                 
                 <Image
-                  source={photo.uri}
+                  source={photo}
                   style={{width: '100%', height: 150}}
                 />
               </View>
