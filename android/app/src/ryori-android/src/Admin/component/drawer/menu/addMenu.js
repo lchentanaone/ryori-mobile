@@ -12,7 +12,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../../utils/constants';
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
     type: 'new',
@@ -87,7 +87,7 @@ export default function AddMenu({route, navigation}) {
       fetchDetail();
     }
   }, [item]);
-  const handlePost = async () => {
+  const handleAddMenu = async () => {
     try {
       if (type === 'edit') {
         const token = await AsyncStorage.getItem('access_token');
@@ -139,22 +139,20 @@ export default function AddMenu({route, navigation}) {
           },
           {headers},
         );
-        AsyncStorage.setItem('menuItem_Id', response.data.id.toString());
+        return response.data.id.toString();
         // const clearId =() =>{
 
         // }
       }
-      navigation.navigate('Menu');
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleQuantity = async () => {
+  const handleAddBranchItem = async menuItemId => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const menuItem_Id = await AsyncStorage.getItem('menuItem_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -162,7 +160,7 @@ export default function AddMenu({route, navigation}) {
         `${API_URL}/branchItem`,
         {
           branch_Id,
-          menuItem_Id,
+          menuItem_Id: menuItemId,
           quantity: qty,
         },
         {headers},
@@ -173,8 +171,8 @@ export default function AddMenu({route, navigation}) {
   };
 
   const handleSave = async () => {
-    await handlePost();
-    await handleQuantity();
+    const menuItemId = await handleAddMenu();
+    await handleAddBranchItem(menuItemId);
     navigation.navigate('Menu');
   };
 
@@ -243,7 +241,7 @@ export default function AddMenu({route, navigation}) {
                 keyboardType="numeric"
                 placeholder="Price"
                 placeholderTextColor="#777777"
-                value={price.toString()}
+                value={price}
                 secureTextEntry={false}
                 onChangeText={setPrice}
               />
@@ -254,7 +252,7 @@ export default function AddMenu({route, navigation}) {
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
-                  value={qty.toString()}
+                  value={qty}
                   secureTextEntry={false}
                   onChangeText={setQty}
                 />

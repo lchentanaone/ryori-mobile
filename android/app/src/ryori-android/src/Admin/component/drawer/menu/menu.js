@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../../utils/constants';
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
   {label: 'Not Available', value: 'Not Available'},
@@ -17,7 +17,6 @@ const categories = [
   {label: 'Drinks', value: 'Drinks'},
 ];
 export default function Menu({navigation}) {
-
   const [category, setCategory] = useState('All');
   const [availability, setAvailability] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -26,9 +25,10 @@ export default function Menu({navigation}) {
   const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       const response = await axios.get(
-        `${API_URL}/branchItem?branch_Id=${branch_Id}`,
+        `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
         {
           branch_Id,
           headers: {
@@ -142,16 +142,10 @@ export default function Menu({navigation}) {
                     style={MenuStyle.menuImage}
                   />
                   <View style={MenuStyle.menuLabelPrice}>
-                    <Text style={MenuStyle.menuLabel}>
-                      {item.menuItem.title}
-                    </Text>
-                    <Text style={MenuStyle.menuLabel}>
-                      {item.menuItem.description}
-                    </Text>
+                    <Text style={MenuStyle.menuLabel}>{item.title}</Text>
+                    <Text style={MenuStyle.menuLabel}>{item.description}</Text>
                     <Text style={MenuStyle.menuLabel}>{item.quantity}</Text>
-                    <Text style={MenuStyle.menuPrice}>
-                      {item.menuItem.price}
-                    </Text>
+                    <Text style={MenuStyle.menuPrice}>{item.price}</Text>
                   </View>
                 </View>
                 <Text style={MenuStyle.menuDescrip}>{item.image}</Text>
