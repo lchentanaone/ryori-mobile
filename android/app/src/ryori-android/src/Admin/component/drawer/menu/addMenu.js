@@ -102,7 +102,7 @@ export default function AddMenu({route, navigation}) {
             title,
             price,
             photo,
-            quantity: qty,
+            // quantity: qty,
             description,
             cookingTime,
             branch_Id: 1,
@@ -114,7 +114,7 @@ export default function AddMenu({route, navigation}) {
           title,
           price,
           photo,
-          quantity: qty,
+          // quantity: qty,
           description,
           cookingTime,
           branch_Id: 1,
@@ -126,13 +126,13 @@ export default function AddMenu({route, navigation}) {
         const headers = {
           Authorization: `Bearer ${token}`,
         };
-        await axios.post(
+        const response = await axios.post(
           `${API_URL}/menuItem`,
           {
             title,
             price,
             photo,
-            quantity: qty,
+            // quantity: qty,
             description,
             cookingTime,
             branch_Id: 1,
@@ -141,11 +141,43 @@ export default function AddMenu({route, navigation}) {
           },
           {headers},
         );
+        AsyncStorage.setItem('menuItem_Id', response.data.id.toString());
+        // const clearId =() =>{
+
+        // }
       }
       navigation.navigate('Menu');
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleQuantity = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const menuItem_Id = await AsyncStorage.getItem('menuItem_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      await axios.post(
+        `${API_URL}/branchItem`,
+        {
+          branch_Id,
+          menuItem_Id,
+          quantity: qty,
+        },
+        {headers},
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSave = async () => {
+    await handlePost();
+    await handleQuantity();
+    navigation.navigate('Menu');
   };
 
   const handleChoosePhoto = () => {
@@ -325,6 +357,7 @@ export default function AddMenu({route, navigation}) {
           <View style={AddMenuStyle.addMenuBtn}>
             <TouchableOpacity
               style={AddMenuStyle.cancelOpacity}
+              // onPress={handleQuantity}
               onPress={() => navigation.navigate('Menu')}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
             </TouchableOpacity>
@@ -339,7 +372,7 @@ export default function AddMenu({route, navigation}) {
           <View style={AddMenuStyle.addMenuBtn}>
             <TouchableOpacity
               style={AddMenuStyle.addMenuOpacity}
-              onPress={handlePost}>
+              onPress={handleSave}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
             </TouchableOpacity>
           </View>

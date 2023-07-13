@@ -27,14 +27,14 @@ export default function Menu({navigation}) {
   const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
       const response = await axios.get(
-        `${API_URL}/menuItem/?store_Id=${store_Id}`,
+        `${API_URL}/branchItem?branch_Id=${branch_Id}`,
         {
+          branch_Id,
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          store_Id,
         },
       );
       setItems(response.data);
@@ -124,43 +124,44 @@ export default function Menu({navigation}) {
             </View>
           </View>
         </View>
-        <View style={MenuStyle.menuList}>
-          <View style={MenuStyle.menuItemRow}>
-            {items.map((item, index) => (
-              <View key={index}>
-                <View style={MenuStyle.menuItem}>
-                  <TouchableOpacity
-                    style={MenuStyle.menuItemIcon}
-                    key={item}
-                    onPress={() =>
-                      navigation.navigate('menu-details', {item, type: 'edit'})
-                    }>
-                    <MaterialCommunityIcons
-                      name="pencil-box-outline"
-                      size={25}
-                    />
-                  </TouchableOpacity>
-                  <View style={MenuStyle.ImageLabe}>
-                    <Image
-                      source={{uri: item.photo}}
-                      style={MenuStyle.menuImage}
-                    />
-                    <View style={MenuStyle.menuLabelPrice}>
-                      <Text style={MenuStyle.menuLabel}>{item.title}</Text>
-                      <Text style={MenuStyle.menuLabel}>
-                        {item.description}
-                      </Text>
-                      <Text style={MenuStyle.menuLabel}>{item.quantity}</Text>
-                      <Text style={MenuStyle.menuPrice}>{item.price}</Text>
-                    </View>
+        {/* <View style={MenuStyle.menuList}> */}
+        <View style={MenuStyle.menuItemRow}>
+          {items.map((item, index) => (
+            <View key={index}>
+              <View style={MenuStyle.menuItem}>
+                <TouchableOpacity
+                  style={MenuStyle.menuItemIcon}
+                  key={item}
+                  onPress={() =>
+                    navigation.navigate('menu-details', {item, type: 'edit'})
+                  }>
+                  <MaterialCommunityIcons name="pencil-box-outline" size={25} />
+                </TouchableOpacity>
+                <View style={MenuStyle.ImageLabe}>
+                  <Image
+                    source={{uri: item.photo}}
+                    style={MenuStyle.menuImage}
+                  />
+                  <View style={MenuStyle.menuLabelPrice}>
+                    <Text style={MenuStyle.menuLabel}>
+                      {item.menuItem.title}
+                    </Text>
+                    <Text style={MenuStyle.menuLabel}>
+                      {item.menuItem.description}
+                    </Text>
+                    <Text style={MenuStyle.menuLabel}>{item.quantity}</Text>
+                    <Text style={MenuStyle.menuPrice}>
+                      {item.menuItem.price}
+                    </Text>
                   </View>
-                  <Text style={MenuStyle.menuDescrip}>{item.image}</Text>
                 </View>
+                <Text style={MenuStyle.menuDescrip}>{item.image}</Text>
               </View>
-            ))}
-          </View>
+            </View>
+          ))}
         </View>
       </View>
+      {/* </View> */}
     </View>
   );
 }
