@@ -59,7 +59,7 @@ export default function SetupStore({navigation}) {
 
   const handleSave = async () => {
     await handleAddStore();
-    handleAddBranch();
+    await handleAddBranch();
     navigation.navigate('Drawer');
   };
 

@@ -28,6 +28,7 @@ import userAvatar from '../../../images/male3.png';
 import Employees from '../employee/employee';
 import {API_URL} from '../../../../utils/constants'
 import axios from 'axios';
+import InventoryCategory from '../inventory/inventoryCategory';
 
 const RyoriDrawer = props => {
   const navigation = useNavigation();
@@ -107,7 +108,7 @@ export default function DrawersNav({navigation}) {
         },
         headerStyle: {shadowColor: 0, backgroundColor: '#fff', height: 25},
         drawerStyle: {
-          width: '25%',
+          width: '30%',
         },
       }}>
       <Drawer.Screen
@@ -170,7 +171,7 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="ReportOfTransaction"
+        name="Report of Transaction"
         component={ReportOfTransaction}
         options={{
           headerShown: false,
@@ -184,7 +185,7 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="ReportOfFood"
+        name="Report of Food"
         component={ReportOfFood}
         options={{
           headerShown: false,
@@ -200,6 +201,20 @@ export default function DrawersNav({navigation}) {
       <Drawer.Screen
         name="Inventory"
         component={Inventory}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <FontAwesome5
+              name="box-open"
+              color={focused ? '#DB1B1B' : '#000'}
+              size={18}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Inventory Category"
+        component={InventoryCategory}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (

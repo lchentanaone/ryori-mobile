@@ -265,3 +265,74 @@ export const InventoryStyle = StyleSheet.create({
     flexDirection: 'row',
   },
 });
+
+export const CategoryInventoryStyle = StyleSheet.create({
+  container: {
+    backgroundColor: '#F9F9F9',
+    flex: 1,
+    position: 'relative',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  content: {
+    width: '100%',
+    position: 'absolute',
+    top: 15,
+    // backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 20,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+    marginBottom: 10,
+  },
+  input: {
+    width: '40%',
+    fontSize: 15,
+    height: 35,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 10,
+    shadowColor: '#000',
+    elevation: 5,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  saveBtn: {
+    backgroundColor: '#4285F4',
+    width: 100,
+    height: 35,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+  btnText: {
+    fontSize: 15,
+    color: '#fff',
+    fontFamily: 'Quicksand-Meduim',
+  },
+  tableWidth: {
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    borderRadius: 5,
+    elevation: 5,
+    width: '100%',
+    height: 250,
+  },
+  textHeader: {
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  horContainer: {
+    flexDirection: 'row',
+  },
+  list: {
+    width: '95%',
+  },
+  tableHeader: {
+    backgroundColor: '#EEF2F6',
+  },
+});

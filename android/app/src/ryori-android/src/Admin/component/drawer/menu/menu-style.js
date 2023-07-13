@@ -130,7 +130,7 @@ export const MenuStyle = StyleSheet.create({
     elevation: 6,
     marginBottom: 10,
     height: 130,
-    width: 200,
+    width: 190,
     borderRadius: 10,
     margin: 5,
     paddingHorizontal: 5,
@@ -170,6 +170,7 @@ export const MenuStyle = StyleSheet.create({
     fontSize: 14,
   },
   menuItemRow: {
+    marginTop: 5,
     flexDirection: 'row',
   },
   menuTable: {
@@ -385,8 +386,8 @@ export const AddMenuStyle = StyleSheet.create({
     left: 100,
     width: 200,
     height: 60,
-    marginTop:50,
-    marginBottom:50
+    marginTop: 50,
+    marginBottom: 50,
   },
   actionOpacity: {
     width: 40,

@@ -24,6 +24,7 @@ const categories = [
 
 export default function Inventory() {
 
+  const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [isFocus, setIsFocus] = useState(false);
@@ -33,6 +34,30 @@ export default function Inventory() {
   const [modalVisible, setModalVisible] = useState(false);
   const [inventory, setInventory] = useState([]);
   const [updateItem, setUpdateItem] = useState();
+
+  const fetchCategory = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const response = await axios.get(
+        `${API_URL}/inventory/rawcategory/?branch_Id=${branch_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      // console.log('categories: ', response.data)
+      const dropdownCategories = response.data.map(categoryItem => ({
+        label: categoryItem.title,
+        value: categoryItem.id,
+      }));
+      setCategories(dropdownCategories);
+      console.log(dropdownCategories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchItems = async () => {
     try {
@@ -83,6 +108,7 @@ export default function Inventory() {
             item,
             weight,
             quantity,
+            rawCategory_Id: category,
           },
           {headers},
         );
@@ -97,6 +123,7 @@ export default function Inventory() {
             item,
             weight,
             quantity,
+            rawCategory_Id: 1,
           },
           {headers},
         );
@@ -128,6 +155,7 @@ export default function Inventory() {
   };
 
   useEffect(() => {
+    fetchCategory();
     fetchItems();
   }, []);
 
