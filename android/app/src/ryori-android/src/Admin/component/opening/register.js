@@ -4,7 +4,7 @@ import ryoriText from '../../images/ryori-text.png';
 import {openingStyles} from './opening-style';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../utils/constants'
 export default function Register() {
   const navigation = useNavigation();
 
