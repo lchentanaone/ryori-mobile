@@ -118,7 +118,9 @@ export default function Branches({navigation}) {
               </TouchableOpacity>
             </View>
           ))}
-          <TouchableOpacity style={styles.addBranchBtn}>
+          <TouchableOpacity
+            style={styles.addBranchBtn}
+            onPress={() => navigation.navigate('Setup your Store')}>
             <Entypo name="plus" style={styles.addIcon} />
             <Text style={styles.addBranchText}>Add new Branch</Text>
           </TouchableOpacity>

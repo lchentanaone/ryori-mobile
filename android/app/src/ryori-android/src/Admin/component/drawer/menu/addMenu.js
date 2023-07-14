@@ -89,7 +89,7 @@ export default function AddMenu({route, navigation}) {
     }
   }, []);
   
-  const handlePost = async () => {
+  const handleAddMenu = async () => {
     return new Promise(async (resolve, reject) => {
       try {
         const token = await AsyncStorage.getItem('access_token');
@@ -135,7 +135,7 @@ export default function AddMenu({route, navigation}) {
     });
   };
 
-  const handleQuantity = async (menuItem_Id) => {
+  const handleAddBranchItem = async (menuItem_Id) => {
     return new Promise(async (resolve, reject) => {
       try {
         const token = await AsyncStorage.getItem('access_token');
@@ -161,8 +161,8 @@ export default function AddMenu({route, navigation}) {
   };
 
   const handleSave = async () => {
-    const menuItem_Id = await handlePost();
-    await handleQuantity(menuItem_Id);
+    const menuItemId = await handleAddMenu();
+    await handleAddBranchItem(menuItemId);
     navigation.navigate('Menu');
   };
 
@@ -231,7 +231,7 @@ export default function AddMenu({route, navigation}) {
                 keyboardType="numeric"
                 placeholder="Price"
                 placeholderTextColor="#777777"
-                value={price.toString()}
+                value={price}
                 secureTextEntry={false}
                 onChangeText={setPrice}
               />
@@ -242,7 +242,7 @@ export default function AddMenu({route, navigation}) {
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
-                  value={qty?.toString()}
+                  value={qty}
                   secureTextEntry={false}
                   onChangeText={setQty}
                 />
