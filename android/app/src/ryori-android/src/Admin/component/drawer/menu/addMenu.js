@@ -6,13 +6,16 @@ import {
   TextInput,
   Button,
   Image,
+  ScrollView
 } from 'react-native';
 import {AddMenuStyle, DropdownStyle} from './menu-style';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {Styles} from './../../../../layoutStyles'
 import {API_URL} from '../../../../utils/constants'
+import defaultPhoto from '../../../images/redRyori.png';
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
     type: 'new',
@@ -21,7 +24,6 @@ export default function AddMenu({route, navigation}) {
   let pageTitle = '';
 
   if (type === 'edit') {
-    // console.log({item})
     pageTitle = 'Edit menu #' + item.id;
   } else {
     pageTitle = 'Add menu item';
@@ -32,7 +34,7 @@ export default function AddMenu({route, navigation}) {
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
   const [qty, setQty] = useState(1);
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState('');
@@ -40,12 +42,12 @@ export default function AddMenu({route, navigation}) {
   const fetchCategory = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/menuCategory/`, {
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const response = await axios.get(`${API_URL}/menuCategory/?store_Id=${store_Id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log('categories: ', response.data)
       const dropdownCategories = response.data.map(item => ({
         label: item.title,
         value: item.id,
@@ -64,7 +66,6 @@ export default function AddMenu({route, navigation}) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log({data: response.data});
       setTitle(response.data.title);
       setPrice(response.data.price);
       setQty(response.data.quantity);
@@ -86,95 +87,82 @@ export default function AddMenu({route, navigation}) {
     if (type === 'edit') {
       fetchDetail();
     }
-  }, [item]);
+  }, []);
+  
   const handlePost = async () => {
-    try {
-      if (type === 'edit') {
-        const token = await AsyncStorage.getItem('access_token');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        const response = await axios.patch(
-          `${API_URL}/menuItem/${item.id}`,
-          {
-            title,
-            price,
-            photo,
-            // quantity: qty,
-            description,
-            cookingTime,
-            branch_Id: 1,
-            category_Id: category,
-          },
-          {headers},
-        );
-        console.log({
-          title,
-          price,
-          photo,
-          // quantity: qty,
-          description,
-          cookingTime,
-          branch_Id: 1,
-          category_Id: category,
-        });
-      } else {
+    return new Promise(async (resolve, reject) => {
+      try {
         const token = await AsyncStorage.getItem('access_token');
         const store_Id = await AsyncStorage.getItem('store_Id');
         const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        };
+
+        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
+        const randomFileName = (new Date().valueOf()).toString() + "." +fileType
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('price', price);
+        formData.append('description', description);
+        formData.append('cookingTime', cookingTime);
+        formData.append('category_Id', category);
+        formData.append('store_Id', store_Id);
+        formData.append('photo', {
+          uri: photo,
+          name: randomFileName,
+          type: 'image/jpeg',
+        });
+        
+        if (type === 'edit') {
+          const response = await axios.patch(
+            `${API_URL}/menuItem/${item.id}`,
+            formData,
+            {headers},
+          );
+        } else {
+          const response = await axios.post(
+            `${API_URL}/menuItem`,
+            formData,
+            {headers},
+          );
+          resolve(response.data.id)
+        }
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
+  };
+
+  const handleQuantity = async (menuItem_Id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const headers = {
           Authorization: `Bearer ${token}`,
         };
-        const response = await axios.post(
-          `${API_URL}/menuItem`,
+        await axios.post(
+          `${API_URL}/branchItem`,
           {
-            title,
-            price,
-            photo,
-            // quantity: qty,
-            description,
-            cookingTime,
-            branch_Id: 1,
-            category_Id: 1,
-            store_Id,
+            branch_Id,
+            menuItem_Id,
+            quantity: qty,
           },
           {headers},
         );
-        AsyncStorage.setItem('menuItem_Id', response.data.id.toString());
-        // const clearId =() =>{
-
-        // }
+        resolve(true)
+      } catch (error) {
+        console.error(error);
+        reject(error);
       }
-      navigation.navigate('Menu');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleQuantity = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const menuItem_Id = await AsyncStorage.getItem('menuItem_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      await axios.post(
-        `${API_URL}/branchItem`,
-        {
-          branch_Id,
-          menuItem_Id,
-          quantity: qty,
-        },
-        {headers},
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   const handleSave = async () => {
-    await handlePost();
-    await handleQuantity();
+    const menuItem_Id = await handlePost();
+    await handleQuantity(menuItem_Id);
     navigation.navigate('Menu');
   };
 
@@ -254,7 +242,7 @@ export default function AddMenu({route, navigation}) {
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
-                  value={qty.toString()}
+                  value={qty?.toString()}
                   secureTextEntry={false}
                   onChangeText={setQty}
                 />
@@ -335,19 +323,17 @@ export default function AddMenu({route, navigation}) {
             </View>
           </View>
           <View style={AddMenuStyle.uploadMenuImg}>
-            <View style={AddMenuStyle.imgContainer}>
-              <View style={{marginBottom: 10}}>
-                {photo && (
-                  <Image
-                    source={{uri: photo}}
-                    style={{width: 200, height: 200}}
-                  />
-                )}
+            <View style={Styles.verContainer}>
+              <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
+                <Image
+                  source={ photo ? {uri: photo} : defaultPhoto}
+                  style={{width: '100%', height: 150}}
+                />
               </View>
-              <View style={{marginBottom: 5}}>
-                <Button title="Open Camera" onPress={handleOpenCamera} />
+              <View style={Styles.horContainer}>
+                <Button style={Styles.btn} title="Open Camera" onPress={handleOpenCamera} />
+                <Button title="Choose Photo" onPress={handleChoosePhoto} />
               </View>
-              <Button title="Choose Photo" onPress={handleChoosePhoto} />
             </View>
           </View>
         </View>
