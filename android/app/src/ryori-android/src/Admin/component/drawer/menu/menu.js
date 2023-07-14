@@ -132,50 +132,60 @@ export default function Menu({navigation}) {
             </View>
           </View>
         </View>
-        {/* <View style={MenuStyle.menuList}> */}
-        <View style={MenuStyle.menuItemRow}>
-          {items.map((item, index) => (
-            <View key={index}>
-              {/* <ScrollView> */}
-              <View style={MenuStyle.menuItem}>
-                <TouchableOpacity
-                  style={MenuStyle.menuItemIcon}
-                  key={item}
-                  onPress={() =>
-                    navigation.navigate('menu-details', {item, type: 'edit'})
-                  }>
-                  <MaterialCommunityIcons name="pencil-box-outline" size={25} />
-                </TouchableOpacity>
-                <View style={MenuStyle.menuDetails}>
-                  <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                    <Image
-                      source={{uri: item.photo}}
-                      style={MenuStyle.menuImage}
-                    />
-                  </View>
-                  <View style={MenuStyle.menuLabelPrice}>
-                    <Text style={MenuStyle.menuLabel}>{item.title}</Text>
-                    <Text style={MenuStyle.menudescription}>
-                      {item.description}
-                    </Text>
+
+        <View style={{height: 300}}>
+          <ScrollView>
+            <View style={MenuStyle.menuItemRow}>
+              {items.map((item, index) => (
+                <View key={index}>
+                  <View style={MenuStyle.menuItem}>
+                    <TouchableOpacity
+                      style={MenuStyle.menuItemIcon}
+                      key={item}
+                      onPress={() =>
+                        navigation.navigate('menu-details', {
+                          item,
+                          type: 'edit',
+                        })
+                      }>
+                      <MaterialCommunityIcons
+                        name="pencil-box-outline"
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <View style={MenuStyle.menuDetails}>
+                      <View
+                        style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Image
+                          source={{uri: item.photo}}
+                          style={MenuStyle.menuImage}
+                        />
+                      </View>
+                      <View style={MenuStyle.menuLabelPrice}>
+                        <Text style={MenuStyle.menuLabel}>{item.title}</Text>
+                        <Text style={MenuStyle.menudescription}>
+                          {item.description}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 15,
+                      }}>
+                      <Text style={MenuStyle.menuPrice}>₱ {item.price}</Text>
+                      <Text style={MenuStyle.menuQty}>
+                        Qty: {item.quantity}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 15,
-                  }}>
-                  <Text style={MenuStyle.menuPrice}>₱ {item.price}</Text>
-                  <Text style={MenuStyle.menuQty}>Qty: {item.quantity}</Text>
-                </View>
-              </View>
+              ))}
             </View>
-          ))}
-          {/* </ScrollView> */}
+          </ScrollView>
         </View>
       </View>
-      {/* </View> */}
     </View>
   );
 }

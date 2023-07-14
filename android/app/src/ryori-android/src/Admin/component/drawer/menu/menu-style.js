@@ -120,22 +120,17 @@ export const MenuStyle = StyleSheet.create({
     height: 40,
     fontSize: 14,
   },
-  menuList: {
-    top: 5,
-  },
-
   menuItem: {
     backgroundColor: '#fff',
     shadowColor: '#000',
     elevation: 6,
     margin: 2,
     height: 130,
-    width: '100%',
+    width: '98%',
     borderRadius: 10,
     margin: 5,
     paddingHorizontal: 5,
-
-    // alignItems: 'center',
+    marginLeft: 10,
   },
   menuItemIcon: {
     alignItems: 'flex-end',
@@ -182,7 +177,6 @@ export const MenuStyle = StyleSheet.create({
   menuItemRow: {
     marginTop: 5,
     flexDirection: 'row',
-    height: 300,
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
