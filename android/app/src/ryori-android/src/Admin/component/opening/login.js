@@ -13,22 +13,18 @@ export default function Login({navigation}) {
 
   const handleLogin = async () => {
     try {
-      const response = axios
-        .post(`${API_URL}/auth/login`, {email, password})
-        .then(async response => {
-          const token = response.data.access_token;
-          await AsyncStorage.setItem('access_token', token);
-
-          if (response.data.store_Id) {
-            await AsyncStorage.setItem(
-              'store_Id',
-              response.data.store_Id.toString(),
-            );
-            navigation.navigate('Select Branch');
-          } else {
-            navigation.navigate('Setup your Store');
-          }
-        });
+      const response = await axios.post(`${API_URL}/auth/login`, {email, password})
+      const token = response.data.access_token;
+      await AsyncStorage.setItem('access_token', token);
+      if (response.data.store_Id) {
+        await AsyncStorage.setItem(
+          'store_Id',
+          response.data.store_Id.toString(),
+        );
+        navigation.navigate('Select Branch');
+      } else {
+        navigation.navigate('Setup your Store');
+      }
     } catch (error) {
       console.error('Error logging in:', error);
     }
