@@ -6,7 +6,7 @@ export const MenuStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
   },
   menuContent: {
     width: '100%',
@@ -128,50 +128,66 @@ export const MenuStyle = StyleSheet.create({
     backgroundColor: '#fff',
     shadowColor: '#000',
     elevation: 6,
-    marginBottom: 10,
+    margin: 2,
     height: 130,
-    width: 190,
+    width: '100%',
     borderRadius: 10,
     margin: 5,
     paddingHorizontal: 5,
+
     // alignItems: 'center',
   },
   menuItemIcon: {
     alignItems: 'flex-end',
   },
-  ImageLabe: {
+  menuDetails: {
     flexDirection: 'row',
-    left: 10,
   },
   menuImage: {
-    top: -15,
+    top: -5,
     height: 70,
     width: 70,
     borderRadius: 35,
   },
   menuLabelPrice: {
-    top: -15,
-    left: 15,
+    top: -10,
+    left: 10,
+    textAlign: 'left',
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
+
   menuLabel: {
     color: '#000',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
+  },
+  menudescription: {
+    color: '#71797E',
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    width: 180,
   },
   menuPrice: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 17,
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  menuQty: {
+    color: '#000',
+    fontSize: 15,
     fontFamily: 'Quicksand-Medium',
   },
-  menuDescrip: {
-    top: -10,
-    fontSize: 14,
-  },
+
   menuItemRow: {
     marginTop: 5,
     flexDirection: 'row',
+    height: 300,
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   menuTable: {
     justifyContent: 'flex-start',
@@ -380,15 +396,6 @@ export const AddMenuStyle = StyleSheet.create({
     padding: 35,
   },
   //--------------------
-  imgContainer: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    left: 100,
-    width: 200,
-    height: 60,
-    marginTop: 50,
-    marginBottom: 50,
-  },
   actionOpacity: {
     width: 40,
     height: 35,
