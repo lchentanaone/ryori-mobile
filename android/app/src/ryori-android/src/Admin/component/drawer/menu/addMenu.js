@@ -6,15 +6,15 @@ import {
   TextInput,
   Button,
   Image,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import {AddMenuStyle, DropdownStyle} from './menu-style';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Styles} from './../../../../layoutStyles'
-import {API_URL} from '../../../../utils/constants'
+import {Styles} from './../../../../layoutStyles';
+import {API_URL} from '../../../../utils/constants';
 import defaultPhoto from '../../../images/redRyori.png';
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
@@ -43,11 +43,14 @@ export default function AddMenu({route, navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      const response = await axios.get(`${API_URL}/menuCategory/?store_Id=${store_Id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${API_URL}/menuCategory/?store_Id=${store_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const dropdownCategories = response.data.map(item => ({
         label: item.title,
         value: item.id,
@@ -88,19 +91,19 @@ export default function AddMenu({route, navigation}) {
       fetchDetail();
     }
   }, []);
-  
+
   const handleAddMenu = async () => {
     return new Promise(async (resolve, reject) => {
       try {
         const token = await AsyncStorage.getItem('access_token');
         const store_Id = await AsyncStorage.getItem('store_Id');
         const headers = {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         };
 
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
-        const randomFileName = (new Date().valueOf()).toString() + "." +fileType
+        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
         const formData = new FormData();
         formData.append('title', title);
         formData.append('price', price);
@@ -113,20 +116,20 @@ export default function AddMenu({route, navigation}) {
           name: randomFileName,
           type: 'image/jpeg',
         });
-        
+
         if (type === 'edit') {
           const response = await axios.patch(
             `${API_URL}/menuItem/${item.id}`,
             formData,
             {headers},
           );
+          resolve(response.data.id);
         } else {
-          const response = await axios.post(
-            `${API_URL}/menuItem`,
-            formData,
-            {headers},
-          );
-          resolve(response.data.id)
+          const response = await axios.post(`${API_URL}/menuItem`, formData, {
+            headers,
+          });
+          console.log(response.data.id);
+          resolve(response.data.id);
         }
       } catch (error) {
         console.error(error);
@@ -135,7 +138,7 @@ export default function AddMenu({route, navigation}) {
     });
   };
 
-  const handleAddBranchItem = async (menuItem_Id) => {
+  const handleAddBranchItem = async menuItem_Id => {
     return new Promise(async (resolve, reject) => {
       try {
         const token = await AsyncStorage.getItem('access_token');
@@ -152,7 +155,7 @@ export default function AddMenu({route, navigation}) {
           },
           {headers},
         );
-        resolve(true)
+        resolve(true);
       } catch (error) {
         console.error(error);
         reject(error);
@@ -160,8 +163,9 @@ export default function AddMenu({route, navigation}) {
     });
   };
 
-  const handleSave = async () => {
+  const handleSaveMenu = async () => {
     const menuItemId = await handleAddMenu();
+    console.log({menuItemId});
     await handleAddBranchItem(menuItemId);
     navigation.navigate('Menu');
   };
@@ -199,9 +203,16 @@ export default function AddMenu({route, navigation}) {
     });
   };
 
-  const handleDelete = async () => {
+  const handleDeleteMenu = async () => {
     try {
-      const response = await axios.delete(`${API_URL}/menuItem/${item.id}`);
+      const token = await AsyncStorage.getItem('access_token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      };
+      const response = await axios.delete(`${API_URL}/menuItem/${item.id}`, {
+        headers,
+      });
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -324,14 +335,24 @@ export default function AddMenu({route, navigation}) {
           </View>
           <View style={AddMenuStyle.uploadMenuImg}>
             <View style={Styles.verContainer}>
-              <View style={{backgroundColor: '#ddd', borderColor: '#ddd', borderWidth: 1, padding: 5, }}>
+              <View
+                style={{
+                  backgroundColor: '#ddd',
+                  borderColor: '#ddd',
+                  borderWidth: 1,
+                  padding: 5,
+                }}>
                 <Image
-                  source={ photo ? {uri: photo} : defaultPhoto}
+                  source={photo ? {uri: photo} : defaultPhoto}
                   style={{width: '100%', height: 150}}
                 />
               </View>
               <View style={Styles.horContainer}>
-                <Button style={Styles.btn} title="Open Camera" onPress={handleOpenCamera} />
+                <Button
+                  style={Styles.btn}
+                  title="Open Camera"
+                  onPress={handleOpenCamera}
+                />
                 <Button title="Choose Photo" onPress={handleChoosePhoto} />
               </View>
             </View>
@@ -349,14 +370,14 @@ export default function AddMenu({route, navigation}) {
           <View style={AddMenuStyle.updateMenuBtn}>
             <TouchableOpacity
               style={AddMenuStyle.deleteMenuOpacity}
-              onPress={handleDelete}>
+              onPress={handleDeleteMenu}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Delete</Text>
             </TouchableOpacity>
           </View>
           <View style={AddMenuStyle.addMenuBtn}>
             <TouchableOpacity
               style={AddMenuStyle.addMenuOpacity}
-              onPress={handleSave}>
+              onPress={handleSaveMenu}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
             </TouchableOpacity>
           </View>
