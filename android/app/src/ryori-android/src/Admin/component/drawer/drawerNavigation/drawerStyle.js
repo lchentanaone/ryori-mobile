@@ -29,4 +29,15 @@ export const drawerStyle = StyleSheet.create({
     fontSize: 15,
     color: '#000',
   },
+  brachesBtn: {
+    flexDirection: 'row',
+    marginLeft: 18,
+    marginTop: 15,
+  },
+  brachesText: {
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 15,
+    color: '#000',
+    marginLeft: 10,
+  },
 });

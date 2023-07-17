@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Foundation from 'react-native-vector-icons/Foundation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import {drawerStyle} from './drawerStyle';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import {API_URL} from '../../../../utils/constants';
+
+// Pages
 import ryoriRed from './../../../images/ryori-red.png';
 import Menu from '../menu/menu';
 import Category from '../category/category';
@@ -16,28 +22,37 @@ import ReportOfTransaction from '../Report/reportOfTransaction';
 import StoreSetting from '../storeSetting.js/storeSetting';
 import Inventory from '../inventory/inventory';
 import Dashboard from '../dashboard/dashboard';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
-import {drawerStyle} from './drawerStyle';
-import {useNavigation} from '@react-navigation/native';
-import userAvatar from '../../../images/male3.png';
-import Employees from '../employee/employee';
-import {API_URL} from '../../../../utils/constants';
-import axios from 'axios';
 import InventoryCategory from '../inventory/inventoryCategory';
+import Employees from '../employee/employee';
+import userAvatar from '../../../images/male3.png';
+
+// Icons
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Foundation from 'react-native-vector-icons/Foundation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const RyoriDrawer = props => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState(null);
 
   const handleLogout = async () => {
+    <MaterialCommunityIcons name="home-switch-outline" size={25} />;
     try {
       await AsyncStorage.clear();
       navigation.navigate('Login-admin');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const Branches = async () => {
+    try {
+      await AsyncStorage.removeItem('branch_Id');
+      navigation.navigate('Select Branch');
     } catch (error) {
       console.log(error);
     }
@@ -85,6 +100,17 @@ const RyoriDrawer = props => {
           )}
         </TouchableOpacity>
         <DrawerItemList {...props} />
+        <TouchableOpacity
+          underlayColor="red"
+          style={drawerStyle.brachesBtn}
+          onPress={Branches}>
+          <MaterialCommunityIcons
+            name="home-switch-outline"
+            size={25}
+            color={'#000'}
+          />
+          <Text style={drawerStyle.brachesText}>Braches</Text>
+        </TouchableOpacity>
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     </View>
@@ -138,8 +164,8 @@ export default function DrawersNav({navigation}) {
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
-            <Feather
-              name="menu"
+            <MaterialIcons
+              name="restaurant-menu"
               color={focused ? '#DB1B1B' : '#000'}
               size={15}
             />
@@ -180,8 +206,8 @@ export default function DrawersNav({navigation}) {
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="newspaper-outline"
+            <MaterialCommunityIcons
+              name="book-open-variant"
               color={focused ? '#DB1B1B' : '#000'}
               size={18}
             />
@@ -250,8 +276,8 @@ export default function DrawersNav({navigation}) {
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
-            <AntDesign
-              name="setting"
+            <FontAwesome5
+              name="users"
               color={focused ? '#DB1B1B' : '#000'}
               size={18}
             />
