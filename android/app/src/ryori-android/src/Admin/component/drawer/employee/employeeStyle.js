@@ -5,7 +5,7 @@ export const EmployeeStyle = StyleSheet.create({
     backgroundColor: '#F9F9F9',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 30,
   },
   employeeContent: {
@@ -44,13 +44,13 @@ export const EmployeeStyle = StyleSheet.create({
     backgroundColor: '#E3E7EB',
   },
   tableTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 500,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
   },
   employeeCellData: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 500,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
@@ -119,7 +119,7 @@ export const EmployeeStyle = StyleSheet.create({
     width: '100%',
   },
   addEmployeeBtn: {
-    width: '48%',
+    width: '22%',
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
