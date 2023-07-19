@@ -23,6 +23,8 @@ import Employees from '../component/drawer/employee/employee';
 import ProfileAdmin from '../component/drawer/profileAdmin/profile';
 import UpdateProfileAdmin from '../component/drawer/profileAdmin/updateProfile';
 import Branches from '../component/opening/selectBranch/selectBranch';
+import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
+
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -125,6 +127,11 @@ const StackNavigators = () => {
         <Stack.Screen
           component={ProfileAdmin}
           name="Profile"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={UserCredentials}
+          name="User Credential"
           options={{headerShown: false}}
         />
         <Stack.Screen
