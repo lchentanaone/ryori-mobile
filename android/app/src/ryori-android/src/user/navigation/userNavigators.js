@@ -2,9 +2,9 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import BottomNavigator from './bottomNavigator';
 import UserStarter from '../login/userStarter';
-import LoginEmpoyee from '../login/login';
+import LoginEmployee from '../login/login';
 import PreparingOrderTab from '../Kitchen/components/activeOrder/orderTopTab/preparingOrderTab';
-import ProfileEmpoyee from '../profile/profile';
+import ProfileEmployee from '../profile/profile';
 import ProfileEdit from '../profile/profileEdit';
 import InventoryEmployee from '../Kitchen/components/inventory/inventory';
 import PreparingOrderTable from '../Kitchen/components/activeOrder/preparing/preparing';
@@ -32,7 +32,7 @@ const UserNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={LoginEmpoyee}
+          component={LoginEmployee}
           name="Login Employee"
           options={{headerShown: false}}
         />
@@ -52,8 +52,8 @@ const UserNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={ProfileEmpoyee}
-          name="Profile Empoyee"
+          component={ProfileEmployee}
+          name="Profile Employee"
           options={{headerShown: false}}
         />
         <Stack.Screen

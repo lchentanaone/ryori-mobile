@@ -179,7 +179,7 @@ const StackNavigators = () => {
         />
         <Stack.Screen
           component={ProfileEmpoyee}
-          name="ProfileEmpoyee"
+          name="Profile Employee"
           options={{headerShown: false}}
         />
         <Stack.Screen

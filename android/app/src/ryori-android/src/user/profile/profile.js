@@ -4,7 +4,7 @@ import {ProfileStyle as styles} from './profileStyle';
 import redRyori from '../images/redRyori.png';
 import male from '../images/male3.png';
 
-export default function ProfileEmpoyee({navigation}) {
+export default function ProfileEmployee({navigation}) {
   return (
     <View style={styles.profileContainer}>
       <View style={styles.profile}>
