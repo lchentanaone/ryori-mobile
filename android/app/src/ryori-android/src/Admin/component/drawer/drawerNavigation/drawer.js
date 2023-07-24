@@ -57,6 +57,22 @@ const RyoriDrawer = props => {
       console.log(error);
     }
   };
+  const Dining = async () => {
+    try {
+      // await AsyncStorage.removeItem('branch_Id');
+      navigation.navigate('OrderProductList');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const Kitchen = async () => {
+    try {
+      // await AsyncStorage.removeItem('branch_Id');
+      navigation.navigate('Login Employee');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -110,6 +126,18 @@ const RyoriDrawer = props => {
             color={'#000'}
           />
           <Text style={drawerStyle.brachesText}>Braches</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          underlayColor="red"
+          style={drawerStyle.brachesBtn}
+          onPress={Kitchen}>
+          <Text style={drawerStyle.brachesText}>Kitchen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          underlayColor="red"
+          style={drawerStyle.brachesBtn}
+          onPress={Dining}>
+          <Text style={drawerStyle.brachesText}>Waiter</Text>
         </TouchableOpacity>
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>

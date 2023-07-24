@@ -20,7 +20,7 @@ const categories = [
   {label: 'Drinks', value: 'Drinks'},
 ];
 
-export default function Inventory() {
+export default function InventoryEmployee() {
   const [category, setCategory] = useState('All');
   const [isFocus, setIsFocus] = useState(false);
   const [itemName, setItemName] = useState('');

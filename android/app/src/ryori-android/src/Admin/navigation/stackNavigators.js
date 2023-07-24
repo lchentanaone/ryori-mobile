@@ -25,6 +25,18 @@ import UpdateProfileAdmin from '../component/drawer/profileAdmin/updateProfile';
 import Branches from '../component/opening/selectBranch/selectBranch';
 import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
 
+// Employee
+import LoginEmpoyee from '../../user/login/login';
+import BottomNavigator from '../../user/navigation/bottomNavigator';
+import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/orderTopTab/preparingOrderTab';
+import PreparingOrderTable from '../../user/Kitchen/components/activeOrder/preparing/preparing';
+import ProfileEmpoyee from '../../user/profile/profile';
+import ProfileEdit from '../../user/profile/profileEdit';
+import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory';
+import OrderProductList from '../../user/dining/components/productList/orderProductList';
+import OrderTableNumber from '../../user/dining/components/orderPage/orderTableNumber';
+import PaymentReceived from '../../user/dining/components/pamentReceived/paymentRec';
+
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -142,6 +154,57 @@ const StackNavigators = () => {
         <Stack.Screen
           component={Branches}
           name="Select Branch"
+          options={{headerShown: false}}
+        />
+        {/* ----------------KITCHEN--AND--DINING-------------------- */}
+        <Stack.Screen
+          component={LoginEmpoyee}
+          name="Login Employee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={BottomNavigator}
+          name="BottomNavs"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PreparingOrderTab}
+          name="Prepare Table"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PreparingOrderTable}
+          name="Prepare Table Tab"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ProfileEmpoyee}
+          name="ProfileEmpoyee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ProfileEdit}
+          name="Profile Edit"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={InventoryEmployee}
+          name="InventoryEmployee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={OrderProductList}
+          name="OrderProductList"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={OrderTableNumber}
+          name="OrderTableNumber"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PaymentReceived}
+          name="PaymentReceived"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

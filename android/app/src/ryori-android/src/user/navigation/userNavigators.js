@@ -2,11 +2,11 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import BottomNavigator from './bottomNavigator';
 import UserStarter from '../login/userStarter';
-import Login from '../login/login';
+import LoginEmpoyee from '../login/login';
 import PreparingOrderTab from '../Kitchen/components/activeOrder/orderTopTab/preparingOrderTab';
-import Profile from '../profile/profile';
+import ProfileEmpoyee from '../profile/profile';
 import ProfileEdit from '../profile/profileEdit';
-import Inventory from '../Kitchen/components/inventory/inventory';
+import InventoryEmployee from '../Kitchen/components/inventory/inventory';
 import PreparingOrderTable from '../Kitchen/components/activeOrder/preparing/preparing';
 import OrderProductList from '../dining/components/productList/orderProductList';
 import OrderTableNumber from '../dining/components/orderPage/orderTableNumber';
@@ -32,8 +32,8 @@ const UserNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={Login}
-          name="Login"
+          component={LoginEmpoyee}
+          name="Login Employee"
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -52,8 +52,8 @@ const UserNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={Profile}
-          name="Profile"
+          component={ProfileEmpoyee}
+          name="Profile Empoyee"
           options={{headerShown: false}}
         />
         <Stack.Screen
@@ -62,7 +62,7 @@ const UserNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={Inventory}
+          component={InventoryEmployee}
           name="Inventory"
           options={{headerShown: false}}
         />

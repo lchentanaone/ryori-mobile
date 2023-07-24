@@ -8,7 +8,7 @@ export default function UserStarter() {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Login');
+      navigation.navigate('Login Employee');
     }, 2000);
     let isMounted = true;
     return () => {
