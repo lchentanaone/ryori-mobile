@@ -43,6 +43,7 @@ export const OrderStyle = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#fff',
     overflow: 'hidden',
+    marginTop: 10,
   },
   accordItem: {
     color: '#000',
@@ -51,8 +52,14 @@ export const OrderStyle = StyleSheet.create({
   },
   itemlist: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: 'Quicksand-Bold',
+  },
+  accordionsStyle: {
+    fontSize: 30,
+    backgroundColor: '#fff',
+    width: '100%',
+    borderRadius: 15,
   },
   toPreparing: {
     alignItems: 'center',

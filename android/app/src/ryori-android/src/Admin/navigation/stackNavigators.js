@@ -27,7 +27,7 @@ import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
 
 // Employee
 import LoginEmpoyee from '../../user/login/login';
-import BottomNavigator from '../../user/navigation/bottomNavigator';
+import KitchenBottomNavigator from '../../user/navigation/bottomNavigator';
 import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/orderTopTab/preparingOrderTab';
 import PreparingOrderTable from '../../user/Kitchen/components/activeOrder/preparing/preparing';
 import ProfileEmpoyee from '../../user/profile/profile';
@@ -163,8 +163,8 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={BottomNavigator}
-          name="BottomNavs"
+          component={KitchenBottomNavigator}
+          name="Kitchen"
           options={{headerShown: false}}
         />
         <Stack.Screen

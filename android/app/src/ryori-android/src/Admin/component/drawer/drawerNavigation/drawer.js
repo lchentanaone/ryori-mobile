@@ -68,7 +68,7 @@ const RyoriDrawer = props => {
   const Kitchen = async () => {
     try {
       // await AsyncStorage.removeItem('branch_Id');
-      navigation.navigate('Login Employee');
+      navigation.navigate('Kitchen');
     } catch (error) {
       console.log(error);
     }

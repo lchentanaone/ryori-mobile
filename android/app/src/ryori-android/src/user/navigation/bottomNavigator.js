@@ -17,7 +17,7 @@ function TEST() {
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomNavigator() {
+export default function KitchenBottomNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
