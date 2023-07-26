@@ -7,12 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../../utils/constants';
 
-export default function PreparingOrderTab() {
+export default function PreparingOrderTab({route}) {
   const [expanded, setExpanded] = React.useState(true);
   const handlePress = () => setExpanded(!expanded);
 
-  const [transaction, setTransaction] = useState(null);
-  const [branchData, setBranchData] = useState([]);
+  const [transactionData, setTransactionData] = useState([]);
 
   const fetchTransactionsData = async () => {
     try {
@@ -33,15 +32,15 @@ export default function PreparingOrderTab() {
 
         {headers},
       );
-      setTransaction(response.data);
+      setTransactionData(response.data);
       console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-  // useEffect(() => {
-  //   fetchTransactionsData();
-  // }, []);
+  useEffect(() => {
+    fetchTransactionsData();
+  }, []);
 
   return (
     <View
@@ -50,37 +49,46 @@ export default function PreparingOrderTab() {
       }}>
       <View style={styles.accordions}>
         <ScrollView>
-          <List.Section>
-            <View style={styles.accordionList}>
-              <List.Accordion
-                title={'Table #2s'}
-                titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 18}}
-                theme={{colors: {primary: '#000'}}}
-                expanded={expanded}
-                onPress={handlePress}
-                left={props => (
-                  <FontAwesome name="circle" color={'#0085ff'} size={20} />
-                )}
-                style={{
-                  fontSize: 30,
-                  backgroundColor: '#fff',
-                  width: '100%',
-                  borderRadius: 15,
-                }}>
-                <View style={styles.table}>
-                  <View style={{flexDirection: 'row', left: -35}}>
-                    <Text style={styles.quantity}>1 x </Text>
-                    <Text style={styles.item}>Pork Combo 1</Text>
-                  </View>
-                  <View style={styles.buttons}>
-                    <TouchableOpacity style={styles.readyServeBtn}>
-                      <Text style={styles.btnText}>Ready to serve</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </List.Accordion>
-            </View>
-          </List.Section>
+          {transactionData.map((item, index) => (
+            <List.Section key={index}>
+              <View style={styles.accordionList}>
+                <List.Accordion
+                  title={`Table #2 ${item.id}`}
+                  titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 18}}
+                  theme={{colors: {primary: '#000'}}}
+                  expanded={expanded}
+                  onPress={handlePress}
+                  left={props => (
+                    <FontAwesome name="circle" color={'#0085ff'} size={20} />
+                  )}
+                  style={{
+                    backgroundColor: '#fff',
+                    width: '100%',
+                    borderRadius: 15,
+                  }}>
+                  {item.transactionItem.map((transItem, transIndex) => (
+                    <View key={transIndex} style={styles.table}>
+                      <View style={styles.qtyItem}>
+                        <Text style={styles.quantity}>
+                          {transItem.quantity}
+                        </Text>
+                        <Text style={styles.item}>
+                          {transItem.menuItem.title || ''}
+                        </Text>
+                      </View>
+                      <View style={styles.buttons}>
+                        <TouchableOpacity style={styles.readyServeBtn}>
+                          <Text style={styles.preparingBtnText}>
+                            {item.status}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                </List.Accordion>
+              </View>
+            </List.Section>
+          ))}
         </ScrollView>
       </View>
     </View>

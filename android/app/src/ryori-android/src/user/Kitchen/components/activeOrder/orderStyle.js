@@ -5,7 +5,7 @@ export const OrderStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 40,
+    paddingHorizontal: 30,
   },
   aoContent: {
     alignItems: 'flex-start',
@@ -48,12 +48,12 @@ export const OrderStyle = StyleSheet.create({
   accordItem: {
     color: '#000',
     fontSize: 16,
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Quicksand-SemiBold',
   },
   itemlist: {
     color: '#000',
     fontSize: 15,
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Quicksand-SemiBold',
   },
   accordionsStyle: {
     fontSize: 30,
@@ -75,32 +75,35 @@ export const OrderStyle = StyleSheet.create({
     fontFamily: 'Quicksand-Bold',
   },
   item: {
-    left: 20,
+    left: 10,
     color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-Bold',
+    fontSize: 15,
+    fontFamily: 'Quicksand-SemiBold',
   },
   table: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: 'row',
+  },
+  qtyItem: {
+    flexDirection: 'row',
+    width: '80%',
+    marginLeft: -40,
   },
   quantity: {
     color: '#000',
     fontSize: 16,
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Quicksand-SemiBold',
   },
   buttons: {
     marginBottom: 5,
-    right: 20,
-    width: '60%',
-    alignItems: 'flex-end',
+    width: '20%',
+    alignItems: 'flex-start',
   },
   doneBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#777777',
+    backgroundColor: '#D9D9D9',
     borderRadius: 4,
     width: 80,
     height: 30,
@@ -110,10 +113,18 @@ export const OrderStyle = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#4285F4',
     borderRadius: 4,
-    width: 110,
+    width: 70,
     height: 30,
   },
-  btnText: {
+
+  preparingBtnText: {
     color: '#fff',
+    fontSize: 14,
+    fontFamily: 'Quicksand-Bold',
+  },
+  doneBtnText: {
+    color: '#464646',
+    fontSize: 14,
+    fontFamily: 'Quicksand-Bold',
   },
 });

@@ -10,14 +10,15 @@ import {API_URL} from '../../../../../utils/constants';
 
 export default function NewOrderTab() {
   const navigation = useNavigation();
+
   const [expanded, setExpanded] = useState(true);
   const handlePress = () => setExpanded(!expanded);
+  const [transactionData, setTransactionData] = useState([]);
+  const [getTransactionId, setGetTransactionId] = useState();
 
-  const [transaction, setTransaction] = useState([]);
   const fetchTransactionsData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -32,8 +33,9 @@ export default function NewOrderTab() {
 
         {headers},
       );
-      setTransaction(response.data);
+      setTransactionData(response.data);
       console.log(response.data);
+      console.log({transactionData});
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -43,6 +45,12 @@ export default function NewOrderTab() {
     fetchTransactionsData();
   }, []);
 
+  const getTransaction = item => {
+    setGetTransactionId(item.id);
+    navigation.navigate('Prepare Table Tab', {item});
+    console.log(item);
+  };
+
   return (
     <View
       style={{
@@ -50,7 +58,7 @@ export default function NewOrderTab() {
       }}>
       <View style={styles.accordions}>
         <ScrollView>
-          {transaction.map((item, index) => (
+          {transactionData.map((item, index) => (
             <List.Section key={index}>
               <View style={styles.accordionList}>
                 <List.Accordion
@@ -65,7 +73,7 @@ export default function NewOrderTab() {
                   style={styles.accordionsStyle}>
                   <TouchableOpacity
                     style={styles.toPreparing}
-                    onPress={() => navigation.navigate('Prepare Table Tab')}>
+                    onPress={() => getTransaction(item.id)}>
                     <Text style={styles.preparingText}>{item.status}</Text>
                   </TouchableOpacity>
                   <DataTable style={{width: '100%'}}>
