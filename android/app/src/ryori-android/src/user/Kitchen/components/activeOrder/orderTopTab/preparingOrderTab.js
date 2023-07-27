@@ -29,7 +29,6 @@ export default function PreparingOrderTab({route}) {
             Authorization: `Bearer ${token}`,
           },
         },
-
         {headers},
       );
       setTransactionData(response.data);
@@ -73,7 +72,7 @@ export default function PreparingOrderTab({route}) {
             <List.Section key={index}>
               <View style={styles.accordionList}>
                 <List.Accordion
-                  title={`Table #2 ${item.id}`}
+                  title={`Table ${'2'}   ${item.id}`}
                   titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 16}}
                   theme={{colors: {primary: '#000'}}}
                   expanded={expanded}
@@ -112,13 +111,20 @@ export default function PreparingOrderTab({route}) {
                             <Text style={styles.preparingBtnText}>Serving</Text>
                           </TouchableOpacity>
                         )}
+                        {transItem.status === 'canceled' && (
+                          <TouchableOpacity style={styles.cancelOrder}>
+                            <Text style={styles.preparingBtnText}>
+                              Canceled
+                            </Text>
+                          </TouchableOpacity>
+                        )}
                         {transItem.status === 'serving' && (
                           <TouchableOpacity
                             style={styles.readyServeBtn}
                             onPress={() => {
                               updateTransactionItem(transItem.id, 'done');
                             }}>
-                            <Text style={styles.preparingBtnText}>done</Text>
+                            <Text style={styles.preparingBtnText}>Done</Text>
                           </TouchableOpacity>
                         )}
                       </View>

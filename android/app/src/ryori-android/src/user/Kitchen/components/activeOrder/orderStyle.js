@@ -108,12 +108,20 @@ export const OrderStyle = StyleSheet.create({
     width: 80,
     height: 30,
   },
+  cancelOrder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#DB1B1B',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
   readyServeBtn: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#4285F4',
     borderRadius: 4,
-    width: 70,
+    width: 80,
     height: 30,
   },
 

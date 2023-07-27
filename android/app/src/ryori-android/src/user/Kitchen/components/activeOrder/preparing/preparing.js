@@ -109,6 +109,11 @@ export default function PreparingOrderTable({route, navigation}) {
                       <Text style={pstyles.btnText}>Done</Text>
                     </TouchableOpacity>
                   )}
+                  {transItem.status === 'done' && (
+                    <TouchableOpacity style={pstyles.preparingBtn}>
+                      <Text style={pstyles.btnText}>Done</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
               <View style={{borderBottomWidth: 0.5}} />

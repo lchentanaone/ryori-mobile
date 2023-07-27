@@ -36,6 +36,7 @@ import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory
 import OrderProductList from '../../user/dining/components/productList/orderProductList';
 import OrderTableNumber from '../../user/dining/components/orderPage/orderTableNumber';
 import PaymentReceived from '../../user/dining/components/pamentReceived/paymentRec';
+import DiningBottomNavigator from '../../user/dining/bottomNavigation';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -193,8 +194,8 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={OrderProductList}
-          name="OrderProductList"
+          component={DiningBottomNavigator}
+          name="DiningBottomNavigator"
           options={{headerShown: false}}
         />
         <Stack.Screen
