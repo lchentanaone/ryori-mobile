@@ -52,7 +52,7 @@ export default function DoneOrder() {
               <View style={styles.accordionList}>
                 <List.Accordion
                   title={`Table #2 ${item.id}`}
-                  titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 18}}
+                  titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 16}}
                   theme={{colors: {primary: '#000'}}}
                   expanded={expanded}
                   onPress={handlePress}

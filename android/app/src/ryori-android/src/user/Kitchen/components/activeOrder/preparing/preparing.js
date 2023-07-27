@@ -37,6 +37,27 @@ export default function PreparingOrderTable({route, navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
+
+  const updateTransactionItem = async (id, newStatus) => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.patch(
+        `${API_URL}/pos/transactionItem/${id}`,
+        {
+          status: newStatus,
+        },
+        {headers},
+      );
+      fetchTransactionsData();
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTransactionsData();
   }, []);
@@ -61,16 +82,33 @@ export default function PreparingOrderTable({route, navigation}) {
               </View>
               <View style={pstyles.buttonsContainer}>
                 <View style={pstyles.buttons}>
-                  <TouchableOpacity
-                    style={pstyles.preparingBtn}
-                    onPress={() => navigation.navigate('Order Top Navigation')}>
-                    <Text style={pstyles.btnText}>Preparing</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={pstyles.ServeBtn}
-                    onPress={() => navigation.navigate('Order Top Navigation')}>
-                    <Text style={pstyles.btnText}>Ready to Serve</Text>
-                  </TouchableOpacity>
+                  {transItem.status === 'new' && (
+                    <TouchableOpacity
+                      style={pstyles.preparingBtn}
+                      onPress={() => {
+                        updateTransactionItem(transItem.id, 'preparing');
+                      }}>
+                      <Text style={pstyles.btnText}>Preparing</Text>
+                    </TouchableOpacity>
+                  )}
+                  {transItem.status === 'preparing' && (
+                    <TouchableOpacity
+                      style={pstyles.preparingBtn}
+                      onPress={() => {
+                        updateTransactionItem(transItem.id, 'serving');
+                      }}>
+                      <Text style={pstyles.btnText}>Serving</Text>
+                    </TouchableOpacity>
+                  )}
+                  {transItem.status === 'serving' && (
+                    <TouchableOpacity
+                      style={pstyles.preparingBtn}
+                      onPress={() => {
+                        updateTransactionItem(transItem.id, 'done');
+                      }}>
+                      <Text style={pstyles.btnText}>Done</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
               <View style={{borderBottomWidth: 0.5}} />

@@ -30,7 +30,7 @@ export default function Products({navigation}) {
             </View>
             <TouchableOpacity
               style={styles.viewProfile}
-              onPress={() => navigation.navigate('Profile')}>
+              onPress={() => navigation.navigate('Profile Employee')}>
               <Image source={male} style={styles.crewImage} />
               <View style={{top: -5, left: 5}}>
                 <Text style={styles.crewName}>{'John Doe'}</Text>

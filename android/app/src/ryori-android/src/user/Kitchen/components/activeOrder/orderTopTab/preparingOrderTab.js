@@ -38,6 +38,26 @@ export default function PreparingOrderTab({route}) {
       console.error('Error fetching user data:', error);
     }
   };
+  const updateTransactionItem = async (id, newStatus) => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.patch(
+        `${API_URL}/pos/transactionItem/${id}`,
+        {
+          status: newStatus,
+        },
+        {headers},
+      );
+      fetchTransactionsData();
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   useEffect(() => {
     fetchTransactionsData();
   }, []);
@@ -54,18 +74,13 @@ export default function PreparingOrderTab({route}) {
               <View style={styles.accordionList}>
                 <List.Accordion
                   title={`Table #2 ${item.id}`}
-                  titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 18}}
+                  titleStyle={{fontFamily: 'Quicksand-Bold', fontSize: 16}}
                   theme={{colors: {primary: '#000'}}}
                   expanded={expanded}
                   onPress={handlePress}
                   left={props => (
                     <FontAwesome name="circle" color={'#0085ff'} size={20} />
-                  )}
-                  style={{
-                    backgroundColor: '#fff',
-                    width: '100%',
-                    borderRadius: 15,
-                  }}>
+                  )}>
                   {item.transactionItem.map((transItem, transIndex) => (
                     <View key={transIndex} style={styles.table}>
                       <View style={styles.qtyItem}>
@@ -77,11 +92,35 @@ export default function PreparingOrderTab({route}) {
                         </Text>
                       </View>
                       <View style={styles.buttons}>
-                        <TouchableOpacity style={styles.readyServeBtn}>
-                          <Text style={styles.preparingBtnText}>
-                            {item.status}
-                          </Text>
-                        </TouchableOpacity>
+                        {transItem.status === 'new' && (
+                          <TouchableOpacity
+                            style={styles.readyServeBtn}
+                            onPress={() => {
+                              updateTransactionItem(transItem.id, 'preparing');
+                            }}>
+                            <Text style={styles.preparingBtnText}>
+                              Preparing
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                        {transItem.status === 'preparing' && (
+                          <TouchableOpacity
+                            style={styles.readyServeBtn}
+                            onPress={() => {
+                              updateTransactionItem(transItem.id, 'serving');
+                            }}>
+                            <Text style={styles.preparingBtnText}>Serving</Text>
+                          </TouchableOpacity>
+                        )}
+                        {transItem.status === 'serving' && (
+                          <TouchableOpacity
+                            style={styles.readyServeBtn}
+                            onPress={() => {
+                              updateTransactionItem(transItem.id, 'done');
+                            }}>
+                            <Text style={styles.preparingBtnText}>done</Text>
+                          </TouchableOpacity>
+                        )}
                       </View>
                     </View>
                   ))}
