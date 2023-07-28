@@ -5,15 +5,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Products from '../Kitchen/components/products/product';
-import OrderTopTab from '../Kitchen/components/activeOrder/topNavigator';
-
-function TEST() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>TEST!</Text>
-    </View>
-  );
-}
+import LoginEmployee from '../login/login';
+import PreparingOrderTab from '../Kitchen/components/activeOrder/preparingOrderTab';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +38,7 @@ export default function KitchenBottomNavigator() {
       />
       <Tab.Screen
         name="Test"
-        component={TEST}
+        component={LoginEmployee}
         options={{
           headerShown: false,
           tabBarLabel: 'TEST',
@@ -60,7 +53,7 @@ export default function KitchenBottomNavigator() {
       />
       <Tab.Screen
         name="Order Top Navigation"
-        component={OrderTopTab}
+        component={PreparingOrderTab}
         options={{
           headerShown: false,
           tabBarLabel: 'Active Order',

@@ -12,7 +12,7 @@ import menuPhotos from '../../../images/Chicken.jpg';
 import {OrderTableStyles as styles} from './orderTableStyles';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-export default function OrderTableNumber({navigation}) {
+export default function OrderSummary({navigation}) {
   const [quantity, setQuantity] = useState('0');
 
   const handleIncrease = () => {

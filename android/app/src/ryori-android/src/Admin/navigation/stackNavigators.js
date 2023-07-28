@@ -28,13 +28,12 @@ import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
 // Employee
 import LoginEmpoyee from '../../user/login/login';
 import KitchenBottomNavigator from '../../user/navigation/bottomNavigator';
-import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/orderTopTab/preparingOrderTab';
-import PreparingOrderTable from '../../user/Kitchen/components/activeOrder/preparing/preparing';
+import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/preparingOrderTab';
 import ProfileEmpoyee from '../../user/profile/profile';
 import ProfileEdit from '../../user/profile/profileEdit';
 import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory';
 import OrderProductList from '../../user/dining/components/productList/orderProductList';
-import OrderTableNumber from '../../user/dining/components/orderPage/orderTableNumber';
+import OrderSummary from '../../user/dining/components/orderPage/orderTableNumber';
 import PaymentReceived from '../../user/dining/components/pamentReceived/paymentRec';
 import DiningBottomNavigator from '../../user/dining/bottomNavigation';
 
@@ -174,11 +173,6 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={PreparingOrderTable}
-          name="Prepare Table Tab"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           component={ProfileEmpoyee}
           name="Profile Employee"
           options={{headerShown: false}}
@@ -199,8 +193,8 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={OrderTableNumber}
-          name="OrderTableNumber"
+          component={OrderSummary}
+          name="OrderSummary"
           options={{headerShown: false}}
         />
         <Stack.Screen

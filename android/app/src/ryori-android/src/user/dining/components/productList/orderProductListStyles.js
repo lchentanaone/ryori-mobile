@@ -54,6 +54,7 @@ export const OrderListStyles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     height: '98%',
+    marginTop: 20,
   },
   accordionList: {
     borderWidth: 0.7,
@@ -136,5 +137,14 @@ export const OrderListStyles = StyleSheet.create({
   },
   btnText: {
     color: '#fff',
+  },
+  toPrepareBtn: {
+    backgroundColor: '#4285F4',
+    width: 200,
+    height: 30,
+    marginLeft: 70,
+    justifyContent: 'center',
+    marginBottom: 10,
+    borderRadius: 10,
   },
 });

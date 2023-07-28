@@ -1,6 +1,20 @@
 import {StyleSheet} from 'react-native';
 
 export const OrderStyle = StyleSheet.create({
+  orderProducts: {
+    backgroundColor: '#fff',
+    flex: 1,
+    position: 'relative',
+    paddingHorizontal: 40,
+    paddingVertical: 40,
+  },
+  crewHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  ryoriIconTitle: {
+    flexDirection: 'row',
+  },
   activeOrder: {
     backgroundColor: '#fff',
     flex: 1,
