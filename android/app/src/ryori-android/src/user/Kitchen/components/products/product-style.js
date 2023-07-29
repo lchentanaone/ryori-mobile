@@ -97,6 +97,26 @@ export const prodStyle = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Quicksand-SemiBold',
   },
+  //----------------------------------------------------------------
+  qtyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F6F6F8',
+    height: 35,
+    borderRadius: 5,
+  },
+  input: {
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-Bold',
+  },
+  qtyIcon: {
+    width: 30,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   porklistQty: {
     color: '#000',
     fontSize: 15,

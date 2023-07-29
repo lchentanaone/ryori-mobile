@@ -12,7 +12,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function TransactionTab() {
   return (
     <>
-      <Text>Hello</Text>
+      <Text>Transactions</Text>
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: 'red',
