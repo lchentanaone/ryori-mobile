@@ -127,22 +127,32 @@ export default function PreparingOrderTab({route}) {
                               </Text>
                             </TouchableOpacity>
                           )}
-                          {transItem.status === 'canceled' && (
+
+                          {transItem.status === 'serving' && (
+                            <TouchableOpacity
+                              style={styles.readyServeBtn}
+                              onPress={() => {
+                                updateTransactionItem(transItem.id, 'served');
+                              }}>
+                              <Text style={styles.preparingBtnText}>
+                                Served
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                          {transItem.status === 'served' && (
+                            <View style={styles.cancelOrder}>
+                              <Text style={styles.preparingBtnText}>
+                                Served
+                              </Text>
+                            </View>
+                          )}
+                          {/* {transItem.status === 'canceled' && (
                             <TouchableOpacity style={styles.cancelOrder}>
                               <Text style={styles.preparingBtnText}>
                                 Canceled
                               </Text>
                             </TouchableOpacity>
-                          )}
-                          {transItem.status === 'serving' && (
-                            <TouchableOpacity
-                              style={styles.readyServeBtn}
-                              onPress={() => {
-                                updateTransactionItem(transItem.id, 'done');
-                              }}>
-                              <Text style={styles.preparingBtnText}>Done</Text>
-                            </TouchableOpacity>
-                          )}
+                          )} */}
                         </View>
                       </View>
                     ))}

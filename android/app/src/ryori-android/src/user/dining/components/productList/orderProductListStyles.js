@@ -138,9 +138,19 @@ export const OrderListStyles = StyleSheet.create({
   btnText: {
     color: '#fff',
   },
+  toCash: {
+    width: 200,
+    height: 30,
+    marginLeft: 70,
+    justifyContent: 'center',
+  },
+  payCashBtnText: {
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
   toPrepareBtn: {
     backgroundColor: '#4285F4',
-    width: 200,
+    width: 180,
     height: 30,
     marginLeft: 70,
     justifyContent: 'center',

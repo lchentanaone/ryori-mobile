@@ -37,7 +37,7 @@ export default function OrderProductList({navigation}) {
         {headers},
       );
       const statusPreparing = response.data.filter(
-        transactionStatus => transactionStatus.status === 'new',
+        transactionStatus => transactionStatus.status !== 'done',
       );
       setTransactionData(statusPreparing);
     } catch (error) {
@@ -137,13 +137,7 @@ export default function OrderProductList({navigation}) {
                           color={'#FF7A00'}
                           size={20}
                         />
-                      )}
-                      style={{
-                        fontSize: 30,
-                        backgroundColor: '#fff',
-                        width: '100%',
-                        borderRadius: 15,
-                      }}>
+                      )}>
                       {item.transactionItem.map((transItem, transIndex) => (
                         <View key={transIndex} style={styles.table}>
                           <View style={styles.qtyItem}>
@@ -168,27 +162,88 @@ export default function OrderProductList({navigation}) {
                               </TouchableOpacity>
                             )}
                             {transItem.status === 'canceled' && (
-                              <TouchableOpacity style={styles.cancelOrder}>
+                              <View style={styles.newOrder}>
                                 <Text style={styles.btnText}>Canceled</Text>
+                              </View>
+                            )}
+                            {transItem.status === 'preparing' && (
+                              <View style={styles.newOrder}>
+                                <Text style={styles.btnText}>preparing</Text>
+                              </View>
+                            )}
+                            {transItem.status === 'serving' && (
+                              <TouchableOpacity
+                                style={styles.newOrder}
+                                onPress={() => {
+                                  updateTransactionItem(transItem.id, 'served');
+                                }}>
+                                <Text style={styles.btnText}>To serve</Text>
                               </TouchableOpacity>
                             )}
-                            {transItem.status !== 'new' && (
-                              <View style={styles.readyServeBtn}>
+                            {transItem.status === 'served' && (
+                              <View style={styles.newOrder}>
+                                <Text style={styles.btnText}>Served</Text>
+                              </View>
+                            )}
+                            {/* {transItem.status !== 'new' && (
+                              <View style={styles.newOrder}>
                                 <Text style={styles.btnText}>
                                   {transItem.status}
                                 </Text>
                               </View>
-                            )}
+                            )} */}
                           </View>
                         </View>
                       ))}
-                      <TouchableOpacity
-                        style={styles.toPrepareBtn}
-                        onPress={() => {
-                          updateTransStatus(item.id, 'toPrepare');
-                        }}>
-                        <Text style={styles.btnText}>To Prepare</Text>
-                      </TouchableOpacity>
+                      {item.status === 'new' && (
+                        <TouchableOpacity
+                          style={styles.toPrepareBtn}
+                          onPress={() => {
+                            updateTransStatus(item.id, 'to_prepare');
+                          }}>
+                          <Text style={styles.btnText}>To Prepare</Text>
+                        </TouchableOpacity>
+                      )}
+                      {item.status === 'to_prepare' && (
+                        <View
+                          style={styles.toPrepareBtn}
+                          // onPress={() => {
+                          //   updateTransStatus(item.id, 'to_prepare');
+                          // }}
+                        >
+                          <Text style={styles.btnText}>Preparing</Text>
+                        </View>
+                      )}
+                      {item.status === 'preparing' && (
+                        <View style={styles.toPrepareBtn}>
+                          <Text style={styles.btnText}>{item.status}</Text>
+                        </View>
+                      )}
+                      {item.status === 'serving' && (
+                        <View style={styles.toPrepareBtn}>
+                          <Text style={styles.btnText}>{item.status}</Text>
+                        </View>
+                      )}
+                      {item.status === 'served' && (
+                        <View style={styles.toPrepareBtn}>
+                          <Text style={styles.btnText}>{item.status}</Text>
+                        </View>
+                      )}
+                      {/* {-----------Pay cash-------------} */}
+                      {item.status === 'to_pay' && (
+                        <View style={styles.toCash}>
+                          <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                        </View>
+                      )}
+                      {item.status === 'to_pay' && (
+                        <TouchableOpacity
+                          style={styles.toPrepareBtn}
+                          onPress={() => {
+                            updateTransStatus(item.id, 'done');
+                          }}>
+                          <Text style={styles.btnText}>Confirm</Text>
+                        </TouchableOpacity>
+                      )}
                     </List.Accordion>
                   </View>
                 </List.Section>
