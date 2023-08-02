@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,14 +7,17 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
 import redRyori from '../../../images/redRyori.png';
 import menuPhotos from '../../../images/Chicken.jpg';
 import {OrderTableStyles as styles} from './orderTableStyles';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {API_URL} from '../../../../utils/constants';
 
 export default function OrderSummary({navigation}) {
   const [quantity, setQuantity] = useState('0');
+  const [transactionData, setTransactionData] = useState([]);
 
   const handleIncrease = () => {
     const newQuantity = parseInt(quantity) + 1;
@@ -26,6 +30,38 @@ export default function OrderSummary({navigation}) {
       setQuantity(newQuantity.toString());
     }
   };
+
+  const fetchTransactionsData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(
+        `${API_URL}/pos/transaction?branch_Id=${branch_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+
+        {headers},
+      );
+      // const statusPreparing = response.data.filter(
+      //   transactionStatus => transactionStatus.status !== 'done',
+      // );
+      // setTransactionData(statusPreparing);
+      setTransactionData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactionsData();
+  }, []);
+
   return (
     <View style={styles.orderTable}>
       <View style={styles.ryoriIcon}>

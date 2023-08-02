@@ -5,7 +5,7 @@ export const prodStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     paddingVertical: 40,
   },
   productContent: {
@@ -81,6 +81,7 @@ export const prodStyle = StyleSheet.create({
   },
   productTable: {
     width: '100%',
+    // height: 150,
   },
   tableProductHeader: {
     color: '#000',
@@ -96,6 +97,26 @@ export const prodStyle = StyleSheet.create({
     color: '#000',
     fontSize: 15,
     fontFamily: 'Quicksand-SemiBold',
+  },
+  //----------------------------------------------------------------
+  qtyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F6F6F8',
+    height: 35,
+    borderRadius: 5,
+  },
+  input: {
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-Bold',
+  },
+  qtyIcon: {
+    width: 30,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   porklistQty: {
     color: '#000',

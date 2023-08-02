@@ -130,7 +130,7 @@ export const OrderStyle = StyleSheet.create({
     width: 80,
     height: 30,
   },
-  readyServeBtn: {
+  servingBtn: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#4285F4',
@@ -138,7 +138,35 @@ export const OrderStyle = StyleSheet.create({
     width: 80,
     height: 30,
   },
-
+  newOrderBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#D9D9D9',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
+  newBtnText: {
+    color: '#464646',
+    fontSize: 14,
+    fontFamily: 'Quicksand-Bold',
+  },
+  preparingBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FF7A00',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
+  servedBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#12BF38',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
   preparingBtnText: {
     color: '#fff',
     fontSize: 14,

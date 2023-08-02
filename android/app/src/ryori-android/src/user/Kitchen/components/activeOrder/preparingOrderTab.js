@@ -104,21 +104,19 @@ export default function PreparingOrderTab({route}) {
                         <View style={styles.buttons}>
                           {transItem.status === 'new' && (
                             <TouchableOpacity
-                              style={styles.readyServeBtn}
+                              style={styles.newOrderBtn}
                               onPress={() => {
                                 updateTransactionItem(
                                   transItem.id,
                                   'preparing',
                                 );
                               }}>
-                              <Text style={styles.preparingBtnText}>
-                                Preparing
-                              </Text>
+                              <Text style={styles.newBtnText}>Preparing</Text>
                             </TouchableOpacity>
                           )}
                           {transItem.status === 'preparing' && (
                             <TouchableOpacity
-                              style={styles.readyServeBtn}
+                              style={styles.preparingBtn}
                               onPress={() => {
                                 updateTransactionItem(transItem.id, 'serving');
                               }}>
@@ -127,22 +125,32 @@ export default function PreparingOrderTab({route}) {
                               </Text>
                             </TouchableOpacity>
                           )}
-                          {transItem.status === 'canceled' && (
+
+                          {transItem.status === 'serving' && (
+                            <TouchableOpacity
+                              style={styles.servingBtn}
+                              onPress={() => {
+                                updateTransactionItem(transItem.id, 'served');
+                              }}>
+                              <Text style={styles.preparingBtnText}>
+                                Served
+                              </Text>
+                            </TouchableOpacity>
+                          )}
+                          {transItem.status === 'served' && (
+                            <View style={styles.servedBtn}>
+                              <Text style={styles.preparingBtnText}>
+                                Served
+                              </Text>
+                            </View>
+                          )}
+                          {/* {transItem.status === 'canceled' && (
                             <TouchableOpacity style={styles.cancelOrder}>
                               <Text style={styles.preparingBtnText}>
                                 Canceled
                               </Text>
                             </TouchableOpacity>
-                          )}
-                          {transItem.status === 'serving' && (
-                            <TouchableOpacity
-                              style={styles.readyServeBtn}
-                              onPress={() => {
-                                updateTransactionItem(transItem.id, 'done');
-                              }}>
-                              <Text style={styles.preparingBtnText}>Done</Text>
-                            </TouchableOpacity>
-                          )}
+                          )} */}
                         </View>
                       </View>
                     ))}
