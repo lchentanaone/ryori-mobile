@@ -104,21 +104,19 @@ export default function PreparingOrderTab({route}) {
                         <View style={styles.buttons}>
                           {transItem.status === 'new' && (
                             <TouchableOpacity
-                              style={styles.readyServeBtn}
+                              style={styles.newOrderBtn}
                               onPress={() => {
                                 updateTransactionItem(
                                   transItem.id,
                                   'preparing',
                                 );
                               }}>
-                              <Text style={styles.preparingBtnText}>
-                                Preparing
-                              </Text>
+                              <Text style={styles.newBtnText}>Preparing</Text>
                             </TouchableOpacity>
                           )}
                           {transItem.status === 'preparing' && (
                             <TouchableOpacity
-                              style={styles.readyServeBtn}
+                              style={styles.preparingBtn}
                               onPress={() => {
                                 updateTransactionItem(transItem.id, 'serving');
                               }}>
@@ -130,7 +128,7 @@ export default function PreparingOrderTab({route}) {
 
                           {transItem.status === 'serving' && (
                             <TouchableOpacity
-                              style={styles.readyServeBtn}
+                              style={styles.servingBtn}
                               onPress={() => {
                                 updateTransactionItem(transItem.id, 'served');
                               }}>
@@ -140,7 +138,7 @@ export default function PreparingOrderTab({route}) {
                             </TouchableOpacity>
                           )}
                           {transItem.status === 'served' && (
-                            <View style={styles.cancelOrder}>
+                            <View style={styles.servedBtn}>
                               <Text style={styles.preparingBtnText}>
                                 Served
                               </Text>

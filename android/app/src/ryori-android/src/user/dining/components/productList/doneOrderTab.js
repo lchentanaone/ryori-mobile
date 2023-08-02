@@ -63,8 +63,17 @@ export default function DoneOrder() {
         <View style={styles.crewHeader}>
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
-            <Text style={styles.ryoriIconText}>Done Orders</Text>
+            <Text style={styles.ryoriIconText}>Orders</Text>
           </View>
+          <TouchableOpacity
+            style={styles.viewProfile}
+            onPress={() => navigation.navigate('Profile Employee')}>
+            <Image source={male} style={styles.crewImage} />
+            <View style={{top: -5, left: 5}}>
+              <Text style={styles.crewName}>{'John Doe'}</Text>
+              <Text style={styles.viewProfileText}>View Profile</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -89,13 +98,7 @@ export default function DoneOrder() {
                           color={'#FF7A00'}
                           size={20}
                         />
-                      )}
-                      style={{
-                        fontSize: 30,
-                        backgroundColor: '#fff',
-                        width: '100%',
-                        borderRadius: 15,
-                      }}>
+                      )}>
                       {item.transactionItem.map((transItem, transIndex) => (
                         <View key={transIndex} style={styles.table}>
                           <View style={styles.qtyItem}>
@@ -107,14 +110,27 @@ export default function DoneOrder() {
                             </Text>
                           </View>
                           <View style={styles.buttons}>
-                            <View style={styles.readyServeBtn}>
-                              <Text style={styles.btnText}>
-                                {transItem.status}
-                              </Text>
-                            </View>
+                            {transItem.status === 'served' && (
+                              <View style={styles.checkOrder}>
+                                <Text style={styles.btnText}>Served</Text>
+                              </View>
+                            )}
                           </View>
                         </View>
                       ))}
+
+                      {/* {-----------Pay cash-------------} */}
+
+                      {item.status === 'done' && (
+                        <>
+                          <View style={styles.toCashDone}>
+                            <Text style={styles.payCashBtnText}>Paid: ₱ </Text>
+                            <Text style={styles.payCashBtnText}>
+                              {item.total}
+                            </Text>
+                          </View>
+                        </>
+                      )}
                     </List.Accordion>
                   </View>
                 </List.Section>

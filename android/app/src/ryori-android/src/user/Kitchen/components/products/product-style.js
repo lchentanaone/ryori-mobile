@@ -5,7 +5,7 @@ export const prodStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     paddingVertical: 40,
   },
   productContent: {
@@ -81,6 +81,7 @@ export const prodStyle = StyleSheet.create({
   },
   productTable: {
     width: '100%',
+    // height: 150,
   },
   tableProductHeader: {
     color: '#000',

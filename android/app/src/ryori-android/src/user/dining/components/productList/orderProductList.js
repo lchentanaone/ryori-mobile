@@ -8,6 +8,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
   OrientationLocker,
   PORTRAIT,
@@ -16,6 +18,7 @@ import {
 
 export default function OrderProductList({navigation}) {
   const [expanded, setExpanded] = React.useState(true);
+  const [total, setTotal] = useState(0);
   const handlePress = () => setExpanded(!expanded);
   const [transactionData, setTransactionData] = useState([]);
 
@@ -77,6 +80,23 @@ export default function OrderProductList({navigation}) {
           status: newStatus,
         },
         {headers},
+      );
+      fetchTransactionsData();
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+  const deleteTransactionItem = async id => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const response = await axios.delete(
+        `${API_URL}/pos/transactionItem/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       fetchTransactionsData();
       console.log(response);
@@ -150,41 +170,65 @@ export default function OrderProductList({navigation}) {
                           </View>
                           <View style={styles.buttons}>
                             {transItem.status === 'new' && (
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                }}>
+                                <TouchableOpacity
+                                  style={styles.newOrder}
+                                  onPress={() =>
+                                    updateTransactionItem(
+                                      transItem.id,
+                                      'preparing',
+                                    )
+                                  }>
+                                  <AntDesign
+                                    name="checkcircle"
+                                    color={'#0085ff'}
+                                    size={25}
+                                  />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  style={styles.newOrder}
+                                  onPress={() => {
+                                    deleteTransactionItem(transItem.id);
+                                  }}>
+                                  <MaterialIcons
+                                    name="cancel"
+                                    color={'#DB1B1B'}
+                                    size={27}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            )}
+
+                            {transItem.status === 'preparing' && (
                               <TouchableOpacity
-                                style={styles.newOrder}
+                                style={styles.preparingBtn}
                                 onPress={() => {
                                   updateTransactionItem(
                                     transItem.id,
-                                    'canceled',
+                                    'serving',
                                   );
                                 }}>
-                                <Text style={styles.btnText}>Cancel</Text>
+                                <Text style={styles.btnText}>serving</Text>
                               </TouchableOpacity>
-                            )}
-                            {transItem.status === 'canceled' && (
-                              <View style={styles.newOrder}>
-                                <Text style={styles.btnText}>Canceled</Text>
-                              </View>
-                            )}
-                            {transItem.status === 'preparing' && (
-                              <View style={styles.newOrder}>
-                                <Text style={styles.btnText}>preparing</Text>
-                              </View>
                             )}
                             {transItem.status === 'serving' && (
                               <TouchableOpacity
-                                style={styles.newOrder}
+                                style={styles.servingBtn}
                                 onPress={() => {
                                   updateTransactionItem(transItem.id, 'served');
                                 }}>
-                                <Text style={styles.btnText}>To serve</Text>
+                                <Text style={styles.btnText}>served</Text>
                               </TouchableOpacity>
                             )}
                             {transItem.status === 'served' && (
-                              <View style={styles.newOrder}>
+                              <View style={styles.servedBtn}>
                                 <Text style={styles.btnText}>Served</Text>
                               </View>
                             )}
+
                             {/* {transItem.status !== 'new' && (
                               <View style={styles.newOrder}>
                                 <Text style={styles.btnText}>
@@ -230,9 +274,15 @@ export default function OrderProductList({navigation}) {
                         </View>
                       )}
                       {/* {-----------Pay cash-------------} */}
+
                       {item.status === 'to_pay' && (
                         <View style={styles.toCash}>
-                          <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                          <Text style={styles.payCashBtnText}>
+                            Pay Cash: ₱{' '}
+                          </Text>
+                          <Text style={styles.payCashBtnText}>
+                            {item.total}
+                          </Text>
                         </View>
                       )}
                       {item.status === 'to_pay' && (
@@ -240,6 +290,7 @@ export default function OrderProductList({navigation}) {
                           style={styles.toPrepareBtn}
                           onPress={() => {
                             updateTransStatus(item.id, 'done');
+                            // navigation.navigate('PaymentReceived');
                           }}>
                           <Text style={styles.btnText}>Confirm</Text>
                         </TouchableOpacity>
