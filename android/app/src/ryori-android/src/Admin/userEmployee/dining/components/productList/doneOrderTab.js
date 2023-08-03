@@ -1,18 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
-import male from '../../../images/male3.png';
-import redRyori from '../../../images/redRyori.png';
+import male from '../../../../images/male3.png';
+import redRyori from '../../../../images/redRyori.png';
 import {OrderListStyles as styles} from './orderProductListStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {API_URL} from '../../../../../utils/constants';
+import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 
 export default function DoneOrder() {
   const [expanded, setExpanded] = React.useState(true);
@@ -24,7 +20,6 @@ export default function DoneOrder() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      // console.log('StoresID', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -42,7 +37,6 @@ export default function DoneOrder() {
         transactionStatus => transactionStatus.status === 'done',
       );
       setTransactionData(statusDone);
-      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -109,9 +103,7 @@ export default function DoneOrder() {
                           </View>
                         </View>
                       ))}
-
                       {/* {-----------Pay cash-------------} */}
-
                       {item.status === 'done' && (
                         <>
                           <View style={styles.toCashDone}>

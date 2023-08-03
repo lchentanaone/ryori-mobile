@@ -3,9 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
 import Register from '../component/opening/register';
-// import EditMenu from '../component/overview/menu/edit-menu';
-// import Transaction from '../component/overview/transaction/transaction';
-// import TransactionReport from '../component/overview/transaction/transaction-report';
 import SetupStore from '../component/opening/setupStore';
 import DrawersNav from '../component/drawer/drawerNavigation/drawer';
 import Menu from '../component/drawer/menu/menu';
@@ -32,10 +29,8 @@ import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/prepari
 import ProfileEmpoyee from '../../user/profile/profile';
 import ProfileEdit from '../../user/profile/profileEdit';
 import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory';
-import OrderProductList from '../../user/dining/components/productList/orderProductList';
-import OrderSummary from '../../user/dining/components/orderPage/orderTableNumber';
-import PaymentReceived from '../../user/dining/components/pamentReceived/paymentRec';
-import DiningBottomNavigator from '../../user/dining/bottomNavigation';
+import PaymentReceived from '../userEmployee/dining/components/pamentReceived/paymentRec';
+import DiningBottomNavigator from '../userEmployee/dining/bottomNavigation';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -190,11 +185,6 @@ const StackNavigators = () => {
         <Stack.Screen
           component={DiningBottomNavigator}
           name="DiningBottomNavigator"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={OrderSummary}
-          name="OrderSummary"
           options={{headerShown: false}}
         />
         <Stack.Screen

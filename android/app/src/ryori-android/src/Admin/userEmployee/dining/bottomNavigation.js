@@ -5,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import OrderProductList from './components/productList/orderProductList';
-import OrderSummary from './components/orderPage/orderTableNumber';
+// import OrderSummary from './components/orderLists/orderTableNumber';
 import DoneOrder from './components/productList/doneOrderTab';
 
 const Tab = createBottomTabNavigator();
@@ -36,7 +36,7 @@ export default function DiningBottomNavigator() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Test"
         component={OrderSummary}
         options={{
@@ -50,7 +50,7 @@ export default function DiningBottomNavigator() {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Order Top Navigation"
         component={DoneOrder}

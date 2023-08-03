@@ -1,8 +1,8 @@
 import {View, Text, Image} from 'react-native';
 import React from 'react';
-import RyoriLogo from '../../../images/redRyori.png';
+import RyoriLogo from '../../../../images/redRyori.png';
 import {PaymentReceivedStyles as styles} from './paymentStyles';
-import PaymentReceivedIcon from '../../../images/paymentRec.png';
+import PaymentReceivedIcon from '../../../../images/paymentRec.png';
 
 export default function PaymentReceived() {
   return (

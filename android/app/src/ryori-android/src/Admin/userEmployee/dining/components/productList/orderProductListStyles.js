@@ -8,9 +8,9 @@ export const OrderListStyles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 20,
   },
-  productContent: {
-    width: '100%',
-  },
+  // productContent: {
+  //   width: '100%',
+  // },
   crewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -62,29 +62,29 @@ export const OrderListStyles = StyleSheet.create({
     backgroundColor: '#fff',
     overflow: 'hidden',
   },
-  accordItem: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-Bold',
-  },
-  itemlist: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-Bold',
-  },
-  toPreparing: {
-    alignItems: 'center',
-    backgroundColor: '#0085FF',
-    borderRadius: 4,
-    left: 20,
-    width: 100,
-    height: 25,
-  },
-  preparingText: {
-    color: '#fff',
-    fontSize: 14,
-    fontFamily: 'Quicksand-Bold',
-  },
+  // accordItem: {
+  //   color: '#000',
+  //   fontSize: 16,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
+  // itemlist: {
+  //   color: '#000',
+  //   fontSize: 16,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
+  // toPreparing: {
+  //   alignItems: 'center',
+  //   backgroundColor: '#0085FF',
+  //   borderRadius: 4,
+  //   left: 20,
+  //   width: 100,
+  //   height: 25,
+  // },
+  // preparingText: {
+  //   color: '#fff',
+  //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
   item: {
     left: 10,
     color: '#000',
@@ -114,7 +114,6 @@ export const OrderListStyles = StyleSheet.create({
   newOrder: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#DB1B1B',
     borderRadius: 4,
     width: 40,
     height: 30,
@@ -143,22 +142,22 @@ export const OrderListStyles = StyleSheet.create({
     width: 80,
     height: 30,
   },
-  cancelOrder: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#B3ACAC',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
-  readyServeBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF7A00',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
+  // cancelOrder: {
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#B3ACAC',
+  //   borderRadius: 4,
+  //   width: 80,
+  //   height: 30,
+  // },
+  // readyServeBtn: {
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#FF7A00',
+  //   borderRadius: 4,
+  //   width: 80,
+  //   height: 30,
+  // },
   btnText: {
     color: '#fff',
   },

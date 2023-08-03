@@ -1,20 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {OrderListStyles as styles} from './orderProductListStyles';
-import male from '../../../images/male3.png';
-import redRyori from '../../../images/redRyori.png';
+import male from '../../../../images/male3.png';
+import redRyori from '../../../../images/redRyori.png';
 import {List} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants';
+import {API_URL} from '../../../../../utils/constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 
 export default function OrderProductList({navigation}) {
   const [expanded, setExpanded] = React.useState(true);
