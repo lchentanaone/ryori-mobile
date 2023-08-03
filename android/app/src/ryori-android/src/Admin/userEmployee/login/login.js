@@ -9,7 +9,7 @@ import {
   Button,
 } from 'react-native';
 import {OpeningSytle as styles} from './openingStyle';
-import ryoriText from '../images/ryori-text.png';
+import ryoriText from '../../images/ryori-text.png';
 import PushNotification from 'react-native-push-notification';
 import {
   OrientationLocker,

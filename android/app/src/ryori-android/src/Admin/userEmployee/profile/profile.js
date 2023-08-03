@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import {ProfileStyle as styles} from './profileStyle';
-import redRyori from '../images/redRyori.png';
-import male from '../images/male3.png';
+import redRyori from '../../images/redRyori.png';
+import male from '../../images/male3.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../utils/constants';
+import {API_URL} from '../../../utils/constants';
 
 export default function ProfileEmployee({navigation}) {
   const [userData, setUserData] = useState(null);

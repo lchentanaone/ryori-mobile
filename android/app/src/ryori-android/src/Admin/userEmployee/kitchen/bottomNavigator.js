@@ -4,9 +4,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Products from '../Kitchen/components/products/product';
+import Products from './component/products/product';
 import LoginEmployee from '../login/login';
-import PreparingOrderTab from '../Kitchen/components/activeOrder/preparingOrderTab';
+import PreparingOrderTab from './component/activeOrder/preparingOrderTab';
 
 const Tab = createBottomTabNavigator();
 

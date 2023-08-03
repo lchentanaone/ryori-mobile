@@ -23,12 +23,11 @@ import Branches from '../component/opening/selectBranch/selectBranch';
 import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
 
 // Employee
-import LoginEmpoyee from '../../user/login/login';
-import KitchenBottomNavigator from '../../user/navigation/bottomNavigator';
-import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/preparingOrderTab';
-import ProfileEmpoyee from '../../user/profile/profile';
-import ProfileEdit from '../../user/profile/profileEdit';
-import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory';
+import LoginEmpoyee from '../userEmployee/login/login';
+import KitchenBottomNavigator from '../userEmployee/kitchen/bottomNavigator';
+import PreparingOrderTab from '../userEmployee/kitchen/component/activeOrder/preparingOrderTab';
+import ProfileEmpoyee from '../userEmployee/profile/profile';
+import ProfileEdit from '../userEmployee/profile/profileEdit';
 import PaymentReceived from '../userEmployee/dining/components/pamentReceived/paymentRec';
 import DiningBottomNavigator from '../userEmployee/dining/bottomNavigation';
 
@@ -175,11 +174,6 @@ const StackNavigators = () => {
         <Stack.Screen
           component={ProfileEdit}
           name="Profile Edit"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={InventoryEmployee}
-          name="InventoryEmployee"
           options={{headerShown: false}}
         />
         <Stack.Screen

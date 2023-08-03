@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import redRyori from '../../../images/redRyori.png';
+import redRyori from '../../../../images/redRyori.png';
 import {List, DataTable} from 'react-native-paper';
 import {OrderStyle as styles} from './orderStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants';
+import {API_URL} from '../../../../../utils/constants';
 
 export default function PreparingOrderTab({route}) {
   const [expanded, setExpanded] = React.useState(true);

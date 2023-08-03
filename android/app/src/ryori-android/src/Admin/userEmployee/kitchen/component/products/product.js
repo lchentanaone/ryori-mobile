@@ -8,19 +8,15 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import redRyori from '../../../images/redRyori.png';
+import redRyori from '../../../../images/redRyori.png';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {DataTable} from 'react-native-paper';
-import male from '../../../images/male3.png';
+import male from '../../../../images/male3.png';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {API_URL} from '../../../../../utils/constants';
+import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 
 export default function Products({navigation}) {
   const [quantity, setQuantity] = useState('0');
