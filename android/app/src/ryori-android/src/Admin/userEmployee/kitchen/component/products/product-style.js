@@ -6,10 +6,7 @@ export const prodStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingHorizontal: 20,
-    paddingVertical: 40,
-  },
-  productContent: {
-    width: '100%',
+    paddingVertical: 20,
   },
   crewHeader: {
     flexDirection: 'row',
@@ -47,14 +44,28 @@ export const prodStyle = StyleSheet.create({
     top: 6,
     left: 10,
   },
+
   // SearchBar
+  searchInventory: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    // backgroundColor: 'red',
+    // // height: 100,
+  },
+  invetoryIcon: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '20%',
+    top: 10,
+  },
   searchbar: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f6f6f8',
     height: 45,
     borderRadius: 5,
-    width: '100%',
+    width: '80%',
     marginTop: 20,
     // left: 30
   },
@@ -122,21 +133,5 @@ export const prodStyle = StyleSheet.create({
     color: '#000',
     fontSize: 15,
     fontFamily: 'Quicksand-Bold',
-  },
-  invenBtn: {
-    width: '100%',
-    marginTop: 100,
-    alignItems: 'center',
-  },
-  inventoryBtn: {
-    width: '60%',
-    height: 48,
-    borderRadius: 5,
-    backgroundColor: '#DB1B1B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#fff',
   },
 });

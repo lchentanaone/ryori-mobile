@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../../utils/constants';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function Products({navigation}) {
   const [quantity, setQuantity] = useState('0');
@@ -96,22 +97,22 @@ export default function Products({navigation}) {
         }
       />
       <View style={styles.products}>
-        <View style={styles.productContent}>
-          <View style={styles.crewHeader}>
-            <View style={styles.ryoriIconTitle}>
-              <Image source={redRyori} style={styles.ryori} />
-              <Text style={styles.ryoriIconText}>Products</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.viewProfile}
-              onPress={() => navigation.navigate('Profile Employee')}>
-              <Image source={male} style={styles.crewImage} />
-              <View style={{top: -5, left: 5}}>
-                <Text style={styles.crewName}>{'John Doe'}</Text>
-                <Text style={styles.viewProfileText}>View Profile</Text>
-              </View>
-            </TouchableOpacity>
+        <View style={styles.crewHeader}>
+          <View style={styles.ryoriIconTitle}>
+            <Image source={redRyori} style={styles.ryori} />
+            <Text style={styles.ryoriIconText}>Products</Text>
           </View>
+          <TouchableOpacity
+            style={styles.viewProfile}
+            onPress={() => navigation.navigate('Profile Employee')}>
+            <Image source={male} style={styles.crewImage} />
+            <View style={{top: -5, left: 5}}>
+              <Text style={styles.crewName}>{'John Doe'}</Text>
+              <Text style={styles.viewProfileText}>View Profile</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.searchInventory}>
           <View style={styles.searchbar}>
             <FontAwesome name="search" size={20} style={styles.SearchIcon} />
             <TextInput
@@ -121,95 +122,56 @@ export default function Products({navigation}) {
               numberOfLines={1}
             />
           </View>
-          <View style={styles.Table}>
-            <ScrollView>
-              {category.map((item, index) => (
-                <>
-                  <View key={index} style={styles.productTable}>
-                    <DataTable>
-                      <DataTable.Header>
-                        <DataTable.Title style={{flex: 2.4}}>
-                          <Text style={styles.tableProductHeader}>
-                            {item.title}
-                          </Text>
-                        </DataTable.Title>
-                        <DataTable.Title style={{flex: 0.8}}>
-                          <Text style={styles.productQty}>Quantity</Text>
-                        </DataTable.Title>
-                      </DataTable.Header>
-                      {menu.map((menuItem, menuIndex) => (
-                        <DataTable.Row key={menuIndex}>
-                          <DataTable.Cell style={{flex: 2.4}}>
-                            <Text style={styles.porklist}>
-                              {menuItem.title}
-                            </Text>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 0.8}}>
-                            <View style={styles.qtyContainer}>
-                              <TouchableOpacity onPress={handleDecrease}>
-                                <Entypo name="minus" size={18} />
-                              </TouchableOpacity>
-                              <TextInput
-                                style={styles.input}
-                                value={quantity}
-                                onChangeText={text => setQuantity(text)}
-                                keyboardType="numeric"
-                              />
-                              <TouchableOpacity onPress={handleIncrease}>
-                                <Entypo name="plus" size={18} />
-                              </TouchableOpacity>
-                            </View>
-                          </DataTable.Cell>
-                        </DataTable.Row>
-                      ))}
-                    </DataTable>
-                  </View>
-                  {/* <View style={styles.productTable}>
-                    <DataTable>
-                      <DataTable.Header>
-                        <DataTable.Title>
-                          <Text style={styles.tableProductHeader}>Chicken</Text>
-                        </DataTable.Title>
-                      </DataTable.Header>
-                      <DataTable.Row>
-                        <DataTable.Cell>
-                          <Text style={styles.porklist}>Chicken Combo 1</Text>
+          <TouchableOpacity
+            style={styles.invetoryIcon}
+            onPress={() => navigation.navigate('Inventory')}>
+            <FontAwesome5 name="box-open" color={'#464646'} size={25} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.Table}>
+          <ScrollView>
+            {category.map((item, index) => (
+              <>
+                <View key={index} style={styles.productTable}>
+                  <DataTable>
+                    <DataTable.Header>
+                      <DataTable.Title style={{flex: 2.4}}>
+                        <Text style={styles.tableProductHeader}>
+                          {item.title}
+                        </Text>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 0.8}}>
+                        <Text style={styles.productQty}>Quantity</Text>
+                      </DataTable.Title>
+                    </DataTable.Header>
+                    {menu.map((menuItem, menuIndex) => (
+                      <DataTable.Row key={menuIndex}>
+                        <DataTable.Cell style={{flex: 2.4}}>
+                          <Text style={styles.porklist}>{menuItem.title}</Text>
                         </DataTable.Cell>
-                        <DataTable.Cell style={{left: '37%'}}>
-                          <Text style={styles.porklistQty}>26</Text>
+                        <DataTable.Cell style={{flex: 0.8}}>
+                          <View style={styles.qtyContainer}>
+                            <TouchableOpacity onPress={handleDecrease}>
+                              <Entypo name="minus" size={18} />
+                            </TouchableOpacity>
+                            <TextInput
+                              style={styles.input}
+                              value={quantity}
+                              onChangeText={text => setQuantity(text)}
+                              keyboardType="numeric"
+                            />
+                            <TouchableOpacity onPress={handleIncrease}>
+                              <Entypo name="plus" size={18} />
+                            </TouchableOpacity>
+                          </View>
                         </DataTable.Cell>
                       </DataTable.Row>
-                    </DataTable>
-                  </View> */}
-                  {/* <View style={styles.productTable}>
-                    <DataTable>
-                      <DataTable.Header>
-                        <DataTable.Title>
-                          <Text style={styles.tableProductHeader}>Beef</Text>
-                        </DataTable.Title>
-                      </DataTable.Header>
-                      <DataTable.Row>
-                        <DataTable.Cell>
-                          <Text style={styles.porklist}>Chicken Combo 1</Text>
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{left: '37%'}}>
-                          <Text style={styles.porklistQty}>26</Text>
-                        </DataTable.Cell>
-                      </DataTable.Row>
-                    </DataTable>
-                  </View> */}
-                </>
-              ))}
-            </ScrollView>
-          </View>
-
-          <View style={styles.invenBtn}>
-            <TouchableOpacity
-              style={styles.inventoryBtn}
-              onPress={() => navigation.navigate('Inventory')}>
-              <Text style={styles.btnText}>Open Inventory</Text>
-            </TouchableOpacity>
-          </View>
+                    ))}
+                  </DataTable>
+                </View>
+              </>
+            ))}
+          </ScrollView>
         </View>
       </View>
     </>
