@@ -57,22 +57,6 @@ const RyoriDrawer = props => {
       console.log(error);
     }
   };
-  // const Dining = async () => {
-  //   try {
-  //     // await AsyncStorage.removeItem('branch_Id');
-  //     navigation.navigate('DiningBottomNavigator');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const Kitchen = async () => {
-  //   try {
-  //     // await AsyncStorage.removeItem('branch_Id');
-  //     navigation.navigate('Kitchen');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
