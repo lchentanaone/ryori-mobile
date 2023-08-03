@@ -63,17 +63,8 @@ export default function DoneOrder() {
         <View style={styles.crewHeader}>
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
-            <Text style={styles.ryoriIconText}>Orders</Text>
+            <Text style={styles.ryoriIconText}>Done Orders</Text>
           </View>
-          <TouchableOpacity
-            style={styles.viewProfile}
-            onPress={() => navigation.navigate('Profile Employee')}>
-            <Image source={male} style={styles.crewImage} />
-            <View style={{top: -5, left: 5}}>
-              <Text style={styles.crewName}>{'John Doe'}</Text>
-              <Text style={styles.viewProfileText}>View Profile</Text>
-            </View>
-          </TouchableOpacity>
         </View>
         <View
           style={{

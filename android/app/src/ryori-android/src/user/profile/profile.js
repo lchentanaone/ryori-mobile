@@ -23,6 +23,14 @@ export default function ProfileEmployee({navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate('Login-admin');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -57,13 +65,11 @@ export default function ProfileEmployee({navigation}) {
                 <Text style={styles.columnText}>{'Mintal'}</Text>
               </View>
             </View>
-            {/* <View style={{alignItems: 'center', marginTop: 20}}>
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => navigation.navigate('Profile Edit')}>
-                <Text style={styles.btnText}>Edit My Profile</Text>
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <TouchableOpacity style={styles.btn} onPress={handleLogout}>
+                <Text style={styles.btnText}>Log out</Text>
               </TouchableOpacity>
-            </View> */}
+            </View>
           </>
         ) : (
           <Text>Loading user data...</Text>

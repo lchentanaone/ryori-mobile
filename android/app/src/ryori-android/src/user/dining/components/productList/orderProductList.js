@@ -26,6 +26,7 @@ export default function OrderProductList({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const store_Id = await AsyncStorage.getItem('store_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
       };

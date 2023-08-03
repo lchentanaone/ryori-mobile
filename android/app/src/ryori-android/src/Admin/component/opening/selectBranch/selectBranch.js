@@ -16,7 +16,6 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('StoresID', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -31,7 +30,6 @@ export default function Branches({navigation}) {
         {headers},
       );
       setStoreData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -41,7 +39,6 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('----storeId', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -59,7 +56,6 @@ export default function Branches({navigation}) {
       // if (response.data.length === 1) {
       //   navigation.navigate('Drawer');
       // }
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -84,7 +80,6 @@ export default function Branches({navigation}) {
     try {
       await AsyncStorage.setItem('branch_Id', branchId.toString());
       const getBranch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log('responseItem----', getBranch_Id);
 
       navigation.navigate('Drawer');
     } catch (error) {
