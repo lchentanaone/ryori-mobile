@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {BranchStyle as styles} from './selectBranch.Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -98,21 +98,18 @@ export default function Branches({navigation}) {
           <Text>Loading Store data...</Text>
         )}
         <Text style={styles.selectText}>Select which Branch</Text>
-        <View
-          style={{
-            width: '100%',
-            paddingHorizontal: 40,
-            marginTop: 15,
-          }}>
-          {branchData.map((branch, index) => (
-            <View key={index}>
-              <TouchableOpacity
-                style={styles.branchBtn}
-                onPress={() => handleBranchSelection(branch.id)}>
-                <Text style={styles.branchText}>{branch.branchName}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+        <View style={styles.container}>
+          <ScrollView style={{height: 120}}>
+            {branchData.map((branch, index) => (
+              <View key={index}>
+                <TouchableOpacity
+                  style={styles.branchBtn}
+                  onPress={() => handleBranchSelection(branch.id)}>
+                  <Text style={styles.branchText}>{branch.branchName}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
           <TouchableOpacity
             style={styles.addBranchBtn}
             onPress={() => navigation.navigate('Setup your Store')}>
