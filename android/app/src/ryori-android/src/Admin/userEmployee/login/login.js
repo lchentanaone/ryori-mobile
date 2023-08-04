@@ -16,6 +16,8 @@ import {
   PORTRAIT,
   LANDSCAPE,
 } from 'react-native-orientation-locker';
+import io from 'socket.io-client';
+import {API_URL} from '../../utils/constants'
 
 export default function LoginEmployee({navigation}) {
   const [screenOrientaion, setScreenOrientaion] = useState(true);
@@ -24,6 +26,26 @@ export default function LoginEmployee({navigation}) {
 
   useEffect(() => {
     createChannel();
+
+    const socket = io(API_URL)
+    socket.on('connection', () => {
+      console.log('Connected to server');
+    })
+    socket.on('message', (data) => {
+      console.log('got something here...')
+      PushNotification.localNotification({
+        channelId: 'Testing',
+        title: data.title,
+        message: data.message,
+      });
+    })
+
+    socket.emit('joinRoom', {room: 'store-1'})
+
+    return () => {
+      socket.disconnect();
+    }
+
   }, []);
 
   const createChannel = () => {
@@ -34,11 +56,7 @@ export default function LoginEmployee({navigation}) {
   };
 
   const handleNotification = () => {
-    PushNotification.localNotification({
-      channelId: 'Testing',
-      title: 'Ryori',
-      message: 'Local Notification Ryori',
-    });
+    
   };
 
   return (
