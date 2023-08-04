@@ -142,4 +142,33 @@ export const EmployeeStyle = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Quicksand-Bold',
   },
+  //----------------------------------------------------------------
+  DropdownContainer: {
+    width: '48%',
+  },
+  dropdown: {
+    left: 2,
+    backgroundColor: 'white',
+    borderColor: '#E6E6E6',
+    height: 34,
+    shadowColor: '#000',
+    elevation: 5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  placeholderStyle: {
+    fontSize: 15,
+  },
+  selectedTextStyle: {
+    color: '#000',
+    fontSize: 14,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 14,
+  },
 });
