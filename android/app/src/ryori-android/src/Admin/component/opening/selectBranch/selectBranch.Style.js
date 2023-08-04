@@ -18,6 +18,11 @@ export const BranchStyle = StyleSheet.create({
     width: 400,
     height: '60%',
   },
+  container: {
+    width: '100%',
+    paddingHorizontal: 40,
+    marginTop: 5,
+  },
   storeName: {
     fontSize: 20,
     color: '#000',

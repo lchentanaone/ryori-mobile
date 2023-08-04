@@ -7,23 +7,15 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Alert,
-  Modal,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {API_URL} from '../../../../utils/constants'
-const categories = [
-  {label: 'All', value: 'All'},
-  {label: 'Pork', value: 'Pork'},
-  {label: 'Drinks', value: 'Drinks'},
-];
+import {API_URL} from '../../../../utils/constants';
 
 export default function Inventory() {
-
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
   const [itemOnEdit, setItemOnEdit] = useState('');
@@ -47,13 +39,11 @@ export default function Inventory() {
           },
         },
       );
-      // console.log('categories: ', response.data)
       const dropdownCategories = response.data.map(categoryItem => ({
         label: categoryItem.title,
         value: categoryItem.id,
       }));
       setCategories(dropdownCategories);
-      console.log(dropdownCategories);
     } catch (error) {
       console.error(error);
     }
@@ -65,17 +55,12 @@ export default function Inventory() {
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       console.log(branch_Id);
-      // const headers = {
-      //   Authorization: `Bearer ${token}`,
-      // };
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
       const response = await axios.get(
         `${API_URL}/inventory/rawgrocery/?branch_Id=${branch_Id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-        // {headers},
+        {headers},
       );
       setInventory(response.data);
     } catch (error) {
@@ -95,7 +80,7 @@ export default function Inventory() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const newData = [...inventory, {item, weight, quantity}];
+      const newData = [...inventory, {item, weight, quantity, category}];
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -104,11 +89,11 @@ export default function Inventory() {
         await axios.patch(
           `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
           {
-            branch_Id,
             item,
             weight,
             quantity,
-            rawCategory_Id: category,
+            branch_Id,
+            category,
           },
           {headers},
         );
@@ -119,11 +104,11 @@ export default function Inventory() {
         await axios.post(
           `${API_URL}/inventory/rawgrocery`,
           {
-            branch_Id,
             item,
             weight,
             quantity,
-            rawCategory_Id: 1,
+            branch_Id,
+            rawCategory_Id: category,
           },
           {headers},
         );
@@ -179,12 +164,12 @@ export default function Inventory() {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={'All'}
+                placeholder={'Category'}
                 value={category}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
-                  setCategory(item.category);
+                  setCategory(item.value);
                   setIsFocus(false);
                 }}
               />

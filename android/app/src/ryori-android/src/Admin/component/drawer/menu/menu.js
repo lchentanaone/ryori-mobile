@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  ScrollView,
+} from 'react-native';
 import {MenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +15,8 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
   {label: 'Not Available', value: 'Not Available'},
@@ -123,38 +132,60 @@ export default function Menu({navigation}) {
             </View>
           </View>
         </View>
-        {/* <View style={MenuStyle.menuList}> */}
-        <View style={MenuStyle.menuItemRow}>
-          {items.map((item, index) => (
-            <View key={index}>
-              <View style={MenuStyle.menuItem}>
-                <TouchableOpacity
-                  style={MenuStyle.menuItemIcon}
-                  key={item}
-                  onPress={() =>
-                    navigation.navigate('menu-details', {item, type: 'edit'})
-                  }>
-                  <MaterialCommunityIcons name="pencil-box-outline" size={25} />
-                </TouchableOpacity>
-                <View style={MenuStyle.ImageLabe}>
-                  <Image
-                    source={{uri: item.photo}}
-                    style={MenuStyle.menuImage}
-                  />
-                  <View style={MenuStyle.menuLabelPrice}>
-                    <Text style={MenuStyle.menuLabel}>{item.title}</Text>
-                    <Text style={MenuStyle.menuLabel}>{item.description}</Text>
-                    <Text style={MenuStyle.menuLabel}>{item.quantity}</Text>
-                    <Text style={MenuStyle.menuPrice}>{item.price}</Text>
+
+        <View style={{height: 300}}>
+          <ScrollView>
+            <View style={MenuStyle.menuItemRow}>
+              {items.map((item, index) => (
+                <View key={index}>
+                  <View style={MenuStyle.menuItem}>
+                    <TouchableOpacity
+                      style={MenuStyle.menuItemIcon}
+                      key={item}
+                      onPress={() =>
+                        navigation.navigate('menu-details', {
+                          item,
+                          type: 'edit',
+                        })
+                      }>
+                      <MaterialCommunityIcons
+                        name="pencil-box-outline"
+                        size={25}
+                      />
+                    </TouchableOpacity>
+                    <View style={MenuStyle.menuDetails}>
+                      <View
+                        style={{flexDirection: 'column', alignItems: 'center'}}>
+                        <Image
+                          source={{uri: item.photo}}
+                          style={MenuStyle.menuImage}
+                        />
+                      </View>
+                      <View style={MenuStyle.menuLabelPrice}>
+                        <Text style={MenuStyle.menuLabel}>{item.title}</Text>
+                        <Text style={MenuStyle.menudescription}>
+                          {item.description}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 15,
+                      }}>
+                      <Text style={MenuStyle.menuPrice}>₱ {item.price}</Text>
+                      <Text style={MenuStyle.menuQty}>
+                        Qty: {item.quantity}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-                <Text style={MenuStyle.menuDescrip}>{item.image}</Text>
-              </View>
+              ))}
             </View>
-          ))}
+          </ScrollView>
         </View>
       </View>
-      {/* </View> */}
     </View>
   );
 }

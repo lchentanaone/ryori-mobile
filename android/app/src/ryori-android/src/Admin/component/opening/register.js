@@ -4,7 +4,9 @@ import ryoriText from '../../images/ryori-text.png';
 import {openingStyles} from './opening-style';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import {API_URL} from '../../../utils/constants'
+import {API_URL} from '../../../utils/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Register() {
   const navigation = useNavigation();
 
@@ -14,33 +16,27 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
-  // const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleRegister = async () => {
-    console.log({
-      username,
-      email,
-      firstName,
-      lastName,
-      password,
-      phoneNumber,
-    })
-    axios
-      .post(`${API_URL}/auth/register`, {
+    try {
+      response = await axios.post(`${API_URL}/auth/register`, {
         username,
         email,
         firstName,
         lastName,
         password,
         phone: phoneNumber,
-      })
-      .then(response => {
-        console.log('Registration successful:', response.data);
-        navigation.navigate('Setup your Store');
-      })
-      .catch(error => {
-        console.error('Error registering:', error);
       });
+      const token = response.data.access_token;
+      await AsyncStorage.setItem('access_token', token);
+      const getToken = await AsyncStorage.getItem('access_token');
+      console.log({getToken});
+      console.log('Registration successful:', response.data);
+      navigation.navigate('Setup your Store');
+    } catch (error) {
+      console.error('Error registering:', error);
+    }
   };
 
   return (
@@ -102,9 +98,9 @@ export default function Register() {
               style={openingStyles.inputR}
               placeholder="Contact Number"
               placeholderTextColor="#777777"
-              value={address}
+              value={phoneNumber}
               keyboardType="numeric"
-              onChangeText={setAddress}
+              onChangeText={setPhoneNumber}
             />
           </View>
         </View>

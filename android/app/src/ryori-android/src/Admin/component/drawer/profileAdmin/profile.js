@@ -2,9 +2,11 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {ProfileStyle} from './profileStyle';
 import userProfile from '../../../images/male3.png';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../../utils/constants';
+
 export default function ProfileAdmin({navigation}) {
   const [userData, setUserData] = useState(null);
 
@@ -26,9 +28,21 @@ export default function ProfileAdmin({navigation}) {
     }
   };
 
+  const getUserId = () => {
+    navigation.navigate('Update Admin', {userId: userData.id});
+  };
+  const getUserCred = () => {
+    navigation.navigate('User Credential', {userId: userData.id});
+  };
+
   return (
     <View style={ProfileStyle.profileAdmin}>
-      <Text style={ProfileStyle.profiletTitle}>Profile</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={ProfileStyle.profiletTitle}>Profile</Text>
+        <TouchableOpacity onPress={getUserCred}>
+          <AntDesign name="setting" color={'#000'} size={25} top={5} />
+        </TouchableOpacity>
+      </View>
       <View style={ProfileStyle.profileContent}>
         <View style={ProfileStyle.profileInfo}>
           {userData ? (
@@ -47,7 +61,7 @@ export default function ProfileAdmin({navigation}) {
                 </View>
               </View>
               <View style={ProfileStyle.profileDetailsCol}>
-                <View style={ProfileStyle.detail}>
+                <View style={ProfileStyle.detailColored}>
                   <View style={ProfileStyle.infoCol}>
                     <Text style={ProfileStyle.infoTetx}>Full Name</Text>
                   </View>
@@ -65,32 +79,16 @@ export default function ProfileAdmin({navigation}) {
                     <Text style={ProfileStyle.infoTetx}> {userData.email}</Text>
                   </View>
                 </View>
-                <View style={ProfileStyle.detail}>
-                  <View style={ProfileStyle.infoCol}>
-                    <Text style={ProfileStyle.infoTetx}>Address</Text>
-                  </View>
-                  <View style={ProfileStyle.infoCol2}>
-                    <Text style={ProfileStyle.infoTetx}>
-                      {userData.address}
-                    </Text>
-                  </View>
-                </View>
+
                 <View style={ProfileStyle.detailColored}>
                   <View style={ProfileStyle.infoCol}>
                     <Text style={ProfileStyle.infoTetx}>Contact No.</Text>
                   </View>
                   <View style={ProfileStyle.infoCol2}>
-                    <Text style={ProfileStyle.infoTetx}>{'May 20 1999'}</Text>
+                    <Text style={ProfileStyle.infoTetx}>{userData.phone}</Text>
                   </View>
                 </View>
-                <View style={ProfileStyle.detail}>
-                  <View style={ProfileStyle.infoCol}>
-                    <Text style={ProfileStyle.infoTetx}>Gender</Text>
-                  </View>
-                  <View style={ProfileStyle.infoCol2}>
-                    <Text style={ProfileStyle.infoTetx}>{'Male'}</Text>
-                  </View>
-                </View>
+
                 <View style={ProfileStyle.detailColored}>
                   <View style={ProfileStyle.infoCol}>
                     <Text style={ProfileStyle.infoTetx}>Address</Text>
@@ -101,7 +99,7 @@ export default function ProfileAdmin({navigation}) {
                 </View>
                 <TouchableOpacity
                   style={ProfileStyle.buttonsOpacity}
-                  onPress={() => navigation.navigate('Update Admin')}>
+                  onPress={getUserId}>
                   <Text style={ProfileStyle.buttonsText}>Edit Profile</Text>
                 </TouchableOpacity>
               </View>

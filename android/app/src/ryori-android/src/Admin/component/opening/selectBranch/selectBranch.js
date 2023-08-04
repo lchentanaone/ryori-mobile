@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {BranchStyle as styles} from './selectBranch.Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -16,7 +16,6 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('StoresID', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -31,7 +30,6 @@ export default function Branches({navigation}) {
         {headers},
       );
       setStoreData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -41,7 +39,6 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('----storeId', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -59,7 +56,6 @@ export default function Branches({navigation}) {
       // if (response.data.length === 1) {
       //   navigation.navigate('Drawer');
       // }
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -84,7 +80,6 @@ export default function Branches({navigation}) {
     try {
       await AsyncStorage.setItem('branch_Id', branchId.toString());
       const getBranch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log('responseItem----', getBranch_Id);
 
       navigation.navigate('Drawer');
     } catch (error) {
@@ -103,21 +98,18 @@ export default function Branches({navigation}) {
           <Text>Loading Store data...</Text>
         )}
         <Text style={styles.selectText}>Select which Branch</Text>
-        <View
-          style={{
-            width: '100%',
-            paddingHorizontal: 40,
-            marginTop: 15,
-          }}>
-          {branchData.map((branch, index) => (
-            <View key={index}>
-              <TouchableOpacity
-                style={styles.branchBtn}
-                onPress={() => handleBranchSelection(branch.id)}>
-                <Text style={styles.branchText}>{branch.branchName}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+        <View style={styles.container}>
+          <ScrollView style={{height: 120}}>
+            {branchData.map((branch, index) => (
+              <View key={index}>
+                <TouchableOpacity
+                  style={styles.branchBtn}
+                  onPress={() => handleBranchSelection(branch.id)}>
+                  <Text style={styles.branchText}>{branch.branchName}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
           <TouchableOpacity
             style={styles.addBranchBtn}
             onPress={() => navigation.navigate('Setup your Store')}>

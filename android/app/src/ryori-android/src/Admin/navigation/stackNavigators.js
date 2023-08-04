@@ -3,9 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
 import Register from '../component/opening/register';
-// import EditMenu from '../component/overview/menu/edit-menu';
-// import Transaction from '../component/overview/transaction/transaction';
-// import TransactionReport from '../component/overview/transaction/transaction-report';
 import SetupStore from '../component/opening/setupStore';
 import DrawersNav from '../component/drawer/drawerNavigation/drawer';
 import Menu from '../component/drawer/menu/menu';
@@ -23,6 +20,17 @@ import Employees from '../component/drawer/employee/employee';
 import ProfileAdmin from '../component/drawer/profileAdmin/profile';
 import UpdateProfileAdmin from '../component/drawer/profileAdmin/updateProfile';
 import Branches from '../component/opening/selectBranch/selectBranch';
+import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
+
+// Employee
+import LoginEmpoyee from '../userEmployee/login/login';
+import KitchenBottomNavigator from '../userEmployee/kitchen/bottomNavigator';
+import PreparingOrderTab from '../userEmployee/kitchen/component/activeOrder/preparingOrderTab';
+import ProfileEmpoyee from '../userEmployee/profile/profile';
+import ProfileEdit from '../userEmployee/profile/profileEdit';
+import PaymentReceived from '../userEmployee/dining/components/pamentReceived/paymentRec';
+import DiningBottomNavigator from '../userEmployee/dining/bottomNavigation';
+
 const Stack = createStackNavigator();
 const StackNavigators = () => {
   return (
@@ -128,6 +136,11 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          component={UserCredentials}
+          name="User Credential"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           component={UpdateProfileAdmin}
           name="Update Admin"
           options={{headerShown: false}}
@@ -135,6 +148,42 @@ const StackNavigators = () => {
         <Stack.Screen
           component={Branches}
           name="Select Branch"
+          options={{headerShown: false}}
+        />
+        {/* ----------------KITCHEN--AND--DINING-------------------- */}
+        <Stack.Screen
+          component={LoginEmpoyee}
+          name="Login Employee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={KitchenBottomNavigator}
+          name="Kitchen"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PreparingOrderTab}
+          name="Prepare Table"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ProfileEmpoyee}
+          name="Profile Employee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ProfileEdit}
+          name="Profile Edit"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={DiningBottomNavigator}
+          name="DiningBottomNavigator"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={PaymentReceived}
+          name="PaymentReceived"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

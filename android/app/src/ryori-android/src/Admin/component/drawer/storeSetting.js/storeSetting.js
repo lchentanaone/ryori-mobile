@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {StoreSetStyle} from './storeSettingStyle';
-import tempoLogo from '../../../images/tempoLogo.png';
+import {StoreSetStyle as styles} from './storeSettingStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
+import {API_URL} from '../../../../utils/constants';
+
 export default function StoreSetting({navigation}) {
   const [storeData, setStoreData] = useState(null);
   const [branchData, setBranchData] = useState(null);
@@ -27,7 +27,6 @@ export default function StoreSetting({navigation}) {
         {headers},
       );
       setStoreData(response.data);
-      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -52,7 +51,6 @@ export default function StoreSetting({navigation}) {
         {headers},
       );
       setBranchData(response.data);
-      console.log('=============', response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -65,65 +63,85 @@ export default function StoreSetting({navigation}) {
     init();
   }, []);
 
+  const getStoreBranch = store => {
+    navigation.navigate('Update Store', {id: branchData.id});
+    console.log({branchId: branchData.id});
+  };
   return (
-    <View style={StoreSetStyle.storeSetting}>
-      <View style={StoreSetStyle.storeSetContent}>
-        <Text style={StoreSetStyle.storeSetTitle}>Store Details</Text>
-
-        <View style={StoreSetStyle.storeDetailsContainer}>
-          <View style={StoreSetStyle.storeDetail}>
-            <View style={StoreSetStyle.storeDetails}>
-              <View style={StoreSetStyle.infoTitle}>
-                <Text style={StoreSetStyle.storeInfo}>Store Name</Text>
-                <Text style={StoreSetStyle.storeInfo}>Store Branch</Text>
-                <Text style={StoreSetStyle.storeInfo}>Email</Text>
-                <Text style={StoreSetStyle.storeInfo}>Contact</Text>
-                <Text style={StoreSetStyle.storeInfo}>Store Address</Text>
-              </View>
-
-              <View style={StoreSetStyle.info}>
-                {storeData ? (
-                  <>
-                    <Text style={StoreSetStyle.storeInfo}>
+    <View style={styles.storeSetting}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={styles.storeSetTitle}>Store Details</Text>
+      </View>
+      <View style={styles.setStoreContent}>
+        <View style={styles.storeInfoContainer}>
+          <View style={styles.storeLogoCon}>
+            {storeData ? (
+              <>
+                <Image
+                  style={styles.storeLogo}
+                  source={{uri: storeData.photo}}
+                />
+                <View style={styles.nameEmail}>
+                  <View style={{alignItems: 'center'}}>
+                    <Text style={styles.storeNameText}>
                       {storeData.storeName}
                     </Text>
-                  </>
-                ) : (
-                  <Text>Loading user data...</Text>
-                )}
-                {branchData ? (
-                  <>
-                    <Text style={StoreSetStyle.storeInfo}>
-                      {branchData.branchName}
-                    </Text>
-                    <Text style={StoreSetStyle.storeInfo}>
-                      {branchData.email}
-                    </Text>
-                    <Text style={StoreSetStyle.storeInfo}>
+                  </View>
+                </View>
+              </>
+            ) : (
+              <Text>Loading user data...</Text>
+            )}
+          </View>
+
+          <View style={{width: '60%'}}>
+            {branchData ? (
+              <>
+                <View style={styles.detailColored}>
+                  <View style={styles.infoCol}>
+                    <Text style={styles.infoTetx}>Branch</Text>
+                  </View>
+                  <View style={styles.infoCol2}>
+                    <Text style={styles.infoTetx}>{branchData.branchName}</Text>
+                  </View>
+                </View>
+                <View style={styles.detailColored}>
+                  <View style={styles.infoCol}>
+                    <Text style={styles.infoTetx}>Email</Text>
+                  </View>
+                  <View style={styles.infoCol2}>
+                    <Text style={styles.infoTetx}> {branchData.email}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.detailColored}>
+                  <View style={styles.infoCol}>
+                    <Text style={styles.infoTetx}>Contact No.</Text>
+                  </View>
+                  <View style={styles.infoCol2}>
+                    <Text style={styles.infoTetx}>
                       {branchData.contactNumber}
                     </Text>
-                    <Text style={StoreSetStyle.storeInfo}>
-                      {branchData.address}
-                    </Text>
-                  </>
-                ) : (
-                  <Text>Loading user data...</Text>
-                )}
-              </View>
-            </View>
-            <View style={StoreSetStyle.storePhoto}>
-              <Image style={StoreSetStyle.storeLogo} source={tempoLogo} />
-            </View>
-          </View>
-          <View style={StoreSetStyle.buttons}>
-            {/* <TouchableOpacity style={StoreSetStyle.buttonsOpacity}>
-              <Text style={StoreSetStyle.buttonsText}> Add new Store</Text>
-            </TouchableOpacity> */}
-            <TouchableOpacity
-              style={StoreSetStyle.buttonsOpacity}
-              onPress={() => navigation.navigate('Update Store')}>
-              <Text style={StoreSetStyle.buttonsText}>Edit this store</Text>
-            </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={styles.detailColored}>
+                  <View style={styles.infoCol}>
+                    <Text style={styles.infoTetx}>Address</Text>
+                  </View>
+                  <View style={styles.infoCol2}>
+                    <Text style={styles.infoTetx}>{'Davao City'}</Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={styles.buttonsOpacity}
+                  onPress={getStoreBranch}>
+                  <Text style={styles.buttonsText}>Edit this Store</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <Text>Loading user data...</Text>
+            )}
           </View>
         </View>
       </View>
