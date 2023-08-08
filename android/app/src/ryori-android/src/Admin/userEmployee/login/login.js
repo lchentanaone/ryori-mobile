@@ -17,7 +17,7 @@ import {
   LANDSCAPE,
 } from 'react-native-orientation-locker';
 import io from 'socket.io-client';
-import {API_URL} from '../../utils/constants'
+import {API_URL} from '../../../utils/constants'
 
 export default function LoginEmployee({navigation}) {
   const [screenOrientaion, setScreenOrientaion] = useState(true);
