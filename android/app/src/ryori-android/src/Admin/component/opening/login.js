@@ -25,6 +25,7 @@ export default function Login({navigation}) {
       const token = response.data.access_token;
       await AsyncStorage.setItem('access_token', token);
       await AsyncStorage.setItem('role', response.data.role);
+      await AsyncStorage.setItem('user_Id', response.data.user_Id.toString());
       if (response.data.store_Id) {
         await AsyncStorage.setItem(
           'store_Id',

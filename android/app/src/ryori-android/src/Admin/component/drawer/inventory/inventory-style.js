@@ -6,7 +6,7 @@ export const InventoryStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   inventContent: {
     width: '100%',
@@ -27,8 +27,12 @@ export const InventoryStyle = StyleSheet.create({
     height: 250,
     top: 10,
   },
-  tableHeader: {
-    backgroundColor: '#E3E7EB',
+  containerTable: {
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  table: {
+    minWidth: 720,
   },
   inventData: {
     fontSize: 16,
@@ -37,10 +41,10 @@ export const InventoryStyle = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
   },
   inventCellData: {
-    fontSize: 14,
-    fontWeight: 500,
+    fontSize: 15,
     color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily: 'Quicksand-Medium',
+    marginBottom: 2,
   },
   inventformCon: {
     width: '100%',
@@ -54,7 +58,6 @@ export const InventoryStyle = StyleSheet.create({
     width: '18%',
   },
   dropdown: {
-    left: 2,
     backgroundColor: 'white',
     borderColor: '#E6E6E6',
     height: 34,
@@ -62,6 +65,7 @@ export const InventoryStyle = StyleSheet.create({
     elevation: 5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    marginBottom: 10,
   },
   placeholderStyle: {
     fontSize: 15,
@@ -150,25 +154,17 @@ export const InventoryStyle = StyleSheet.create({
     justifyContent: 'space-between',
     width: 70,
   },
-  manageTextBtn: {
-    fontSize: 12,
-    color: '#fff',
-    justifyContent: 'center',
-    fontFamily: 'Quicksand-Bold',
-  },
-  //------------------
-  invetoryModal: {
-    width: '100%',
+  centeredViewModal: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
-    width: '50%',
-    margin: 20,
     backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 10,
+    padding: 10,
+    height: 250,
+    width: 250,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -179,43 +175,33 @@ export const InventoryStyle = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalContent: {
-    width: '100%',
+
+  dropdownModal: {
+    width: '90%',
   },
-  button: {
-    borderRadius: 20,
+
+  modalButton: {
+    borderRadius: 8,
     padding: 10,
+    marginTop: 30,
     elevation: 2,
+    width: 100,
     backgroundColor: '#2196F3',
   },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {},
-  textStyle: {
+  btnText: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  // ----------
-
-  modalDropdown: {
-    width: '100%',
-    left: 2,
-    backgroundColor: 'white',
-    borderColor: '#E6E6E6',
-    height: 34,
-    shadowColor: '#000',
-    elevation: 5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    marginBottom: 10,
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
-  modalInput: {
+  qtyReady: {
     width: '100%',
     fontSize: 15,
     height: 35,
-    padding: 10,
+    padding: 8,
     backgroundColor: '#fff',
     borderRadius: 8,
     marginBottom: 10,
@@ -223,46 +209,6 @@ export const InventoryStyle = StyleSheet.create({
     elevation: 5,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
-  },
-  modalNetWQtyInput: {
-    width: '48%',
-    fontSize: 15,
-    height: 35,
-    padding: 10,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: '#000',
-    elevation: 5,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  modalNetWQty: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  modalButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  updateInvetoryOpacity: {
-    width: '48%',
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#4285F4',
-    borderRadius: 10,
-    flexDirection: 'row',
-  },
-  delInvetoryOpacity: {
-    width: '48%',
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DB1B1B',
-    borderRadius: 10,
-    flexDirection: 'row',
   },
 });
 
@@ -278,7 +224,6 @@ export const CategoryInventoryStyle = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 15,
-    // backgroundColor: '#fff',
   },
   title: {
     fontSize: 20,
@@ -331,8 +276,5 @@ export const CategoryInventoryStyle = StyleSheet.create({
   },
   list: {
     width: '95%',
-  },
-  tableHeader: {
-    backgroundColor: '#EEF2F6',
   },
 });

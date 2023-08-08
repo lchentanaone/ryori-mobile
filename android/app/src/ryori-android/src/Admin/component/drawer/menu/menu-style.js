@@ -53,9 +53,7 @@ export const MenuStyle = StyleSheet.create({
   },
   // Column2
   menuC2: {
-    // backgroundColor: 'blue',
     width: '40%',
-    // left: -40
   },
   searchbar: {
     flexDirection: 'row',
@@ -92,19 +90,19 @@ export const MenuStyle = StyleSheet.create({
     right: 2,
     top: 5,
   },
-  allDropdown: {
-    width: '48%',
-  },
-  menuDropdown: {
-    left: 2,
-    backgroundColor: 'white',
-    borderColor: '#E6E6E6',
-    height: 34,
-    shadowColor: '#000',
-    elevation: 5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
+  // allDropdown: {
+  //   width: '48%',
+  // },
+  // menuDropdown: {
+  //   left: 2,
+  //   backgroundColor: 'white',
+  //   borderColor: '#E6E6E6',
+  //   height: 34,
+  //   shadowColor: '#000',
+  //   elevation: 5,
+  //   borderRadius: 8,
+  //   paddingHorizontal: 8,
+  // },
   placeholderStyle: {
     fontSize: 15,
   },
@@ -163,9 +161,28 @@ export const MenuStyle = StyleSheet.create({
     fontFamily: 'Quicksand-Medium',
     width: 180,
   },
+
+  priceQtyBottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+  },
+  priceQty: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  price: {
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    height: 28,
+    width: 70,
+  },
   menuPrice: {
-    color: '#000',
-    fontSize: 17,
+    color: '#fff',
+    fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
   },
   menuQty: {
@@ -175,7 +192,7 @@ export const MenuStyle = StyleSheet.create({
   },
 
   menuItemRow: {
-    marginTop: 5,
+    marginTop: 10,
     flexDirection: 'row',
     width: '100%',
     display: 'flex',
@@ -183,45 +200,89 @@ export const MenuStyle = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  menuTable: {
-    justifyContent: 'flex-start',
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    elevation: 5,
-    borderRadius: 5,
-    width: '100%',
-    height: 280,
-    top: 10,
-  },
-  tableHeader: {
-    backgroundColor: '#E3E7EB',
-  },
-  menuData: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  menuCellData: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
+  // menuTable: {
+  //   justifyContent: 'flex-start',
+  //   backgroundColor: '#fff',
+  //   shadowColor: '#000',
+  //   elevation: 5,
+  //   borderRadius: 5,
+  //   width: '100%',
+  //   height: 280,
+  //   top: 10,
+  // },
+  // tableHeader: {
+  //   backgroundColor: '#E3E7EB',
+  // },
+  // menuData: {
+  //   fontSize: 16,
+  //   fontWeight: 500,
+  //   color: '#000',
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
+  // menuCellData: {
+  //   fontSize: 14,
+  //   fontWeight: 500,
+  //   color: '#000',
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
 
   // MODAL
-  Modal: {
+  // Modal: {
+  //   width: '100%',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginTop: 22,
+  // },
+  // modalView: {
+  //   width: '100%',
+  //   margin: 20,
+  //   backgroundColor: '#fff',
+  //   borderRadius: 20,
+  //   padding: 35,
+  //   alignItems: 'center',
+  //   shadowColor: '#000',
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2,
+  //   },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 4,
+  //   elevation: 5,
+  // },
+  //----------------------------------------------------------------
+  menuItems: {
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    elevation: 6,
+    height: 180,
+    width: '95%',
+    borderRadius: 3,
+    margin: 5,
+    marginLeft: 10,
+  },
+  menuImages: {
+    borderTopRightRadius: 3,
+    borderTopLeftRadius: 3,
+    height: 90,
+    width: '100%',
+  },
+  menuLabels: {
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-SemiBold',
+    width: 150,
+  },
+  modal: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
-    width: '100%',
+    width: '35%',
+    height: 310,
     margin: 20,
     backgroundColor: '#fff',
     borderRadius: 20,
-    padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -232,6 +293,80 @@ export const MenuStyle = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalContent: {
+    width: '100%',
+  },
+  // modalForm: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  // },
+  menuItems1: {
+    paddingVertical: 10,
+    height: 180,
+    width: '100%',
+    borderRadius: 3,
+    alignItems: 'center',
+  },
+  modalPrice: {
+    height: 25,
+    width: 100,
+    backgroundColor: 'red',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuImagesCon: {
+    width: '80%',
+    alignItems: 'center',
+  },
+  menuImages1: {
+    borderRadius: 100,
+    height: 110,
+    width: 110,
+  },
+  modalMenuLabel: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 3,
+    paddingHorizontal: 10,
+  },
+  moddalMenuPrice: {
+    color: '#fff',
+    fontSize: 17,
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  modalMenuText: {
+    color: '#000',
+    fontSize: 17,
+    fontFamily: 'Quicksand-Bold',
+  },
+  menudescription1: {
+    top: 8,
+    color: '#71797E',
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium',
+    paddingHorizontal: 10,
+  },
+  modalBtn: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    width: '100%',
+    top: 15,
+  },
+  updateModalBtn: {
+    backgroundColor: '#4285F4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    height: 35,
+    width: 100,
+  },
+  modalBtnText: {
+    color: '#fff',
+    fontSize: 14,
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  //----------------------------------------------------------------
 });
 export const DropdownStyle = StyleSheet.create({
   DropdownContainer: {
@@ -380,26 +515,26 @@ export const AddMenuStyle = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Quicksand-Bold',
   },
-  uploadIm2: {
-    backgroundColor: 'orange',
-    width: '100%',
-    // height:200,
-  },
+  // uploadIm2: {
+  //   backgroundColor: 'orange',
+  //   width: '100%',
+  //   // height:200,
+  // },
   uploadMenuImg: {
     width: '50%',
     padding: 35,
   },
   //--------------------
-  actionOpacity: {
-    width: 40,
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  actionText: {
-    fontWeight: 500,
-    fontSize: 10,
-    color: '#f6be00',
-    justifyContent: 'center',
-  },
+  // actionOpacity: {
+  //   width: 40,
+  //   height: 35,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // actionText: {
+  //   fontWeight: 500,
+  //   fontSize: 10,
+  //   color: '#f6be00',
+  //   justifyContent: 'center',
+  // },
 });
