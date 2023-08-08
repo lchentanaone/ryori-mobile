@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Modal,
 } from 'react-native';
 import {MenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -15,7 +16,6 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -30,6 +30,9 @@ export default function Menu({navigation}) {
   const [availability, setAvailability] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [items, setItems] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [itemDetails, setItemDetails] = useState(null);
 
   const fetchItems = async () => {
     try {
@@ -50,11 +53,20 @@ export default function Menu({navigation}) {
       console.error(error);
     }
   };
+  const handleMenuModal = async item => {
+    setSelectedItem(item);
+    try {
+      const response = await axios.get(`${API_URL}/menuItem/${item.id}`);
+      setItemDetails(response.data);
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error fetching item details:', error);
+    }
+  };
 
   useEffect(() => {
     fetchItems();
   }, []);
-
   return (
     <View style={MenuStyle.menuContainer}>
       <View style={MenuStyle.menuContent}>
@@ -138,54 +150,93 @@ export default function Menu({navigation}) {
             <View style={MenuStyle.menuItemRow}>
               {items.map((item, index) => (
                 <View key={index}>
-                  <View style={MenuStyle.menuItem}>
-                    <TouchableOpacity
-                      style={MenuStyle.menuItemIcon}
-                      key={item}
-                      onPress={() =>
-                        navigation.navigate('menu-details', {
-                          item,
-                          type: 'edit',
-                        })
-                      }>
-                      <MaterialCommunityIcons
-                        name="pencil-box-outline"
-                        size={25}
-                      />
-                    </TouchableOpacity>
-                    <View style={MenuStyle.menuDetails}>
-                      <View
-                        style={{flexDirection: 'column', alignItems: 'center'}}>
-                        <Image
-                          source={{uri: item.photo}}
-                          style={MenuStyle.menuImage}
-                        />
-                      </View>
-                      <View style={MenuStyle.menuLabelPrice}>
-                        <Text style={MenuStyle.menuLabel}>{item.title}</Text>
-                        <Text style={MenuStyle.menudescription}>
-                          {item.description}
+                  <TouchableOpacity
+                    style={MenuStyle.menuItems}
+                    onPress={() => handleMenuModal(item)}>
+                    <Image
+                      source={{uri: item.photo}}
+                      style={MenuStyle.menuImages}
+                    />
+                    <View style={{paddingHorizontal: 10}}>
+                      <Text style={MenuStyle.menuLabels}>{item.title}</Text>
+                    </View>
+                    <View style={MenuStyle.priceQtyBottom}>
+                      <View style={MenuStyle.priceQty}>
+                        <View style={MenuStyle.price}>
+                          <Text style={MenuStyle.menuPrice}>
+                            ₱ {item.price}
+                          </Text>
+                        </View>
+                        <Text style={MenuStyle.menuQty}>
+                          Qty: {item.quantity}
                         </Text>
                       </View>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: 15,
-                      }}>
-                      <Text style={MenuStyle.menuPrice}>₱ {item.price}</Text>
-                      <Text style={MenuStyle.menuQty}>
-                        Qty: {item.quantity}
-                      </Text>
-                    </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               ))}
             </View>
           </ScrollView>
         </View>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        style={{alignItems: 'center'}}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={MenuStyle.modal}>
+          <View style={MenuStyle.modalView}>
+            {itemDetails ? (
+              <>
+                <View style={MenuStyle.menuItems1}>
+                  <View style={MenuStyle.menuImagesCon}>
+                    <Image
+                      source={{uri: itemDetails.photo}}
+                      style={MenuStyle.menuImages1}
+                    />
+                  </View>
+                  <View style={MenuStyle.modalMenuLabel}>
+                    <Text style={MenuStyle.modalMenuText}>
+                      {itemDetails.title}
+                    </Text>
+                  </View>
+                  <View style={MenuStyle.modalPrice}>
+                    <Text style={MenuStyle.moddalMenuPrice}>
+                      ₱ {itemDetails.price}
+                    </Text>
+                  </View>
+                  <Text style={MenuStyle.menudescription1}>
+                    {itemDetails.description}
+                  </Text>
+
+                  <View style={MenuStyle.modalBtn}>
+                    <TouchableOpacity
+                      style={MenuStyle.updateModalBtn}
+                      onPress={() =>
+                        navigation.navigate('menu-details', {
+                          item: selectedItem,
+                          type: 'edit',
+                        })
+                      }>
+                      <Text style={MenuStyle.modalBtnText}>Update</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={MenuStyle.updateModalBtn}
+                      onPress={() => setModalVisible(false)}>
+                      <Text style={MenuStyle.modalBtnText}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </>
+            ) : (
+              <Text>Loading user data...</Text>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

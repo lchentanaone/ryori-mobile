@@ -130,7 +130,7 @@ export default function DrawersNav({navigation}) {
         drawerActiveBackgroundColor: '#fff',
         drawerInactiveBackgroundColor: '#fff',
         headerTitleContainerStyle: {right: 72},
-        swipeEdgeWidth: 500,
+        swipeEdgeWidth: 200,
         headerTintColor: '#48E891',
         drawerLabelStyle: {
           fontFamily: 'Quicksand-Bold',

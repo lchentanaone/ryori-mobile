@@ -4,11 +4,7 @@ import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 
 export default function Login({navigation}) {
   const API_URL = 'http://10.0.2.2:3000';
@@ -25,6 +21,7 @@ export default function Login({navigation}) {
       const token = response.data.access_token;
       await AsyncStorage.setItem('access_token', token);
       await AsyncStorage.setItem('role', response.data.role);
+      await AsyncStorage.setItem('user_Id', response.data.user_Id.toString());
       if (response.data.store_Id) {
         await AsyncStorage.setItem(
           'store_Id',
