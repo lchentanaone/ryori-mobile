@@ -17,16 +17,8 @@ export default function Dashboard() {
     <View style={DashboardStyle.dashboard}>
       <View style={DashboardStyle.dashboardContent}>
         <View style={DashboardStyle.dashBTitleSearchB}>
-          <Text style={DashboardStyle.dashboardTitle}>Dashboard</Text>
-          <View style={DashboardStyle.searchbar}>
-            <FontAwesome name="search" style={DashboardStyle.SearchIcon} />
-            <TextInput
-              style={DashboardStyle.searchInput}
-              placeholder="Search here"
-              placeholderTextColor="#777777"
-              numberOfLines={1}
-            />
-          </View>
+          <Text style={DashboardStyle.storename}>Krusty Krab</Text>
+          <Text style={DashboardStyle.storebranch}>Mintal Branch</Text>
         </View>
         <View style={DashboardStyle.overAll}>
           <View style={DashboardStyle.overAllContent}>

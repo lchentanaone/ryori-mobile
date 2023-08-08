@@ -10,12 +10,19 @@ export const DashboardStyle = StyleSheet.create({
   },
   dashboardContent: {
     width: '100%',
-    position: 'absolute',
-    top: 15,
+    marginTop: 5,
+  },
+  storename: {
+    letterSpacing: 1,
+    fontSize: 20,
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
+  },
+  storebranch: {
+    marginBottom: 5,
   },
   dashBTitleSearchB: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   dashboardTitle: {
     fontSize: 25,
