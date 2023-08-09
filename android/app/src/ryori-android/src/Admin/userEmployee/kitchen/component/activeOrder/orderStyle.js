@@ -5,8 +5,8 @@ export const OrderStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 40,
-    paddingVertical: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   crewHeader: {
     flexDirection: 'row',

@@ -5,12 +5,10 @@ export const OrderListStyles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
-  // productContent: {
-  //   width: '100%',
-  // },
+
   crewHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
