@@ -6,18 +6,26 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import {EmployeeStyle as styles} from './employeeStyle';
 import {DataTable} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
+import {Dropdown} from 'react-native-element-dropdown';
+
+const roleData = [
+  {label: 'Kitchen', value: 'Kitchen'},
+  {label: 'Dining', value: 'Dining'},
+];
 
 export default function Employees() {
   const [modalVisible, setModalVisible] = useState(false);
   const [usersData, setUsersData] = useState([]);
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstname] = useState('');
@@ -42,8 +50,10 @@ export default function Employees() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUsersData(response.data);
-      // console.log(response.data);
+      const employeeOnly = response.data.filter(
+        transactionStatus => transactionStatus.role !== 'Admin',
+      );
+      setUsersData(employeeOnly);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -53,6 +63,7 @@ export default function Employees() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
       const newUser = [
         ...user,
         {username, email, firstName, lastName, password, role, phone},
@@ -90,6 +101,7 @@ export default function Employees() {
       } else {
         await axios.post(`${API_URL}/auth/register`, {
           store_Id,
+          branch_Id,
           username,
           email,
           firstName,
@@ -160,7 +172,6 @@ export default function Employees() {
   return (
     <View style={styles.employee}>
       <Text style={styles.employeeTitle}>Employees</Text>
-      {/* <View style={styles.employeeContent}> */}
       <TouchableOpacity
         style={styles.addEmployee}
         onPress={() => setModalVisible(true)}>
@@ -191,7 +202,7 @@ export default function Employees() {
               <Text style={styles.tableTitle}>Action</Text>
             </DataTable.Title>
           </DataTable.Header>
-          <ScrollView>
+          <ScrollView style={{height: 230}}>
             {usersData.map((user, index) => (
               <View key={index}>
                 <DataTable.Row style={{borderBottomWidth: 1}}>
@@ -200,8 +211,7 @@ export default function Employees() {
                   </DataTable.Cell>
                   <DataTable.Cell style={{flex: 2}}>
                     <Text style={styles.employeeCellData}>
-                      {user.firstName}
-                      {user.lastName}
+                      {user.firstName} {user.lastName}
                     </Text>
                   </DataTable.Cell>
                   <DataTable.Cell style={{flex: 1.2, left: 5}}>
@@ -213,21 +223,28 @@ export default function Employees() {
                   <DataTable.Cell style={{flex: 1.2, left: 10}}>
                     <Text style={styles.employeeCellData}>{user.role}</Text>
                   </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 1.2}}>
+                  <DataTable.Cell style={{flex: 1}}>
                     <Text style={styles.employeeCellData}>{user.phone}</Text>
                   </DataTable.Cell>
                   <DataTable.Cell style={{flex: 0.6}}>
-                    <TouchableOpacity>
-                      <MaterialCommunityIcons
-                        name="pencil-box-outline"
+                    {/* <TouchableOpacity>
+                      <AntDesign
+                        name="setting"
                         size={25}
+                        // onPress={() => handleEdit(user)}
+                      />
+                    </TouchableOpacity> */}
+                    <TouchableOpacity>
+                      <FontAwesome5
+                        name="user-edit"
+                        size={20}
                         onPress={() => handleEdit(user)}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                      <MaterialCommunityIcons
-                        name="pencil-box-outline"
-                        size={25}
+                      <AntDesign
+                        name="delete"
+                        size={20}
                         color={'red'}
                         onPress={() => handeDelete(user.id)}
                       />
@@ -244,7 +261,6 @@ export default function Employees() {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.modal}>
@@ -308,14 +324,38 @@ export default function Employees() {
                 />
               </View>
               <View style={styles.modalButton}>
-                <TextInput
+                {/* <TextInput
                   mode="outlined"
                   style={styles.modalInput}
                   placeholder="Roles"
                   placeholderTextColor="#777777"
                   value={role}
                   onChangeText={setRole}
-                />
+                /> */}
+                <View style={styles.DropdownContainer}>
+                  <Dropdown
+                    style={[
+                      styles.dropdown,
+                      isFocus && {borderColor: '#007FFF'},
+                    ]}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={roleData}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={'Position'}
+                    value={role}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={item => {
+                      setRole(item.value);
+                      setIsFocus(false);
+                    }}
+                  />
+                </View>
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}
                   onPress={SaveUser}>

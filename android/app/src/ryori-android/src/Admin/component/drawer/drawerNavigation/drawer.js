@@ -57,22 +57,6 @@ const RyoriDrawer = props => {
       console.log(error);
     }
   };
-  const Dining = async () => {
-    try {
-      // await AsyncStorage.removeItem('branch_Id');
-      navigation.navigate('OrderProductList');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const Kitchen = async () => {
-    try {
-      // await AsyncStorage.removeItem('branch_Id');
-      navigation.navigate('Kitchen');
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -126,18 +110,6 @@ const RyoriDrawer = props => {
           />
           <Text style={drawerStyle.brachesText}>Braches</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          underlayColor="red"
-          style={drawerStyle.brachesBtn}
-          onPress={Kitchen}>
-          <Text style={drawerStyle.brachesText}>Kitchen</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          underlayColor="red"
-          style={drawerStyle.brachesBtn}
-          onPress={Dining}>
-          <Text style={drawerStyle.brachesText}>Waiter</Text>
-        </TouchableOpacity>
         <DrawerItem label="Logout" onPress={handleLogout} />
       </DrawerContentScrollView>
     </View>
@@ -157,7 +129,7 @@ export default function DrawersNav({navigation}) {
         drawerActiveBackgroundColor: '#fff',
         drawerInactiveBackgroundColor: '#fff',
         headerTitleContainerStyle: {right: 72},
-        swipeEdgeWidth: 500,
+        swipeEdgeWidth: 200,
         headerTintColor: '#48E891',
         drawerLabelStyle: {
           fontFamily: 'Quicksand-Bold',

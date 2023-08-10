@@ -1,11 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import OrderProductList from './components/productList/orderProductList';
-import OrderSummary from './components/orderPage/orderTableNumber';
 import DoneOrder from './components/productList/doneOrderTab';
 
 const Tab = createBottomTabNavigator();
@@ -27,26 +23,11 @@ export default function DiningBottomNavigator() {
         options={{
           headerShown: false,
           tabBarLabel: 'Product',
-          tabBarIcon: ({focused, size}) => (
-            <Entypo
-              name="home"
-              color={focused ? '#db1a1c' : '#464646'}
-              size={30}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Test"
-        component={OrderSummary}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'TEST',
-          tabBarIcon: ({focused, size}) => (
+          tabBarIcon: ({focused}) => (
             <FontAwesome
               name="shopping-cart"
               color={focused ? '#db1a1c' : '#464646'}
-              size={30}
+              size={40}
             />
           ),
         }}
@@ -56,12 +37,12 @@ export default function DiningBottomNavigator() {
         component={DoneOrder}
         options={{
           headerShown: false,
-          tabBarLabel: 'Active Order',
-          tabBarIcon: ({focused, size}) => (
-            <AntDesign
-              name="home"
+          tabBarLabel: 'Done',
+          tabBarIcon: ({focused}) => (
+            <FontAwesome
+              name="check-circle"
               color={focused ? '#db1a1c' : '#464646'}
-              size={30}
+              size={40}
             />
           ),
         }}

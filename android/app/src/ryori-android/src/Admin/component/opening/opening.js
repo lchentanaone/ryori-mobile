@@ -21,21 +21,35 @@ export default function Opening() {
     async function checkIfTokenExist() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      if (store_Id) {
-        setTimeout(() => {
-          navigation.navigate('Select Branch');
-        }, 2000);
-      } 
-      else if(token) {        
-        setTimeout(() => {
-          navigation.navigate('New-Store-Branch', {type: 'store'});
-        }, 2000);
-      }
-      else {
+      const role = await AsyncStorage.getItem('role');
+      if (role === 'Admin') {
+        if (store_Id) {
+          setTimeout(() => {
+            navigation.navigate('Select Branch');
+          }, 2000);
+        } else if (token) {
+          setTimeout(() => {
+            navigation.navigate('New-Store-Branch', {type: 'store'});
+          }, 2000);
+        }
+      } else if (role === 'Dining') {
+        if (store_Id) {
+          setTimeout(() => {
+            navigation.navigate('DiningBottomNavigator');
+          }, 2000);
+        }
+      } else if (role === 'Kitchen') {
+        if (store_Id) {
+          setTimeout(() => {
+            navigation.navigate('Kitchen');
+          }, 2000);
+        }
+      } else {
         setTimeout(() => {
           navigation.navigate('Login-admin');
         }, 2000);
       }
+
       let isMounted = true;
       return () => {
         isMounted = false;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {TransacStyle} from './transactionStyle';
 import {DataTable} from 'react-native-paper';
 import axios from 'axios';
@@ -27,7 +27,7 @@ export default function TransactionList() {
         {headers},
       );
       const status = response.data.filter(
-        transactionStatus => transactionStatus.status === 'toPrepare',
+        transactionStatus => transactionStatus.status === 'to_prepare',
       );
       setTransactionData(status);
       console.log({status});
@@ -44,37 +44,43 @@ export default function TransactionList() {
         <View>
           <DataTable>
             <DataTable.Header style={TransacStyle.tableHeader}>
-              <DataTable.Title>
+              <DataTable.Title style={{flex: 0.3}}>
                 <Text style={TransacStyle.textHeader}>ID</Text>
               </DataTable.Title>
-              <DataTable.Title>
+              <DataTable.Title style={{flex: 0.3}}>
                 <Text style={TransacStyle.textHeader}>Table</Text>
               </DataTable.Title>
-              <DataTable.Title>
+              <DataTable.Title style={{flex: 1.8}}>
                 <Text style={TransacStyle.textHeader}>Transactions</Text>
               </DataTable.Title>
-              <DataTable.Title>
-                <Text style={TransacStyle.textHeader}>Date/Time</Text>
+              <DataTable.Title style={{flex: 0.5}}>
+                <Text style={TransacStyle.textHeader}>Date</Text>
+              </DataTable.Title>
+              <DataTable.Title style={{flex: 0.5}}>
+                <Text style={TransacStyle.textHeader}>Total</Text>
               </DataTable.Title>
             </DataTable.Header>
-            {/* <ScrollView> */}
-            {transactionData.map((item, index) => (
-              <DataTable.Row key={index}>
-                <DataTable.Cell>
-                  <Text style={TransacStyle.textCell}>{item.id}</Text>
-                </DataTable.Cell>
-                <DataTable.Cell>
-                  <Text style={TransacStyle.textCell}>{item.id}</Text>
-                </DataTable.Cell>
-                <DataTable.Cell>
-                  <Text style={TransacStyle.textCell}>Test</Text>
-                </DataTable.Cell>
-                <DataTable.Cell>
-                  <Text style={TransacStyle.textCell}>{item.createdAt}</Text>
-                </DataTable.Cell>
-              </DataTable.Row>
-            ))}
-            {/* </ScrollView> */}
+            <ScrollView style={{height: 260}}>
+              {transactionData.map((item, index) => (
+                <DataTable.Row key={index}>
+                  <DataTable.Cell style={{flex: 0.3}}>
+                    <Text style={TransacStyle.textCell}>{item.id}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{flex: 0.3}}>
+                    <Text style={TransacStyle.textCell}>{item.table}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{flex: 1.8}}>
+                    <Text style={TransacStyle.textCell}>Test</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{flex: 0.5}}>
+                    <Text style={TransacStyle.textCell}>{item.createdAt}</Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell style={{flex: 0.5, marginLeft: 10}}>
+                    <Text style={TransacStyle.textCell}>{item.total}</Text>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))}
+            </ScrollView>
           </DataTable>
         </View>
       </View>

@@ -3,9 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Opening from '../component/opening/opening';
 import Login from '../component/opening/login';
 import Register from '../component/opening/register';
-// import EditMenu from '../component/overview/menu/edit-menu';
-// import Transaction from '../component/overview/transaction/transaction';
-// import TransactionReport from '../component/overview/transaction/transaction-report';
 import SetupStore from '../component/opening/setupStore';
 import DrawersNav from '../component/drawer/drawerNavigation/drawer';
 import Menu from '../component/drawer/menu/menu';
@@ -26,16 +23,13 @@ import Branches from '../component/opening/selectBranch/selectBranch';
 import UserCredentials from '../component/drawer/profileAdmin/UserCredentials';
 
 // Employee
-import LoginEmpoyee from '../../user/login/login';
-import KitchenBottomNavigator from '../../user/navigation/bottomNavigator';
-import PreparingOrderTab from '../../user/Kitchen/components/activeOrder/preparingOrderTab';
-import ProfileEmpoyee from '../../user/profile/profile';
-import ProfileEdit from '../../user/profile/profileEdit';
-import InventoryEmployee from '../../user/Kitchen/components/inventory/inventory';
-import OrderProductList from '../../user/dining/components/productList/orderProductList';
-import OrderSummary from '../../user/dining/components/orderPage/orderTableNumber';
-import PaymentReceived from '../../user/dining/components/pamentReceived/paymentRec';
-import DiningBottomNavigator from '../../user/dining/bottomNavigation';
+import LoginEmpoyee from '../userEmployee/login/login';
+import KitchenBottomNavigator from '../userEmployee/kitchen/bottomNavigator';
+import PreparingOrderTab from '../userEmployee/kitchen/component/activeOrder/preparingOrderTab';
+import ProfileEmpoyee from '../userEmployee/profile/profile';
+import ProfileEdit from '../userEmployee/profile/profileEdit';
+import PaymentReceived from '../userEmployee/dining/components/pamentReceived/paymentRec';
+import DiningBottomNavigator from '../userEmployee/dining/bottomNavigation';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -183,18 +177,8 @@ const StackNavigators = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          component={InventoryEmployee}
-          name="InventoryEmployee"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
           component={DiningBottomNavigator}
           name="DiningBottomNavigator"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={OrderSummary}
-          name="OrderSummary"
           options={{headerShown: false}}
         />
         <Stack.Screen

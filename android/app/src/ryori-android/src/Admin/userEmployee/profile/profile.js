@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import {ProfileStyle as styles} from './profileStyle';
-import redRyori from '../images/redRyori.png';
-import male from '../images/male3.png';
+import redRyori from '../../images/redRyori.png';
+import male from '../../images/male3.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../utils/constants';
+import {API_URL} from '../../../utils/constants';
 
 export default function ProfileEmployee({navigation}) {
   const [userData, setUserData] = useState(null);
@@ -21,6 +21,14 @@ export default function ProfileEmployee({navigation}) {
       setUserData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
+    }
+  };
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate('Login-admin');
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -57,13 +65,11 @@ export default function ProfileEmployee({navigation}) {
                 <Text style={styles.columnText}>{'Mintal'}</Text>
               </View>
             </View>
-            {/* <View style={{alignItems: 'center', marginTop: 20}}>
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() => navigation.navigate('Profile Edit')}>
-                <Text style={styles.btnText}>Edit My Profile</Text>
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <TouchableOpacity style={styles.btn} onPress={handleLogout}>
+                <Text style={styles.btnText}>Log out</Text>
               </TouchableOpacity>
-            </View> */}
+            </View>
           </>
         ) : (
           <Text>Loading user data...</Text>

@@ -7,13 +7,21 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Modal,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '../../../../utils/constants';
+import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
+
+const invLogsType = [
+  {label: 'Ready', value: 'ready'},
+  {label: 'Waste', value: 'waste'},
+];
 
 export default function Inventory() {
   const [categories, setCategories] = useState([]);
@@ -26,6 +34,9 @@ export default function Inventory() {
   const [modalVisible, setModalVisible] = useState(false);
   const [inventory, setInventory] = useState([]);
   const [updateItem, setUpdateItem] = useState();
+  const [type, setType] = useState('');
+  const [qtyReady, setQtyReady] = useState(0);
+  const [typeLogs, setTypeLogs] = useState([]);
 
   const fetchCategory = async () => {
     try {
@@ -66,14 +77,6 @@ export default function Inventory() {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleEdit = items => {
-    setItemOnEdit(items.id);
-    setItem(items.item);
-    setWeight(items.weight);
-    setQuantity(items.quantity);
-    setUpdateItem(items.id);
   };
 
   const handlePostInventory = async () => {
@@ -139,163 +142,304 @@ export default function Inventory() {
     }
   };
 
+  const handleEdit = items => {
+    setItemOnEdit(items.id);
+    setItem(items.item);
+    setWeight(items.weight);
+    setQuantity(items.quantity);
+    setUpdateItem(items.id);
+  };
+
+  const handleOpenModal = items => {
+    setModalVisible(true);
+    setItemOnEdit(items.id);
+    console.log(items.id);
+  };
+
+  const handleAddQtyType = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const user_Id = await AsyncStorage.getItem('user_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      await axios.post(
+        `${API_URL}/inventory/logs`,
+        {
+          type,
+          qtyReady,
+          rawGrocery_Id: itemOnEdit,
+          user_Id,
+          branch_Id,
+        },
+        {headers},
+      );
+      fetchItems();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addQtyReady = () => {
+    handleAddQtyType();
+    setModalVisible(false);
+  };
+
+  const fetchReadtQty = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      console.log(branch_Id);
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(
+        `${API_URL}/inventory/logs/?branch_Id=${branch_Id}`,
+        {headers},
+      );
+      setTypeLogs(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
+    fetchReadtQty();
     fetchCategory();
     fetchItems();
   }, []);
 
   return (
-    <View style={InventoryStyle.inventContainer}>
-      <View style={InventoryStyle.inventContent}>
-        <Text style={InventoryStyle.inventTitle}>Inventory</Text>
-        <View style={InventoryStyle.inventformCon}>
-          <View style={InventoryStyle.form}>
-            <View style={InventoryStyle.DropdownContainer}>
-              <Dropdown
-                style={[
-                  InventoryStyle.dropdown,
-                  isFocus && {borderColor: '#007FFF'},
-                ]}
-                placeholderStyle={InventoryStyle.placeholderStyle}
-                selectedTextStyle={InventoryStyle.selectedTextStyle}
-                inputSearchStyle={InventoryStyle.inputSearchStyle}
-                iconStyle={InventoryStyle.iconStyle}
-                data={categories}
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={'Category'}
-                value={category}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setCategory(item.value);
-                  setIsFocus(false);
-                }}
+    <>
+      <OrientationLocker
+        orientation={LANDSCAPE}
+        onChange={orientation => console.log('onChange', orientation)}
+        onDeviceChange={orientation =>
+          console.log('onDeviceChange', orientation)
+        }
+      />
+      <View style={InventoryStyle.inventContainer}>
+        <View style={InventoryStyle.inventContent}>
+          <Text style={InventoryStyle.inventTitle}>Inventory</Text>
+          <View style={InventoryStyle.inventformCon}>
+            <View style={InventoryStyle.form}>
+              <View style={InventoryStyle.DropdownContainer}>
+                <Dropdown
+                  style={[
+                    InventoryStyle.dropdown,
+                    isFocus && {borderColor: '#007FFF'},
+                  ]}
+                  placeholderStyle={InventoryStyle.placeholderStyle}
+                  selectedTextStyle={InventoryStyle.selectedTextStyle}
+                  inputSearchStyle={InventoryStyle.inputSearchStyle}
+                  iconStyle={InventoryStyle.iconStyle}
+                  data={categories}
+                  maxHeight={300}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={'Category'}
+                  value={category}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setCategory(item.value);
+                    setIsFocus(false);
+                  }}
+                />
+              </View>
+              <TextInput
+                mode="outlined"
+                style={InventoryStyle.inventoryInput}
+                placeholder="Title"
+                placeholderTextColor="#777777"
+                value={item}
+                onChangeText={setItem}
               />
+              <TextInput
+                mode="outlined"
+                style={InventoryStyle.netWtQtyInput}
+                placeholder="Net Weight"
+                placeholderTextColor="#777777"
+                value={weight}
+                keyboardType="numeric"
+                onChangeText={setWeight}
+              />
+              <TextInput
+                mode="outlined"
+                style={InventoryStyle.netWtQtyInput}
+                placeholder="Qty"
+                placeholderTextColor="#777777"
+                value={quantity.toString()}
+                keyboardType="numeric"
+                onChangeText={setQuantity}
+              />
+              <TouchableOpacity
+                style={InventoryStyle.addInvetoryOpacity}
+                onPress={handlePostInventory}>
+                <Text style={InventoryStyle.addInventTextBtn}>Save</Text>
+              </TouchableOpacity>
             </View>
-            <TextInput
-              mode="outlined"
-              style={InventoryStyle.inventoryInput}
-              placeholder="Title"
-              placeholderTextColor="#777777"
-              value={item}
-              onChangeText={setItem}
-            />
-            <TextInput
-              mode="outlined"
-              style={InventoryStyle.netWtQtyInput}
-              placeholder="Net Weight"
-              placeholderTextColor="#777777"
-              value={weight}
-              keyboardType="numeric"
-              onChangeText={setWeight}
-            />
-            <TextInput
-              mode="outlined"
-              style={InventoryStyle.netWtQtyInput}
-              placeholder="Qty"
-              placeholderTextColor="#777777"
-              value={quantity.toString()}
-              keyboardType="numeric"
-              onChangeText={setQuantity}
-            />
-            <TouchableOpacity
-              style={InventoryStyle.addInvetoryOpacity}
-              onPress={handlePostInventory}>
-              <Text style={InventoryStyle.addInventTextBtn}>Save</Text>
-            </TouchableOpacity>
+            <View style={InventoryStyle.invetoryFilter}>
+              <TouchableOpacity style={InventoryStyle.invetoryBtn}>
+                <Text style={InventoryStyle.filterTextBtn}>Chicken</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={InventoryStyle.invetoryBtn}>
+                <Text style={InventoryStyle.filterTextBtn}>Pork</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={InventoryStyle.invetoryFilter}>
-            <TouchableOpacity style={InventoryStyle.invetoryBtn}>
-              <Text style={InventoryStyle.filterTextBtn}>Chicken</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={InventoryStyle.invetoryBtn}>
-              <Text style={InventoryStyle.filterTextBtn}>Pork</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={InventoryStyle.inventTable}>
-          <DataTable>
-            <DataTable.Header style={InventoryStyle.tableHeader}>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>ID</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>Product Name</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>Weight</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>Qty</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>Date</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={InventoryStyle.inventData}>Manage</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-            <ScrollView>
-              {inventory.map((items, index) => (
-                <View key={index}>
-                  <DataTable.Row style={{borderBottomWidth: 1, height: 50}}>
-                    <DataTable.Cell>
-                      <Text style={InventoryStyle.inventCellData}>
-                        {items.id}
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={InventoryStyle.inventCellData}>
-                        {items.item}
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={InventoryStyle.inventCellData}>
-                        {items.weight}
-                      </Text>
-                    </DataTable.Cell>
-
-                    <DataTable.Cell>
-                      <Text style={InventoryStyle.inventCellData}>
-                        {items.quantity}
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={InventoryStyle.inventCellData}>
-                        May 99 3099
-                      </Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <View style={InventoryStyle.itemBtn}>
-                        <TouchableOpacity
-                          style={InventoryStyle.manageBtnOpacity}
-                          onPress={() => handleEdit(items)}>
-                          <FontAwesome
-                            name="pencil-square-o"
-                            color={'#12BF38'}
-                            size={25}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={InventoryStyle.manageBtnOpacity}
-                          onPress={() => handleDeleteItem(items.id)}>
-                          <FontAweMaterialCommunityIconssome5
-                            name="delete"
-                            color={'#DB1B1B'}
-                            size={25}
-                          />
-                        </TouchableOpacity>
+          <View style={InventoryStyle.inventTable}>
+            <ScrollView horizontal>
+              <ScrollView>
+                <View style={InventoryStyle.containerTable}>
+                  <DataTable style={InventoryStyle.table}>
+                    <DataTable.Header style={InventoryStyle.tableHeader}>
+                      <DataTable.Title style={{flex: 0.3}}>
+                        <Text style={InventoryStyle.inventData}>ID</Text>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 2.5}}>
+                        <Text style={InventoryStyle.inventData}>
+                          Product Name
+                        </Text>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 1}}>
+                        <Text style={InventoryStyle.inventData}>Wt./Qty</Text>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 1}}>
+                        <Text style={InventoryStyle.inventData}>Type</Text>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 1}}>
+                        <Text style={InventoryStyle.inventData}>Manage</Text>
+                      </DataTable.Title>
+                    </DataTable.Header>
+                    {inventory.map((items, index) => (
+                      <View key={index}>
+                        <DataTable.Row>
+                          <DataTable.Cell style={{flex: 0.5}}>
+                            {items.id}
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 2}}>
+                            <View style={{flexDirection: 'column'}}>
+                              <Text style={InventoryStyle.inventCellData}>
+                                {items.item}
+                              </Text>
+                              <Text>{items.createdAt}</Text>
+                            </View>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 1}}>
+                            <View style={{flexDirection: 'column'}}>
+                              <Text style={InventoryStyle.inventCellData}>
+                                wt. {items.weight}
+                              </Text>
+                              <Text style={InventoryStyle.inventCellData}>
+                                qty {items.quantity}
+                              </Text>
+                            </View>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 1}}>
+                            <View style={{flexDirection: 'column'}}>
+                              <Text style={InventoryStyle.inventCellData}>
+                                ready: {items.readyQty}
+                              </Text>
+                              <Text style={InventoryStyle.inventCellData}>
+                                waste: {items.wasteQty}
+                              </Text>
+                            </View>
+                          </DataTable.Cell>
+                          <DataTable.Cell style={{flex: 1}}>
+                            <View style={InventoryStyle.itemBtn}>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleOpenModal(items)}>
+                                <AntDesign
+                                  name="up-square-o"
+                                  color={'#12BF38'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleEdit(items)}>
+                                <FontAwesome
+                                  name="pencil-square-o"
+                                  color={'#12BF38'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleDeleteItem(items.id)}>
+                                <FontAweMaterialCommunityIconssome5
+                                  name="delete"
+                                  color={'#DB1B1B'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          </DataTable.Cell>
+                        </DataTable.Row>
                       </View>
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                    ))}
+                  </DataTable>
                 </View>
-              ))}
+              </ScrollView>
             </ScrollView>
-          </DataTable>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={InventoryStyle.centeredViewModal}>
+                <View style={InventoryStyle.modalView}>
+                  <Text style={InventoryStyle.modalText}>Hello World!</Text>
+                  <View style={InventoryStyle.dropdownModal}>
+                    <Dropdown
+                      style={[
+                        InventoryStyle.dropdown,
+                        isFocus && {borderColor: '#007FFF'},
+                      ]}
+                      placeholderStyle={InventoryStyle.placeholderStyle}
+                      selectedTextStyle={InventoryStyle.selectedTextStyle}
+                      inputSearchStyle={InventoryStyle.inputSearchStyle}
+                      iconStyle={InventoryStyle.iconStyle}
+                      data={invLogsType}
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder={'Type'}
+                      value={type}
+                      onFocus={() => setIsFocus(true)}
+                      onBlur={() => setIsFocus(false)}
+                      onChange={item => {
+                        setType(item.value);
+                        setIsFocus(false);
+                      }}
+                    />
+                    <TextInput
+                      mode="outlined"
+                      style={InventoryStyle.qtyReady}
+                      placeholder="Qty"
+                      placeholderTextColor="#777777"
+                      keyboardType="numeric"
+                      value={qtyReady.toString()}
+                      onChangeText={setQtyReady}
+                    />
+                  </View>
+
+                  <TouchableOpacity
+                    style={[InventoryStyle.modalButton]}
+                    onPress={addQtyReady}>
+                    <Text style={InventoryStyle.btnText}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 }
