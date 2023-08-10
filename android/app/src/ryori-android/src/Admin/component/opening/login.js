@@ -23,7 +23,7 @@ export default function Login({navigation}) {
         );
         navigation.navigate('Select Branch');
       } else {
-        navigation.navigate('Setup your Store');
+        navigation.navigate('New-Store-Branch', {type: 'store'});
       }
     } catch (error) {
       console.error('Error logging in:', error);

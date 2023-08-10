@@ -33,7 +33,7 @@ export default function Register() {
       const getToken = await AsyncStorage.getItem('access_token');
       console.log({getToken});
       console.log('Registration successful:', response.data);
-      navigation.navigate('Setup your Store');
+      navigation.navigate('New-Store-Branch', {type: 'store'});
     } catch (error) {
       console.error('Error registering:', error);
     }

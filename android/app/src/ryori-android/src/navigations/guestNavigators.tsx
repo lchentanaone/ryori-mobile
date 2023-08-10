@@ -40,7 +40,7 @@ const GuestNavigators = () => {
         />
         <Stack.Screen
           component={SetupStore}
-          name="Setup your Store"
+          name="New-Store-Branch"
           options={{headerShown: false}}
         />
         <Stack.Screen
