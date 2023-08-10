@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
-import male from '../../../../images/male3.png';
 import redRyori from '../../../../images/redRyori.png';
 import {OrderListStyles as styles} from './orderProductListStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
