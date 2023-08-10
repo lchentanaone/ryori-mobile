@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {TransactionStyle} from './transactionStyle';
 import {DataTable, Provider} from 'react-native-paper';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function TransactionArchive() {
+export default function TransactionDaily() {
   const [transactionData, setTransactionData] = useState([]);
   const [page, setPage] = useState(0);
   const [numberOfItemsPerPageList] = useState([10, 20]);
@@ -39,7 +39,6 @@ export default function TransactionArchive() {
       // );
 
       setTransactionData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -50,14 +49,14 @@ export default function TransactionArchive() {
 
   useEffect(() => {
     setPage(0);
-  }, [itemsPerPage, transactionData]);
+  }, [itemsPerPage]);
 
   return (
     <Provider>
       <View style={TransactionStyle.trasactionContainer}>
         <View style={TransactionStyle.content}>
           <View style={TransactionStyle.titlePagination}>
-            <Text style={TransactionStyle.title}>Archive Transaction</Text>
+            <Text style={TransactionStyle.title}>Daily Transaction</Text>
             <DataTable.Pagination
               page={page}
               numberOfPages={Math.ceil(transactionData.length / itemsPerPage)}
