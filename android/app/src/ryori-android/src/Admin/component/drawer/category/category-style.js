@@ -1,6 +1,21 @@
 import {StyleSheet} from 'react-native';
 
 export const CategoryStyle = StyleSheet.create({
+  textHeader: {
+    fontSize: 15,
+    fontFamily: 'Quicksand-Bold',
+    color: '#000',
+  },
+  textCell: {
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 15,
+  },
+  textHeader: {
+    fontSize: 15,
+    fontFamily: 'Quicksand-Bold',
+    color: '#000',
+  },
+  //---
   menuContainer: {
     backgroundColor: '#F9F9F9',
     flex: 1,
@@ -23,10 +38,10 @@ export const CategoryStyle = StyleSheet.create({
     width: '70%',
   },
   list: {
-    width: '95%'
+    width: '95%',
   },
   listC1: {
-    width:'70%'
+    width: '70%',
   },
   menuTitle: {
     fontSize: 20,
@@ -86,123 +101,123 @@ export const CategoryStyle = StyleSheet.create({
     padding: 0,
     fontFamily: 'Quicksand-Medium',
   },
-  SearchIcon: {
-    fontSize: 18,
-    left: 10,
-    color: '#B1B1B1',
-  },
-  filterDropdown: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    right: 2,
-    top: 5,
-  },
-  allDropdown: {
-    width: '48%',
-  },
-  menuDropdown: {
-    left: 2,
-    backgroundColor: 'white',
-    borderColor: '#E6E6E6',
-    height: 34,
-    shadowColor: '#000',
-    elevation: 5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  placeholderStyle: {
-    fontSize: 15,
-  },
-  selectedTextStyle: {
-    color: '#000',
-    fontSize: 14,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 14,
-  },
-  menuList: {
-    top: 5,
-  },
+  // SearchIcon: {
+  //   fontSize: 18,
+  //   left: 10,
+  //   color: '#B1B1B1',
+  // },
+  // filterDropdown: {
+  //   width: '100%',
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   right: 2,
+  //   top: 5,
+  // },
+  // allDropdown: {
+  //   width: '48%',
+  // },
+  // menuDropdown: {
+  //   left: 2,
+  //   backgroundColor: 'white',
+  //   borderColor: '#E6E6E6',
+  //   height: 34,
+  //   shadowColor: '#000',
+  //   elevation: 5,
+  //   borderRadius: 8,
+  //   paddingHorizontal: 8,
+  // },
+  // placeholderStyle: {
+  //   fontSize: 15,
+  // },
+  // selectedTextStyle: {
+  //   color: '#000',
+  //   fontSize: 14,
+  // },
+  // iconStyle: {
+  //   width: 20,
+  //   height: 20,
+  // },
+  // inputSearchStyle: {
+  //   height: 40,
+  //   fontSize: 14,
+  // },
+  // menuList: {
+  //   top: 5,
+  // },
 
-  menuItem: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    elevation: 6,
-    marginBottom: 10,
-    height: 130,
-    width: 200,
-    borderRadius: 10,
-    margin: 5,
-    paddingHorizontal: 5,
-    // alignItems: 'center',
-  },
-  menuItemIcon: {
-    alignItems: 'flex-end',
-  },
-  ImageLabe: {
-    flexDirection: 'row',
-    left: 10,
-  },
-  menuImage: {
-    top: -15,
-    height: 70,
-    width: 70,
-    borderRadius: 35,
-  },
-  menuLabelPrice: {
-    top: -15,
-    left: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuLabel: {
-    color: '#000',
-    fontSize: 18,
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  menuPrice: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-Medium',
-  },
-  menuDescrip: {
-    top: -10,
-    fontSize: 14,
-  },
-  menuItemRow: {
-    flexDirection: 'row',
-  },
-  menuTable: {
-    justifyContent: 'flex-start',
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    elevation: 5,
-    borderRadius: 5,
-    width: '100%',
-    height: 280,
-    top: 10,
-  },
-  tableHeader: {
-    backgroundColor: '#E3E7EB',
-  },
-  menuData: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  menuCellData: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
+  // menuItem: {
+  //   backgroundColor: '#fff',
+  //   shadowColor: '#000',
+  //   elevation: 6,
+  //   marginBottom: 10,
+  //   height: 130,
+  //   width: 200,
+  //   borderRadius: 10,
+  //   margin: 5,
+  //   paddingHorizontal: 5,
+  //   // alignItems: 'center',
+  // },
+  // menuItemIcon: {
+  //   alignItems: 'flex-end',
+  // },
+  // ImageLabe: {
+  //   flexDirection: 'row',
+  //   left: 10,
+  // },
+  // menuImage: {
+  //   top: -15,
+  //   height: 70,
+  //   width: 70,
+  //   borderRadius: 35,
+  // },
+  // menuLabelPrice: {
+  //   top: -15,
+  //   left: 15,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // menuLabel: {
+  //   color: '#000',
+  //   fontSize: 18,
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
+  // menuPrice: {
+  //   color: '#000',
+  //   fontSize: 16,
+  //   fontFamily: 'Quicksand-Medium',
+  // },
+  // menuDescrip: {
+  //   top: -10,
+  //   fontSize: 14,
+  // },
+  // menuItemRow: {
+  //   flexDirection: 'row',
+  // },
+  // menuTable: {
+  //   justifyContent: 'flex-start',
+  //   backgroundColor: '#fff',
+  //   shadowColor: '#000',
+  //   elevation: 5,
+  //   borderRadius: 5,
+  //   width: '100%',
+  //   height: 280,
+  //   top: 10,
+  // },
+  // tableHeader: {
+  //   backgroundColor: '#E3E7EB',
+  // },
+  // menuData: {
+  //   fontSize: 16,
+  //   fontWeight: 500,
+  //   color: '#000',
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
+  // menuCellData: {
+  //   fontSize: 14,
+  //   fontWeight: 500,
+  //   color: '#000',
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
 
   // MODAL
   Modal: {
@@ -391,8 +406,8 @@ export const AddMenuStyle = StyleSheet.create({
     left: 100,
     width: 200,
     height: 60,
-    marginTop:50,
-    marginBottom:50
+    marginTop: 50,
+    marginBottom: 50,
   },
   actionOpacity: {
     width: 40,
