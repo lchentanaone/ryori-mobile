@@ -5,7 +5,9 @@ import {
   OrientationLocker,
   LANDSCAPE,
 } from 'react-native-orientation-locker';
-import GuestNavigators from './android/app/src/ryori-android/src/navigations/guestNavigators';
+import OutsideNavigators from './android/app/src/ryori-android/src/navigations/outsideNavigators';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 const App = () => {
   return (
     <>
@@ -19,7 +21,7 @@ const App = () => {
       {/* to hide status bar <StatusBar hidden/>  */}
       <StatusBar hidden />
       <NavigationContainer>
-        <GuestNavigators />
+          <OutsideNavigators/>
       </NavigationContainer>
     </>
   );
