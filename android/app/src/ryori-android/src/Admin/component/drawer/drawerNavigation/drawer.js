@@ -16,9 +16,11 @@ import {API_URL} from '../../../../utils/constants';
 import ryoriRed from './../../../images/ryori-red.png';
 import Menu from '../menu/menu';
 import Category from '../category/category';
-import TransactionTab from '../Transactions/transactionNav';
+// import TransactionTab from '../Transactions/transactionNav';
+import TransactionDaily from '../Transactions/transactionDaily';
 import ReportOfFood from '../Report/reportOfFood';
-import ReportOfTransaction from '../Report/reportOfTransaction';
+// import ReportOfTransaction from '../Report/reportOfTransaction';
+import TransactionArchive from '../Transactions/transactionArchive';
 import StoreSetting from '../storeSetting.js/storeSetting';
 import Inventory from '../inventory/inventory';
 import Dashboard from '../dashboard/dashboard';
@@ -138,7 +140,7 @@ export default function DrawersNav({navigation}) {
         },
         headerStyle: {shadowColor: 0, backgroundColor: '#fff', height: 25},
         drawerStyle: {
-          width: '30%',
+          width: '34%',
         },
       }}>
       <Drawer.Screen
@@ -188,7 +190,7 @@ export default function DrawersNav({navigation}) {
       />
       <Drawer.Screen
         name="Transactions"
-        component={TransactionTab}
+        component={TransactionDaily}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
@@ -201,8 +203,8 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="Report of Transaction"
-        component={ReportOfTransaction}
+        name="Archive of Transaction"
+        component={TransactionArchive}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
