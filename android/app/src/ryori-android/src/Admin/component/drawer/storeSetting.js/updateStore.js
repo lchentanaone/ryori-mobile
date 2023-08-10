@@ -14,123 +14,94 @@ import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather';
+import imagePlaceholder from '../../../images/no-image.png'
 
 export default function UpdateStore({route, navigation}) {
   const {branchId} = route.params;
-
-  const [branchData, setBranchData] = useState(null);
-  const [storeData, setStoreData] = useState(null);
-  const [storeName, SetStoreName] = useState('');
   const [photo, setPhoto] = useState(null);
+  const [data, setData] = useState({})
 
-  const fetchBranchData = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branchId = await AsyncStorage.getItem('branch_Id');
-      const response = await axios.get(`${API_URL}/branch/${branchId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data);
-      setBranchData(response.data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-  const updateBranchData = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branchId = await AsyncStorage.getItem('branch_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      await axios.patch(
-        `${API_URL}/branch/${branchId}`,
-        {
-          branchName: branchData.branchName,
-          email: branchData.email,
-          contactNumber: branchData.contactNumber,
-          address: branchData.contactNumber,
-        },
-        {headers},
-      );
-      console.log({branchData});
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
-  const fetchStoreData = async () => {
+  const fetchStoreAndCurrentBranchData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      const response = await axios.get(`${API_URL}/store/${store_Id}`, {
+      const branchId = await AsyncStorage.getItem('branch_Id');
+      const response = await axios.get(`${API_URL}/store/${store_Id}/${branchId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      setStoreData(response.data);
+      setData({
+        storeName: response.data.store.storeName,
+        branchName: response.data.branchName,
+        email: response.data.email,
+        contactNumber: response.data.contactNumber,
+        address: response.data.address,
+        photo: response.data.photo
+      });
       setPhoto(response.data.photo);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
 
   const handleChoosePhoto = () => {
-    launchImageLibrary({noData: true}, response => {
-      console.log(response);
-      if (response) {
-        setPhoto({uri: response.uri});
+    launchImageLibrary({
+      mediaType: 'photo',
+      quality: 0.5,
+      includeBase64: false,
+    },
+    response => {
+      if (response.assets) {
+        setPhoto(response.assets[0].uri);
       }
-      // console.log(response);
-    });
+    },);
   };
-  const handleUpdateStore = async () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        };
 
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-        const formData = new FormData();
-        formData.append('storeName', storeName);
-        formData.append('photo', {
-          uri: photo,
-          name: randomFileName,
-          type: 'image/jpeg',
-        });
-
-        const response = await axios.patch(`${API_URL}/store`, formData, {
-          headers,
-        });
-        console.log(response.data);
-        // AsyncStorage.setItem('store_Id', response.data.id.toString());
-        resolve('done');
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      }
-    });
-  };
-  const SaveData = () => {
-    updateBranchData();
-  };
   const handleChangeText = (key, value) => {
-    const tempData = {...branchData};
+    const tempData = {...data};
     tempData[key] = value;
-    setBranchData(tempData);
+    setData(tempData);
   };
+
+  const handleSave = async () => {
+    const token = await AsyncStorage.getItem('access_token');
+    const store_Id = await AsyncStorage.getItem('store_Id');
+    const branchId = await AsyncStorage.getItem('branch_Id');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    };
+
+    const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+    const randomFileName = new Date().valueOf().toString() + '.' + fileType;
+    const formData = new FormData();
+    formData.append('storeName', data.storeName);
+    formData.append('photo', {
+      uri: photo,
+      name: randomFileName,
+      type: 'image/jpeg',
+    });
+    formData.append('branch_Id', branchId);
+    formData.append('branchName', data.branchName);
+    formData.append('email', data.email);
+    formData.append('contactNumber', data.contactNumber);
+    formData.append('address', data.address);
+
+    console.log('handleSave', {formData}, JSON.stringify(headers))
+    const response = await axios.patch(`${API_URL}/store/${store_Id}`, formData, {headers});
+    // const data = await response.data
+    // console.log(response.data.id)
+    // console.log(JSON.stringify(response))
+    if(response.data.id) {
+      navigation.navigate('Store Setting')
+    }
+  };
+  
 
   useEffect(() => {
-    fetchStoreData();
-    fetchBranchData();
+    fetchStoreAndCurrentBranchData();
   }, [branchId]);
   return (
     <View style={StoreSetStyle.storeSetting}>
@@ -138,12 +109,11 @@ export default function UpdateStore({route, navigation}) {
 
       <View style={StoreSetStyle.storeDetailsContainer}>
         <View style={updStyle.storeFormDetails}>
-          {storeData ? (
+          {data ? (
             <>
               <View style={updStyle.updateLogo}>
                 <Image
-                  source={{uri: photo}}
-                  // source={photo ? {uri: storeData.photo} : storeData.photo}
+                  source={photo ? {uri: photo} : imagePlaceholder}
                   style={updStyle.storeLogo}
                 />
                 <TouchableOpacity
@@ -158,7 +128,7 @@ export default function UpdateStore({route, navigation}) {
             <Text>Loading user data...</Text>
           )}
           <View style={updStyle.storeFormInputCont}>
-            {branchData ? (
+            {data ? (
               <>
                 <View style={updStyle.FormInput}>
                   <TextInput
@@ -166,16 +136,18 @@ export default function UpdateStore({route, navigation}) {
                     style={updStyle.storeInput}
                     placeholder="Store Name"
                     placeholderTextColor="#777777"
-                    value={storeData && storeData.storeName}
+                    value={data && data.storeName}
                     secureTextEntry={false}
-                    onChangeText={SetStoreName}
+                    onChangeText={value => {
+                      handleChangeText('storeName', value);
+                    }}
                   />
                   <TextInput
                     mode="outlined"
                     style={updStyle.storeInput}
                     placeholder="Branch"
                     placeholderTextColor="#777777"
-                    value={branchData.branchName}
+                    value={data.branchName}
                     onChangeText={value => {
                       handleChangeText('branchName', value);
                     }}
@@ -187,7 +159,7 @@ export default function UpdateStore({route, navigation}) {
                     style={updStyle.storeInput}
                     placeholder="Email"
                     placeholderTextColor="#777777"
-                    value={branchData.email}
+                    value={data.email}
                     onChangeText={value => {
                       handleChangeText('email', value);
                     }}
@@ -197,7 +169,7 @@ export default function UpdateStore({route, navigation}) {
                     style={updStyle.storeInput}
                     placeholder="Contact Number"
                     placeholderTextColor="#777777"
-                    value={branchData.contactNumber}
+                    value={data.contactNumber}
                     keyboardType="numeric"
                     onChangeText={value => {
                       handleChangeText('contactNumber', value);
@@ -209,7 +181,7 @@ export default function UpdateStore({route, navigation}) {
                   style={updStyle.storeInputAddress}
                   placeholder="Address"
                   placeholderTextColor="#777777"
-                  value={branchData.address}
+                  value={data.address}
                   onChangeText={value => {
                     handleChangeText('address', value);
                   }}
@@ -222,7 +194,7 @@ export default function UpdateStore({route, navigation}) {
         </View>
         <TouchableOpacity
           style={updStyle.saveUpdateOpacity}
-          onPress={handleUpdateStore}>
+          onPress={handleSave}>
           <Text style={StoreSetStyle.buttonsText}>Save</Text>
         </TouchableOpacity>
       </View>
