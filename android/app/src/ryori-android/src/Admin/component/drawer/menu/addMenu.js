@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {Styles} from './../../../../layoutStyles';
 import {API_URL} from '../../../../utils/constants';
-import defaultPhoto from '../../../images/redRyori.png';
+import defaultPhoto from '../../../images/no-image.png';
 export default function AddMenu({route, navigation}) {
   const {type, item} = route.params || {
     type: 'new',

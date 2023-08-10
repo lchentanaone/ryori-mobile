@@ -29,7 +29,7 @@ export default function Opening() {
           }, 2000);
         } else if (token) {
           setTimeout(() => {
-            navigation.navigate('Setup your Store');
+            navigation.navigate('New-Store-Branch', {type: 'store'});
           }, 2000);
         }
       } else if (role === 'Dining') {

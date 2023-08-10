@@ -5,12 +5,15 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../utils/constants'
-import defaultPhoto from '../../../Admin/images/redRyori.png';
+import defaultPhoto from '../../../Admin/images/no-image.png';
 
-export default function SetupStore({navigation}) {
-  const [photo, setPhoto] = useState(null)
+export default function SetupStore({navigation, route}) {
 
-  const [storeName, setStoreName] = useState('');
+  const {type} = route.params;
+  const title = type === 'branch' ? 'New Branch' : 'New Store';
+  const [photo, setPhoto] = useState(route.params.store.photo || null)
+
+  const [storeName, setStoreName] = useState(route.params.store.storeName || '');
   const [store_Id, setStore_Id] = useState('');
   const [email, setEmail] = useState('');
   const [branchName, setBranchName] = useState('');
@@ -31,80 +34,71 @@ export default function SetupStore({navigation}) {
       },
     );
   };
-  const handleAddStore = async () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
+  const handleAddStoreWithBranch = async () => {
+    const token = await AsyncStorage.getItem('access_token');
 
-        const headers = {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        };
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    };
 
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
-        const randomFileName = (new Date().valueOf()).toString() + "." +fileType
-        const formData = new FormData();
-        formData.append('storeName', storeName);
-        formData.append('photo', {
-          uri: photo,
-          name: randomFileName,
-          type: 'image/jpeg',
-        });
-
-        const response = await axios.post(
-          `${API_URL}/store`,
-          formData,
-          {headers},
-        );
-        console.log(response.data);
-        AsyncStorage.setItem('store_Id', response.data.id.toString());
-        resolve('done')
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      }
+    const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
+    const randomFileName = (new Date().valueOf()).toString() + "." +fileType
+    const formData = new FormData();
+    formData.append('storeName', storeName);
+    formData.append('photo', {
+      uri: photo,
+      name: randomFileName,
+      type: 'image/jpeg',
     });
+    formData.append('branchName', branchName);
+    formData.append('email', email);
+    formData.append('contactNumber', contactNumber);
+    formData.append('address', address);
+    formData.append('store_Id', store_Id);
+
+    const response = await axios.post(
+      `${API_URL}/store`,
+      formData,
+      {headers},
+    );
+    AsyncStorage.setItem('store_Id', response.data.id.toString());
   };
 
   const handleAddBranch = async () => {
-    return new Promise(async (resolve, reject) => {
-    try {
-        const token = await AsyncStorage.getItem('access_token');
-        const store_Id = await AsyncStorage.getItem('store_Id');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        const response = await axios.post(
-          `${API_URL}/branch`,
-          {
-            branchName,
-            email,
-            contactNumber,
-            address,
-            store_Id,
-          },
-          {headers},
-        );
-
-        console.log(response.data);
-        resolve('done')
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      }
-    });
+    const token = await AsyncStorage.getItem('access_token');
+    const store_Id = await AsyncStorage.getItem('store_Id');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+    const response = await axios.post(
+      `${API_URL}/branch`,
+      {
+        branchName,
+        email,
+        contactNumber,
+        address,
+        store_Id,
+      },
+      {headers},
+    );
   };
 
-  const handleSave = async () => {
-    await handleAddStore();
-    await handleAddBranch();
+  const handleSave = async () => {    
+    if(type === 'branch') {
+      await handleAddBranch();
+    }
+    else {
+      await handleAddStoreWithBranch();
+    }
     navigation.navigate('Drawer');
   };
 
   return (
     <View style={setStore.setUpStore}>
       <View style={setStore.setUpTextCon}>
-        <Text style={setStore.setUpText}>Setup your Store</Text>
+        <Text style={setStore.setUpText}>{title}</Text>
       </View>
       <View style={setStore.setUpContent}>
         <View style={setStore.uploadLogoCol}>
@@ -115,15 +109,17 @@ export default function SetupStore({navigation}) {
               style={{width: '100%', height: 150}}
             />
           </View>
-          <View style={setStore.uploadLogoBtn}>
-            <TouchableOpacity
-              style={setStore.uploadLogoOpacity}
-              onPress={handleChoosePhoto}
-              // onPress={() => navigation.navigate('BottomNavs')}
-            >
-              <Text style={setStore.uploadLogoTextBtn}>Upload</Text>
-            </TouchableOpacity>
-          </View>
+          {type === 'store' && (
+            <View style={setStore.uploadLogoBtn}>
+              <TouchableOpacity
+                style={setStore.uploadLogoOpacity}
+                onPress={handleChoosePhoto}
+                // onPress={() => navigation.navigate('BottomNavs')}
+                >
+                <Text style={setStore.uploadLogoTextBtn}>Upload</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
         <View style={setStore.uploadLogoC}>
           <View style={setStore.setupRow}>
@@ -134,6 +130,7 @@ export default function SetupStore({navigation}) {
               placeholderTextColor="#777777"
               value={storeName}
               onChangeText={setStoreName}
+              editable={type==='store'}
             />
             <TextInput
               mode="outlined"

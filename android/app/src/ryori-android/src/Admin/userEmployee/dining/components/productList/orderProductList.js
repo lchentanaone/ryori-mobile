@@ -272,7 +272,7 @@ export default function OrderProductList({navigation}) {
                       )}
                       {/* {-----------Pay cash-------------} */}
 
-                      {item.status === 'to_pay' && (
+                      {item.status === 'to_pay_cash' && (
                         <View style={styles.toCash}>
                           <Text style={styles.payCashBtnText}>
                             Pay Cash: ₱{' '}
@@ -282,12 +282,11 @@ export default function OrderProductList({navigation}) {
                           </Text>
                         </View>
                       )}
-                      {item.status === 'to_pay' && (
+                      {item.status === 'to_pay_cash' && (
                         <TouchableOpacity
                           style={styles.toPrepareBtn}
                           onPress={() => {
                             updateTransStatus(item.id, 'done');
-                            // navigation.navigate('PaymentReceived');
                           }}>
                           <Text style={styles.btnText}>Confirm</Text>
                         </TouchableOpacity>

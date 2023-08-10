@@ -5,9 +5,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {API_URL} from '../../../../utils/constants';
 
 export default function Branches({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
   const [storeData, setStoreData] = useState(null);
   const [branchData, setBranchData] = useState([]);
   const [selectedBranchId, setSelectedBranchId] = useState(null);
@@ -112,7 +112,7 @@ export default function Branches({navigation}) {
           </ScrollView>
           <TouchableOpacity
             style={styles.addBranchBtn}
-            onPress={() => navigation.navigate('Setup your Store')}>
+            onPress={() => navigation.navigate('New-Store-Branch', {type: 'branch', store: storeData})}>
             <Entypo name="plus" style={styles.addIcon} />
             <Text style={styles.addBranchText}>Add new Branch</Text>
           </TouchableOpacity>

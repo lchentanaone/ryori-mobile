@@ -4,6 +4,7 @@ import {StoreSetStyle as styles} from './storeSettingStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
+import imagePlaceholder from '../../../images/no-image.png'
 
 export default function StoreSetting({navigation}) {
   const [storeData, setStoreData] = useState(null);
@@ -76,10 +77,10 @@ export default function StoreSetting({navigation}) {
         <View style={styles.storeInfoContainer}>
           <View style={styles.storeLogoCon}>
             {storeData ? (
-              <>
+              <>              
                 <Image
                   style={styles.storeLogo}
-                  source={{uri: storeData.photo}}
+                  source={storeData.photo ? {uri: storeData.photo} : imagePlaceholder}
                 />
                 <View style={styles.nameEmail}>
                   <View style={{alignItems: 'center'}}>
