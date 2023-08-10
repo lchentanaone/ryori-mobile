@@ -9,6 +9,7 @@ import {Styles} from './../../../../layoutStyles'
 import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants'
+import SkeletonItem from '../../../../utils/skeletonItem'
 
 export default function Category() {
   
@@ -160,7 +161,7 @@ export default function Category() {
               <ScrollView>
 
               {/* <View key={item.id}> */}
-              {items.map((item, index) => (
+              {items.length > 0 ? items.map((item, index) => (
                 <DataTable.Row key={index}>
                   <DataTable.Cell>
                     <Text style={TransacStyle.textCell}>{item.title}</Text>
@@ -189,7 +190,9 @@ export default function Category() {
                   </DataTable.Cell>
                   
                 </DataTable.Row>
-              ))}
+              )) : 
+              (<View><SkeletonItem /></View>)
+              }
               {/* </View> */}
 
               </ScrollView>

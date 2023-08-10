@@ -11,11 +11,12 @@ import {
 import {MenuStyle, DropdownStyle} from './menu-style';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
+import SkeletonItem from '../../../../utils/skeletonItem'
+import defaultPhoto from '../../../images/no-image.png';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -148,13 +149,14 @@ export default function Menu({navigation}) {
         <View style={{height: 300}}>
           <ScrollView>
             <View style={MenuStyle.menuItemRow}>
-              {items.map((item, index) => (
+              {items.length > 0 ? 
+              items.map((item, index) => (
                 <View key={index}>
                   <TouchableOpacity
                     style={MenuStyle.menuItems}
                     onPress={() => handleMenuModal(item)}>
                     <Image
-                      source={{uri: item.photo}}
+                      source={item.photo ? {uri: item.photo} : defaultPhoto}
                       style={MenuStyle.menuImages}
                     />
                     <View style={{paddingHorizontal: 10}}>
@@ -174,7 +176,7 @@ export default function Menu({navigation}) {
                     </View>
                   </TouchableOpacity>
                 </View>
-              ))}
+              )) : (<View><SkeletonItem /></View>)}
             </View>
           </ScrollView>
         </View>
@@ -194,7 +196,7 @@ export default function Menu({navigation}) {
                 <View style={MenuStyle.menuItems1}>
                   <View style={MenuStyle.menuImagesCon}>
                     <Image
-                      source={{uri: itemDetails.photo}}
+                      source={itemDetails.photo ? {uri: itemDetails.photo} : defaultPhoto}
                       style={MenuStyle.menuImages1}
                     />
                   </View>
