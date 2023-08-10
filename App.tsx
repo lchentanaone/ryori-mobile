@@ -1,13 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import StackNavigators from './android/app/src/ryori-android/src/Admin/navigation/stackNavigators';
 import {StatusBar} from 'react-native';
-import UserNavigators from './android/app/src/ryori-android/src/user/navigation/userNavigators';
 import {
   OrientationLocker,
-  PORTRAIT,
   LANDSCAPE,
 } from 'react-native-orientation-locker';
+import GuestNavigators from './android/app/src/ryori-android/src/navigations/guestNavigators';
 const App = () => {
   return (
     <>
@@ -21,8 +19,7 @@ const App = () => {
       {/* to hide status bar <StatusBar hidden/>  */}
       <StatusBar hidden />
       <NavigationContainer>
-        <StackNavigators />
-        {/* <UserNavigators /> */}
+        <GuestNavigators />
       </NavigationContainer>
     </>
   );
