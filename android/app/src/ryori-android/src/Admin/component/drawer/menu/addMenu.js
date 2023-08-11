@@ -106,7 +106,7 @@ export default function AddMenu({route, navigation}) {
         const randomFileName = new Date().valueOf().toString() + '.' + fileType;
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('price', price);
+        formData.append('price', parseFloat(price));
         formData.append('description', description);
         formData.append('cookingTime', cookingTime);
         formData.append('category_Id', category);
@@ -151,7 +151,7 @@ export default function AddMenu({route, navigation}) {
           {
             branch_Id,
             menuItem_Id,
-            quantity: qty,
+            quantity: parseFloat(qty),
           },
           {headers},
         );
@@ -242,7 +242,7 @@ export default function AddMenu({route, navigation}) {
                 keyboardType="numeric"
                 placeholder="Price"
                 placeholderTextColor="#777777"
-                value={price}
+                value={price?.toString()}
                 secureTextEntry={false}
                 onChangeText={setPrice}
               />
@@ -253,7 +253,7 @@ export default function AddMenu({route, navigation}) {
                   style={AddMenuStyle.foodPrice}
                   placeholder="Quantity"
                   placeholderTextColor="#777777"
-                  value={qty}
+                  value={qty?.toString()}
                   secureTextEntry={false}
                   onChangeText={setQty}
                 />

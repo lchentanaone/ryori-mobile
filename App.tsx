@@ -1,12 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigators from './android/app/src/ryori-android/src/Admin/navigation/stackNavigators';
 import {StatusBar} from 'react-native';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 const App = () => {
   return (
     <>

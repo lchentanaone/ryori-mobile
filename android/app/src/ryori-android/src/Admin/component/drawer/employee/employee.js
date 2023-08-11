@@ -35,13 +35,13 @@ export default function Employees() {
   const [role, setRole] = useState('');
   const [phone, setPhone] = useState('');
   const [user, setUser] = useState([]);
-  const [userOnEdit, setUserOnEdit] = useState('');
+  const [userOnEdit, setUserOnEdit] = useState(null);
+  const [employeeExist, setEmployeeExist] = useState(false);
 
   const fetchUsers = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log('StoresID', {store_Id});
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -71,17 +71,7 @@ export default function Employees() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      if (userOnEdit !== '') {
-        console.log({
-          store_Id,
-          username,
-          email,
-          firstName,
-          lastName,
-          password,
-          role,
-          phone,
-        });
+      if (userOnEdit) {
         await axios.patch(
           `${API_URL}/user/${userOnEdit}`,
           {
@@ -125,8 +115,16 @@ export default function Employees() {
     setPhone('');
   };
 
+  const SaveUser = () => {
+    setModalVisible(false);
+    addStoreUser();
+  };
+
   const handleEdit = user => {
     setModalVisible(true);
+    if (user) {
+      setEmployeeExist(true);
+    } else setEmployeeExist(false);
     setUserOnEdit(user.id);
     setUsername(user.username);
     setEmail(user.email);
@@ -154,12 +152,24 @@ export default function Employees() {
   useEffect(() => {
     fetchUsers();
   }, []);
-  const SaveUser = () => {
-    setModalVisible(false);
-    addStoreUser();
-  };
+
   const Cancel = () => {
     setModalVisible(false);
+    setUserOnEdit(null);
+    setUsername('');
+    setFirstname('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setRole('');
+    setPhone('');
+  };
+  const add = user => {
+    setModalVisible(true);
+    if (!user) {
+      setEmployeeExist(false);
+    }
+    setUserOnEdit(null);
     setUsername('');
     setFirstname('');
     setLastName('');
@@ -172,89 +182,98 @@ export default function Employees() {
   return (
     <View style={styles.employee}>
       <Text style={styles.employeeTitle}>Employees</Text>
-      <TouchableOpacity
-        style={styles.addEmployee}
-        onPress={() => setModalVisible(true)}>
+      <TouchableOpacity style={styles.addEmployee} onPress={() => add()}>
         <Text style={styles.addEmployeeText}>Add Employee</Text>
       </TouchableOpacity>
       <View style={styles.employeeTable}>
-        <DataTable>
-          <DataTable.Header style={styles.tableHeader}>
-            <DataTable.Title style={{flex: 0.3, marginLeft: -15}}>
-              <Text style={styles.tableTitle}>No.</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 2}}>
-              <Text style={styles.tableTitle}>Name</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 1.2}}>
-              <Text style={styles.tableTitle}>username</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 2.2}}>
-              <Text style={styles.tableTitle}>Email</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 1}}>
-              <Text style={styles.tableTitle}>Role</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 1.2}}>
-              <Text style={styles.tableTitle}>Contact No.</Text>
-            </DataTable.Title>
-            <DataTable.Title style={{flex: 0.5}}>
-              <Text style={styles.tableTitle}>Action</Text>
-            </DataTable.Title>
-          </DataTable.Header>
-          <ScrollView style={{height: 230}}>
-            {usersData.map((user, index) => (
-              <View key={index}>
-                <DataTable.Row style={{borderBottomWidth: 1}}>
-                  <DataTable.Cell style={{flex: 0.3, marginLeft: -10}}>
-                    <Text style={styles.employeeCellData}>{user.id}.</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 2}}>
-                    <Text style={styles.employeeCellData}>
-                      {user.firstName} {user.lastName}
-                    </Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 1.2, left: 5}}>
-                    <Text style={styles.employeeCellData}>{user.username}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 2.2}}>
-                    <Text style={styles.employeeCellData}>{user.email}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 1.2, left: 10}}>
-                    <Text style={styles.employeeCellData}>{user.role}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 1}}>
-                    <Text style={styles.employeeCellData}>{user.phone}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{flex: 0.6}}>
-                    {/* <TouchableOpacity>
-                      <AntDesign
-                        name="setting"
-                        size={25}
-                        // onPress={() => handleEdit(user)}
-                      />
-                    </TouchableOpacity> */}
-                    <TouchableOpacity>
-                      <FontAwesome5
-                        name="user-edit"
-                        size={20}
-                        onPress={() => handleEdit(user)}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <AntDesign
-                        name="delete"
-                        size={20}
-                        color={'red'}
-                        onPress={() => handeDelete(user.id)}
-                      />
-                    </TouchableOpacity>
-                  </DataTable.Cell>
-                </DataTable.Row>
-              </View>
-            ))}
+        <ScrollView horizontal>
+          <ScrollView>
+            <DataTable style={{minWidth: 800}}>
+              <DataTable.Header style={styles.tableHeader}>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>No.</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>Name</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>lastName</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>username</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>Email</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>Role</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>Contact No.</Text>
+                </DataTable.Title>
+                <DataTable.Title>
+                  <Text style={styles.tableTitle}>Action</Text>
+                </DataTable.Title>
+              </DataTable.Header>
+              <ScrollView style={{height: 230}}>
+                {usersData.map((user, index) => (
+                  <View key={index}>
+                    <DataTable.Row style={{borderBottomWidth: 1}}>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>{user.id}.</Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>
+                          {user.firstName}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>
+                          {user.firstName}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>
+                          {user.username}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>
+                          {user.email}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>{user.role}</Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <Text style={styles.employeeCellData}>
+                          {user.phone}
+                        </Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <TouchableOpacity>
+                          <FontAwesome5
+                            name="user-edit"
+                            size={20}
+                            onPress={() => handleEdit(user)}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                          <AntDesign
+                            name="delete"
+                            size={20}
+                            color={'red'}
+                            onPress={() => handeDelete(user.id)}
+                          />
+                        </TouchableOpacity>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  </View>
+                ))}
+              </ScrollView>
+            </DataTable>
           </ScrollView>
-        </DataTable>
+        </ScrollView>
       </View>
       <Modal
         animationType="fade"
@@ -265,6 +284,14 @@ export default function Employees() {
         }}>
         <View style={styles.modal}>
           <View style={styles.modalView}>
+            <View style={{top: -20}}>
+              {employeeExist ? null : (
+                <Text style={styles.modalTitle}>Add Employee here </Text>
+              )}
+              {!employeeExist ? null : (
+                <Text style={styles.modalTitle}>Update Employee Details </Text>
+              )}
+            </View>
             <View style={styles.modalContent}>
               <View style={styles.modalForm}>
                 <TextInput
@@ -305,33 +332,6 @@ export default function Employees() {
                 />
               </View>
               <View style={styles.modalForm}>
-                <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="password"
-                  placeholderTextColor="#777777"
-                  value={password}
-                  onChangeText={setPassword}
-                />
-                <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="Phone Number"
-                  placeholderTextColor="#777777"
-                  value={phone}
-                  keyboardType="numeric"
-                  onChangeText={setPhone}
-                />
-              </View>
-              <View style={styles.modalButton}>
-                {/* <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="Roles"
-                  placeholderTextColor="#777777"
-                  value={role}
-                  onChangeText={setRole}
-                /> */}
                 <View style={styles.DropdownContainer}>
                   <Dropdown
                     style={[
@@ -356,10 +356,45 @@ export default function Employees() {
                     }}
                   />
                 </View>
+
+                <TextInput
+                  mode="outlined"
+                  style={styles.modalInput}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#777777"
+                  value={phone}
+                  keyboardType="numeric"
+                  onChangeText={setPhone}
+                />
+              </View>
+              <View style={styles.modalButton}>
+                {/* <TextInput
+                  mode="outlined"
+                  style={styles.modalInput}
+                  placeholder="Roles"
+                  placeholderTextColor="#777777"
+                  value={role}
+                  onChangeText={setRole}
+                /> */}
+                {employeeExist ? null : (
+                  <TextInput
+                    mode="outlined"
+                    style={styles.modalInput}
+                    placeholder="password"
+                    placeholderTextColor="#777777"
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                )}
+                {!employeeExist ? null : (
+                  <Text style={styles.employeeCellData}>
+                    Please Contact us for Password Recovery
+                  </Text>
+                )}
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}
                   onPress={SaveUser}>
-                  <Text style={styles.filterTextBtn}>Add</Text>
+                  <Text style={styles.filterTextBtn}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}

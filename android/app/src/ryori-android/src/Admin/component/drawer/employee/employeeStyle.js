@@ -50,7 +50,7 @@ export const EmployeeStyle = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
   },
   employeeCellData: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 500,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
@@ -81,7 +81,11 @@ export const EmployeeStyle = StyleSheet.create({
   modalContent: {
     width: '100%',
   },
-
+  modalTitle: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Quicksand-SemiBold',
+  },
   // ----------
   modalInput: {
     width: '100%',
@@ -113,6 +117,7 @@ export const EmployeeStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+
   modalButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
