@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {DashboardStyle} from './dashboard-style';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { DashboardStyle } from './dashboard-style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants';
+import { API_URL } from '../../../../utils/constants';
 import PieChart from 'react-native-pie-chart';
+import SkeletonItem from '../../../../utils/skeletonItem'
 
 export default function Dashboard() {
   const [store, setStore] = useState([]);
@@ -63,7 +64,10 @@ export default function Dashboard() {
           },
         },
       );
-      setDashboard(response.data);
+      setTimeout(() => {
+        setDashboard(response.data);
+
+      }, 2000)
       setConsumption(response.data.totalCustomers);
       console.log(response.data.orderSummary);
     } catch (error) {
@@ -97,13 +101,14 @@ export default function Dashboard() {
 
   return (
     <View style={DashboardStyle.dashboard}>
-      <View style={DashboardStyle.dashboardContent}>
-        <View style={DashboardStyle.dashBTitleSearchB}>
-          <Text style={DashboardStyle.storename}>{store.storeName}</Text>
-          <Text style={DashboardStyle.storebranch}>{branch.branchName}</Text>
-        </View>
-        {dashboard ? (
-          <>
+      {
+        dashboard.length === 0 ?
+          (<View><SkeletonItem /></View>) :
+          <View style={DashboardStyle.dashboardContent}>
+            <View style={DashboardStyle.dashBTitleSearchB}>
+              <Text style={DashboardStyle.storename}>{store.storeName}</Text>
+              <Text style={DashboardStyle.storebranch}>{branch.branchName}</Text>
+            </View>
             <View style={DashboardStyle.overAll}>
               <View style={DashboardStyle.overAllContent}>
                 <Text style={DashboardStyle.overAllText}>Total Menus</Text>
@@ -224,11 +229,8 @@ export default function Dashboard() {
                 </View>
               </View>
             </View>
-          </>
-        ) : (
-          <Text>Loading user data...</Text>
-        )}
-      </View>
+          </View>
+      }
     </View>
   );
 }

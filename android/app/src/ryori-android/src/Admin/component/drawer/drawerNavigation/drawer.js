@@ -20,6 +20,7 @@ import TransactionDaily from '../Transactions/transactionDaily';
 import ReportOfFood from '../Report/reportOfFood';
 import TransactionArchive from '../Transactions/transactionArchive';
 import StoreSetting from '../storeSetting.js/storeSetting';
+import ReportOfTransaction from '../Report/reportOfTransaction';
 import Inventory from '../inventory/inventory';
 import Dashboard from '../dashboard/dashboard';
 import InventoryCategory from '../inventory/inventoryCategory';
@@ -35,6 +36,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  MenuNavigators,
+  ProfileNavigators,
+  StoreSettingsNavigators,
+} from '../../../../navigations/adminNavigators';
 
 const RyoriDrawer = props => {
   const navigation = useNavigation();
@@ -80,9 +86,7 @@ const RyoriDrawer = props => {
           source={ryoriRed}
           style={{width: 100, height: 30, marginTop: 2, marginLeft: 20}}
         />
-        <TouchableOpacity
-          style={drawerStyle.drawerProfile}
-          onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity style={drawerStyle.drawerProfile}>
           {userData ? (
             <>
               <View style={drawerStyle.profileAdmin}>
@@ -142,6 +146,23 @@ export default function DrawersNav({navigation}) {
         },
       }}>
       <Drawer.Screen
+        name="My Profile"
+        component={ProfileNavigators}
+        style={{top: -50}}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <>
+              <FontAwesome
+                name="bar-chart-o"
+                color={focused ? '#DB1B1B' : '#000'}
+                size={15}
+              />
+            </>
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="Dashboard"
         component={Dashboard}
         style={{top: -50}}
@@ -160,7 +181,7 @@ export default function DrawersNav({navigation}) {
       />
       <Drawer.Screen
         name="Menu"
-        component={Menu}
+        component={MenuNavigators}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
@@ -257,8 +278,8 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="Store Setting"
-        component={StoreSetting}
+        name="Store Setting Navigator"
+        component={StoreSettingsNavigators}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (

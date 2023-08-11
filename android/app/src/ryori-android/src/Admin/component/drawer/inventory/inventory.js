@@ -17,6 +17,7 @@ import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/Materi
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '../../../../utils/constants';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
+import SkeletonItem from '../../../../utils/skeletonItem'
 
 const invLogsType = [
   {label: 'Ready', value: 'ready'},
@@ -313,7 +314,8 @@ export default function Inventory() {
                         <Text style={InventoryStyle.inventData}>Manage</Text>
                       </DataTable.Title>
                     </DataTable.Header>
-                    {inventory.map((items, index) => (
+                    {inventory.length > 0 ? 
+                    inventory.map((items, index) => (
                       <View key={index}>
                         <DataTable.Row>
                           <DataTable.Cell style={{flex: 0.5}}>
@@ -380,7 +382,7 @@ export default function Inventory() {
                           </DataTable.Cell>
                         </DataTable.Row>
                       </View>
-                    ))}
+                    )) : (<View><SkeletonItem /></View>)}
                   </DataTable>
                 </View>
               </ScrollView>

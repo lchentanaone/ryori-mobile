@@ -4,10 +4,14 @@ import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
+import {API_URL} from '../../../utils/constants'
+import {
+  OrientationLocker,
+  PORTRAIT,
+  LANDSCAPE,
+} from 'react-native-orientation-locker';
 
 export default function Login({navigation}) {
-  const API_URL = 'http://10.0.2.2:3000';
 
   const [email, setEmail] = useState('ryoriapp@gmail.com');
   const [password, setPassword] = useState('ryori2023');
@@ -40,12 +44,11 @@ export default function Login({navigation}) {
         if (response.data.store_Id) {
           navigation.navigate('Select Branch');
         } else {
-          navigation.navigate('Setup your Store');
+          navigation.navigate('New-Store-Branch', {type: 'store'});
         }
       } else if (response.data.role === 'Dining') {
         navigation.navigate('DiningBottomNavigator');
       }
-      console.log(response.data);
     } catch (error) {
       console.error('Error logging in:', error);
     }

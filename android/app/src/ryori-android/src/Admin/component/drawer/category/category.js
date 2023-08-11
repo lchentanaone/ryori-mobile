@@ -15,7 +15,12 @@ import {DataTable} from 'react-native-paper';
 import {Styles} from './../../../../layoutStyles';
 import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
+<<<<<<< HEAD
 import {API_URL} from '../../../../utils/constants';
+=======
+import {API_URL} from '../../../../utils/constants'
+import SkeletonItem from '../../../../utils/skeletonItem'
+>>>>>>> 53f7af31c3fe142b6bcd7232dbea73ba39f4f9ee
 
 export default function Category() {
   const [categoryName, setCategoryName] = useState('');
@@ -169,7 +174,7 @@ export default function Category() {
               </DataTable.Header>
               <ScrollView style={{height: 300}}>
                 {/* <View key={item.id}> */}
-                {items.map((item, index) => (
+                {items.length > 0 ? items.map((item, index) => (
                   <DataTable.Row key={index}>
                     <DataTable.Cell>
                       <Text style={CategoryStyle.textCell}>{item.title}</Text>
@@ -190,7 +195,9 @@ export default function Category() {
                     </DataTable.Cell>
                     <DataTable.Cell></DataTable.Cell>
                   </DataTable.Row>
-                ))}
+                )): 
+                (<View><SkeletonItem /></View>)
+                }
                 {/* </View> */}
               </ScrollView>
             </DataTable>
