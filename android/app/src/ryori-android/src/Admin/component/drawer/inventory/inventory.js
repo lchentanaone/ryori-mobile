@@ -382,7 +382,7 @@ export default function Inventory() {
                           </DataTable.Cell>
                         </DataTable.Row>
                       </View>
-                    )) : (<View><SkeletonItem /></View>)}
+                    )) : (<View style={{width: '100%'}}><SkeletonItem /></View>)}
                   </DataTable>
                 </View>
               </ScrollView>

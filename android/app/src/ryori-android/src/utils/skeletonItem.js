@@ -1,23 +1,97 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import { Skeleton } from '@rneui/themed';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SkeletonItem = () => {
   return (
     <View>
-      <SkeletonPlaceholder>
-        
-        <View style={{ marginLeft: 20, marginTop: 20 }}>
-          <View style={{ width: 350, height: 200 }} />
-          <View style={{ marginTop: 6, width: 260, height: 20, borderRadius: 5 }} />
-          <View style={{ marginTop: 6, width: 350, height: 70, borderRadius: 10 }} />
+      <View align="center" spacing={4} style={{ flexDirection:'row', margin: 10, gap: 10, justifyContent:'space-between'}}>
+        <View style={{gap: 10, flexDirection:'row',}}>
+          <Skeleton
+            LinearGradientComponent={LinearGradient}
+            animation="wave"
+            width={100}
+            height={100}
+          />
+          <View style={{flexDirection:'column', gap: 10}}>
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+          </View>
         </View>
-        <View style={{ marginLeft: 20, marginTop: 20 }}>
-          <View style={{ width: 350, height: 200 }} />
-          <View style={{ marginTop: 6, width: 260, height: 20, borderRadius: 5 }} />
-          <View style={{ marginTop: 6, width: 350, height: 70, borderRadius: 10 }} />
+        <View style={{gap: 10, flexDirection:'row',}}>
+          <Skeleton
+            LinearGradientComponent={LinearGradient}
+            animation="wave"
+            width={100}
+            height={100}
+          />
+          <View style={{flexDirection:'column', gap: 10}}>
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+          </View>
         </View>
-      </SkeletonPlaceholder>
+        <View style={{gap: 10, flexDirection:'row'}}>
+          <Skeleton
+            LinearGradientComponent={LinearGradient}
+            animation="wave"
+            width={100}
+            height={100}
+          />
+          <View style={{flexDirection:'column', gap: 10}}>
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+            <Skeleton
+              LinearGradientComponent={LinearGradient}
+              animation="wave"
+              width={100}
+              height={20}
+            />
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
