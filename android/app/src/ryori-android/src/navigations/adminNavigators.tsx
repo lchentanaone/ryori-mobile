@@ -5,7 +5,6 @@ import Menu from '../Admin/component/drawer/menu/menu';
 import AddMenu from '../Admin/component/drawer/menu/addMenu';
 import MenuDetails from '../Admin/component/drawer/menu/addMenu';
 import UpdateMenu from '../Admin/component/drawer/menu/updateMenu';
-import TransactionTab from '../Admin/component/drawer/Transactions/transactionNav';
 import Dashboard from './../Admin/component/drawer/dashboard/dashboard';
 import ReportOfTransaction from '../Admin/component/drawer/Report/reportOfTransaction';
 import ReportOfFood from '../Admin/component/drawer/Report/reportOfFood';
@@ -95,11 +94,6 @@ export const AdminNavigators = () => {
           options={{headerShown: false}}
         />
         
-        <Stack.Screen
-          component={TransactionTab}
-          name="TopTabNavs"
-          options={{headerShown: false}}
-        />
         <Stack.Screen
           component={ReportOfTransaction}
           name="Report of Transaction"
