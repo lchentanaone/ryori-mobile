@@ -66,6 +66,7 @@ export const InventoryStyle = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginBottom: 10,
+    width: '100%',
   },
   placeholderStyle: {
     fontSize: 15,
@@ -163,7 +164,7 @@ export const InventoryStyle = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 10,
-    height: 250,
+    height: 200,
     width: 250,
     alignItems: 'center',
     shadowColor: '#000',
@@ -178,12 +179,13 @@ export const InventoryStyle = StyleSheet.create({
 
   dropdownModal: {
     width: '90%',
+    alignItems: 'center',
   },
 
   modalButton: {
     borderRadius: 8,
-    padding: 10,
-    marginTop: 30,
+    padding: 5,
+    marginTop: 10,
     elevation: 2,
     width: 100,
     backgroundColor: '#2196F3',
@@ -194,7 +196,9 @@ export const InventoryStyle = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
+    fontSize: 14,
     marginBottom: 15,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   qtyReady: {
@@ -209,6 +213,22 @@ export const InventoryStyle = StyleSheet.create({
     elevation: 5,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
+  },
+  qtyContainer: {
+    width: 100,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F6F6F8',
+    height: 35,
+    borderRadius: 5,
+  },
+  input: {
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-Bold',
   },
 });
 
