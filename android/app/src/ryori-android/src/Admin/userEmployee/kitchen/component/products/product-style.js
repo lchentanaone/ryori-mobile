@@ -120,7 +120,9 @@ export const prodStyle = StyleSheet.create({
   input: {
     textAlign: 'center',
     color: '#000',
-    fontSize: 15,
+    fontSize: 14,
+    paddingLeft: 10,
+    paddingRight: 10,
     fontFamily: 'Quicksand-Bold',
   },
   qtyIcon: {
