@@ -9,7 +9,6 @@ import Menu from '../component/drawer/menu/menu';
 import AddMenu from '../component/drawer/menu/addMenu';
 import MenuDetails from '../component/drawer/menu/addMenu';
 import UpdateMenu from '../component/drawer/menu/updateMenu';
-import TransactionTab from '../component/drawer/Transactions/transactionNav';
 import Dashboard from './../component/drawer/dashboard/dashboard';
 import ReportOfTransaction from '../component/drawer/Report/reportOfTransaction';
 import ReportOfFood from '../component/drawer/Report/reportOfFood';
@@ -93,11 +92,6 @@ const StackNavigators = () => {
         <Stack.Screen
           component={UpdateMenu}
           name="Update Menu"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={TransactionTab}
-          name="TopTabNavs"
           options={{headerShown: false}}
         />
         <Stack.Screen

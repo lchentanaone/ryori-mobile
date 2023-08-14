@@ -187,9 +187,12 @@ export default function OrderProductList({navigation}) {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                   style={styles.newOrder}
-                                  onPress={() => {
-                                    deleteTransactionItem(transItem.id);
-                                  }}>
+                                  onPress={() =>
+                                    updateTransactionItem(
+                                      transItem.id,
+                                      'cancel',
+                                    )
+                                  }>
                                   <MaterialIcons
                                     name="cancel"
                                     color={'#DB1B1B'}
@@ -197,6 +200,11 @@ export default function OrderProductList({navigation}) {
                                   />
                                 </TouchableOpacity>
                               </View>
+                            )}
+                            {transItem.status === 'cancel' && (
+                              <TouchableOpacity style={styles.preparingBtn}>
+                                <Text style={styles.btnText}>Canceled</Text>
+                              </TouchableOpacity>
                             )}
 
                             {transItem.status === 'preparing' && (

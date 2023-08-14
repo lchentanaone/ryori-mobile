@@ -16,8 +16,10 @@ import {API_URL} from '../../../../utils/constants';
 import ryoriRed from './../../../images/ryori-red.png';
 import Menu from '../menu/menu';
 import Category from '../category/category';
-import TransactionTab from '../Transactions/transactionNav';
+import TransactionDaily from '../Transactions/transactionDaily';
 import ReportOfFood from '../Report/reportOfFood';
+import TransactionArchive from '../Transactions/transactionArchive';
+import StoreSetting from '../storeSetting.js/storeSetting';
 import ReportOfTransaction from '../Report/reportOfTransaction';
 import Inventory from '../inventory/inventory';
 import Dashboard from '../dashboard/dashboard';
@@ -34,7 +36,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { MenuNavigators, ProfileNavigators, StoreSettingsNavigators } from '../../../../navigations/adminNavigators';
+import {
+  MenuNavigators,
+  ProfileNavigators,
+  StoreSettingsNavigators,
+} from '../../../../navigations/adminNavigators';
 
 const RyoriDrawer = props => {
   const navigation = useNavigation();
@@ -80,8 +86,7 @@ const RyoriDrawer = props => {
           source={ryoriRed}
           style={{width: 100, height: 30, marginTop: 2, marginLeft: 20}}
         />
-        <TouchableOpacity
-          style={drawerStyle.drawerProfile}>
+        <TouchableOpacity style={drawerStyle.drawerProfile}>
           {userData ? (
             <>
               <View style={drawerStyle.profileAdmin}>
@@ -137,7 +142,7 @@ export default function DrawersNav({navigation}) {
         },
         headerStyle: {shadowColor: 0, backgroundColor: '#fff', height: 25},
         drawerStyle: {
-          width: '30%',
+          width: '34%',
         },
       }}>
       <Drawer.Screen
@@ -204,7 +209,7 @@ export default function DrawersNav({navigation}) {
       />
       <Drawer.Screen
         name="Transactions"
-        component={TransactionTab}
+        component={TransactionDaily}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
@@ -217,8 +222,8 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="Report of Transaction"
-        component={ReportOfTransaction}
+        name="Archive of Transaction"
+        component={TransactionArchive}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
