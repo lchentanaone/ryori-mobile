@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {InventoryStyle} from './inventory-style';
 import {DataTable} from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   View,
   Text,
@@ -36,8 +37,19 @@ export default function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [updateItem, setUpdateItem] = useState();
   const [type, setType] = useState('');
-  const [qtyReady, setQtyReady] = useState(0);
   const [typeLogs, setTypeLogs] = useState([]);
+  const [quantityLogs, setQuantityLogs] = useState('0');
+
+  const handleIncrease = () => {
+    const newQuantity = parseInt(quantityLogs) + 1;
+    setQuantityLogs(newQuantity.toString());
+  };
+  const handleDecrease = () => {
+    const newQuantity = parseInt(quantityLogs) - 1;
+    if (newQuantity >= 0) {
+      setQuantityLogs(newQuantity.toString());
+    }
+  };
 
   const fetchCategory = async () => {
     try {
@@ -122,6 +134,7 @@ export default function Inventory() {
     } catch (error) {
       console.error(error);
     }
+    setCategory('');
     setItem('');
     setWeight('');
     setQuantity('');
@@ -169,7 +182,7 @@ export default function Inventory() {
         `${API_URL}/inventory/logs`,
         {
           type,
-          qtyReady,
+          quantityLogs,
           rawGrocery_Id: itemOnEdit,
           user_Id,
           branch_Id,
@@ -185,6 +198,8 @@ export default function Inventory() {
   const addQtyReady = () => {
     handleAddQtyType();
     setModalVisible(false);
+    setQuantityLogs('0');
+    setType('');
   };
 
   const fetchReadtQty = async () => {
@@ -292,30 +307,29 @@ export default function Inventory() {
           </View>
           <View style={InventoryStyle.inventTable}>
             <ScrollView horizontal>
-              <ScrollView>
-                <View style={InventoryStyle.containerTable}>
-                  <DataTable style={InventoryStyle.table}>
-                    <DataTable.Header style={InventoryStyle.tableHeader}>
-                      <DataTable.Title style={{flex: 0.3}}>
-                        <Text style={InventoryStyle.inventData}>ID</Text>
-                      </DataTable.Title>
-                      <DataTable.Title style={{flex: 2.5}}>
-                        <Text style={InventoryStyle.inventData}>
-                          Product Name
-                        </Text>
-                      </DataTable.Title>
-                      <DataTable.Title style={{flex: 1}}>
-                        <Text style={InventoryStyle.inventData}>Wt./Qty</Text>
-                      </DataTable.Title>
-                      <DataTable.Title style={{flex: 1}}>
-                        <Text style={InventoryStyle.inventData}>Type</Text>
-                      </DataTable.Title>
-                      <DataTable.Title style={{flex: 1}}>
-                        <Text style={InventoryStyle.inventData}>Manage</Text>
-                      </DataTable.Title>
-                    </DataTable.Header>
-                    {inventory.length > 0 ? 
-                    inventory.map((items, index) => (
+              <View style={InventoryStyle.containerTable}>
+                <DataTable style={InventoryStyle.table}>
+                  <DataTable.Header style={InventoryStyle.tableHeader}>
+                    <DataTable.Title style={{flex: 0.3}}>
+                      <Text style={InventoryStyle.inventData}>ID</Text>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 2.5}}>
+                      <Text style={InventoryStyle.inventData}>
+                        Product Name
+                      </Text>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 1}}>
+                      <Text style={InventoryStyle.inventData}>Wt./Qty</Text>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 1}}>
+                      <Text style={InventoryStyle.inventData}>Type</Text>
+                    </DataTable.Title>
+                    <DataTable.Title style={{flex: 1}}>
+                      <Text style={InventoryStyle.inventData}>Manage</Text>
+                    </DataTable.Title>
+                  </DataTable.Header>
+                  <ScrollView style={{height: 200}}>
+                  {inventory.length > 0 ? inventory.map((items, index) => (
                       <View key={index}>
                         <DataTable.Row>
                           <DataTable.Cell style={{flex: 0.5}}>
@@ -383,9 +397,9 @@ export default function Inventory() {
                         </DataTable.Row>
                       </View>
                     )) : (<View style={{width: '100%'}}><SkeletonItem /></View>)}
-                  </DataTable>
-                </View>
-              </ScrollView>
+                  </ScrollView>
+                </DataTable>
+              </View>
             </ScrollView>
             <Modal
               animationType="slide"
@@ -396,7 +410,7 @@ export default function Inventory() {
               }}>
               <View style={InventoryStyle.centeredViewModal}>
                 <View style={InventoryStyle.modalView}>
-                  <Text style={InventoryStyle.modalText}>Hello World!</Text>
+                  <Text style={InventoryStyle.modalText}>Inventory Logs</Text>
                   <View style={InventoryStyle.dropdownModal}>
                     <Dropdown
                       style={[
@@ -420,15 +434,20 @@ export default function Inventory() {
                         setIsFocus(false);
                       }}
                     />
-                    <TextInput
-                      mode="outlined"
-                      style={InventoryStyle.qtyReady}
-                      placeholder="Qty"
-                      placeholderTextColor="#777777"
-                      keyboardType="numeric"
-                      value={qtyReady.toString()}
-                      onChangeText={setQtyReady}
-                    />
+                    <View style={InventoryStyle.qtyContainer}>
+                      <TouchableOpacity onPress={handleDecrease}>
+                        <Entypo name="minus" size={18} />
+                      </TouchableOpacity>
+                      <TextInput
+                        style={InventoryStyle.input}
+                        value={quantityLogs.toString()}
+                        onChangeText={text => setQuantityLogs(text)}
+                        keyboardType="numeric"
+                      />
+                      <TouchableOpacity onPress={handleIncrease}>
+                        <Entypo name="plus" size={18} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
 
                   <TouchableOpacity
