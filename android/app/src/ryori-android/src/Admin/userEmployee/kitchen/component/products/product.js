@@ -19,26 +19,56 @@ import {API_URL} from '../../../../../utils/constants';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-export default function Products({navigation}) {
-  const [quantity, setQuantity] = useState('0');
-
-  const [category, setCategory] = useState([]);
+export default Products = ({navigation}) => {
   const [menu, setMenu] = useState([]);
 
-  const handleIncrease = () => {
-    const newQuantity = parseInt(quantity) + 1;
-    setQuantity(newQuantity.toString());
+
+  const updateQuantity = async (id, groupId, type) => {
+    const token = await AsyncStorage.getItem('access_token');
+    const itemMenu = menu.find(i => i.id=== groupId).items.find(i => i.id === id)
+    const quantity = type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1
+    
+    await axios.patch(
+      `${API_URL}/branchItem/${id}`,
+      JSON.stringify({quantity}),
+      {
+        headers: {
+          'Content-Type': `application/json`,
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );  
+    fetchItems();
   };
-  const handleDecrease = () => {
-    const newQuantity = parseInt(quantity) - 1;
-    if (newQuantity >= 0) {
-      setQuantity(newQuantity.toString());
-    }
-  };
-  const fetchMenuCategoryData = async () => {
+  const transformer = (input) => {
+    return input.reduce((result, item) => {
+        item.menuCategory.map(categoryObj => categoryObj.title).forEach(categoryTitle => {
+            const existingCategory = result.find(cat => cat.category === categoryTitle);
+            
+            const content = {
+              id: item.menuItemId,
+              title: item.menuItem.title,
+              quantity: item.quantity
+            }
+
+            if (existingCategory) {
+                existingCategory.items.push(content);
+            } else {
+                result.push({
+                    id: item.id,
+                    category: categoryTitle,
+                    items: [content]
+                });
+            }
+        });
+        
+        return result;
+    }, []);
+  }
+
+  const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -51,50 +81,20 @@ export default function Products({navigation}) {
           },
         },
         {headers},
-      );
-      // const statusNew = response.data.filter(
-      //   transactionStatus =>
-      //     transactionStatus.status !== 'new' &&
-      //     transactionStatus.status !== 'done',
-      // );
-      setCategory(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-  const fetchItems = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const response = await axios.get(
-        `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
-        {
-          branch_Id,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      setMenu(response.data);
+      );      
+      setMenu(transformer(response.data));
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchMenuCategoryData();
     fetchItems();
   }, []);
   return (
     <>
       <OrientationLocker
         orientation={PORTRAIT}
-        onChange={orientation => console.log('onChange', orientation)}
-        onDeviceChange={orientation =>
-          console.log('onDeviceChange', orientation)
-        }
       />
       <View style={styles.products}>
         <View style={styles.crewHeader}>
@@ -130,37 +130,34 @@ export default function Products({navigation}) {
         </View>
         <View style={styles.Table}>
           <ScrollView>
-            {category.map((item, index) => (
+            {menu.map((item, index) => (
               <>
                 <View key={index} style={styles.productTable}>
                   <DataTable>
                     <DataTable.Header>
                       <DataTable.Title style={{flex: 2.4}}>
                         <Text style={styles.tableProductHeader}>
-                          {item.title}
+                          {item.category}
                         </Text>
                       </DataTable.Title>
                       <DataTable.Title style={{flex: 0.8}}>
                         <Text style={styles.productQty}>Quantity</Text>
                       </DataTable.Title>
                     </DataTable.Header>
-                    {menu.map((menuItem, menuIndex) => (
+                    {item.items.map((menuItem, menuIndex) => (
                       <DataTable.Row key={menuIndex}>
                         <DataTable.Cell style={{flex: 2.4}}>
                           <Text style={styles.porklist}>{menuItem.title}</Text>
                         </DataTable.Cell>
                         <DataTable.Cell style={{flex: 0.8}}>
                           <View style={styles.qtyContainer}>
-                            <TouchableOpacity onPress={handleDecrease}>
+                            <TouchableOpacity onPress={() => updateQuantity(menuItem.id, item.id, '-') }>
                               <Entypo name="minus" size={18} />
                             </TouchableOpacity>
-                            <TextInput
+                            <Text
                               style={styles.input}
-                              value={quantity}
-                              onChangeText={text => setQuantity(text)}
-                              keyboardType="numeric"
-                            />
-                            <TouchableOpacity onPress={handleIncrease}>
+                            >{menuItem.quantity.toString()}</Text>
+                            <TouchableOpacity onPress={() => updateQuantity(menuItem.id, item.id, '+') }>
                               <Entypo name="plus" size={18} />
                             </TouchableOpacity>
                           </View>

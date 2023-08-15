@@ -39,6 +39,7 @@ export default function Inventory() {
   const [type, setType] = useState('');
   const [typeLogs, setTypeLogs] = useState([]);
   const [quantityLogs, setQuantityLogs] = useState(0);
+  const [filteredInventory, setFilteredInventory] = useState(1);
 
   const handleIncrease = () => {
     const newQuantity = parseInt(quantityLogs) + 1;
@@ -61,20 +62,21 @@ export default function Inventory() {
           },
         },
       );
-      const dropdownCategories = response.data.map(categoryItem => ({
-        label: categoryItem.title,
-        value: categoryItem.id,
-      }));
-      setCategories(dropdownCategories);
+      setCategories(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const dropdownized = data =>
+    data.map(item => ({
+      label: item.title,
+      value: item.id,
+    }));
+
   const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       console.log(branch_Id);
       const headers = {
@@ -153,6 +155,16 @@ export default function Inventory() {
       console.error(error);
     }
   };
+  const handleFilter = id => {
+    if (id) {
+      const newData = inventory.filter(item =>
+        item.rawCategory.some(innerItem => innerItem.id === id),
+      );
+      setFilteredInventory(newData);
+    } else {
+      setFilteredInventory(inventory);
+    }
+  };
 
   const handleEdit = items => {
     setItemOnEdit(items.id);
@@ -223,6 +235,12 @@ export default function Inventory() {
     fetchItems();
   }, []);
 
+  useEffect(() => {
+    if (filteredInventory !== inventory) {
+      setFilteredInventory(inventory);
+    }
+  }, [inventory]);
+
   return (
     <>
       <OrientationLocker
@@ -247,7 +265,7 @@ export default function Inventory() {
                   selectedTextStyle={InventoryStyle.selectedTextStyle}
                   inputSearchStyle={InventoryStyle.inputSearchStyle}
                   iconStyle={InventoryStyle.iconStyle}
-                  data={categories}
+                  data={dropdownized(categories)}
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
@@ -294,11 +312,18 @@ export default function Inventory() {
               </TouchableOpacity>
             </View>
             <View style={InventoryStyle.invetoryFilter}>
-              <TouchableOpacity style={InventoryStyle.invetoryBtn}>
-                <Text style={InventoryStyle.filterTextBtn}>Chicken</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={InventoryStyle.invetoryBtn}>
-                <Text style={InventoryStyle.filterTextBtn}>Pork</Text>
+              {categories.map((c, key) => (
+                <TouchableOpacity
+                  key={key}
+                  style={InventoryStyle.invetoryBtn}
+                  onPress={() => handleFilter(c.id)}>
+                  <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
+                </TouchableOpacity>
+              ))}
+              <TouchableOpacity
+                style={{...InventoryStyle.invetoryBtn, backgroundColor: '#aaa'}}
+                onPress={() => handleFilter(null)}>
+                <Text style={InventoryStyle.filterTextBtn}>Clear</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -326,8 +351,8 @@ export default function Inventory() {
                     </DataTable.Title>
                   </DataTable.Header>
                   <ScrollView style={{height: 200}}>
-                    {inventory.length > 0 ? (
-                      inventory.map((items, index) => (
+                    {filteredInventory.length > 0 ? (
+                      filteredInventory.map((items, index) => (
                         <View key={index}>
                           <DataTable.Row>
                             <DataTable.Cell style={{flex: 0.5}}>
