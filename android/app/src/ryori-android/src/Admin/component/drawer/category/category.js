@@ -15,12 +15,8 @@ import {DataTable} from 'react-native-paper';
 import {Styles} from './../../../../layoutStyles';
 import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
-<<<<<<< HEAD
 import {API_URL} from '../../../../utils/constants';
-=======
-import {API_URL} from '../../../../utils/constants'
-import SkeletonItem from '../../../../utils/skeletonItem'
->>>>>>> 53f7af31c3fe142b6bcd7232dbea73ba39f4f9ee
+import SkeletonItem from '../../../../utils/skeletonItem';
 
 export default function Category() {
   const [categoryName, setCategoryName] = useState('');
@@ -174,30 +170,34 @@ export default function Category() {
               </DataTable.Header>
               <ScrollView style={{height: 300}}>
                 {/* <View key={item.id}> */}
-                {items.length > 0 ? items.map((item, index) => (
-                  <DataTable.Row key={index}>
-                    <DataTable.Cell>
-                      <Text style={CategoryStyle.textCell}>{item.title}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <View style={Styles.horContainer}>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnTertiary}}
-                          onPress={() => handleEdit(item)}>
-                          <Text style={Styles.btnText}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnWarning}}
-                          onPress={() => handleDelete(item.id)}>
-                          <Text style={Styles.btnText}>Delete</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell></DataTable.Cell>
-                  </DataTable.Row>
-                )): 
-                (<View><SkeletonItem /></View>)
-                }
+                {items.length > 0 ? (
+                  items.map((item, index) => (
+                    <DataTable.Row key={index}>
+                      <DataTable.Cell>
+                        <Text style={CategoryStyle.textCell}>{item.title}</Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <View style={Styles.horContainer}>
+                          <TouchableOpacity
+                            style={{...Styles.btn, ...Styles.btnTertiary}}
+                            onPress={() => handleEdit(item)}>
+                            <Text style={Styles.btnText}>Edit</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{...Styles.btn, ...Styles.btnWarning}}
+                            onPress={() => handleDelete(item.id)}>
+                            <Text style={Styles.btnText}>Delete</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </DataTable.Cell>
+                      <DataTable.Cell></DataTable.Cell>
+                    </DataTable.Row>
+                  ))
+                ) : (
+                  <View>
+                    <SkeletonItem />
+                  </View>
+                )}
                 {/* </View> */}
               </ScrollView>
             </DataTable>

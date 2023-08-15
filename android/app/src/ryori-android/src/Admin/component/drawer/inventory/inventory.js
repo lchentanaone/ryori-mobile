@@ -18,7 +18,7 @@ import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/Materi
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '../../../../utils/constants';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
-import SkeletonItem from '../../../../utils/skeletonItem'
+import SkeletonItem from '../../../../utils/skeletonItem';
 
 const invLogsType = [
   {label: 'Ready', value: 'ready'},
@@ -38,17 +38,14 @@ export default function Inventory() {
   const [updateItem, setUpdateItem] = useState();
   const [type, setType] = useState('');
   const [typeLogs, setTypeLogs] = useState([]);
-  const [quantityLogs, setQuantityLogs] = useState('0');
+  const [quantityLogs, setQuantityLogs] = useState(0);
 
   const handleIncrease = () => {
-    const newQuantity = parseInt(quantityLogs) + 1;
-    setQuantityLogs(newQuantity.toString());
+    setQuantityLogs(quantityLogs + 1);
   };
+
   const handleDecrease = () => {
-    const newQuantity = parseInt(quantityLogs) - 1;
-    if (newQuantity >= 0) {
-      setQuantityLogs(newQuantity.toString());
-    }
+    setQuantityLogs(quantityLogs - 1);
   };
 
   const fetchCategory = async () => {
@@ -329,74 +326,80 @@ export default function Inventory() {
                     </DataTable.Title>
                   </DataTable.Header>
                   <ScrollView style={{height: 200}}>
-                  {inventory.length > 0 ? inventory.map((items, index) => (
-                      <View key={index}>
-                        <DataTable.Row>
-                          <DataTable.Cell style={{flex: 0.5}}>
-                            {items.id}
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 2}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                {items.item}
-                              </Text>
-                              <Text>{items.createdAt}</Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                wt. {items.weight}
-                              </Text>
-                              <Text style={InventoryStyle.inventCellData}>
-                                qty {items.quantity}
-                              </Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                ready: {items.readyQty}
-                              </Text>
-                              <Text style={InventoryStyle.inventCellData}>
-                                waste: {items.wasteQty}
-                              </Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
-                            <View style={InventoryStyle.itemBtn}>
-                              <TouchableOpacity
-                                style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleOpenModal(items)}>
-                                <AntDesign
-                                  name="up-square-o"
-                                  color={'#12BF38'}
-                                  size={25}
-                                />
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleEdit(items)}>
-                                <FontAwesome
-                                  name="pencil-square-o"
-                                  color={'#12BF38'}
-                                  size={25}
-                                />
-                              </TouchableOpacity>
-                              <TouchableOpacity
-                                style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleDeleteItem(items.id)}>
-                                <FontAweMaterialCommunityIconssome5
-                                  name="delete"
-                                  color={'#DB1B1B'}
-                                  size={25}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          </DataTable.Cell>
-                        </DataTable.Row>
+                    {inventory.length > 0 ? (
+                      inventory.map((items, index) => (
+                        <View key={index}>
+                          <DataTable.Row>
+                            <DataTable.Cell style={{flex: 0.5}}>
+                              {items.id}
+                            </DataTable.Cell>
+                            <DataTable.Cell style={{flex: 2}}>
+                              <View style={{flexDirection: 'column'}}>
+                                <Text style={InventoryStyle.inventCellData}>
+                                  {items.item}
+                                </Text>
+                                <Text>{items.createdAt}</Text>
+                              </View>
+                            </DataTable.Cell>
+                            <DataTable.Cell style={{flex: 1}}>
+                              <View style={{flexDirection: 'column'}}>
+                                <Text style={InventoryStyle.inventCellData}>
+                                  wt. {items.weight}
+                                </Text>
+                                <Text style={InventoryStyle.inventCellData}>
+                                  qty {items.quantity}
+                                </Text>
+                              </View>
+                            </DataTable.Cell>
+                            <DataTable.Cell style={{flex: 1}}>
+                              <View style={{flexDirection: 'column'}}>
+                                <Text style={InventoryStyle.inventCellData}>
+                                  ready: {items.readyQty}
+                                </Text>
+                                <Text style={InventoryStyle.inventCellData}>
+                                  waste: {items.wasteQty}
+                                </Text>
+                              </View>
+                            </DataTable.Cell>
+                            <DataTable.Cell style={{flex: 1}}>
+                              <View style={InventoryStyle.itemBtn}>
+                                <TouchableOpacity
+                                  style={InventoryStyle.manageBtnOpacity}
+                                  onPress={() => handleOpenModal(items)}>
+                                  <AntDesign
+                                    name="up-square-o"
+                                    color={'#12BF38'}
+                                    size={25}
+                                  />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  style={InventoryStyle.manageBtnOpacity}
+                                  onPress={() => handleEdit(items)}>
+                                  <FontAwesome
+                                    name="pencil-square-o"
+                                    color={'#12BF38'}
+                                    size={25}
+                                  />
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                  style={InventoryStyle.manageBtnOpacity}
+                                  onPress={() => handleDeleteItem(items.id)}>
+                                  <FontAweMaterialCommunityIconssome5
+                                    name="delete"
+                                    color={'#DB1B1B'}
+                                    size={25}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            </DataTable.Cell>
+                          </DataTable.Row>
+                        </View>
+                      ))
+                    ) : (
+                      <View style={{width: '100%'}}>
+                        <SkeletonItem />
                       </View>
-                    )) : (<View style={{width: '100%'}}><SkeletonItem /></View>)}
+                    )}
                   </ScrollView>
                 </DataTable>
               </View>
