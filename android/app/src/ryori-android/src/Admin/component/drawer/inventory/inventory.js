@@ -40,17 +40,6 @@ export default function Inventory() {
   const [typeLogs, setTypeLogs] = useState([]);
   const [quantityLogs, setQuantityLogs] = useState(0);
 
-  // const handleIncrease = () => {
-  //   const newQuantity = parseInt(quantityLogs) + 1;
-  //   setQuantityLogs(newQuantity.toString());
-  // };
-  // const handleDecrease = () => {
-  //   const newQuantity = parseInt(quantityLogs) - 1;
-  //   if (newQuantity >= 0) {
-  //     setQuantityLogs(newQuantity.toString());
-  //   }
-  // };
-
   const handleIncrease = () => {
     const newQuantity = parseInt(quantityLogs) + 1;
     setQuantityLogs(newQuantity.toString());
@@ -176,7 +165,6 @@ export default function Inventory() {
   const handleOpenModal = items => {
     setModalVisible(true);
     setItemOnEdit(items.id);
-    console.log(items.id);
   };
 
   const handleAddQtyType = async () => {
