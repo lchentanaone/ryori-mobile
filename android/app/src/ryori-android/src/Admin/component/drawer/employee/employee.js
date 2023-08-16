@@ -17,8 +17,8 @@ import {API_URL} from '../../../../utils/constants';
 import {Dropdown} from 'react-native-element-dropdown';
 
 const roleData = [
-  {label: 'Kitchen', value: 'Kitchen'},
-  {label: 'Dining', value: 'Dining'},
+  {label: 'Kitchen', value: 'kitchen'},
+  {label: 'Dining', value: 'kining'},
 ];
 
 export default function Employees() {
@@ -51,7 +51,7 @@ export default function Employees() {
         },
       });
       const employeeOnly = response.data.filter(
-        transactionStatus => transactionStatus.role !== 'Admin',
+        transactionStatus => transactionStatus.role !== 'admin',
       );
       setUsersData(employeeOnly);
     } catch (error) {

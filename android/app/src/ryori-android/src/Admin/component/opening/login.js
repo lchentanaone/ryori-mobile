@@ -4,7 +4,7 @@ import {openingStyles} from './opening-style';
 import ryoriText from '../../images/ryori-text.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../utils/constants'
+import {API_URL} from '../../../utils/constants';
 import {
   OrientationLocker,
   PORTRAIT,
@@ -12,7 +12,6 @@ import {
 } from 'react-native-orientation-locker';
 
 export default function Login({navigation}) {
-
   const [email, setEmail] = useState('ryoriapp@gmail.com');
   const [password, setPassword] = useState('ryori2023');
 
@@ -38,15 +37,15 @@ export default function Login({navigation}) {
           response.data.branch_Id.toString(),
         );
       }
-      if (response.data.role === 'Kitchen') {
-        navigation.navigate('Kitchen');
-      } else if (response.data.role === 'Admin') {
+      if (response.data.role === 'kitchen') {
+        navigation.navigate('kitchen');
+      } else if (response.data.role === 'admin') {
         if (response.data.store_Id) {
           navigation.navigate('Select Branch');
         } else {
           navigation.navigate('New-Store-Branch', {type: 'store'});
         }
-      } else if (response.data.role === 'Dining') {
+      } else if (response.data.role === 'dining') {
         navigation.navigate('DiningBottomNavigator');
       }
     } catch (error) {

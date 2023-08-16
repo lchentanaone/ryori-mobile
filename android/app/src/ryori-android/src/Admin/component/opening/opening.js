@@ -22,7 +22,7 @@ export default function Opening() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const role = await AsyncStorage.getItem('role');
-      if (role === 'Admin') {
+      if (role === 'admin') {
         if (store_Id) {
           setTimeout(() => {
             navigation.navigate('Select Branch');
@@ -32,16 +32,16 @@ export default function Opening() {
             navigation.navigate('New-Store-Branch', {type: 'store'});
           }, 2000);
         }
-      } else if (role === 'Dining') {
+      } else if (role === 'dining') {
         if (store_Id) {
           setTimeout(() => {
             navigation.navigate('DiningBottomNavigator');
           }, 2000);
         }
-      } else if (role === 'Kitchen') {
+      } else if (role === 'kitchen') {
         if (store_Id) {
           setTimeout(() => {
-            navigation.navigate('Kitchen');
+            navigation.navigate('kitchen');
           }, 2000);
         }
       } else {
