@@ -41,7 +41,7 @@ export default function Opening() {
       } else if (role === 'kitchen') {
         if (store_Id) {
           setTimeout(() => {
-            navigation.navigate('kitchen');
+            navigation.navigate('Kitchen');
           }, 2000);
         }
       } else {

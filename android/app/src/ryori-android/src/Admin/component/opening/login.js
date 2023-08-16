@@ -38,7 +38,7 @@ export default function Login({navigation}) {
         );
       }
       if (response.data.role === 'kitchen') {
-        navigation.navigate('kitchen');
+        navigation.navigate('Kitchen');
       } else if (response.data.role === 'admin') {
         if (response.data.store_Id) {
           navigation.navigate('Select Branch');
