@@ -11,12 +11,32 @@ import {API_URL} from '../../../../../utils/constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
+import SkeletonItem from '../../../../../utils/skeletonItem';
 
 export default function OrderProductList({navigation}) {
+  const [userData, setUserData] = useState(null);
   const [expanded, setExpanded] = React.useState(true);
   const [total, setTotal] = useState(0);
   const handlePress = () => setExpanded(!expanded);
   const [transactionData, setTransactionData] = useState([]);
+
+  const fetchUserData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const response = await axios.get(`${API_URL}/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const fetchTransactionsData = async () => {
     try {
@@ -121,15 +141,19 @@ export default function OrderProductList({navigation}) {
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Orders</Text>
           </View>
-          <TouchableOpacity
-            style={styles.viewProfile}
-            onPress={() => navigation.navigate('Profile Employee')}>
-            <Image source={male} style={styles.crewImage} />
-            <View style={{top: -5, left: 5}}>
-              <Text style={styles.crewName}>{'John Doe'}</Text>
-              <Text style={styles.viewProfileText}>View Profile</Text>
-            </View>
-          </TouchableOpacity>
+          {userData ? (
+            <TouchableOpacity
+              style={styles.viewProfile}
+              onPress={() => navigation.navigate('Profile Employee')}>
+              <Image source={male} style={styles.crewImage} />
+              <View style={{top: -5, left: 5}}>
+                <Text style={styles.crewName}>{userData.firstName}</Text>
+                <Text style={styles.viewProfileText}>View Profile</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <Text>Loading user...</Text>
+          )}
         </View>
         <View
           style={{
