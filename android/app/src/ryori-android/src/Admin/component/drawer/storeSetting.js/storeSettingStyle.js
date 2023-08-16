@@ -19,8 +19,7 @@ export const StoreSetStyle = StyleSheet.create({
     elevation: 5,
     borderRadius: 10,
     paddingHorizontal: 30,
-    paddingVertical: 30,
-    marginTop: 10,
+    paddingVertical: 20,
     width: '100%',
   },
   storeInfo: {

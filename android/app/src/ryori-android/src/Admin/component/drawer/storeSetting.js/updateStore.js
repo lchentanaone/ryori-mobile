@@ -42,8 +42,8 @@ export default function UpdateStore({route, navigation}) {
         contactNumber: response.data.contactNumber,
         address: response.data.address,
         photo: response.data.photo,
-        appId: response.data.appId,
-        appSecret: response.data.appSecret,
+        appId: response.data.store.appId,
+        appSecret: response.data.store.appSecret,
       });
       setPhoto(response.data.photo);
     } catch (error) {
