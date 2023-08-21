@@ -25,7 +25,7 @@ export default function TransactionDaily() {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(
-        `${API_URL}/pos/transaction?branch_Id=${branch_Id}`,
+        `${API_URL}/pos/transaction/today?branch_Id=${branch_Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,11 +33,6 @@ export default function TransactionDaily() {
         },
         {headers},
       );
-
-      // const status = response.data.filter(
-      //   transactionStatus => transactionStatus.status === 'done',
-      // );
-
       setTransactionData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
