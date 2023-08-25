@@ -1,20 +1,18 @@
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {openingStyles} from './opening-style';
-import ryoriText from '../../images/ryori-text.png';
+import ryoriText from '../../images/ryori-red.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../utils/constants';
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 
 export default function Login({navigation}) {
-  const [email, setEmail] = useState('ryoriapp@gmail.com');
-  const [password, setPassword] = useState('ryori2023');
-
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('yun123456@gmail.com');
+  const [password, setPassword] = useState('123456');
+  // ryoriapp@gmail.com     yun123456@gmail.com
+  // ryori2023      123456
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -47,12 +45,17 @@ export default function Login({navigation}) {
         }
       } else if (response.data.role === 'dining') {
         navigation.navigate('DiningBottomNavigator');
+      } else {
+        setError('Invalid email or password');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      if (error.response && error.response.status === 401) {
+        setError('Incorrect email or password');
+      } else {
+        setError('An error occurred, please try again');
+      }
     }
   };
-
   return (
     <>
       <OrientationLocker
@@ -91,6 +94,7 @@ export default function Login({navigation}) {
             </TouchableOpacity>
           </View>
           <View style={openingStyles.SignIn}>
+            {error ? <Text style={{color: '#ff0000'}}>{error}</Text> : null}
             <TouchableOpacity
               style={openingStyles.SignInOpacity}
               onPress={handleLogin}>

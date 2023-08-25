@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
-import ryoriText from '../../images/ryori-text.png';
+import ryoriText from '../../images/ryori-red.png';
 import {openingStyles} from './opening-style';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Register() {
   const navigation = useNavigation();
+  const [errors, setErrors] = useState('');
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstname] = useState('');
@@ -19,24 +20,46 @@ export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleRegister = async () => {
-    try {
-      response = await axios.post(`${API_URL}/auth/register`, {
-        username,
-        email,
-        firstName,
-        lastName,
-        password,
-        phone: phoneNumber,
-      });
-      const token = response.data.access_token;
-      await AsyncStorage.setItem('access_token', token);
-      const getToken = await AsyncStorage.getItem('access_token');
-      console.log({getToken});
-      console.log('Registration successful:', response.data);
-      navigation.navigate('New-Store-Branch', {type: 'store'});
-    } catch (error) {
-      console.error('Error registering:', error);
+    if (
+      !username ||
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !phoneNumber
+    ) {
+      setErrors('All fields are required.');
+    } else if (password.length < 6) {
+      setErrors('Password must be at least 6 characters.');
+    } else if (!isValidEmail(email)) {
+      setErrors('Invalid email format.');
+    } else {
+      setErrors('');
+
+      try {
+        response = await axios.post(`${API_URL}/auth/register`, {
+          username,
+          email,
+          firstName,
+          lastName,
+          password,
+          phone: phoneNumber,
+        });
+        const token = response.data.access_token;
+        await AsyncStorage.setItem('access_token', token);
+        const getToken = await AsyncStorage.getItem('access_token');
+        console.log({getToken});
+        console.log('Registration successful:', response.data);
+        navigation.navigate('New-Store-Branch', {type: 'store'});
+      } catch (error) {
+        console.error('Error registering:', error);
+      }
     }
+  };
+  // Email validation using a regular expression
+  const isValidEmail = email => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   };
 
   return (
@@ -103,6 +126,9 @@ export default function Register() {
               onChangeText={setPhoneNumber}
             />
           </View>
+          {errors !== '' && (
+            <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+          )}
         </View>
         <View>
           <Text>Terms and Conditions</Text>

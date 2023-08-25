@@ -16,7 +16,7 @@ export const openingStyles = StyleSheet.create({
 
   // login admin
   login: {
-    backgroundColor: '#DB1B1B',
+    backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
     justifyContent: 'center',
@@ -36,7 +36,7 @@ export const openingStyles = StyleSheet.create({
   },
   pleaseText: {
     fontSize: 15,
-    color: '#fff',
+    color: '#000',
     marginBottom: 8,
     marginTop: 8,
     fontFamily: 'Quicksand-SemiBold',
@@ -67,7 +67,7 @@ export const openingStyles = StyleSheet.create({
   },
   forgotText: {
     fontSize: 15,
-    color: '#fff',
+    color: '#000',
     justifyContent: 'center',
   },
   // Sign in btn
@@ -95,7 +95,7 @@ export const openingStyles = StyleSheet.create({
 
   // Register admin
   register: {
-    backgroundColor: '#DB1B1B',
+    backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
     justifyContent: 'center',
@@ -215,8 +215,6 @@ export const setUpStoreStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  singleRow: {},
-
   setupInput: {
     width: '47%',
     fontSize: 15,
