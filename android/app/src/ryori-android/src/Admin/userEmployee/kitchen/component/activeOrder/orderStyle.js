@@ -15,21 +15,21 @@ export const OrderStyle = StyleSheet.create({
   ryoriIconTitle: {
     flexDirection: 'row',
   },
-  activeOrder: {
-    backgroundColor: '#fff',
-    flex: 1,
-    position: 'relative',
-    paddingHorizontal: 30,
-  },
-  aoContent: {
-    alignItems: 'flex-start',
-  },
-  ryoriIcon: {
-    top: 50,
-    flexDirection: 'row',
-    left: 0,
-    width: '100%',
-  },
+  // activeOrder: {
+  //   backgroundColor: '#fff',
+  //   flex: 1,
+  //   position: 'relative',
+  //   paddingHorizontal: 30,
+  // },
+  // aoContent: {
+  //   alignItems: 'flex-start',
+  // },
+  // ryoriIcon: {
+  //   top: 50,
+  //   flexDirection: 'row',
+  //   left: 0,
+  //   width: '100%',
+  // },
   ryori: {
     width: 40,
     height: 50,
@@ -41,11 +41,11 @@ export const OrderStyle = StyleSheet.create({
     top: 6,
     left: 10,
   },
-  topBtns: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
+  // topBtns: {
+  //   width: '100%',
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-around',
+  // },
   //Accodions
   accordions: {
     width: '100%',
@@ -59,35 +59,35 @@ export const OrderStyle = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 10,
   },
-  accordItem: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  itemlist: {
-    color: '#000',
-    fontSize: 15,
-    fontFamily: 'Quicksand-SemiBold',
-  },
-  accordionsStyle: {
-    fontSize: 30,
-    backgroundColor: '#fff',
-    width: '100%',
-    borderRadius: 15,
-  },
-  toPreparing: {
-    alignItems: 'center',
-    backgroundColor: '#0085FF',
-    borderRadius: 4,
-    left: 20,
-    width: 100,
-    height: 25,
-  },
-  preparingText: {
-    color: '#fff',
-    fontSize: 14,
-    fontFamily: 'Quicksand-Bold',
-  },
+  // accordItem: {
+  //   color: '#000',
+  //   fontSize: 16,
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
+  // itemlist: {
+  //   color: '#000',
+  //   fontSize: 15,
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
+  // accordionsStyle: {
+  //   fontSize: 30,
+  //   backgroundColor: '#fff',
+  //   width: '100%',
+  //   borderRadius: 15,
+  // },
+  // toPreparing: {
+  //   alignItems: 'center',
+  //   backgroundColor: '#0085FF',
+  //   borderRadius: 4,
+  //   left: 20,
+  //   width: 100,
+  //   height: 25,
+  // },
+  // preparingText: {
+  //   color: '#fff',
+  //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
   item: {
     left: 10,
     color: '#000',
@@ -114,14 +114,14 @@ export const OrderStyle = StyleSheet.create({
     width: '20%',
     alignItems: 'flex-start',
   },
-  doneBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#D9D9D9',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
+  // doneBtn: {
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#D9D9D9',
+  //   borderRadius: 4,
+  //   width: 80,
+  //   height: 30,
+  // },
   cancelOrder: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -172,9 +172,9 @@ export const OrderStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Quicksand-Bold',
   },
-  doneBtnText: {
-    color: '#464646',
-    fontSize: 14,
-    fontFamily: 'Quicksand-Bold',
-  },
+  // doneBtnText: {
+  //   color: '#464646',
+  //   fontSize: 14,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
 });

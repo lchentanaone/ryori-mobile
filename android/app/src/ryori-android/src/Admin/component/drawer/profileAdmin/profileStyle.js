@@ -55,12 +55,12 @@ export const ProfileStyle = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  detail: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    padding: 5,
-    borderRadius: 5,
-  },
+  // detail: {
+  //   backgroundColor: '#fff',
+  //   flexDirection: 'row',
+  //   padding: 5,
+  //   borderRadius: 5,
+  // },
   infoCol: {
     width: '35%',
   },
@@ -95,9 +95,9 @@ export const ProfileStyle = StyleSheet.create({
     width: '30%',
     alignItems: 'center',
   },
-  uploadAdminProf: {
-    backgroundColor: '#DB1B1B',
-  },
+  // uploadAdminProf: {
+  //   backgroundColor: '#DB1B1B',
+  // },
   updateBtn: {
     width: 170,
     height: 30,

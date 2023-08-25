@@ -125,15 +125,15 @@ export const prodStyle = StyleSheet.create({
     paddingRight: 10,
     fontFamily: 'Quicksand-Bold',
   },
-  qtyIcon: {
-    width: 30,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  porklistQty: {
-    color: '#000',
-    fontSize: 15,
-    fontFamily: 'Quicksand-Bold',
-  },
+  // qtyIcon: {
+  //   width: 30,
+  //   height: 20,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // porklistQty: {
+  //   color: '#000',
+  //   fontSize: 15,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
 });

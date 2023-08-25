@@ -8,10 +8,10 @@ export const EmployeeStyle = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  employeeContent: {
-    width: '100%',
-    top: 15,
-  },
+  // employeeContent: {
+  //   width: '100%',
+  //   top: 15,
+  // },
   employeeTitle: {
     fontSize: 20,
     color: '#000',
@@ -132,15 +132,15 @@ export const EmployeeStyle = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'row',
   },
-  deleteEmploye: {
-    width: '48%',
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DB1B1B',
-    borderRadius: 10,
-    flexDirection: 'row',
-  },
+  // deleteEmploye: {
+  //   width: '48%',
+  //   height: 35,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#DB1B1B',
+  //   borderRadius: 10,
+  //   flexDirection: 'row',
+  // },
   filterTextBtn: {
     fontSize: 13,
     color: 'white',
