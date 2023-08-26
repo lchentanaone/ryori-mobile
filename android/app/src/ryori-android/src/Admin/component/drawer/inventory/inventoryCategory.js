@@ -124,49 +124,42 @@ export default function InventoryCategory() {
             <Text style={styles.btnText}>Save</Text>
           </TouchableOpacity>
         </View>
-
         <View style={styles.tableWidth}>
-          <DataTable style={styles.list}>
-            <DataTable.Header style={styles.tableHeader}>
-              <DataTable.Title>
-                <Text style={styles.textHeader}>ID</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textHeader}>Name</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.menuC2}>
-                <Text style={styles.textHeader}>Action</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-            <ScrollView>
+          <View>
+            <View style={styles.row}>
+              <Text style={[styles.textHeader, styles.noWidth]}>No.</Text>
+              <Text style={[styles.textHeader, styles.catName]}>
+                Category Name
+              </Text>
+              <Text style={[styles.textHeader, styles.catName]}>Action</Text>
+            </View>
+            <ScrollView style={{height: 230}}>
               {category.map((item, index) => (
-                <View key={index}>
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.textCell}>{item.id}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.textCell}>{item.title}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <View style={Styles.horContainer}>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnTertiary}}
-                          onPress={() => handleEdit(item)}>
-                          <Text style={Styles.btnText}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnWarning}}
-                          onPress={() => handleDeleteItem(item.id)}>
-                          <Text style={Styles.btnText}>Delete</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                <View key={index} style={styles.row}>
+                  <Text style={[styles.textCell, styles.noWidth]}>
+                    {item.id}
+                  </Text>
+                  <Text style={[styles.textCell, styles.catName]}>
+                    {item.title}
+                  </Text>
+                  <Text style={[styles.catName]}>
+                    <View style={Styles.horContainer}>
+                      <TouchableOpacity
+                        style={{...Styles.btn, ...Styles.btnTertiary}}
+                        onPress={() => handleEdit(item)}>
+                        <Text style={Styles.btnText}>Edit</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{...Styles.btn, ...Styles.btnWarning}}
+                        onPress={() => handleDeleteItem(item.id)}>
+                        <Text style={Styles.btnText}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Text>
                 </View>
               ))}
             </ScrollView>
-          </DataTable>
+          </View>
         </View>
       </View>
     </View>

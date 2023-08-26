@@ -26,6 +26,7 @@ const invLogsType = [
 ];
 
 export default function Inventory() {
+  const [errors, setErrors] = useState('');
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
   const [itemOnEdit, setItemOnEdit] = useState('');
@@ -93,51 +94,58 @@ export default function Inventory() {
   };
 
   const handlePostInventory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const newData = [...inventory, {item, weight, quantity, category}];
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+    if (!category || !item || !quantity) {
+      setErrors('Category, Product Name and Quantity are required');
+    } else {
+      setErrors('');
 
-      if (itemOnEdit !== '') {
-        await axios.patch(
-          `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
-          {
-            item,
-            weight,
-            quantity,
-            branch_Id,
-            category,
-          },
-          {headers},
-        );
-        fetchItems();
-        setInventory(newData);
-      } else {
-        // New
-        await axios.post(
-          `${API_URL}/inventory/rawgrocery`,
-          {
-            item,
-            weight,
-            quantity,
-            branch_Id,
-            rawCategory_Id: category,
-          },
-          {headers},
-        );
-        fetchItems();
-        setInventory(newData);
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const newData = [...inventory, {item, weight, quantity, category}];
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        if (itemOnEdit !== '') {
+          await axios.patch(
+            `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
+            {
+              item,
+              weight,
+              quantity,
+              branch_Id,
+              rawCategory_Id: category,
+            },
+            {headers},
+          );
+          fetchItems();
+          setItemOnEdit('');
+          setInventory(newData);
+        } else {
+          // New
+          await axios.post(
+            `${API_URL}/inventory/rawgrocery`,
+            {
+              item,
+              weight,
+              quantity,
+              branch_Id,
+              rawCategory_Id: category,
+            },
+            {headers},
+          );
+          fetchItems();
+          setInventory(newData);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+      setCategory('');
+      setItem('');
+      setWeight('');
+      setQuantity('');
     }
-    setCategory('');
-    setItem('');
-    setWeight('');
-    setQuantity('');
   };
 
   const handleDeleteItem = async id => {
@@ -282,7 +290,7 @@ export default function Inventory() {
               <TextInput
                 mode="outlined"
                 style={InventoryStyle.inventoryInput}
-                placeholder="Title"
+                placeholder="Product Name"
                 placeholderTextColor="#777777"
                 value={item}
                 onChangeText={setItem}
@@ -311,122 +319,185 @@ export default function Inventory() {
                 <Text style={InventoryStyle.addInventTextBtn}>Save</Text>
               </TouchableOpacity>
             </View>
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+            )}
             <View style={InventoryStyle.invetoryFilter}>
-              {categories.map((c, key) => (
-                <TouchableOpacity
-                  key={key}
-                  style={InventoryStyle.invetoryBtn}
-                  onPress={() => handleFilter(c.id)}>
-                  <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
-                </TouchableOpacity>
-              ))}
               <TouchableOpacity
-                style={{...InventoryStyle.invetoryBtn, backgroundColor: '#aaa'}}
+                style={{
+                  ...InventoryStyle.invetoryBtnAll,
+                  backgroundColor: '#aaa',
+                }}
                 onPress={() => handleFilter(null)}>
-                <Text style={InventoryStyle.filterTextBtn}>Clear</Text>
+                <Text style={InventoryStyle.filterTextBtn}>All</Text>
               </TouchableOpacity>
+              <ScrollView
+                horizontal={true}
+                style={InventoryStyle.invetoryFilter}>
+                {categories.map((c, key) => (
+                  <TouchableOpacity
+                    key={key}
+                    style={InventoryStyle.invetoryBtn}
+                    onPress={() => handleFilter(c.id)}>
+                    <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
           </View>
           <View style={InventoryStyle.inventTable}>
             <ScrollView horizontal>
-              <View style={InventoryStyle.containerTable}>
-                <DataTable style={InventoryStyle.table}>
-                  <DataTable.Header style={InventoryStyle.tableHeader}>
-                    <DataTable.Title style={{flex: 0.3}}>
-                      <Text style={InventoryStyle.inventData}>ID</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 2.5}}>
-                      <Text style={InventoryStyle.inventData}>
-                        Product Name
-                      </Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Wt./Qty</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Type</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Manage</Text>
-                    </DataTable.Title>
-                  </DataTable.Header>
-                  <ScrollView style={{height: 200}}>
-                    {filteredInventory.length > 0 ? (
-                      filteredInventory.map((items, index) => (
-                        <View key={index}>
-                          <DataTable.Row>
-                            <DataTable.Cell style={{flex: 0.5}}>
-                              {items.id}
-                            </DataTable.Cell>
-                            <DataTable.Cell style={{flex: 2}}>
-                              <View style={{flexDirection: 'column'}}>
-                                <Text style={InventoryStyle.inventCellData}>
-                                  {items.item}
-                                </Text>
-                                <Text>{items.createdAt}</Text>
-                              </View>
-                            </DataTable.Cell>
-                            <DataTable.Cell style={{flex: 1}}>
-                              <View style={{flexDirection: 'column'}}>
-                                <Text style={InventoryStyle.inventCellData}>
-                                  wt. {items.weight}
-                                </Text>
-                                <Text style={InventoryStyle.inventCellData}>
-                                  qty {items.quantity}
-                                </Text>
-                              </View>
-                            </DataTable.Cell>
-                            <DataTable.Cell style={{flex: 1}}>
-                              <View style={{flexDirection: 'column'}}>
-                                <Text style={InventoryStyle.inventCellData}>
-                                  ready: {items.readyQty}
-                                </Text>
-                                <Text style={InventoryStyle.inventCellData}>
-                                  waste: {items.wasteQty}
-                                </Text>
-                              </View>
-                            </DataTable.Cell>
-                            <DataTable.Cell style={{flex: 1}}>
-                              <View style={InventoryStyle.itemBtn}>
-                                <TouchableOpacity
-                                  style={InventoryStyle.manageBtnOpacity}
-                                  onPress={() => handleOpenModal(items)}>
-                                  <AntDesign
-                                    name="up-square-o"
-                                    color={'#12BF38'}
-                                    size={25}
-                                  />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                  style={InventoryStyle.manageBtnOpacity}
-                                  onPress={() => handleEdit(items)}>
-                                  <FontAwesome
-                                    name="pencil-square-o"
-                                    color={'#12BF38'}
-                                    size={25}
-                                  />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                  style={InventoryStyle.manageBtnOpacity}
-                                  onPress={() => handleDeleteItem(items.id)}>
-                                  <FontAweMaterialCommunityIconssome5
-                                    name="delete"
-                                    color={'#DB1B1B'}
-                                    size={25}
-                                  />
-                                </TouchableOpacity>
-                              </View>
-                            </DataTable.Cell>
-                          </DataTable.Row>
+              <View>
+                <View style={InventoryStyle.tableRow}>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.idCell]}>
+                    No.
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.productNameCell,
+                    ]}>
+                    Product Name
+                  </Text>
+
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.wtQtyCell,
+                    ]}>
+                    Wt.
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.wtQtyCell,
+                    ]}>
+                    Qty
+                  </Text>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.typeRW]}>
+                    Ready
+                  </Text>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.typeRW]}>
+                    Waste
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.columnWidth,
+                    ]}>
+                    Date
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.columnWidth,
+                    ]}>
+                    Manage
+                  </Text>
+                </View>
+                <ScrollView style={{height: 200}}>
+                  {filteredInventory.length > 0 ? (
+                    filteredInventory.map((items, index) => (
+                      <View key={index}>
+                        <View style={InventoryStyle.tableRow}>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.idCell,
+                            ]}>
+                            {items.id}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.productNameCell,
+                            ]}>
+                            {items.item}
+                          </Text>
+
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.wtQtyCell,
+                            ]}>
+                            {items.weight}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.wtQtyCell,
+                            ]}>
+                            {items.quantity}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.typeRW,
+                            ]}>
+                            {items.readyQty}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.typeRW,
+                            ]}>
+                            {items.wasteQty}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.columnWidth,
+                            ]}>
+                            12/12/2023
+                            {/* <Text>{items.createdAt}</Text> */}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.columnWidth,
+                            ]}>
+                            <View style={InventoryStyle.itemBtn}>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleOpenModal(items)}>
+                                <AntDesign
+                                  name="up-square-o"
+                                  color={'#12BF38'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleEdit(items)}>
+                                <FontAwesome
+                                  name="pencil-square-o"
+                                  color={'#12BF38'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity
+                                style={InventoryStyle.manageBtnOpacity}
+                                onPress={() => handleDeleteItem(items.id)}>
+                                <FontAweMaterialCommunityIconssome5
+                                  name="delete"
+                                  color={'#DB1B1B'}
+                                  size={25}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          </Text>
                         </View>
-                      ))
-                    ) : (
-                      <View style={{width: '100%'}}>
-                        <SkeletonItem />
                       </View>
-                    )}
-                  </ScrollView>
-                </DataTable>
+                    ))
+                  ) : (
+                    <View style={{width: '100%'}}>
+                      <SkeletonItem />
+                    </View>
+                  )}
+                </ScrollView>
               </View>
             </ScrollView>
             <Modal
