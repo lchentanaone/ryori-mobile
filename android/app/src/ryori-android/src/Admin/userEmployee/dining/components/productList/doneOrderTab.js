@@ -63,7 +63,7 @@ export default function DoneOrder() {
           style={{
             width: '100%',
           }}>
-          <View style={styles.accordions}>
+          {/* <View style={styles.accordions}>
             <ScrollView>
               {transactionData.map((item, index) => (
                 <List.Section key={index}>
@@ -102,7 +102,6 @@ export default function DoneOrder() {
                           </View>
                         </View>
                       ))}
-                      {/* {-----------Pay cash-------------} */}
                       {item.status === 'done' && (
                         <>
                           <View style={styles.toCashDone}>
@@ -118,7 +117,66 @@ export default function DoneOrder() {
                 </List.Section>
               ))}
             </ScrollView>
-          </View>
+          </View> */}
+          <ScrollView>
+            {transactionData.map((item, index) => (
+              <View key={index} style={styles.itemContainer}>
+                <TouchableOpacity onPress={handlePress} style={styles.title}>
+                  <FontAwesome name="circle" color={'#FF7A00'} size={20} />
+                  <Text style={styles.tableText}>
+                    {`Table ${item.table} ${item.id}`}
+                  </Text>
+                  <Text style={[styles.toCash, styles.payCashBtnText]}>
+                    Total: ₱ {item.total}
+                  </Text>
+                </TouchableOpacity>
+
+                {expanded && (
+                  <View style={styles.content}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        // justifyContent: 'center',
+                        marginTop: 5,
+                        marginBottom: 10,
+                      }}></View>
+                    <View style={styles.tableContainer}>
+                      <View style={styles.tableRow}>
+                        <Text style={[styles.columnQty, styles.headerText]}>
+                          Qty
+                        </Text>
+                        <Text style={[styles.columnItem, styles.headerText]}>
+                          Order Item
+                        </Text>
+                        <Text style={[styles.columnMngBtn, styles.headerText]}>
+                          Status
+                        </Text>
+                      </View>
+                      <ScrollView>
+                        {item.transactionItem.map((transItem, transIndex) => (
+                          <View key={transIndex} style={styles.tableRow}>
+                            <Text style={[styles.columnQty, styles.textItem]}>
+                              {transItem.quantity}
+                            </Text>
+                            <Text style={[styles.columnItems, styles.textItem]}>
+                              {transItem.menuItem.title || ''}
+                            </Text>
+                            <Text style={[styles.mngBtn, styles.textItem]}>
+                              <View style={styles.doneStatus}>
+                                <Text style={styles.btnText}>
+                                  {transItem.status}
+                                </Text>
+                              </View>
+                            </Text>
+                          </View>
+                        ))}
+                      </ScrollView>
+                    </View>
+                  </View>
+                )}
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </View>
     </>

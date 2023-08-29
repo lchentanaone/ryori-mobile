@@ -6,7 +6,7 @@ export const EmployeeStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 10,
   },
   // employeeContent: {
   //   width: '100%',
@@ -32,7 +32,7 @@ export const EmployeeStyle = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
     width: '100%',
-    height: 280,
+    height: 300,
     top: 10,
   },
   addEmployeeText: {
@@ -40,20 +40,53 @@ export const EmployeeStyle = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Quicksand-SemiBold',
   },
-  tableHeader: {
-    backgroundColor: '#E3E7EB',
-  },
-  tableTitle: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
+  // tableHeader: {
+  //   backgroundColor: '#E3E7EB',
+  // },
+  // tableTitle: {
+  //   fontSize: 14,
+  //   fontWeight: 500,
+  //   color: '#000',
+  //   fontFamily: 'Quicksand-SemiBold',
+  // },
   employeeCellData: {
     fontSize: 14,
     fontWeight: 500,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
+  },
+  // Table
+  idCell: {
+    width: 50,
+    textAlign: 'center',
+  },
+  nameCell: {
+    width: 130,
+    fontSize: 15,
+  },
+  usernameEmail: {
+    width: 150,
+  },
+  contactMng: {
+    width: 100,
+    textAlign: 'center',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#909090',
+    padding: 1,
+  },
+  cellHeader: {
+    paddingVertical: 10,
+    color: '#000',
+    fontFamily: 'Quicksand-Bold',
+  },
+  cell: {
+    fontSize: 14,
+    color: '#303030',
+    fontFamily: 'Quicksand-SemiBold',
+    paddingVertical: 5,
   },
   //---------------------------------------
   modal: {
@@ -129,6 +162,15 @@ export const EmployeeStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#4285F4',
+    borderRadius: 10,
+    flexDirection: 'row',
+  },
+  cancelModalBtn: {
+    width: '22%',
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#909090',
     borderRadius: 10,
     flexDirection: 'row',
   },

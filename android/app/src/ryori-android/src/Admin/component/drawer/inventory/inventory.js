@@ -27,6 +27,7 @@ const invLogsType = [
 
 export default function Inventory() {
   const [errors, setErrors] = useState('');
+  const [errorTypeLog, setErrorTypeLog] = useState('');
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('All');
   const [itemOnEdit, setItemOnEdit] = useState('');
@@ -213,10 +214,15 @@ export default function Inventory() {
   };
 
   const addQtyReady = () => {
-    handleAddQtyType();
-    setModalVisible(false);
-    setQuantityLogs('0');
-    setType('');
+    if (!type) {
+      setErrorTypeLog('Type is required');
+    } else {
+      setErrorTypeLog('');
+      handleAddQtyType();
+      setModalVisible(false);
+      setQuantityLogs('0');
+      setType('');
+    }
   };
 
   const fetchReadtQty = async () => {
@@ -548,7 +554,9 @@ export default function Inventory() {
                       </TouchableOpacity>
                     </View>
                   </View>
-
+                  {errorTypeLog !== '' && (
+                    <Text style={{color: '#ff0000'}}>{errorTypeLog}</Text>
+                  )}
                   <TouchableOpacity
                     style={[InventoryStyle.modalButton]}
                     onPress={addQtyReady}>

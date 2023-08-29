@@ -18,7 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 
 const roleData = [
   {label: 'Kitchen', value: 'kitchen'},
-  {label: 'Dining', value: 'kining'},
+  {label: 'Dining', value: 'dining'},
 ];
 
 export default function Employees() {
@@ -26,6 +26,7 @@ export default function Employees() {
   const [usersData, setUsersData] = useState([]);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [errors, setErrors] = useState('');
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstname] = useState('');
@@ -57,6 +58,10 @@ export default function Employees() {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
+  };
+  const isValidEmail = email => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   };
 
   const addStoreUser = async () => {
@@ -116,8 +121,25 @@ export default function Employees() {
   };
 
   const SaveUser = () => {
-    setModalVisible(false);
-    addStoreUser();
+    if (
+      !username ||
+      !firstName ||
+      !lastName ||
+      !email ||
+      !role ||
+      !password ||
+      !phone
+    ) {
+      setErrors('All fields are required.');
+    } else if (!isValidEmail(email)) {
+      setErrors('Invalid email format.');
+    } else if (password.length < 6) {
+      setErrors('Password must be at least 6 characters.');
+    } else {
+      setErrors('');
+      addStoreUser();
+      setModalVisible(false);
+    }
   };
 
   const handleEdit = user => {
@@ -186,7 +208,7 @@ export default function Employees() {
         <Text style={styles.addEmployeeText}>Add Employee</Text>
       </TouchableOpacity>
       <View style={styles.employeeTable}>
-        <ScrollView horizontal>
+        {/* <ScrollView horizontal>
           <ScrollView>
             <DataTable style={{minWidth: 800}}>
               <DataTable.Header style={styles.tableHeader}>
@@ -273,6 +295,75 @@ export default function Employees() {
               </ScrollView>
             </DataTable>
           </ScrollView>
+        </ScrollView> */}
+        <ScrollView horizontal>
+          <View>
+            <View style={styles.tableRow}>
+              <Text style={[styles.cellHeader, styles.idCell]}>No.</Text>
+              <Text style={[styles.cellHeader, styles.nameCell]}>
+                First Name
+              </Text>
+              <Text style={[styles.cellHeader, styles.nameCell]}>
+                Last name
+              </Text>
+              <Text style={[styles.cellHeader, styles.usernameEmail]}>
+                Username
+              </Text>
+              <Text style={[styles.cellHeader, styles.usernameEmail]}>
+                Email
+              </Text>
+              <Text style={[styles.cellHeader, styles.contactMng]}>
+                Contact No.
+              </Text>
+              <Text style={[styles.cellHeader, styles.contactMng]}>Role</Text>
+              <Text style={[styles.cellHeader, styles.contactMng]}>Manage</Text>
+            </View>
+            <ScrollView style={{height: 200}}>
+              {usersData.map((user, index) => (
+                <View key={index}>
+                  <View style={styles.tableRow}>
+                    <Text style={[styles.cell, styles.idCell]}>{user.id}</Text>
+                    <Text style={[styles.cell, styles.nameCell]}>
+                      {user.firstName}
+                    </Text>
+
+                    <Text style={[styles.cell, styles.nameCell]}>
+                      {user.firstName}
+                    </Text>
+                    <Text style={[styles.cell, styles.usernameEmail]}>
+                      {user.username}
+                    </Text>
+                    <Text style={[styles.cell, styles.usernameEmail]}>
+                      {user.email}
+                    </Text>
+                    <Text style={[styles.cell, styles.contactMng]}>
+                      {user.phone}
+                    </Text>
+                    <Text style={[styles.cell, styles.contactMng]}>
+                      {user.role}
+                    </Text>
+                    <Text style={[styles.cell, styles.contactMng]}>
+                      <TouchableOpacity>
+                        <FontAwesome5
+                          name="user-edit"
+                          size={20}
+                          onPress={() => handleEdit(user)}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity>
+                        <AntDesign
+                          name="delete"
+                          size={20}
+                          color={'red'}
+                          onPress={() => handeDelete(user.id)}
+                        />
+                      </TouchableOpacity>
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
         </ScrollView>
       </View>
       <Modal
@@ -320,7 +411,9 @@ export default function Employees() {
                   value={email}
                   keyboardType="email-address"
                   onChangeText={setEmail}
+                  disabled={employeeExist}
                 />
+
                 <TextInput
                   mode="outlined"
                   style={styles.modalInput}
@@ -397,11 +490,14 @@ export default function Employees() {
                   <Text style={styles.filterTextBtn}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.addEmployeeBtn}
+                  style={styles.cancelModalBtn}
                   onPress={Cancel}>
                   <Text style={styles.filterTextBtn}>Cancel</Text>
                 </TouchableOpacity>
               </View>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+              )}
             </View>
           </View>
         </View>
