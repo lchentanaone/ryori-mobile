@@ -33,7 +33,7 @@ export const StoreSetStyle = StyleSheet.create({
   //   width: '100%',
   // },
   storeDetailsContainer: {
-    marginTop: 10,
+    marginTop: 2,
     backgroundColor: '#fff',
     shadowColor: '#000',
     elevation: 5,
@@ -253,7 +253,6 @@ export const updateStoreStyle = StyleSheet.create({
   saveUpdateOpacity: {
     width: 200,
     height: 30,
-    top: 10,
     backgroundColor: '#4285F4',
     borderRadius: 15,
     alignItems: 'center',
