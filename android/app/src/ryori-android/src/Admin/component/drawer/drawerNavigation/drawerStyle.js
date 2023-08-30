@@ -40,4 +40,10 @@ export const drawerStyle = StyleSheet.create({
     color: '#000',
     marginLeft: 10,
   },
+  drawerLogout: {
+    flexDirection: 'row',
+    marginLeft: 18,
+    marginTop: 18,
+    paddingBottom: 10,
+  },
 });

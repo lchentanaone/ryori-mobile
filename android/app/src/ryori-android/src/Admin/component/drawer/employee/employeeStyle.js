@@ -54,6 +54,7 @@ export const EmployeeStyle = StyleSheet.create({
     fontWeight: 500,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
+    marginLeft: 5,
   },
   // Table
   idCell: {

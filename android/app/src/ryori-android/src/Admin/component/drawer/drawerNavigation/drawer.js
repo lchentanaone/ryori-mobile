@@ -115,7 +115,13 @@ const RyoriDrawer = props => {
           />
           <Text style={drawerStyle.brachesText}>Braches</Text>
         </TouchableOpacity>
-        <DrawerItem label="Logout" onPress={handleLogout} />
+        <TouchableOpacity
+          underlayColor="red"
+          style={drawerStyle.drawerLogout}
+          onPress={handleLogout}>
+          <AntDesign name="logout" size={20} color={'#000'} />
+          <Text style={drawerStyle.brachesText}>Logout</Text>
+        </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
   );
@@ -146,8 +152,8 @@ export default function DrawersNav({navigation}) {
         },
       }}>
       <Drawer.Screen
-        name="My Profile"
-        component={ProfileNavigators}
+        name="Dashboard"
+        component={Dashboard}
         style={{top: -50}}
         options={{
           headerShown: false,
@@ -163,17 +169,17 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="My Profile"
+        component={ProfileNavigators}
         style={{top: -50}}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
             <>
-              <FontAwesome
-                name="bar-chart-o"
+              <Feather
+                name="user"
                 color={focused ? '#DB1B1B' : '#000'}
-                size={15}
+                size={19}
               />
             </>
           ),

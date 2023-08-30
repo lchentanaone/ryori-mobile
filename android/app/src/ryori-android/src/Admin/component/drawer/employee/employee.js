@@ -208,94 +208,6 @@ export default function Employees() {
         <Text style={styles.addEmployeeText}>Add Employee</Text>
       </TouchableOpacity>
       <View style={styles.employeeTable}>
-        {/* <ScrollView horizontal>
-          <ScrollView>
-            <DataTable style={{minWidth: 800}}>
-              <DataTable.Header style={styles.tableHeader}>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>No.</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>Name</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>lastName</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>username</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>Email</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>Role</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>Contact No.</Text>
-                </DataTable.Title>
-                <DataTable.Title>
-                  <Text style={styles.tableTitle}>Action</Text>
-                </DataTable.Title>
-              </DataTable.Header>
-              <ScrollView style={{height: 230}}>
-                {usersData.map((user, index) => (
-                  <View key={index}>
-                    <DataTable.Row style={{borderBottomWidth: 1}}>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>{user.id}.</Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>
-                          {user.firstName}
-                        </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>
-                          {user.firstName}
-                        </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>
-                          {user.username}
-                        </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>
-                          {user.email}
-                        </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>{user.role}</Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <Text style={styles.employeeCellData}>
-                          {user.phone}
-                        </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell>
-                        <TouchableOpacity>
-                          <FontAwesome5
-                            name="user-edit"
-                            size={20}
-                            onPress={() => handleEdit(user)}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                          <AntDesign
-                            name="delete"
-                            size={20}
-                            color={'red'}
-                            onPress={() => handeDelete(user.id)}
-                          />
-                        </TouchableOpacity>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                  </View>
-                ))}
-              </ScrollView>
-            </DataTable>
-          </ScrollView>
-        </ScrollView> */}
         <ScrollView horizontal>
           <View>
             <View style={styles.tableRow}>
@@ -406,22 +318,20 @@ export default function Employees() {
                 <TextInput
                   mode="outlined"
                   style={styles.modalInput}
-                  placeholder="email"
-                  placeholderTextColor="#777777"
-                  value={email}
-                  keyboardType="email-address"
-                  onChangeText={setEmail}
-                  disabled={employeeExist}
-                />
-
-                <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
                   placeholder="username"
                   placeholderTextColor="#777777"
                   value={username}
                   secureTextEntry={false}
                   onChangeText={setUsername}
+                />
+                <TextInput
+                  mode="outlined"
+                  style={styles.modalInput}
+                  placeholder="Phone Number"
+                  placeholderTextColor="#777777"
+                  value={phone}
+                  keyboardType="numeric"
+                  onChangeText={setPhone}
                 />
               </View>
               <View style={styles.modalForm}>
@@ -449,16 +359,18 @@ export default function Employees() {
                     }}
                   />
                 </View>
-
-                <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="Phone Number"
-                  placeholderTextColor="#777777"
-                  value={phone}
-                  keyboardType="numeric"
-                  onChangeText={setPhone}
-                />
+                {employeeExist ? null : (
+                  <TextInput
+                    mode="outlined"
+                    style={styles.modalInput}
+                    placeholder="email"
+                    placeholderTextColor="#777777"
+                    value={email}
+                    keyboardType="email-address"
+                    onChangeText={setEmail}
+                    disabled={employeeExist}
+                  />
+                )}
               </View>
               <View style={styles.modalButton}>
                 {/* <TextInput
@@ -481,7 +393,7 @@ export default function Employees() {
                 )}
                 {!employeeExist ? null : (
                   <Text style={styles.employeeCellData}>
-                    Please Contact us for Password Recovery
+                    Please Contact us for Email and {'\n'} Password Recovery
                   </Text>
                 )}
                 <TouchableOpacity
