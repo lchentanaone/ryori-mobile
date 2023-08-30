@@ -155,7 +155,7 @@ export default Products = ({navigation}) => {
             <FontAwesome5 name="box-open" color={'#464646'} size={25} />
           </TouchableOpacity>
         </View>
-        <View style={styles.Table}>
+        <View style={styles.table}>
           <ScrollView>
             {menu.map((item, index) => (
               <>

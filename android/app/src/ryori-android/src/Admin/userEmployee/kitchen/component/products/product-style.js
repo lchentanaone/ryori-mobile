@@ -86,7 +86,7 @@ export const prodStyle = StyleSheet.create({
     color: '#000',
   },
   //Tables
-  Table: {
+  table: {
     marginTop: 20,
     width: '100%',
   },

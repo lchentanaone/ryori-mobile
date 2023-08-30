@@ -10,6 +10,7 @@ import KitchenBottomNavigator from '../Admin/userEmployee/kitchen/bottomNavigato
 import PreparingOrderTab from '../Admin/userEmployee/kitchen/component/activeOrder/preparingOrderTab';
 import ProfileEmpoyee from './../Admin/userEmployee/profile/profile';
 import DiningBottomNavigator from '../Admin/userEmployee/dining/bottomNavigation';
+import Inventory from '../Admin/component/drawer/inventory/inventory';
 
 const Stack = createStackNavigator();
 const OutsideNavigators = () => {
@@ -49,12 +50,12 @@ const OutsideNavigators = () => {
           component={DrawersNav}
           name="Drawer"
           options={{headerShown: false}}
-        />        
+        />
         <Stack.Screen
           component={Branches}
           name="Select Branch"
           options={{headerShown: false}}
-        /> 
+        />
 
         {/* Staffs */}
 
@@ -78,7 +79,11 @@ const OutsideNavigators = () => {
           name="DiningBottomNavigator"
           options={{headerShown: false}}
         />
-
+        <Stack.Screen
+          component={Inventory}
+          name="Inventory"
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </>
   );
