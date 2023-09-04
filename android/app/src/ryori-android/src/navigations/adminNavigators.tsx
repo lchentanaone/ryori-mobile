@@ -34,7 +34,11 @@ export const StoreSettingsNavigators = () => (
 );
 export const MenuNavigators = () => (
   <Stack.Navigator>
-    <Stack.Screen component={Menu} name="Menu" options={{headerShown: false}} />
+    <Stack.Screen
+      component={Menu}
+      name="Menus"
+      options={{headerShown: false}}
+    />
     <Stack.Screen
       component={AddMenu}
       name="Add new menu"

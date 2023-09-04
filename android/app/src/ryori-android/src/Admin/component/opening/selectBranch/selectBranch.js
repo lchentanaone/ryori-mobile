@@ -79,11 +79,10 @@ export default function Branches({navigation}) {
   const handleBranchSelection = async branchId => {
     try {
       await AsyncStorage.setItem('branch_Id', branchId.toString());
-      const getBranch_Id = await AsyncStorage.getItem('branch_Id');
 
       navigation.navigate('Drawer');
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error(error);
     }
   };
 
@@ -104,7 +103,7 @@ export default function Branches({navigation}) {
               <View key={index}>
                 <TouchableOpacity
                   style={styles.branchBtn}
-                  onPress={() => handleBranchSelection(branch.id)}>
+                  onPress={() => handleBranchSelection(branch._id)}>
                   <Text style={styles.branchText}>{branch.branchName}</Text>
                 </TouchableOpacity>
               </View>
@@ -112,7 +111,12 @@ export default function Branches({navigation}) {
           </ScrollView>
           <TouchableOpacity
             style={styles.addBranchBtn}
-            onPress={() => navigation.navigate('New-Store-Branch', {type: 'branch', store: storeData})}>
+            onPress={() =>
+              navigation.navigate('New-Store-Branch', {
+                type: 'branch',
+                store: storeData,
+              })
+            }>
             <Entypo name="plus" style={styles.addIcon} />
             <Text style={styles.addBranchText}>Add new Branch</Text>
           </TouchableOpacity>
