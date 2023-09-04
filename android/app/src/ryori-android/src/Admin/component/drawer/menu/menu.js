@@ -57,7 +57,7 @@ export default function Menu({navigation}) {
   const handleMenuModal = async item => {
     setSelectedItem(item);
     try {
-      const response = await axios.get(`${API_URL}/menuItem/${item.id}`);
+      const response = await axios.get(`${API_URL}/menuItem/${item._id}`);
       setItemDetails(response.data);
       setModalVisible(true);
     } catch (error) {
@@ -225,22 +225,30 @@ export default function Menu({navigation}) {
                     {itemDetails.description}
                   </Text>
 
-                  <View style={MenuStyle.modalBtn}>
-                    <TouchableOpacity
-                      style={MenuStyle.updateModalBtn}
-                      onPress={() =>
-                        navigation.navigate('menu-details', {
-                          item: selectedItem,
-                          type: 'edit',
-                        })
-                      }>
-                      <Text style={MenuStyle.modalBtnText}>Update</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={MenuStyle.updateModalBtn}
-                      onPress={() => setModalVisible(false)}>
-                      <Text style={MenuStyle.modalBtnText}>Close</Text>
-                    </TouchableOpacity>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      width: '100%',
+                      marginBottom: 10,
+                    }}>
+                    <View style={MenuStyle.modalBtn}>
+                      <TouchableOpacity
+                        style={MenuStyle.updateModalBtn}
+                        onPress={() =>
+                          navigation.navigate('menu-details', {
+                            item: selectedItem,
+                            type: 'edit',
+                          })
+                        }>
+                        <Text style={MenuStyle.modalBtnText}>Update</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={MenuStyle.closeModal}
+                        onPress={() => setModalVisible(false)}>
+                        <Text style={MenuStyle.modalBtnText}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </>

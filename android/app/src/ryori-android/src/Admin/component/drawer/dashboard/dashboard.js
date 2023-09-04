@@ -66,7 +66,6 @@ export default function Dashboard() {
         setDashboard(response.data);
       }, 2000);
       setConsumption(response.data.totalCustomers);
-      // console.log(response.data.orderSummary);
     } catch (error) {
       console.error(error);
     }

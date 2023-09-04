@@ -104,17 +104,11 @@ export default function UpdateStore({route, navigation}) {
         formData.append('email', data.email);
         formData.append('contactNumber', data.contactNumber);
         formData.append('address', data.address);
-
-        // console.log('handleSave', {formData}, JSON.stringify(headers));
-        console.log({formData});
         const response = await axios.patch(
           `${API_URL}/store/${store_Id}`,
           formData,
           {headers},
         );
-        // const data = await response.data
-        // console.log(response.data.id)
-        // console.log(JSON.stringify(response))
         if (response.data._id) {
           navigation.navigate('Store Setting');
         }
