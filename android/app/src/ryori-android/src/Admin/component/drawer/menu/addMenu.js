@@ -18,6 +18,7 @@ import {API_URL} from '../../../../utils/constants';
 import defaultPhoto from '../../../images/no-image.png';
 
 export default function AddMenu({route, navigation}) {
+  const [errors, setErrors] = useState('');
   const {type, item} = route.params || {
     type: 'new',
     item: null,
@@ -25,13 +26,12 @@ export default function AddMenu({route, navigation}) {
   let pageTitle = '';
 
   if (type === 'edit') {
-    pageTitle = 'Edit menu #' + item.id;
+    pageTitle = 'Edit menu #' + item._id;
   } else {
     pageTitle = 'Add menu item';
   }
-
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = useState('');
   const [title, setTitle] = useState('');
@@ -54,7 +54,7 @@ export default function AddMenu({route, navigation}) {
       );
       const dropdownCategories = response.data.map(item => ({
         label: item.title,
-        value: item.id,
+        value: item._id,
       }));
       setCategories(dropdownCategories);
     } catch (error) {
@@ -65,7 +65,7 @@ export default function AddMenu({route, navigation}) {
   const fetchDetail = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/menuItem/${item.id}`, {
+      const response = await axios.get(`${API_URL}/menuItem/${item._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -78,7 +78,7 @@ export default function AddMenu({route, navigation}) {
       setPhoto(response.data.photo);
       setCategory(
         response.data.menuCategory.length > 0
-          ? response.data.menuCategory[0].id
+          ? response.data.menuCategory[0]._id
           : '',
       );
     } catch (error) {
@@ -95,46 +95,61 @@ export default function AddMenu({route, navigation}) {
 
   const handleAddMenu = async () => {
     return new Promise(async (resolve, reject) => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const store_Id = await AsyncStorage.getItem('store_Id');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        };
+      if (!title) {
+        setErrors('Title is required.');
+      } else if (!price) {
+        setErrors('Price is required.');
+      } else if (!category) {
+        setErrors('Category is required.');
+      } else if (!photo) {
+        setErrors('Photo is required.');
+      } else {
+        setErrors('');
 
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('price', parseFloat(price));
-        formData.append('description', description);
-        formData.append('cookingTime', cookingTime);
-        formData.append('category_Id', category);
-        formData.append('store_Id', store_Id);
-        formData.append('photo', {
-          uri: photo,
-          name: randomFileName,
-          type: 'image/jpeg',
-        });
+        try {
+          const token = await AsyncStorage.getItem('access_token');
+          const store_Id = await AsyncStorage.getItem('store_Id');
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          };
 
-        if (type === 'edit') {
-          const response = await axios.patch(
-            `${API_URL}/menuItem/${item.id}`,
-            formData,
-            {headers},
-          );
-          resolve(response.data.id);
-        } else {
-          const response = await axios.post(`${API_URL}/menuItem`, formData, {
-            headers,
-          });
-          console.log(response.data.id);
-          resolve(response.data.id);
+          const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+          const randomFileName =
+            new Date().valueOf().toString() + '.' + fileType;
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('price', parseFloat(price));
+          formData.append('description', description);
+          formData.append('cookingTime', cookingTime);
+          formData.append('category_Id', category);
+          formData.append('store_Id', store_Id);
+          // formData.append('photo', {
+          //   uri: photo,
+          //   name: randomFileName,
+          //   type: 'image/jpeg',
+          // });
+          console.log({formData: JSON.stringify(formData)});
+          if (type === 'edit') {
+            const response = await axios.patch(
+              `${API_URL}/menuItem/${item._id}`,
+              formData,
+              {headers},
+            );
+
+            console.log(response.date);
+            resolve(response.data._id);
+          } else {
+            const response = await axios.post(`${API_URL}/menuItem`, formData, {
+              headers,
+            });
+            // console.log(response.data.id);
+            resolve(response.data._id);
+          }
+        } catch (error) {
+          console.error(error);
+          reject(error);
         }
-      } catch (error) {
-        console.error(error);
-        reject(error);
       }
     });
   };
@@ -166,9 +181,9 @@ export default function AddMenu({route, navigation}) {
 
   const handleSaveMenu = async () => {
     const menuItemId = await handleAddMenu();
-    console.log({menuItemId});
+    // console.log({menuItemId});
     await handleAddBranchItem(menuItemId);
-    navigation.navigate('Menu');
+    navigation.navigate('Menus');
   };
 
   const handleChoosePhoto = () => {
@@ -203,7 +218,11 @@ export default function AddMenu({route, navigation}) {
       }
     });
   };
-
+  const handleCancel = async () => {
+    navigation.navigate('Menus');
+    type(null);
+    item(null);
+  };
   const handleDeleteMenu = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
@@ -211,14 +230,14 @@ export default function AddMenu({route, navigation}) {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       };
-      const response = await axios.delete(`${API_URL}/menuItem/${item.id}`, {
+      const response = await axios.delete(`${API_URL}/menuItem/${item._id}`, {
         headers,
       });
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-    navigation.navigate('Menu');
+    navigation.navigate('Menus');
   };
 
   return (
@@ -291,7 +310,7 @@ export default function AddMenu({route, navigation}) {
                   onFocus={() => setIsFocus(true)}
                   onBlur={() => setIsFocus(false)}
                   onChange={item => {
-                    console.log({item});
+                    // console.log({item});
                     setCategory(item.value);
                     setIsFocus(false);
                   }}
@@ -307,6 +326,9 @@ export default function AddMenu({route, navigation}) {
                 onChangeText={setCookingTime}
               />
             </View>
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+            )}
             <View style={DropdownStyle.DropdownContainer}>
               {/* 
               For Future
@@ -364,7 +386,7 @@ export default function AddMenu({route, navigation}) {
             <TouchableOpacity
               style={AddMenuStyle.cancelOpacity}
               // onPress={handleQuantity}
-              onPress={() => navigation.navigate('Menu')}>
+              onPress={handleCancel}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
             </TouchableOpacity>
           </View>

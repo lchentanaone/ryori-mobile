@@ -96,7 +96,7 @@ export default function PreparingOrderTab({route}) {
                     <Text
                       style={
                         styles.tableText
-                      }>{`Table ${item.table} ${item.id}`}</Text>
+                      }>{`Table ${item.table} ${item._id}`}</Text>
                   </TouchableOpacity>
 
                   {expanded && (
@@ -140,7 +140,7 @@ export default function PreparingOrderTab({route}) {
                                         style={styles.newOrderBtn}
                                         onPress={() => {
                                           updateTransactionItem(
-                                            transItem.id,
+                                            transItem._id,
                                             'preparing',
                                           );
                                         }}>
@@ -154,7 +154,7 @@ export default function PreparingOrderTab({route}) {
                                         style={styles.preparingBtn}
                                         onPress={() => {
                                           updateTransactionItem(
-                                            transItem.id,
+                                            transItem._id,
                                             'serving',
                                           );
                                         }}>
@@ -169,7 +169,7 @@ export default function PreparingOrderTab({route}) {
                                         style={styles.servingBtn}
                                         onPress={() => {
                                           updateTransactionItem(
-                                            transItem.id,
+                                            transItem._id,
                                             'served',
                                           );
                                         }}>

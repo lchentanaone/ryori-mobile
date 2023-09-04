@@ -88,7 +88,9 @@ export default function TransactionDaily() {
                   <View key={index}>
                     <DataTable.Row style={{borderBottomWidth: 1}}>
                       <DataTable.Cell>
-                        <Text style={TransactionStyle.cellData}>{item.id}</Text>
+                        <Text style={TransactionStyle.cellData}>
+                          {item._id}
+                        </Text>
                       </DataTable.Cell>
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>

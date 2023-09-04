@@ -303,6 +303,7 @@ export const MenuStyle = StyleSheet.create({
   menuItems1: {
     paddingVertical: 10,
     height: 180,
+    flex: 1,
     width: '100%',
     borderRadius: 3,
     alignItems: 'center',
@@ -351,10 +352,17 @@ export const MenuStyle = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     width: '100%',
-    top: 15,
   },
   updateModalBtn: {
     backgroundColor: '#4285F4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    height: 35,
+    width: 100,
+  },
+  closeModal: {
+    backgroundColor: '#909090',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
