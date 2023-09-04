@@ -9,10 +9,10 @@ import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 
 export default function Login({navigation}) {
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('yun123456@gmail.com');
-  const [password, setPassword] = useState('123456');
-  // ryoriapp@gmail.com     yun123456@gmail.com
-  // ryori2023      123456
+  const [email, setEmail] = useState('adminapp@gmail.comx');
+  const [password, setPassword] = useState('123123x');
+  // ryoriapp@gmail.com ryori2023
+  // adminapp@gmail.comx 123123x
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -45,6 +45,8 @@ export default function Login({navigation}) {
         }
       } else if (response.data.role === 'dining') {
         navigation.navigate('DiningBottomNavigator');
+      } else if (response.data.role === 'manager') {
+        navigation.navigate('ManagerTab');
       } else {
         setError('Invalid email or password');
       }

@@ -29,6 +29,7 @@ import ProfileEmpoyee from '../userEmployee/profile/profile';
 import ProfileEdit from '../userEmployee/profile/profileEdit';
 import PaymentReceived from '../userEmployee/dining/components/pamentReceived/paymentRec';
 import DiningBottomNavigator from '../userEmployee/dining/bottomNavigation';
+import ManagerTab from '../userEmployee/manager/managerTab';
 
 const Stack = createStackNavigator();
 const StackNavigators = () => {
@@ -148,6 +149,11 @@ const StackNavigators = () => {
         <Stack.Screen
           component={LoginEmpoyee}
           name="Login Employee"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ManagerTab}
+          name="ManagerTab"
           options={{headerShown: false}}
         />
         <Stack.Screen

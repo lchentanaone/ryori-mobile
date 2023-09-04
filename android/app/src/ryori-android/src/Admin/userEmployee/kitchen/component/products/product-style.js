@@ -5,7 +5,7 @@ export const prodStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 20,
   },
   crewHeader: {

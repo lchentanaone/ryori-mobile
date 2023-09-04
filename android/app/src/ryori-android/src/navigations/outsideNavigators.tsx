@@ -11,6 +11,7 @@ import PreparingOrderTab from '../Admin/userEmployee/kitchen/component/activeOrd
 import ProfileEmpoyee from './../Admin/userEmployee/profile/profile';
 import DiningBottomNavigator from '../Admin/userEmployee/dining/bottomNavigation';
 import Inventory from '../Admin/component/drawer/inventory/inventory';
+import ManagerTab from '../Admin/userEmployee/manager/managerTab';
 
 const Stack = createStackNavigator();
 const OutsideNavigators = () => {
@@ -67,6 +68,11 @@ const OutsideNavigators = () => {
         <Stack.Screen
           component={PreparingOrderTab}
           name="Prepare Table"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={ManagerTab}
+          name="ManagerTab"
           options={{headerShown: false}}
         />
         <Stack.Screen

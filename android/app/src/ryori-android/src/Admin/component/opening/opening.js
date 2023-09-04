@@ -32,6 +32,12 @@ export default function Opening() {
             navigation.navigate('New-Store-Branch', {type: 'store'});
           }, 2000);
         }
+      } else if (role === 'manager') {
+        if (store_Id) {
+          setTimeout(() => {
+            navigation.navigate('ManagerTab');
+          }, 2000);
+        }
       } else if (role === 'dining') {
         if (store_Id) {
           setTimeout(() => {

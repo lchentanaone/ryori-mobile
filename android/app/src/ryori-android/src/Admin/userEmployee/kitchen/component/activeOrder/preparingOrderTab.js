@@ -85,7 +85,7 @@ export default function PreparingOrderTab({route}) {
         <View
           style={{
             width: '100%',
-            marginTop: 5,
+            marginTop: 10,
           }}>
           <View style={styles.accordions}>
             <ScrollView>
