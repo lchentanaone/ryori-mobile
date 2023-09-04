@@ -107,13 +107,8 @@ export default function PreparingOrderTab({route}) {
                           // justifyContent: 'center',
                           marginTop: 5,
                           marginBottom: 10,
-                        }}>
-                        <View
-                          style={{
-                            alignItems: 'flex-end',
-                            width: 180,
-                          }}></View>
-                      </View>
+                        }}></View>
+                      <Text> Notes: {item.notes} </Text>
                       <View style={styles.tableContainer}>
                         <View style={styles.tableRow}>
                           <Text style={[styles.columnQty, styles.headerText]}>

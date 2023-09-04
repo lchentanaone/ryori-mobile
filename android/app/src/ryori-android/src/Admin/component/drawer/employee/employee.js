@@ -147,7 +147,7 @@ export default function Employees() {
     if (user) {
       setEmployeeExist(true);
     } else setEmployeeExist(false);
-    setUserOnEdit(user.id);
+    setUserOnEdit(user._id);
     setUsername(user.username);
     setEmail(user.email);
     setFirstname(user.firstName);
@@ -267,7 +267,7 @@ export default function Employees() {
                           name="delete"
                           size={20}
                           color={'red'}
-                          onPress={() => handeDelete(user.id)}
+                          onPress={() => handeDelete(user._id)}
                         />
                       </TouchableOpacity>
                     </Text>

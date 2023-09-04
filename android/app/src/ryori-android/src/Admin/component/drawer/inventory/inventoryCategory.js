@@ -81,7 +81,7 @@ export default function InventoryCategory() {
   };
 
   const handleEdit = item => {
-    setItemOnEdit(item.id);
+    setItemOnEdit(item._id);
     setTitle(item.title);
   };
 
@@ -151,7 +151,7 @@ export default function InventoryCategory() {
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{...Styles.btn, ...Styles.btnWarning}}
-                        onPress={() => handleDeleteItem(item.id)}>
+                        onPress={() => handleDeleteItem(item._id)}>
                         <Text style={Styles.btnText}>Delete</Text>
                       </TouchableOpacity>
                     </View>

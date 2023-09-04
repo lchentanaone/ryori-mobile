@@ -29,7 +29,7 @@ export default function Inventory() {
   const [errors, setErrors] = useState('');
   const [errorTypeLog, setErrorTypeLog] = useState('');
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('');
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [item, setItem] = useState('');
@@ -73,7 +73,7 @@ export default function Inventory() {
   const dropdownized = data =>
     data.map(item => ({
       label: item.title,
-      value: item.id,
+      value: item._id,
     }));
 
   const fetchItems = async () => {
@@ -95,7 +95,7 @@ export default function Inventory() {
   };
 
   const handlePostInventory = async () => {
-    if (!category || !item || !quantity) {
+    if (!item || !quantity) {
       setErrors('Category, Product Name and Quantity are required');
     } else {
       setErrors('');
@@ -167,7 +167,7 @@ export default function Inventory() {
   const handleFilter = id => {
     if (id) {
       const newData = inventory.filter(item =>
-        item.rawCategory.some(innerItem => innerItem.id === id),
+        item.rawCategory.some(innerItem => innerItem._id === id),
       );
       setFilteredInventory(newData);
     } else {
@@ -176,11 +176,11 @@ export default function Inventory() {
   };
 
   const handleEdit = items => {
-    setItemOnEdit(items.id);
+    setItemOnEdit(items._id);
     setItem(items.item);
     setWeight(items.weight);
     setQuantity(items.quantity);
-    setUpdateItem(items.id);
+    setUpdateItem(items._id);
   };
 
   const handleOpenModal = items => {
@@ -344,7 +344,7 @@ export default function Inventory() {
                   <TouchableOpacity
                     key={key}
                     style={InventoryStyle.invetoryBtn}
-                    onPress={() => handleFilter(c.id)}>
+                    onPress={() => handleFilter(c._id)}>
                     <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
                   </TouchableOpacity>
                 ))}
@@ -457,7 +457,7 @@ export default function Inventory() {
                               InventoryStyle.cell,
                               InventoryStyle.columnWidth,
                             ]}>
-                            12/12/2023
+                            {item.data}
                             {/* <Text>{items.createdAt}</Text> */}
                           </Text>
                           <Text
@@ -486,7 +486,7 @@ export default function Inventory() {
                               </TouchableOpacity>
                               <TouchableOpacity
                                 style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleDeleteItem(items.id)}>
+                                onPress={() => handleDeleteItem(items._id)}>
                                 <FontAweMaterialCommunityIconssome5
                                   name="delete"
                                   color={'#DB1B1B'}

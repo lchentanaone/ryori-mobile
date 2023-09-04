@@ -18,6 +18,8 @@ import imagePlaceholder from '../../../images/no-image.png';
 
 export default function UpdateStore({route, navigation}) {
   const {branchId} = route.params;
+  const [errors, setErrors] = useState('');
+
   const [photo, setPhoto] = useState(null);
   const [data, setData] = useState({});
 
@@ -73,42 +75,52 @@ export default function UpdateStore({route, navigation}) {
   };
 
   const handleSave = async () => {
-    const token = await AsyncStorage.getItem('access_token');
-    const store_Id = await AsyncStorage.getItem('store_Id');
-    const branchId = await AsyncStorage.getItem('branch_Id');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data',
-    };
+    if (!data.storeName || !data.branchName) {
+      setErrors('Store and Branch name are required.');
+    } else {
+      setErrors('');
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_Id');
+        const branchId = await AsyncStorage.getItem('branch_Id');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        };
 
-    const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-    const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-    const formData = new FormData();
-    formData.append('storeName', data.storeName);
-    formData.append('appId', data.appId);
-    formData.append('appSecret', data.appSecret);
-    formData.append('photo', {
-      uri: photo,
-      name: randomFileName,
-      type: 'image/jpeg',
-    });
-    formData.append('branch_Id', branchId);
-    formData.append('branchName', data.branchName);
-    formData.append('email', data.email);
-    formData.append('contactNumber', data.contactNumber);
-    formData.append('address', data.address);
+        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
+        const formData = new FormData();
+        formData.append('storeName', data.storeName);
+        formData.append('appId', data.appId);
+        formData.append('appSecret', data.appSecret);
+        formData.append('photo', {
+          uri: photo,
+          name: randomFileName,
+          type: 'image/jpeg',
+        });
+        formData.append('branch_Id', branchId);
+        formData.append('branchName', data.branchName);
+        formData.append('email', data.email);
+        formData.append('contactNumber', data.contactNumber);
+        formData.append('address', data.address);
 
-    console.log('handleSave', {formData}, JSON.stringify(headers));
-    const response = await axios.patch(
-      `${API_URL}/store/${store_Id}`,
-      formData,
-      {headers},
-    );
-    // const data = await response.data
-    // console.log(response.data.id)
-    // console.log(JSON.stringify(response))
-    if (response.data.id) {
-      navigation.navigate('Store Setting');
+        // console.log('handleSave', {formData}, JSON.stringify(headers));
+        console.log({formData});
+        const response = await axios.patch(
+          `${API_URL}/store/${store_Id}`,
+          formData,
+          {headers},
+        );
+        // const data = await response.data
+        // console.log(response.data.id)
+        // console.log(JSON.stringify(response))
+        if (response.data._id) {
+          navigation.navigate('Store Setting');
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
     }
   };
 
@@ -204,19 +216,6 @@ export default function UpdateStore({route, navigation}) {
                   <TextInput
                     mode="outlined"
                     style={updStyle.storeIdSecret}
-                    placeholder="App Secret"
-                    placeholderTextColor="#777777"
-                    value={data.appSecret}
-                    onChangeText={value => {
-                      handleChangeText('appSecret', value);
-                    }}
-                  />
-                </View>
-                <View style={updStyle.appidSec}>
-                  <Text style={updStyle.appidSecText}>App Secret:</Text>
-                  <TextInput
-                    mode="outlined"
-                    style={updStyle.storeIdSecret}
                     placeholder="App ID"
                     placeholderTextColor="#777777"
                     value={data.appId}
@@ -225,9 +224,25 @@ export default function UpdateStore({route, navigation}) {
                     }}
                   />
                 </View>
+                <View style={updStyle.appidSec}>
+                  <Text style={updStyle.appidSecText}>App Secret:</Text>
+                  <TextInput
+                    mode="outlined"
+                    style={updStyle.storeIdSecret}
+                    placeholder="App Secret"
+                    placeholderTextColor="#777777"
+                    value={data.appSecret}
+                    onChangeText={value => {
+                      handleChangeText('appSecret', value);
+                    }}
+                  />
+                </View>
               </>
             ) : (
               <Text>Loading store data...</Text>
+            )}
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
             )}
           </View>
         </View>

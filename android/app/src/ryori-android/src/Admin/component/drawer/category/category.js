@@ -122,7 +122,7 @@ export default function Category() {
     const token = await AsyncStorage.getItem('access_token');
 
     const responsePhoto = await axios.get(
-      `${API_URL}/menuCategory/${item.id}`,
+      `${API_URL}/menuCategory/${item._id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -185,7 +185,7 @@ export default function Category() {
                           </TouchableOpacity>
                           <TouchableOpacity
                             style={{...Styles.btn, ...Styles.btnWarning}}
-                            onPress={() => handleDelete(item.id)}>
+                            onPress={() => handleDelete(item._id)}>
                             <Text style={Styles.btnText}>Delete</Text>
                           </TouchableOpacity>
                         </View>

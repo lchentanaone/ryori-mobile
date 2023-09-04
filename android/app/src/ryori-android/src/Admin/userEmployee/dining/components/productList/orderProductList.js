@@ -85,6 +85,7 @@ export default function OrderProductList({navigation}) {
         `${API_URL}/pos/transaction/${id}`,
         {
           status: newStatus,
+          table,
         },
         {headers},
       );
@@ -434,7 +435,6 @@ export default function OrderProductList({navigation}) {
                       <View
                         style={{
                           flexDirection: 'row',
-                          // justifyContent: 'center',
                           marginTop: 5,
                           marginBottom: 10,
                         }}>
@@ -452,7 +452,7 @@ export default function OrderProductList({navigation}) {
                               onPress={() => {
                                 updateTransStatus(item.id, 'to_prepare');
                               }}>
-                              <Text style={styles.btnText}>To Prepare</Text>
+                              <Text style={styles.btnText}>Confirm</Text>
                             </TouchableOpacity>
                           )}
                           {item.status === 'to_prepare' && (
@@ -493,6 +493,7 @@ export default function OrderProductList({navigation}) {
                           )}
                         </View>
                       </View>
+                      <Text> Notes: {item.notes} </Text>
                       <View style={styles.tableContainer}>
                         <View style={styles.tableRow}>
                           <Text style={[styles.columnQty, styles.headerText]}>
