@@ -8,12 +8,11 @@ import {API_URL} from '../../../utils/constants'
 import defaultPhoto from '../../../Admin/images/no-image.png';
 
 export default function SetupStore({navigation, route}) {
-
   const {type} = route.params;
   const title = type === 'branch' ? 'New Branch' : 'New Store';
-  const [photo, setPhoto] = useState(route.params.store.photo || null)
+  const [photo, setPhoto] = useState(route.params.store?.photo || null)
 
-  const [storeName, setStoreName] = useState(route.params.store.storeName || '');
+  const [storeName, setStoreName] = useState(route.params.store?.storeName || '');
   const [store_Id, setStore_Id] = useState('');
   const [email, setEmail] = useState('');
   const [branchName, setBranchName] = useState('');
