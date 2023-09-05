@@ -185,7 +185,7 @@ export default function Inventory() {
 
   const handleOpenModal = items => {
     setModalVisible(true);
-    setItemOnEdit(items.id);
+    setItemOnEdit(items._id);
   };
 
   const handleAddQtyType = async () => {
@@ -241,6 +241,7 @@ export default function Inventory() {
     } catch (error) {
       console.error(error);
     }
+    console.log({typeLogs});
   };
 
   useEffect(() => {

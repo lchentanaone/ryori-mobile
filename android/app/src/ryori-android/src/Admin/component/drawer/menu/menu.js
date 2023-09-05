@@ -235,12 +235,13 @@ export default function Menu({navigation}) {
                     <View style={MenuStyle.modalBtn}>
                       <TouchableOpacity
                         style={MenuStyle.updateModalBtn}
-                        onPress={() =>
+                        onPress={() => {
+                          setModalVisible(false);
                           navigation.navigate('menu-details', {
                             item: selectedItem,
                             type: 'edit',
-                          })
-                        }>
+                          });
+                        }}>
                         <Text style={MenuStyle.modalBtnText}>Update</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
