@@ -6,13 +6,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../utils/constants';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
+import DialogModal from '../../../utils/dialog';
+import {Dialog} from '@rneui/themed';
 
 export default function Login({navigation}) {
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('adminapp@gmail.comx');
-  const [password, setPassword] = useState('123123x');
-  // ryoriapp@gmail.com ryori2023
-  // adminapp@gmail.comx 123123x
+  const [email, setEmail] = useState('ryoriapp@gmail.com');
+  const [password, setPassword] = useState('ryori2023');
+  const [visible1, setVisible1] = useState(false);
+
+  const toggleDialog1 = () => {
+    setVisible1(!visible1);
+  };
+
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -85,13 +91,16 @@ export default function Login({navigation}) {
           <TextInput
             mode="outlined"
             style={openingStyles.input}
+            secureTextEntry={true}
             placeholder="Password"
             value={password}
             // secureTextEntry={true}
             onChangeText={setPassword}
           />
           <View style={openingStyles.forgotBtn}>
-            <TouchableOpacity style={openingStyles.textBtbOpacity}>
+            <TouchableOpacity
+              style={openingStyles.textBtbOpacity}
+              onPress={toggleDialog1}>
               <Text style={openingStyles.forgotText}>Forgot Password</Text>
             </TouchableOpacity>
           </View>
@@ -111,6 +120,9 @@ export default function Login({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
+        <Dialog isVisible={visible1} onBackdropPress={toggleDialog1}>
+          <DialogModal />
+        </Dialog>
       </View>
     </>
   );

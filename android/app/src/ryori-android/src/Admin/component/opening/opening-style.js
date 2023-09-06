@@ -18,6 +18,7 @@ export const openingStyles = StyleSheet.create({
   login: {
     backgroundColor: '#fff',
     flex: 1,
+    marginTop: -20,
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
@@ -104,6 +105,7 @@ export const openingStyles = StyleSheet.create({
   },
   registerContent: {
     width: '100%',
+    marginTop: -20,
   },
   inputR: {
     width: '47%',
