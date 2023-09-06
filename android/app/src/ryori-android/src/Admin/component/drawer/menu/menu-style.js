@@ -321,9 +321,9 @@ export const MenuStyle = StyleSheet.create({
     alignItems: 'center',
   },
   menuImages1: {
-    borderRadius: 100,
+    borderRadius: 10,
     height: 110,
-    width: 110,
+    width: 210,
   },
   modalMenuLabel: {
     width: '100%',
@@ -353,21 +353,28 @@ export const MenuStyle = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
   },
+  menuModalBtn: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
   updateModalBtn: {
     backgroundColor: '#4285F4',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     height: 35,
-    width: 100,
+    width: 110,
   },
   closeModal: {
     backgroundColor: '#909090',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     height: 35,
-    width: 100,
+    width: 110,
   },
   modalBtnText: {
     color: '#fff',
@@ -392,10 +399,13 @@ export const DropdownStyle = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 15,
+    color: '#000',
+    fontFamily: 'Quicksand-Medium',
   },
   selectedTextStyle: {
     color: '#000',
     fontSize: 14,
+    fontFamily: 'Quicksand-SemiBold',
   },
   iconStyle: {
     width: 20,
@@ -481,41 +491,34 @@ export const AddMenuStyle = StyleSheet.create({
   },
   buttons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    top: 20,
     width: '50%',
+    marginTop: 5,
   },
   addMenuBtn: {
     width: '30%',
-    left: 0,
   },
   updateMenuBtn: {
     width: '30%',
     left: 0,
   },
-  cancelOpacity: {
+  menuFormBtn: {
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#B1B1B1',
     borderRadius: 10,
-    flexDirection: 'row',
+    alignItems: 'center',
+    width: '31%',
+  },
+  cancelOpacity: {
+    backgroundColor: '#B1B1B1',
   },
   addMenuOpacity: {
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#12BF38',
-    borderRadius: 10,
-    flexDirection: 'row',
+    marginLeft: 15,
   },
   deleteMenuOpacity: {
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#DB1B1B',
-    borderRadius: 10,
-    flexDirection: 'row',
+    left: 10,
   },
   addMenuTextBtn: {
     fontSize: 15,
@@ -530,7 +533,8 @@ export const AddMenuStyle = StyleSheet.create({
   // },
   uploadMenuImg: {
     width: '50%',
-    padding: 35,
+    paddingHorizontal: 30,
+    paddingVertical: 8,
   },
   //--------------------
   // actionOpacity: {

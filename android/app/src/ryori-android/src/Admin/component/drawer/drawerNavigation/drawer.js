@@ -120,7 +120,7 @@ const RyoriDrawer = props => {
           style={drawerStyle.drawerLogout}
           onPress={handleLogout}>
           <AntDesign name="logout" size={20} color={'#000'} />
-          <Text style={drawerStyle.brachesText}>Logout</Text>
+          <Text style={drawerStyle.logoutText}>Logout</Text>
         </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
@@ -162,7 +162,7 @@ export default function DrawersNav({navigation}) {
               <FontAwesome
                 name="bar-chart-o"
                 color={focused ? '#DB1B1B' : '#000'}
-                size={15}
+                size={16}
               />
             </>
           ),
@@ -194,7 +194,7 @@ export default function DrawersNav({navigation}) {
             <MaterialIcons
               name="restaurant-menu"
               color={focused ? '#DB1B1B' : '#000'}
-              size={15}
+              size={18}
             />
           ),
         }}
@@ -242,20 +242,6 @@ export default function DrawersNav({navigation}) {
         }}
       />
       <Drawer.Screen
-        name="Report of Food"
-        component={ReportOfFood}
-        options={{
-          headerShown: false,
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="newspaper-outline"
-              color={focused ? '#DB1B1B' : '#000'}
-              size={18}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="Inventory"
         component={Inventory}
         options={{
@@ -264,7 +250,7 @@ export default function DrawersNav({navigation}) {
             <FontAwesome5
               name="box-open"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={17}
             />
           ),
         }}
@@ -278,7 +264,7 @@ export default function DrawersNav({navigation}) {
             <FontAwesome5
               name="box-open"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={17}
             />
           ),
         }}
@@ -292,7 +278,7 @@ export default function DrawersNav({navigation}) {
             <AntDesign
               name="setting"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={22}
             />
           ),
         }}

@@ -206,10 +206,12 @@ export const EmployeeStyle = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 15,
+    color: '#000',
   },
   selectedTextStyle: {
     color: '#000',
-    fontSize: 14,
+    fontSize: 15,
+    fontFamily: 'Quicksand-SemiBold',
   },
   iconStyle: {
     width: 20,

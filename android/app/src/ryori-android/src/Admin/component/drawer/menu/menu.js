@@ -225,13 +225,7 @@ export default function Menu({navigation}) {
                     {itemDetails.description}
                   </Text>
 
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'flex-end',
-                      width: '100%',
-                      marginBottom: 10,
-                    }}>
+                  <View style={MenuStyle.menuModalBtn}>
                     <View style={MenuStyle.modalBtn}>
                       <TouchableOpacity
                         style={MenuStyle.updateModalBtn}

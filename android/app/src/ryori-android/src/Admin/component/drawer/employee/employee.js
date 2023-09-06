@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {EmployeeStyle as styles} from './employeeStyle';
-import {DataTable} from 'react-native-paper';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 const roleData = [
   {label: 'Kitchen', value: 'kitchen'},
   {label: 'Dining', value: 'dining'},
+  {label: 'Manager', value: 'manager'},
 ];
 
 export default function Employees() {
@@ -234,7 +234,9 @@ export default function Employees() {
               {usersData.map((user, index) => (
                 <View key={index}>
                   <View style={styles.tableRow}>
-                    <Text style={[styles.cell, styles.idCell]}>{user.id}</Text>
+                    <Text style={[styles.cell, styles.idCell]}>
+                      {index + 1}
+                    </Text>
                     <Text style={[styles.cell, styles.nameCell]}>
                       {user.firstName}
                     </Text>
@@ -259,14 +261,16 @@ export default function Employees() {
                         <FontAwesome5
                           name="user-edit"
                           size={20}
+                          color={'#12BF38'}
                           onPress={() => handleEdit(user)}
                         />
                       </TouchableOpacity>
-                      <TouchableOpacity>
+                      <TouchableOpacity style={{marginLeft: 20}}>
                         <AntDesign
                           name="delete"
                           size={20}
                           color={'red'}
+                          style={{marginLeft: 20}}
                           onPress={() => handeDelete(user._id)}
                         />
                       </TouchableOpacity>
@@ -345,6 +349,10 @@ export default function Employees() {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
+                    itemTextStyle={{
+                      color: '#585858',
+                      fontFamily: 'Quicksand-SemiBold',
+                    }}
                     data={roleData}
                     maxHeight={300}
                     labelField="label"

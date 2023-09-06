@@ -16,6 +16,7 @@ export default function InventoryCategory() {
   const [category, setCategory] = useState([]);
   const [title, setTitle] = useState('');
   const [itemOnEdit, setItemOnEdit] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const API_URL = 'http://10.0.2.2:3000';
 
@@ -40,42 +41,44 @@ export default function InventoryCategory() {
   };
 
   const handlePostInventory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const newData = [...category, {title}];
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+    if (!title) {
+      setErrors('Category Name is required');
+    } else {
+      setErrors('');
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const newData = [...category, {title}];
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
-      if (itemOnEdit !== '') {
-        await axios.patch(
-          `${API_URL}/inventory/rawcategory/${itemOnEdit}`,
-          {
-            branch_Id,
-            title,
-          },
-          {headers},
-        );
-        setTitle('');
-        fetchItems();
-        setCategory(newData);
-      } else {
-        // New
-        const test = await axios.post(
-          `${API_URL}/inventory/rawcategory/`,
-          {
-            branch_Id,
-            title,
-          },
-          {headers},
-        );
-        setTitle('');
-        fetchItems();
-        setCategory(newData);
+        if (itemOnEdit) {
+          await axios.patch(
+            `${API_URL}/inventory/rawcategory/${itemOnEdit}`,
+            {
+              branch_Id,
+              title,
+            },
+            {headers},
+          );
+          fetchItems();
+          setCategory(newData);
+        } else {
+          await axios.post(
+            `${API_URL}/inventory/rawcategory/`,
+            {
+              branch_Id,
+              title,
+            },
+            {headers},
+          );
+          fetchItems();
+          setCategory(newData);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
     setTitle('');
   };
@@ -113,7 +116,7 @@ export default function InventoryCategory() {
           <TextInput
             mode="outlined"
             style={styles.input}
-            placeholder="Title"
+            placeholder="Category Name"
             placeholderTextColor="#777777"
             value={title}
             onChangeText={setTitle}
@@ -124,6 +127,9 @@ export default function InventoryCategory() {
             <Text style={styles.btnText}>Save</Text>
           </TouchableOpacity>
         </View>
+        {errors ? (
+          <Text style={{color: '#ff0000', top: -9}}>{errors}</Text>
+        ) : null}
         <View style={styles.tableWidth}>
           <View>
             <View style={styles.row}>
@@ -137,7 +143,7 @@ export default function InventoryCategory() {
               {category.map((item, index) => (
                 <View key={index} style={styles.row}>
                   <Text style={[styles.textCell, styles.noWidth]}>
-                    {item.id}
+                    {index + 1}
                   </Text>
                   <Text style={[styles.textCell, styles.catName]}>
                     {item.title}

@@ -86,12 +86,24 @@ export const InventoryStyle = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
   },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
   placeholderStyle: {
     fontSize: 15,
+    color: '#000',
+    fontFamily: 'Quicksand-Medium',
   },
   selectedTextStyle: {
     color: '#000',
     fontSize: 14,
+    fontFamily: 'Quicksand-SemiBold',
   },
   iconStyle: {
     width: 20,
@@ -99,7 +111,8 @@ export const InventoryStyle = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 14,
+    fontSize: 80,
+    color: '#000',
   },
 
   inventoryInput: {

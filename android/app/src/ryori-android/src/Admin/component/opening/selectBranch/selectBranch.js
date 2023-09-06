@@ -125,7 +125,12 @@ export default function Branches({navigation}) {
       <TouchableOpacity
         style={{alignItems: 'center', marginTop: 30}}
         onPress={handleLogout}>
-        <Text style={{fontSize: 15, fontFamily: 'Quicksand-SemiBold'}}>
+        <Text
+          style={{
+            color: '#606060',
+            fontSize: 15,
+            fontFamily: 'Quicksand-SemiBold',
+          }}>
           Logout
         </Text>
       </TouchableOpacity>

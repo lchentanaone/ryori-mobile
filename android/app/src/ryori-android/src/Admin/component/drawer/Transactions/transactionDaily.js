@@ -56,12 +56,18 @@ export default function TransactionDaily() {
               page={page}
               numberOfPages={Math.ceil(transactionData.length / itemsPerPage)}
               onPageChange={page => setPage(page)}
-              label={`${from + 1}-${to} of ${transactionData.length}`}
+              label={
+                <Text style={{color: '#000'}}>
+                  {from + 1}-{to} of {transactionData.length}
+                </Text>
+              }
               numberOfItemsPerPageList={numberOfItemsPerPageList}
               numberOfItemsPerPage={itemsPerPage}
+              showFastPaginationControls={{color: '#000'}}
               onItemsPerPageChange={onItemsPerPageChange}
-              showFastPaginationControls
-              selectPageDropdownLabel={'Rows per page'}
+              selectPageDropdownLabel={
+                <Text style={{color: '#000'}}>Rows per page</Text>
+              }
             />
           </View>
           <View style={TransactionStyle.table}>
@@ -89,7 +95,7 @@ export default function TransactionDaily() {
                     <DataTable.Row style={{borderBottomWidth: 1}}>
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
-                          {item._id}
+                          {index + 1}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell>

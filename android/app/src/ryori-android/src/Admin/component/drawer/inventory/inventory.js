@@ -276,6 +276,7 @@ export default function Inventory() {
                     InventoryStyle.dropdown,
                     isFocus && {borderColor: '#007FFF'},
                   ]}
+                  itemTextStyle={{color: '#585858'}}
                   placeholderStyle={InventoryStyle.placeholderStyle}
                   selectedTextStyle={InventoryStyle.selectedTextStyle}
                   inputSearchStyle={InventoryStyle.inputSearchStyle}
@@ -415,7 +416,7 @@ export default function Inventory() {
                               InventoryStyle.cell,
                               InventoryStyle.idCell,
                             ]}>
-                            {items.id}
+                            {index + 1}
                           </Text>
                           <Text
                             style={[

@@ -153,7 +153,7 @@ export const setUpStoreStyles = StyleSheet.create({
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 120,
+    paddingHorizontal: 80,
     paddingVertical: 50,
   },
   setUpTextCon: {
@@ -215,10 +215,23 @@ export const setUpStoreStyles = StyleSheet.create({
   setupRow: {
     // width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+  },
+  storeInput: {
+    width: '100%',
+    fontSize: 15,
+    borderWidth: 0.5,
+    height: 40,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 10,
+    borderColor: '#757575',
+    color: '#000',
+    fontFamily: 'Quicksand-SemiBold',
   },
   setupInput: {
-    width: '47%',
+    width: '48%',
     fontSize: 15,
     borderWidth: 0.5,
     height: 40,
@@ -231,8 +244,8 @@ export const setUpStoreStyles = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
   },
   saveStore: {
-    top: 90,
-    width: '47%',
+    top: 30,
+    width: '100%',
   },
   saveStoreOpacity: {
     height: 35,

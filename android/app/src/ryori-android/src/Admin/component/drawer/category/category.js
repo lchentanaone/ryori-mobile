@@ -219,19 +219,21 @@ export default function Category() {
               <View style={Styles.horContainer}>
                 <Button
                   style={Styles.btn}
-                  title="Open Camera"
+                  title="Camera"
                   onPress={handleOpenCamera}
                 />
                 <Button title="Choose Photo" onPress={handleChoosePhoto} />
               </View>
               <TextInput
                 mode="outlined"
-                style={{...Styles.textInput, width: '100%'}}
-                // keyboardType="numeric"
+                style={{
+                  ...Styles.textInput,
+                  width: '100%',
+                  fontFamily: 'Quicksand-SemiBold',
+                }}
                 placeholder="Category Name"
                 placeholderTextColor="#777777"
                 value={categoryName.toString()}
-                secureTextEntry={false}
                 onChangeText={setCategoryName}
               />
               <View style={Styles.horContainer}>
