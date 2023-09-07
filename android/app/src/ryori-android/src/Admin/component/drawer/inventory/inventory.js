@@ -528,6 +528,10 @@ export default function Inventory() {
                       selectedTextStyle={InventoryStyle.selectedTextStyle}
                       inputSearchStyle={InventoryStyle.inputSearchStyle}
                       iconStyle={InventoryStyle.iconStyle}
+                      itemTextStyle={{
+                        color: '#585858',
+                        fontFamily: 'Quicksand-SemiBold',
+                      }}
                       data={invLogsType}
                       maxHeight={300}
                       labelField="label"
@@ -543,7 +547,7 @@ export default function Inventory() {
                     />
                     <View style={InventoryStyle.qtyContainer}>
                       <TouchableOpacity onPress={handleDecrease}>
-                        <Entypo name="minus" size={18} />
+                        <Entypo name="minus" size={18} color={'#000'} />
                       </TouchableOpacity>
                       <TextInput
                         style={InventoryStyle.input}
@@ -552,7 +556,7 @@ export default function Inventory() {
                         keyboardType="numeric"
                       />
                       <TouchableOpacity onPress={handleIncrease}>
-                        <Entypo name="plus" size={18} />
+                        <Entypo name="plus" size={18} color={'#000'} />
                       </TouchableOpacity>
                     </View>
                   </View>

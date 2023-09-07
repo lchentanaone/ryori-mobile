@@ -42,7 +42,7 @@ export default function InventoryCategory() {
 
   const handlePostInventory = async () => {
     if (!title) {
-      setErrors('Category Name is required');
+      setErrors('Category name is required');
     } else {
       setErrors('');
       try {
@@ -116,7 +116,7 @@ export default function InventoryCategory() {
           <TextInput
             mode="outlined"
             style={styles.input}
-            placeholder="Category Name"
+            placeholder="Category name"
             placeholderTextColor="#777777"
             value={title}
             onChangeText={setTitle}

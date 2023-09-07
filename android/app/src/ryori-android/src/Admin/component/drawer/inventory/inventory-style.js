@@ -282,7 +282,7 @@ export const CategoryInventoryStyle = StyleSheet.create({
     marginTop: 5,
     color: '#000',
     fontSize: 15,
-    fontFamily: 'Quicksand-Medium',
+    fontFamily: 'Quicksand-SemiBold',
   },
   container: {
     backgroundColor: '#F9F9F9',
@@ -300,7 +300,7 @@ export const CategoryInventoryStyle = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   input: {
     width: '40%',
@@ -336,6 +336,7 @@ export const CategoryInventoryStyle = StyleSheet.create({
     elevation: 5,
     width: '100%',
     height: 280,
+    marginTop: -5,
   },
   textHeader: {
     color: '#000',

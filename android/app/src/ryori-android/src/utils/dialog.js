@@ -10,8 +10,20 @@ export default function DialogModal() {
     );
   };
   return (
-    <View>
-      <Dialog.Title style={{color: '#000'}} title="Comming Soon" />
+    <View
+      style={{
+        alignItems: 'center',
+      }}>
+      {/* <Dialog.Title style={{color: 'red'}} title="Comming Soon" /> */}
+      <Text
+        style={{
+          color: '#000',
+          fontFamily: 'Quicksand-Bold',
+          fontSize: 20,
+          top: -10,
+        }}>
+        Comming Soon
+      </Text>
       <Text style={{color: '#505050', fontFamily: 'Quicksand-SemiBold'}}>
         This feature is comming soon. For urgent concerns, please email us at
         <TouchableOpacity onPress={handleEmailPress}>
