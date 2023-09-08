@@ -17,12 +17,14 @@ import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import SkeletonItem from '../../../../utils/skeletonItem';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function Category() {
   const [categoryName, setCategoryName] = useState('');
   const [photo, setPhoto] = useState(null);
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [items, setItems] = useState([]);
+  const [errors, setErrors] = useState('');
 
   const fetchItems = async () => {
     try {
@@ -42,23 +44,23 @@ export default function Category() {
     }
   };
 
-  const handleOpenCamera = () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 0.5,
-      includeBase64: false,
-    };
+  // const handleOpenCamera = () => {
+  //   const options = {
+  //     mediaType: 'photo',
+  //     quality: 0.5,
+  //     includeBase64: false,
+  //   };
 
-    launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled camera picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        setPhoto(response.assets[0].uri);
-      }
-    });
-  };
+  //   launchCamera(options, response => {
+  //     if (response.didCancel) {
+  //       console.log('User cancelled camera picker');
+  //     } else if (response.error) {
+  //       console.log('ImagePicker Error: ', response.error);
+  //     } else {
+  //       setPhoto(response.assets[0].uri);
+  //     }
+  //   });
+  // };
   const handleChoosePhoto = () => {
     launchImageLibrary(
       {
@@ -74,42 +76,53 @@ export default function Category() {
     );
   };
   const addCategory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
+    if (!categoryName) {
+      setErrors('Category name is required');
+    } else {
+      setErrors('');
 
-      const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-      const randomFileName = new Date().valueOf().toString() + '.' + fileType;
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_Id');
 
-      const formData = new FormData();
+        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
 
-      formData.append('title', categoryName);
-      formData.append('photo', {
-        uri: photo,
-        name: randomFileName,
-        type: 'image/jpeg',
-      });
-      formData.append('store_Id', store_Id);
+        const formData = new FormData();
 
-      // Edit
-      if (itemOnEdit !== '') {
-        // Need to double check Edit bugs... still haveing issues found.
-        await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, formData, {
-          headers,
+        formData.append('title', categoryName);
+        formData.append('photo', {
+          uri: photo,
+          name: randomFileName,
+          type: 'image/jpeg',
         });
-        fetchItems();
-      } else {
-        // New
-        await axios.post(`${API_URL}/menuCategory/`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        fetchItems();
+        formData.append('store_Id', store_Id);
+
+        // Edit
+        if (itemOnEdit !== '') {
+          // Need to double check Edit bugs... still haveing issues found.
+          await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          fetchItems();
+        } else {
+          // New
+          await axios.post(`${API_URL}/menuCategory/`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          fetchItems();
+        }
+      } catch (error) {
+        console.error(JSON.stringify(error));
       }
-    } catch (error) {
-      console.error(JSON.stringify(error));
+      setCategoryName('');
+      setPhoto('');
     }
   };
   const cancelEdit = () => {
@@ -129,7 +142,7 @@ export default function Category() {
         },
       },
     );
-    setItemOnEdit(item.id);
+    setItemOnEdit(item._id);
     setCategoryName(item.title);
     setPhoto(responsePhoto.data.photo);
   };
@@ -207,36 +220,37 @@ export default function Category() {
               <View
                 style={{
                   backgroundColor: '#ddd',
-                  borderColor: '#ddd',
-                  borderWidth: 1,
-                  padding: 5,
+                  borderRadius: 10,
                 }}>
                 <Image
                   source={photo ? {uri: photo} : ryoriLogo}
                   style={{width: '100%', height: 150}}
                 />
+                <TouchableOpacity
+                  style={CategoryStyle.uploadLogoOpacity}
+                  onPress={handleChoosePhoto}>
+                  <Feather name="camera" color={'#fff'} size={16} />
+                  <Text style={CategoryStyle.uploadLogoTextBtn}>Upload</Text>
+                </TouchableOpacity>
               </View>
-              <View style={Styles.horContainer}>
-                <Button
-                  style={Styles.btn}
-                  title="Camera"
-                  onPress={handleOpenCamera}
-                />
-                <Button title="Choose Photo" onPress={handleChoosePhoto} />
-              </View>
+
               <TextInput
                 mode="outlined"
                 style={{
                   ...Styles.textInput,
                   width: '100%',
                   fontFamily: 'Quicksand-SemiBold',
+                  marginTop: -5,
                 }}
-                placeholder="Category Name"
+                placeholder="Category name"
                 placeholderTextColor="#777777"
                 value={categoryName.toString()}
                 onChangeText={setCategoryName}
               />
-              <View style={Styles.horContainer}>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000', top: -10}}>{errors}</Text>
+              )}
+              <View style={{...Styles.horContainer}}>
                 <TouchableOpacity
                   style={{...Styles.btn, ...Styles.btnPrimary}}
                   onPress={addCategory}>
