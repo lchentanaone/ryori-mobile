@@ -103,6 +103,7 @@ export default function Inventory() {
       try {
         const token = await AsyncStorage.getItem('access_token');
         const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const user_Id = await AsyncStorage.getItem('user_Id');
         const newData = [...inventory, {item, weight, quantity, category}];
         const headers = {
           Authorization: `Bearer ${token}`,
@@ -116,6 +117,7 @@ export default function Inventory() {
               weight,
               quantity,
               branch_Id,
+              user_Id,
               rawCategory_Id: category,
             },
             {headers},
@@ -132,6 +134,7 @@ export default function Inventory() {
               weight,
               quantity,
               branch_Id,
+              user_Id,
               rawCategory_Id: category,
             },
             {headers},

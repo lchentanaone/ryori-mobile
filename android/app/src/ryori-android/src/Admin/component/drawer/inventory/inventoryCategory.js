@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {CategoryInventoryStyle as styles} from './inventory-style';
 import {DataTable} from 'react-native-paper';
@@ -17,6 +18,7 @@ export default function InventoryCategory() {
   const [title, setTitle] = useState('');
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [errors, setErrors] = useState([]);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const API_URL = 'http://10.0.2.2:3000';
 
@@ -103,6 +105,28 @@ export default function InventoryCategory() {
       console.error(error);
     }
   };
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDeleteItem(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   useEffect(() => {
     fetchItems();
@@ -157,7 +181,7 @@ export default function InventoryCategory() {
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{...Styles.btn, ...Styles.btnWarning}}
-                        onPress={() => handleDeleteItem(item._id)}>
+                        onPress={() => showDeleteConfirmation(item._id)}>
                         <Text style={Styles.btnText}>Delete</Text>
                       </TouchableOpacity>
                     </View>
