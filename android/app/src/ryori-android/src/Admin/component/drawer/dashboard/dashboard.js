@@ -194,7 +194,7 @@ export default function Dashboard() {
             <View style={DashboardStyle.orderSummaryReven}>
               <View style={DashboardStyle.titleFil}>
                 <Text style={DashboardStyle.title}>Consumption</Text>
-                <View style={DashboardStyle.filterDate}>
+                {/* <View style={DashboardStyle.filterDate}>
                   <TouchableOpacity
                     style={DashboardStyle.textBtnOpacity}
                     onPress={() => changeFilter('monthly')}>
@@ -209,10 +209,10 @@ export default function Dashboard() {
                   <Text style={DashboardStyle.border}>|</Text>
                   <TouchableOpacity
                     style={DashboardStyle.textBtnOpacity}
-                    onPress={() => changeFilter('daily')}>
+                    onPress={() => changeFilter('today')}>
                     <Text style={DashboardStyle.filterText}>Today</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
               <View style={DashboardStyle.chartContainer}>
                 <PieChart

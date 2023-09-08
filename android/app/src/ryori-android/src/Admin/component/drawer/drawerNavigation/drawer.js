@@ -208,13 +208,13 @@ export default function DrawersNav({navigation}) {
             <Feather
               name="menu"
               color={focused ? '#DB1B1B' : '#000'}
-              size={15}
+              size={18}
             />
           ),
         }}
       />
       <Drawer.Screen
-        name="Transactions"
+        name="Daily Transactions"
         component={TransactionDaily}
         options={{
           headerShown: false,
@@ -222,13 +222,13 @@ export default function DrawersNav({navigation}) {
             <Foundation
               name="clipboard-notes"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={22}
             />
           ),
         }}
       />
       <Drawer.Screen
-        name="Archive of Transaction"
+        name="Archive Transaction"
         component={TransactionArchive}
         options={{
           headerShown: false,
