@@ -9,6 +9,7 @@ export default function UserCredentials({route}) {
   const {userId} = route.params;
   const [errors, setErrors] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [userData, setUserData] = useState(null);
 
   const fetchUserData = async () => {
@@ -26,10 +27,12 @@ export default function UserCredentials({route}) {
   };
 
   const updateUserCred = async () => {
-    if (!password) {
+    if (!password || !confirmPassword) {
       setErrors('All fields are required.');
     } else if (password.length < 6) {
       setErrors('Password must be at least 6 characters.');
+    } else if (password !== confirmPassword) {
+      setErrors('Passwords do not match.');
     } else {
       setErrors('');
       try {
@@ -52,6 +55,7 @@ export default function UserCredentials({route}) {
         console.error('Error fetching user data:', error);
       }
       setPassword('');
+      setConfirmPassword('');
       Alert.alert('Password has been saved.');
     }
   };
@@ -95,7 +99,17 @@ export default function UserCredentials({route}) {
                 placeholder="Password"
                 placeholderTextColor="#777777"
                 value={password}
+                // secureTextEntry={true}
                 onChangeText={setPassword}
+              />
+              <TextInput
+                mode="outlined"
+                style={ProfileStyle.userCredInput}
+                placeholder="confirm Password"
+                placeholderTextColor="#777777"
+                value={confirmPassword}
+                // secureTextEntry={true}
+                onChangeText={setConfirmPassword}
               />
               {errors !== '' && (
                 <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>

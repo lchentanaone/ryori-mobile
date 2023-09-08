@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 
-export default function UpdateProfileAdmin({route}) {
+export default function UpdateProfileAdmin({route, navigation}) {
   const [errors, setErrors] = useState('');
   const {userId} = route.params;
   const [userData, setUserData] = useState(null);
@@ -56,6 +56,7 @@ export default function UpdateProfileAdmin({route}) {
         console.error('Error fetching user data:', error);
       }
     }
+    navigation.navigate('Profile');
   };
 
   const handleChangeText = (key, value) => {
@@ -77,9 +78,6 @@ export default function UpdateProfileAdmin({route}) {
             <View style={styles.columnView}>
               <View style={styles.profileUpdate}>
                 <Image source={adminImg} style={styles.profilepic} />
-                <TouchableOpacity style={styles.updateBtn}>
-                  <Text style={styles.buttonsText}>Upload</Text>
-                </TouchableOpacity>
               </View>
               <View style={styles.updateAdminInfo}>
                 <View style={styles.updateInput}>

@@ -157,7 +157,7 @@ export const ProfileStyle = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
     width: '50%',
-    height: 250,
+    height: 290,
     borderRadius: 10,
     paddingVertical: 30,
   },
