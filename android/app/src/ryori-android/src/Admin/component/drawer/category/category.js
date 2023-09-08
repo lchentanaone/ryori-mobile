@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  Button,
+  Alert,
   ScrollView,
 } from 'react-native';
 import {CategoryStyle} from './category-style';
@@ -25,6 +25,7 @@ export default function Category() {
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [items, setItems] = useState([]);
   const [errors, setErrors] = useState('');
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const fetchItems = async () => {
     try {
@@ -160,6 +161,28 @@ export default function Category() {
       console.error(error);
     }
   };
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDelete(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   useEffect(() => {
     fetchItems();
@@ -198,7 +221,7 @@ export default function Category() {
                           </TouchableOpacity>
                           <TouchableOpacity
                             style={{...Styles.btn, ...Styles.btnWarning}}
-                            onPress={() => handleDelete(item._id)}>
+                            onPress={() => showDeleteConfirmation(item._id)}>
                             <Text style={Styles.btnText}>Delete</Text>
                           </TouchableOpacity>
                         </View>
