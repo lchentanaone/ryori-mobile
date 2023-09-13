@@ -19,16 +19,9 @@ export default function Branches({navigation}) {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.get(
-        `${API_URL}/store/${store_Id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-
-        {headers},
-      );
+      const response = await axios.get(`${API_URL}/store/${store_Id}`, {
+        headers,
+      });
       setStoreData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -39,9 +32,7 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      console.log(`${API_URL}/branch/?store_Id=${store_Id}`);
       const response = await axios.get(
         `${API_URL}/branch/?store_Id=${store_Id}`,
         {
@@ -50,9 +41,9 @@ export default function Branches({navigation}) {
           },
           store_Id,
         },
-        {headers},
       );
       setBranchData(response.data);
+      console.log(response.data);
       // if (response.data.length === 1) {
       //   navigation.navigate('Drawer');
       // }

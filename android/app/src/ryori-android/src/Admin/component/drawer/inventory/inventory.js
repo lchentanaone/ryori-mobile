@@ -83,7 +83,6 @@ export default function Inventory() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log(branch_Id);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -197,6 +196,7 @@ export default function Inventory() {
       const newData = inventory.filter(item =>
         item.rawCategory.some(innerItem => innerItem._id === id),
       );
+      console.log({newData});
       setFilteredInventory(newData);
     } else {
       setFilteredInventory(inventory);
@@ -257,7 +257,6 @@ export default function Inventory() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log(branch_Id);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -269,7 +268,6 @@ export default function Inventory() {
     } catch (error) {
       console.error(error);
     }
-    console.log({typeLogs});
   };
 
   useFocusEffect(

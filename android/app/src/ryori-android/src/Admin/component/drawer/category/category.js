@@ -20,7 +20,7 @@ import SkeletonItem from '../../../../utils/skeletonItem';
 import Feather from 'react-native-vector-icons/Feather';
 
 export default function Category() {
-  const [categoryName, setCategoryName] = useState('');
+  const [title, setTitle] = useState('');
   const [photo, setPhoto] = useState(null);
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [items, setItems] = useState([]);
@@ -77,7 +77,7 @@ export default function Category() {
     );
   };
   const addCategory = async () => {
-    if (!categoryName) {
+    if (!title) {
       setErrors('Category name is required');
     } else {
       setErrors('');
@@ -91,7 +91,7 @@ export default function Category() {
 
         const formData = new FormData();
 
-        formData.append('title', categoryName);
+        formData.append('title', title);
         formData.append('photo', {
           uri: photo,
           name: randomFileName,
@@ -120,14 +120,14 @@ export default function Category() {
           fetchItems();
         }
       } catch (error) {
-        console.error(JSON.stringify(error));
+        console.error('error', error);
       }
-      setCategoryName('');
+      setTitle('');
       setPhoto('');
     }
   };
   const cancelEdit = () => {
-    setCategoryName('');
+    setTitle('');
     setPhoto(null);
     setItemOnEdit('');
   };
@@ -144,8 +144,9 @@ export default function Category() {
       },
     );
     setItemOnEdit(item._id);
-    setCategoryName(item.title);
+    setTitle(item.title);
     setPhoto(responsePhoto.data.photo);
+    console.log(item._id);
   };
 
   const handleDelete = async id => {
@@ -267,8 +268,8 @@ export default function Category() {
                 }}
                 placeholder="Category name"
                 placeholderTextColor="#777777"
-                value={categoryName.toString()}
-                onChangeText={setCategoryName}
+                value={title.toString()}
+                onChangeText={setTitle}
               />
               {errors !== '' && (
                 <Text style={{color: '#ff0000', top: -10}}>{errors}</Text>

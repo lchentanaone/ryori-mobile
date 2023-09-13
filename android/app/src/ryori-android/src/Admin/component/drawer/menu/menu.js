@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import SkeletonItem from '../../../../utils/skeletonItem';
 import defaultPhoto from '../../../images/no-image.png';
+import {useFocusEffect} from '@react-navigation/native';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -40,6 +41,9 @@ export default function Menu({navigation}) {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
+      console.log(
+        `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
+      );
       const response = await axios.get(
         `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
         {
@@ -65,9 +69,13 @@ export default function Menu({navigation}) {
     }
   };
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      console.log('menu is called');
+      fetchItems();
+    }, []),
+  );
+
   return (
     <View style={MenuStyle.menuContainer}>
       <View style={MenuStyle.menuContent}>
