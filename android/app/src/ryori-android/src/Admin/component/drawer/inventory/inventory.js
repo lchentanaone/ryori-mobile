@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {InventoryStyle} from './inventory-style';
 import {DataTable} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
@@ -19,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '../../../../utils/constants';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 import SkeletonItem from '../../../../utils/skeletonItem';
+import {useFocusEffect} from '@react-navigation/native';
 
 const invLogsType = [
   {label: 'Ready', value: 'ready'},
@@ -42,6 +44,7 @@ export default function Inventory() {
   const [typeLogs, setTypeLogs] = useState([]);
   const [quantityLogs, setQuantityLogs] = useState(0);
   const [filteredInventory, setFilteredInventory] = useState(1);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleIncrease = () => {
     const newQuantity = parseInt(quantityLogs) + 1;
@@ -167,6 +170,28 @@ export default function Inventory() {
       console.error(error);
     }
   };
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDeleteItem(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
   const handleFilter = id => {
     if (id) {
       const newData = inventory.filter(item =>
@@ -247,11 +272,13 @@ export default function Inventory() {
     console.log({typeLogs});
   };
 
-  useEffect(() => {
-    fetchReadtQty();
-    fetchCategory();
-    fetchItems();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchReadtQty();
+      fetchCategory();
+      fetchItems();
+    }, []),
+  );
 
   useEffect(() => {
     if (filteredInventory !== inventory) {
@@ -491,7 +518,9 @@ export default function Inventory() {
                               </TouchableOpacity>
                               <TouchableOpacity
                                 style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleDeleteItem(items._id)}>
+                                onPress={() =>
+                                  showDeleteConfirmation(items._id)
+                                }>
                                 <FontAweMaterialCommunityIconssome5
                                   name="delete"
                                   color={'#DB1B1B'}

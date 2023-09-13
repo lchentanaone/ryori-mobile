@@ -6,6 +6,7 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {EmployeeStyle as styles} from './employeeStyle';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -38,23 +39,31 @@ export default function Employees() {
   const [user, setUser] = useState([]);
   const [userOnEdit, setUserOnEdit] = useState(null);
   const [employeeExist, setEmployeeExist] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const fetchUsers = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.get(`${API_URL}/user?store_Id=${store_Id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.get(
+        `${API_URL}/user?branch_Id=${branch_Id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
+      // console.log(response.data.user);
       const employeeOnly = response.data.filter(
         transactionStatus => transactionStatus.role !== 'admin',
       );
       setUsersData(employeeOnly);
+      // console.log(employeeOnly);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -69,6 +78,7 @@ export default function Employees() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
+      console.log('--', {branch_Id});
       const newUser = [
         ...user,
         {username, email, firstName, lastName, password, role, phone},
@@ -81,6 +91,7 @@ export default function Employees() {
           `${API_URL}/user/${userOnEdit}`,
           {
             store_Id,
+            branch_Id,
             username,
             email,
             firstName,
@@ -107,6 +118,7 @@ export default function Employees() {
         });
         fetchUsers();
         setUser(newUser);
+        console.log('--', {branch_Id});
       }
     } catch (error) {
       console.error('Error registering:', error);
@@ -157,7 +169,7 @@ export default function Employees() {
     setPhone(user.phone);
   };
 
-  const handeDelete = async id => {
+  const handleDelete = async id => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       await axios.delete(`${API_URL}/user/${id}`, {
@@ -169,6 +181,29 @@ export default function Employees() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDelete(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   useEffect(() => {
@@ -271,7 +306,7 @@ export default function Employees() {
                           size={20}
                           color={'red'}
                           style={{marginLeft: 20}}
-                          onPress={() => handeDelete(user._id)}
+                          onPress={() => showDeleteConfirmation(user._id)}
                         />
                       </TouchableOpacity>
                     </Text>
