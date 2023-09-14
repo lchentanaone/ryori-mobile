@@ -31,7 +31,6 @@ export default function AddMenu({route, navigation}) {
   } else {
     pageTitle = 'Add menu item';
   }
-  console.log(type, item);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
   const [isFocus, setIsFocus] = useState(false);
@@ -114,6 +113,8 @@ export default function AddMenu({route, navigation}) {
         try {
           const token = await AsyncStorage.getItem('access_token');
           const store_Id = await AsyncStorage.getItem('store_Id');
+          const branch_Id = await AsyncStorage.getItem('branch_Id');
+
           const headers = {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
@@ -129,6 +130,7 @@ export default function AddMenu({route, navigation}) {
           formData.append('description', description);
           formData.append('cookingTime', cookingTime);
           formData.append('category_Id', category);
+          formData.append('branch_Id', branch_Id);
           formData.append('store_Id', store_Id);
           formData.append('photo', {
             uri: photo,
@@ -137,14 +139,12 @@ export default function AddMenu({route, navigation}) {
           });
 
           if (type === 'edit') {
-            console.log(`${API_URL}/menuItem/${item._id}`, formData);
             const response = await axios.patch(
               `${API_URL}/menuItem/${item._id}`,
               formData,
               {headers},
             );
             resolve(response.data._id);
-            console.log({formData: JSON.stringify(formData)});
           } else {
             const response = await axios.post(`${API_URL}/menuItem`, formData, {
               headers,
