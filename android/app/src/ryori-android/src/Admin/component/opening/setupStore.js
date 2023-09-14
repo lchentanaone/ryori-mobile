@@ -88,7 +88,7 @@ export default function SetupStore({navigation, route}) {
         },
         {headers},
       );
-      console.log(response);
+      await AsyncStorage.setItem('branch_Id', response.data._id);
     } catch (error) {
       console.error(error);
     }
