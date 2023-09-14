@@ -194,7 +194,7 @@ export default function Inventory() {
   const handleFilter = id => {
     if (id) {
       const newData = inventory.filter(item =>
-        item.rawCategory.some(innerItem => innerItem._id === id),
+        item.rawCategories.some(innerItem => innerItem._id === id),
       );
       console.log({newData});
       setFilteredInventory(newData);
