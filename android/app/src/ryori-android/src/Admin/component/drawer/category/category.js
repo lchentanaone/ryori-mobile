@@ -81,18 +81,18 @@ export default function Category() {
     return new Promise(async (resolve, reject) => {
       if (!title) {
         setErrors('Category name is required');
+      } else if (!photo) {
+        setErrors('Photo is required.');
       } else {
         setErrors('');
 
         try {
           const token = await AsyncStorage.getItem('access_token');
-          console.log({token});
           const store_Id = await AsyncStorage.getItem('store_Id');
           const headers = {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           };
-          console.log('Request Headers:', headers);
           const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
           const randomFileName =
             new Date().valueOf().toString() + '.' + fileType;
@@ -109,7 +109,6 @@ export default function Category() {
 
           // Edit
           if (itemOnEdit !== '') {
-            console.log({itemOnEdit});
             // Need to double check Edit bugs... still haveing issues found.
             console.log(`${API_URL}/menuCategory/${itemOnEdit}`);
             console.log({formData: JSON.stringify(formData)});
@@ -165,7 +164,6 @@ export default function Category() {
     setItemOnEdit(item._id);
     setTitle(item.title);
     setPhoto(responsePhoto.data.photo);
-    console.log('item', item._id);
   };
 
   const handleDelete = async _id => {
