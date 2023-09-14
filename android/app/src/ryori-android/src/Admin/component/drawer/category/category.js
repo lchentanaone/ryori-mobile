@@ -31,6 +31,7 @@ export default function Category() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      console.log({token});
       const response = await axios.get(
         `${API_URL}/menuCategory/?store_Id=${store_Id}`,
         {
@@ -77,59 +78,76 @@ export default function Category() {
     );
   };
   const addCategory = async () => {
-    if (!title) {
-      setErrors('Category name is required');
-    } else {
-      setErrors('');
+    return new Promise(async (resolve, reject) => {
+      if (!title) {
+        setErrors('Category name is required');
+      } else {
+        setErrors('');
 
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const store_Id = await AsyncStorage.getItem('store_Id');
-
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-
-        const formData = new FormData();
-
-        formData.append('title', title);
-        formData.append('photo', {
-          uri: photo,
-          name: randomFileName,
-          type: 'image/jpeg',
-        });
-        formData.append('store_Id', store_Id);
-
-        // Edit
-        if (itemOnEdit !== '') {
-          // Need to double check Edit bugs... still haveing issues found.
-          await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`,
-            },
+        try {
+          const token = await AsyncStorage.getItem('access_token');
+          console.log({token});
+          const store_Id = await AsyncStorage.getItem('store_Id');
+          const headers = {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          };
+          console.log('Request Headers:', headers);
+          const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+          const randomFileName =
+            new Date().valueOf().toString() + '.' + fileType;
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('photo', {
+            uri: photo,
+            name: randomFileName,
+            type: 'image/jpeg',
           });
-          fetchItems();
-        } else {
-          // New
-          await axios.post(`${API_URL}/menuCategory/`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          fetchItems();
+          formData.append('store_Id', store_Id);
+
+          // Edit
+          if (itemOnEdit !== '') {
+            console.log({itemOnEdit});
+            // Need to double check Edit bugs... still haveing issues found.
+            console.log(`${API_URL}/menuCategory/${itemOnEdit}`);
+            console.log({formData: JSON.stringify(formData)});
+            const response = await axios.patch(
+              `${API_URL}/menuCategory/${itemOnEdit}`,
+              formData,
+              {
+                headers,
+              },
+            );
+
+            fetchItems();
+            resolve(response.data._id);
+          } else {
+            // New
+            const response = await axios.post(
+              `${API_URL}/menuCategory/`,
+              formData,
+              {
+                headers,
+              },
+            );
+            fetchItems();
+            resolve(response.data._id);
+          }
+        } catch (error) {
+          console.error('error', error);
+          reject(error);
         }
-      } catch (error) {
-        console.error('error', error);
+        setTitle('');
+        setPhoto('');
+        setItemOnEdit('');
       }
-      setTitle('');
-      setPhoto('');
-    }
+    });
   };
   const cancelEdit = () => {
     setTitle('');
     setPhoto(null);
-    setItemOnEdit('');
+    setItemOnEdit(null);
+    console.log('itemnull', {photo});
   };
 
   const handleEdit = async item => {
@@ -146,13 +164,13 @@ export default function Category() {
     setItemOnEdit(item._id);
     setTitle(item.title);
     setPhoto(responsePhoto.data.photo);
-    console.log(item._id);
+    console.log('item', item._id);
   };
 
-  const handleDelete = async id => {
+  const handleDelete = async _id => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      await axios.delete(`${API_URL}/menuCategory/${id}`, {
+      await axios.delete(`${API_URL}/menuCategory/${_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -171,13 +189,13 @@ export default function Category() {
         {
           text: 'Cancel',
           style: 'cancel',
-          onPress: () => setItemToDelete(null), // Clear the item to delete
+          onPress: () => setItemToDelete(null),
         },
         {
           text: 'Delete',
           onPress: () => {
-            handleDelete(_id); // Call the delete function if confirmed
-            setItemToDelete(null); // Clear the item to delete
+            handleDelete(_id);
+            setItemToDelete(null);
           },
         },
       ],
@@ -203,7 +221,6 @@ export default function Category() {
                 <DataTable.Title style={CategoryStyle.menuC2}>
                   <Text style={CategoryStyle.textHeader}>Action</Text>
                 </DataTable.Title>
-                <DataTable.Title></DataTable.Title>
               </DataTable.Header>
               <ScrollView style={{height: 300}}>
                 {/* <View key={item.id}> */}
@@ -227,7 +244,6 @@ export default function Category() {
                           </TouchableOpacity>
                         </View>
                       </DataTable.Cell>
-                      <DataTable.Cell></DataTable.Cell>
                     </DataTable.Row>
                   ))
                 ) : (
@@ -248,7 +264,7 @@ export default function Category() {
                 }}>
                 <Image
                   source={photo ? {uri: photo} : ryoriLogo}
-                  style={{width: '100%', height: 150}}
+                  style={CategoryStyle.img}
                 />
                 <TouchableOpacity
                   style={CategoryStyle.uploadLogoOpacity}

@@ -78,6 +78,13 @@ export const CategoryStyle = StyleSheet.create({
     width: '30%',
     // left: -40
   },
+
+  img: {
+    width: '100%',
+    height: 150,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
   searchbar: {
     flexDirection: 'row',
     alignItems: 'center',
