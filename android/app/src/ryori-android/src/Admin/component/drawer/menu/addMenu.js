@@ -79,8 +79,8 @@ export default function AddMenu({route, navigation}) {
       setCookingTime(response.data.cookingTime);
       setPhoto(response.data.photo);
       setCategory(
-        response.data.menuCategory && response.data.menuCategory.length > 0
-          ? response.data.menuCategory[0]._id
+        response.data.menuCategories && response.data.menuCategories.length > 0
+          ? response.data.menuCategories[0]._id
           : '',
       );
     } catch (error) {
@@ -129,7 +129,7 @@ export default function AddMenu({route, navigation}) {
           formData.append('qty', qty);
           formData.append('description', description);
           formData.append('cookingTime', cookingTime);
-          formData.append('category_Id', category);
+          formData.append('menuCategory_Id', category);
           formData.append('branch_Id', branch_Id);
           formData.append('store_Id', store_Id);
           formData.append('photo', {
