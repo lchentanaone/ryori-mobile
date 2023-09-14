@@ -63,7 +63,8 @@ export default function SetupStore({navigation, route}) {
       const response = await axios.post(`${API_URL}/store`, formData, {
         headers,
       });
-      AsyncStorage.setItem('store_Id', response.data._id.toString());
+      await AsyncStorage.setItem('store_Id', response.data._id.toString());
+      await AsyncStorage.setItem('branch_Id', response.data.branches[0]._id);
     } catch (error) {
       console.error(error);
     }
