@@ -39,6 +39,7 @@ export const CategoryStyle = StyleSheet.create({
   },
   list: {
     width: '95%',
+    height: 300,
   },
   listC1: {
     width: '70%',

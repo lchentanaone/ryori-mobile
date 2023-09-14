@@ -98,11 +98,13 @@ export default function Category() {
             new Date().valueOf().toString() + '.' + fileType;
           const formData = new FormData();
           formData.append('title', title);
-          formData.append('photo', {
-            uri: photo,
-            name: randomFileName,
-            type: 'image/jpeg',
-          });
+          if (photo && photo.includes('file:///')) {
+            formData.append('photo', {
+              uri: photo,
+              name: randomFileName,
+              type: 'image/jpeg',
+            });
+          }
           formData.append('store_Id', store_Id);
 
           // Edit
@@ -138,7 +140,7 @@ export default function Category() {
           reject(error);
         }
         setTitle('');
-        setPhoto('');
+        setPhoto(null);
         setItemOnEdit('');
       }
     });
@@ -146,8 +148,7 @@ export default function Category() {
   const cancelEdit = () => {
     setTitle('');
     setPhoto(null);
-    setItemOnEdit(null);
-    console.log('itemnull', {photo});
+    setItemOnEdit('');
   };
 
   const handleEdit = async item => {

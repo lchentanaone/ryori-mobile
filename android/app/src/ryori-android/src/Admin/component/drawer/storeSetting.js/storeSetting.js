@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {StoreSetStyle as styles} from './storeSettingStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import imagePlaceholder from '../../../images/no-image.png';
 import SkeletonItem from '../../../../utils/skeletonItem';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function StoreSetting({navigation}) {
   const [data, setData] = useState(null);
@@ -40,9 +41,11 @@ export default function StoreSetting({navigation}) {
     }
   };
 
-  useEffect(() => {
-    fetchStoreAndCurrentdata();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchStoreAndCurrentdata();
+    }, []),
+  );
 
   const getStoreBranch = store => {
     navigation.navigate('Update Store', {id: data.id});
