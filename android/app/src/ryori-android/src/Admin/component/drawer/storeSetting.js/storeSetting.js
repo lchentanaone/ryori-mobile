@@ -25,15 +25,16 @@ export default function StoreSetting({navigation}) {
       );
 
       setData({
-        storeName: response.data.store.storeName,
-        branchName: response.data.branchName,
-        email: response.data.email,
-        contactNumber: response.data.contactNumber,
-        address: response.data.address,
+        storeName: response.data.storeName,
         photo: response.data.photo,
-        appId: response.data.store.appId,
-        appSecret: response.data.store.appSecret,
+        appId: response.data.appId,
+        appSecret: response.data.appSecret,
+        branchName: response.data.branches[0].branchName,
+        email: response.data.branches[0].email,
+        contactNumber: response.data.branches[0].contactNumber,
+        address: response.data.branches[0].address,
       });
+      console.log(response.data.branches[0].branchName);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
