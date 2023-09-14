@@ -11,10 +11,11 @@ import {Dialog} from '@rneui/themed';
 
 export default function Login({navigation}) {
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('ryoriapp@gmail.com');
-  const [password, setPassword] = useState('ryori2023');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [visible1, setVisible1] = useState(false);
-
+  // ryoriapp@gmail.com
+  // ryori2023
   const toggleDialog1 = () => {
     setVisible1(!visible1);
   };
@@ -63,6 +64,8 @@ export default function Login({navigation}) {
         setError('An error occurred, please try again');
       }
     }
+    setEmail('');
+    setPassword('');
   };
   return (
     <>
@@ -85,6 +88,7 @@ export default function Login({navigation}) {
             mode="outlined"
             style={openingStyles.input}
             placeholder="Email"
+            placeholderTextColor={'#777777'}
             value={email}
             onChangeText={setEmail}
           />
@@ -93,6 +97,7 @@ export default function Login({navigation}) {
             style={openingStyles.input}
             secureTextEntry={true}
             placeholder="Password"
+            placeholderTextColor={'#777777'}
             value={password}
             // secureTextEntry={true}
             onChangeText={setPassword}
