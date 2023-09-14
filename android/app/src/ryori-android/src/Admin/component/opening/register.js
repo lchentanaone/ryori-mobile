@@ -160,7 +160,7 @@ export default function Register() {
               <TouchableOpacity
                 style={openingStyles.SignUpOpacity}
                 onPress={handleRegister}>
-                <Text style={openingStyles.SignUpTextBtn}>SIGN IN</Text>
+                <Text style={openingStyles.SignUpTextBtn}>Sign in</Text>
               </TouchableOpacity>
             </View>
           </View>

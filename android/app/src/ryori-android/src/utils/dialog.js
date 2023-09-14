@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableOpacity, View, Linking} from 'react-native';
+import {Text, TouchableOpacity, View, Linking, Pressable} from 'react-native';
 import {Dialog} from '@rneui/themed';
 
 export default function DialogModal() {
@@ -26,11 +26,12 @@ export default function DialogModal() {
       </Text>
       <Text style={{color: '#505050', fontFamily: 'Quicksand-SemiBold'}}>
         This feature is comming soon. For urgent concerns, please email us at
-        <TouchableOpacity onPress={handleEmailPress}>
-          <Text style={{textDecorationLine: 'underline', color: '#BD0A0A'}}>
-            {''} ryoridavao@gmail.com
-          </Text>
-        </TouchableOpacity>
+        <Text
+          onPress={handleEmailPress}
+          style={{textDecorationLine: 'underline', color: '#BD0A0A'}}>
+          {' '}
+          ryoridavao@gmail.com
+        </Text>
       </Text>
     </View>
   );
