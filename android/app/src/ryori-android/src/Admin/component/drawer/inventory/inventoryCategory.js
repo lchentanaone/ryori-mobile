@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {CategoryInventoryStyle as styles} from './inventory-style';
-import {DataTable} from 'react-native-paper';
+import {API_URL} from '../../../../utils/constants';
 import {Styles} from './../../../../layoutStyles';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,8 +19,6 @@ export default function InventoryCategory() {
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [errors, setErrors] = useState([]);
   const [itemToDelete, setItemToDelete] = useState(null);
-
-  const API_URL = 'http://10.0.2.2:3000';
 
   const fetchItems = async () => {
     try {
