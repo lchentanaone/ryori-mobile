@@ -39,6 +39,7 @@ export const CategoryStyle = StyleSheet.create({
   },
   list: {
     width: '95%',
+    height: 300,
   },
   listC1: {
     width: '70%',
@@ -78,6 +79,13 @@ export const CategoryStyle = StyleSheet.create({
     width: '30%',
     // left: -40
   },
+
+  img: {
+    width: '100%',
+    height: 150,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
   searchbar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -100,6 +108,24 @@ export const CategoryStyle = StyleSheet.create({
     paddingLeft: 8,
     padding: 0,
     fontFamily: 'Quicksand-Medium',
+  },
+  uploadLogoOpacity: {
+    top: -1,
+    height: 40,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    flexDirection: 'row',
+  },
+  uploadLogoTextBtn: {
+    left: 2,
+    fontSize: 15,
+    color: 'white',
+    justifyContent: 'center',
+    fontFamily: 'Quicksand-SemiBold',
   },
   // SearchIcon: {
   //   fontSize: 18,

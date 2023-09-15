@@ -1,11 +1,99 @@
 import {StyleSheet} from 'react-native';
 
 export const OrderListStyles = StyleSheet.create({
+  title: {
+    flexDirection: 'row',
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  itemContainer: {
+    padding: 20,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#999999',
+    paddingHorizontal: 8,
+    borderRadius: 10,
+  },
+  content: {
+    padding: 5,
+  },
+  tableContainer: {
+    // backgroundColor: 'red',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 5,
+  },
+  textItem: {fontFamily: 'Quicksand-SemiBold', fontSize: 15, color: '#000'},
+
+  columnItems: {width: 210, textAlign: 'left'},
+
+  headerText: {
+    fontFamily: 'Quicksand-SemiBold',
+    fontSize: 17,
+    color: '#000',
+  },
+  columnMngBtn: {
+    width: 70,
+    textAlign: 'center',
+  },
+  columnItem: {
+    width: 210,
+    // backgroundColor: 'red',
+    textAlign: 'center',
+  },
+  columnQty: {
+    width: 50,
+    textAlign: 'center',
+  },
+  mngBtn: {
+    width: 70,
+    textAlign: 'center',
+  },
+  tableText: {
+    fontFamily: 'Quicksand-SemiBold',
+    fontSize: 16,
+    color: '#000',
+    left: 10,
+  },
+  //-----
+  textFields: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    width: 40,
+
+    marginLeft: 5,
+    borderColor: '#757575',
+  },
+  inputs: {
+    textAlign: 'center',
+    padding: 5,
+    height: 30,
+    borderWidth: 1,
+    backgroundColor: '#fff',
+    fontSize: 15,
+    borderRadius: 5,
+    fontFamily: 'Quicksand-SemiBold',
+    color: '#000',
+    borderColor: '#757575',
+  },
+  chargeDiscountInput: {
+    width: 80,
+    marginLeft: 10,
+  },
+
+  //-----
   orderProducts: {
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 20,
   },
 
@@ -160,11 +248,8 @@ export const OrderListStyles = StyleSheet.create({
     color: '#fff',
   },
   toCash: {
-    width: 200,
-    height: 30,
-    marginLeft: 30,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    marginLeft: 100,
+    justifyContent: 'flex-end',
   },
   toCashDone: {
     width: 200,
@@ -175,16 +260,24 @@ export const OrderListStyles = StyleSheet.create({
   },
   payCashBtnText: {
     color: '#000',
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
+    width: 160,
   },
   toPrepareBtn: {
     backgroundColor: '#4285F4',
-    width: 180,
+    width: 140,
     height: 30,
-    marginLeft: 70,
     justifyContent: 'center',
-    marginBottom: 10,
-    borderRadius: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  doneStatus: {
+    backgroundColor: '#4285F4',
+    height: 30,
+    width: 100,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

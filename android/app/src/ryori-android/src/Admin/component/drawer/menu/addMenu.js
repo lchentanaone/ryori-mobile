@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -6,8 +6,9 @@ import {
   TextInput,
   Button,
   Image,
-  ScrollView,
+  Alert,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {AddMenuStyle, DropdownStyle} from './menu-style';
 import {Dropdown} from 'react-native-element-dropdown';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
@@ -18,6 +19,7 @@ import {API_URL} from '../../../../utils/constants';
 import defaultPhoto from '../../../images/no-image.png';
 
 export default function AddMenu({route, navigation}) {
+  const [errors, setErrors] = useState('');
   const {type, item} = route.params || {
     type: 'new',
     item: null,
@@ -25,13 +27,12 @@ export default function AddMenu({route, navigation}) {
   let pageTitle = '';
 
   if (type === 'edit') {
-    pageTitle = 'Edit menu #' + item.id;
+    pageTitle = 'Edit menu #' + item._id;
   } else {
     pageTitle = 'Add menu item';
   }
-
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [photo, setPhoto] = useState('');
   const [title, setTitle] = useState('');
@@ -39,6 +40,7 @@ export default function AddMenu({route, navigation}) {
   const [qty, setQty] = useState(1);
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState('');
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const fetchCategory = async () => {
     try {
@@ -54,7 +56,7 @@ export default function AddMenu({route, navigation}) {
       );
       const dropdownCategories = response.data.map(item => ({
         label: item.title,
-        value: item.id,
+        value: item._id,
       }));
       setCategories(dropdownCategories);
     } catch (error) {
@@ -65,7 +67,7 @@ export default function AddMenu({route, navigation}) {
   const fetchDetail = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.get(`${API_URL}/menuItem/${item.id}`, {
+      const response = await axios.get(`${API_URL}/menuItem/${item._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -77,8 +79,8 @@ export default function AddMenu({route, navigation}) {
       setCookingTime(response.data.cookingTime);
       setPhoto(response.data.photo);
       setCategory(
-        response.data.menuCategory.length > 0
-          ? response.data.menuCategory[0].id
+        response.data.menuCategories && response.data.menuCategories.length > 0
+          ? response.data.menuCategories[0]._id
           : '',
       );
     } catch (error) {
@@ -86,89 +88,80 @@ export default function AddMenu({route, navigation}) {
     }
   };
 
-  useEffect(() => {
-    fetchCategory();
-    if (type === 'edit') {
-      fetchDetail();
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchCategory();
+      if (type === 'edit') {
+        fetchDetail();
+      }
+    }, []),
+  );
 
   const handleAddMenu = async () => {
     return new Promise(async (resolve, reject) => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const store_Id = await AsyncStorage.getItem('store_Id');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        };
+      if (!title) {
+        setErrors('Title is required.');
+      } else if (!price) {
+        setErrors('Price is required.');
+      } else if (!category) {
+        setErrors('Category is required.');
+      } else if (!photo) {
+        setErrors('Photo is required.');
+      } else {
+        setErrors('');
 
-        const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-        const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('price', parseFloat(price));
-        formData.append('description', description);
-        formData.append('cookingTime', cookingTime);
-        formData.append('category_Id', category);
-        formData.append('store_Id', store_Id);
-        formData.append('photo', {
-          uri: photo,
-          name: randomFileName,
-          type: 'image/jpeg',
-        });
+        try {
+          const token = await AsyncStorage.getItem('access_token');
+          const store_Id = await AsyncStorage.getItem('store_Id');
+          const branch_Id = await AsyncStorage.getItem('branch_Id');
 
-        if (type === 'edit') {
-          const response = await axios.patch(
-            `${API_URL}/menuItem/${item.id}`,
-            formData,
-            {headers},
-          );
-          resolve(response.data.id);
-        } else {
-          const response = await axios.post(`${API_URL}/menuItem`, formData, {
-            headers,
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          };
+
+          const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+          const randomFileName =
+            new Date().valueOf().toString() + '.' + fileType;
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('price', parseFloat(price));
+          formData.append('qty', qty);
+          formData.append('description', description);
+          formData.append('cookingTime', cookingTime);
+          formData.append('menuCategory_Id', category);
+          formData.append('branch_Id', branch_Id);
+          formData.append('store_Id', store_Id);
+          formData.append('photo', {
+            uri: photo,
+            name: randomFileName,
+            type: 'image/jpeg',
           });
-          console.log(response.data.id);
-          resolve(response.data.id);
-        }
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      }
-    });
-  };
 
-  const handleAddBranchItem = async menuItem_Id => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const branch_Id = await AsyncStorage.getItem('branch_Id');
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        await axios.post(
-          `${API_URL}/branchItem`,
-          {
-            branch_Id,
-            menuItem_Id,
-            quantity: parseFloat(qty),
-          },
-          {headers},
-        );
-        resolve(true);
-      } catch (error) {
-        console.error(error);
-        reject(error);
+          if (type === 'edit') {
+            const response = await axios.patch(
+              `${API_URL}/menuItem/${item._id}`,
+              formData,
+              {headers},
+            );
+            resolve(response.data._id);
+          } else {
+            const response = await axios.post(`${API_URL}/menuItem`, formData, {
+              headers,
+            });
+            resolve(response.data._id);
+          }
+        } catch (error) {
+          console.error(error);
+          reject(error);
+        }
       }
     });
   };
 
   const handleSaveMenu = async () => {
     const menuItemId = await handleAddMenu();
-    console.log({menuItemId});
-    await handleAddBranchItem(menuItemId);
-    navigation.navigate('Menu');
+    navigation.navigate('Menus');
   };
 
   const handleChoosePhoto = () => {
@@ -203,7 +196,9 @@ export default function AddMenu({route, navigation}) {
       }
     });
   };
-
+  const handleCancel = async () => {
+    navigation.navigate('Menus');
+  };
   const handleDeleteMenu = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
@@ -211,14 +206,37 @@ export default function AddMenu({route, navigation}) {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       };
-      const response = await axios.delete(`${API_URL}/menuItem/${item.id}`, {
+      const response = await axios.delete(`${API_URL}/menuItem/${item._id}`, {
         headers,
       });
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error(error);
     }
-    navigation.navigate('Menu');
+    navigation.navigate('Menus');
+  };
+
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDeleteMenu(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   return (
@@ -282,6 +300,10 @@ export default function AddMenu({route, navigation}) {
                   selectedTextStyle={DropdownStyle.selectedTextStyle}
                   inputSearchStyle={DropdownStyle.inputSearchStyle}
                   iconStyle={DropdownStyle.iconStyle}
+                  itemTextStyle={{
+                    color: '#585858',
+                    fontFamily: 'Quicksand-SemiBold',
+                  }}
                   data={categories}
                   maxHeight={300}
                   labelField="label"
@@ -291,7 +313,7 @@ export default function AddMenu({route, navigation}) {
                   onFocus={() => setIsFocus(true)}
                   onBlur={() => setIsFocus(false)}
                   onChange={item => {
-                    console.log({item});
+                    // console.log({item});
                     setCategory(item.value);
                     setIsFocus(false);
                   }}
@@ -307,6 +329,9 @@ export default function AddMenu({route, navigation}) {
                 onChangeText={setCookingTime}
               />
             </View>
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+            )}
             <View style={DropdownStyle.DropdownContainer}>
               {/* 
               For Future
@@ -360,28 +385,26 @@ export default function AddMenu({route, navigation}) {
           </View>
         </View>
         <View style={AddMenuStyle.buttons}>
-          <View style={AddMenuStyle.addMenuBtn}>
+          <TouchableOpacity
+            style={[AddMenuStyle.menuFormBtn, AddMenuStyle.cancelOpacity]}
+            // onPress={handleQuantity}
+            onPress={handleCancel}>
+            <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[AddMenuStyle.menuFormBtn, AddMenuStyle.addMenuOpacity]}
+            onPress={handleSaveMenu}>
+            <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
+          </TouchableOpacity>
+
+          {type === 'edit' && (
             <TouchableOpacity
-              style={AddMenuStyle.cancelOpacity}
-              // onPress={handleQuantity}
-              onPress={() => navigation.navigate('Menu')}>
-              <Text style={AddMenuStyle.addMenuTextBtn}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={AddMenuStyle.updateMenuBtn}>
-            <TouchableOpacity
-              style={AddMenuStyle.deleteMenuOpacity}
-              onPress={handleDeleteMenu}>
+              style={[AddMenuStyle.menuFormBtn, AddMenuStyle.deleteMenuOpacity]}
+              onPress={showDeleteConfirmation}>
               <Text style={AddMenuStyle.addMenuTextBtn}>Delete</Text>
             </TouchableOpacity>
-          </View>
-          <View style={AddMenuStyle.addMenuBtn}>
-            <TouchableOpacity
-              style={AddMenuStyle.addMenuOpacity}
-              onPress={handleSaveMenu}>
-              <Text style={AddMenuStyle.addMenuTextBtn}>Save</Text>
-            </TouchableOpacity>
-          </View>
+          )}
         </View>
       </View>
     </View>

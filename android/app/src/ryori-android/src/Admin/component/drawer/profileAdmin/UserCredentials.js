@@ -7,8 +7,9 @@ import {API_URL} from '../../../../utils/constants';
 
 export default function UserCredentials({route}) {
   const {userId} = route.params;
-
+  const [errors, setErrors] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [userData, setUserData] = useState(null);
 
   const fetchUserData = async () => {
@@ -26,28 +27,43 @@ export default function UserCredentials({route}) {
   };
 
   const updateUserCred = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      await axios.patch(
-        `${API_URL}/user/${userId}`,
-        {
-          store_Id,
-          password,
-        },
-        {headers},
-      );
-      const tempUserData = {...userData};
-      setUserData(tempUserData);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    if (!password || !confirmPassword) {
+      setErrors('All fields are required.');
+    } else if (password.length < 6) {
+      setErrors('Password must be at least 6 characters.');
+    } else if (password !== confirmPassword) {
+      setErrors('Passwords do not match.');
+    } else {
+      setErrors('');
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const store_Id = await AsyncStorage.getItem('store_id');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        await axios.patch(
+          `${API_URL}/user/${userId}`,
+          {
+            store_Id,
+            password,
+          },
+          {headers},
+        );
+        const tempUserData = {...userData};
+        setUserData(tempUserData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+      setPassword('');
+      setConfirmPassword('');
+      Alert.alert('Password has been saved.');
     }
-    setPassword('');
-    Alert.alert('Password has been saved.');
   };
+
+  // const isValidEmail = email => {
+  //   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  //   return emailPattern.test(email);
+  // };
 
   const handleChangeText = (key, value) => {
     const tempUserData = {...userData};
@@ -72,6 +88,7 @@ export default function UserCredentials({route}) {
                 placeholder="Email"
                 placeholderTextColor="#777777"
                 value={userData.email}
+                editable={false}
                 onChangeText={value => {
                   handleChangeText('email', value);
                 }}
@@ -82,12 +99,25 @@ export default function UserCredentials({route}) {
                 placeholder="Password"
                 placeholderTextColor="#777777"
                 value={password}
+                // secureTextEntry={true}
                 onChangeText={setPassword}
               />
+              <TextInput
+                mode="outlined"
+                style={ProfileStyle.userCredInput}
+                placeholder="confirm Password"
+                placeholderTextColor="#777777"
+                value={confirmPassword}
+                // secureTextEntry={true}
+                onChangeText={setConfirmPassword}
+              />
+              {errors !== '' && (
+                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+              )}
               <TouchableOpacity
                 style={ProfileStyle.saveNewCred}
                 onPress={updateUserCred}>
-                <Text>Save</Text>
+                <Text style={{color: '#fff'}}>Save</Text>
               </TouchableOpacity>
             </>
           ) : (

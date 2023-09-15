@@ -29,10 +29,10 @@ export default function ProfileAdmin({navigation}) {
   };
 
   const getUserId = () => {
-    navigation.navigate('Update Admin', {userId: userData.id});
+    navigation.navigate('Update Admin', {userId: userData._id});
   };
   const getUserCred = () => {
-    navigation.navigate('User Credential', {userId: userData.id});
+    navigation.navigate('User Credential', {userId: userData._id});
   };
 
   return (

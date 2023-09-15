@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {InventoryStyle} from './inventory-style';
 import {DataTable} from 'react-native-paper';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  Alert,
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
@@ -18,7 +19,8 @@ import FontAweMaterialCommunityIconssome5 from 'react-native-vector-icons/Materi
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {API_URL} from '../../../../utils/constants';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
-import SkeletonItem from '../../../../utils/skeletonItem'
+import SkeletonItem from '../../../../utils/skeletonItem';
+import {useFocusEffect} from '@react-navigation/native';
 
 const invLogsType = [
   {label: 'Ready', value: 'ready'},
@@ -26,8 +28,10 @@ const invLogsType = [
 ];
 
 export default function Inventory() {
+  const [errors, setErrors] = useState('');
+  const [errorTypeLog, setErrorTypeLog] = useState('');
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('');
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [item, setItem] = useState('');
@@ -38,18 +42,17 @@ export default function Inventory() {
   const [updateItem, setUpdateItem] = useState();
   const [type, setType] = useState('');
   const [typeLogs, setTypeLogs] = useState([]);
-  const [quantityLogs, setQuantityLogs] = useState('0');
+  const [quantityLogs, setQuantityLogs] = useState(0);
   const [filteredInventory, setFilteredInventory] = useState(1);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleIncrease = () => {
     const newQuantity = parseInt(quantityLogs) + 1;
     setQuantityLogs(newQuantity.toString());
   };
+
   const handleDecrease = () => {
-    const newQuantity = parseInt(quantityLogs) - 1;
-    if (newQuantity >= 0) {
-      setQuantityLogs(newQuantity.toString());
-    }
+    setQuantityLogs(quantityLogs - 1);
   };
 
   const fetchCategory = async () => {
@@ -70,18 +73,16 @@ export default function Inventory() {
     }
   };
 
-  const dropdownized = data => (
+  const dropdownized = data =>
     data.map(item => ({
       label: item.title,
-      value: item.id,
-    }))
-  )
+      value: item._id,
+    }));
 
   const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log(branch_Id);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -96,51 +97,61 @@ export default function Inventory() {
   };
 
   const handlePostInventory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const newData = [...inventory, {item, weight, quantity, category}];
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+    if (!item || !quantity) {
+      setErrors('Category, Product Name and Quantity are required');
+    } else {
+      setErrors('');
 
-      if (itemOnEdit !== '') {
-        await axios.patch(
-          `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
-          {
-            item,
-            weight,
-            quantity,
-            branch_Id,
-            category,
-          },
-          {headers},
-        );
-        fetchItems();
-        setInventory(newData);
-      } else {
-        // New
-        await axios.post(
-          `${API_URL}/inventory/rawgrocery`,
-          {
-            item,
-            weight,
-            quantity,
-            branch_Id,
-            rawCategory_Id: category,
-          },
-          {headers},
-        );
-        fetchItems();
-        setInventory(newData);
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const user_Id = await AsyncStorage.getItem('user_Id');
+        const newData = [...inventory, {item, weight, quantity, category}];
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        if (itemOnEdit !== '') {
+          await axios.patch(
+            `${API_URL}/inventory/rawgrocery/${itemOnEdit}`,
+            {
+              item,
+              weight,
+              quantity,
+              branch_Id,
+              user_Id,
+              rawCategory_Id: category,
+            },
+            {headers},
+          );
+          fetchItems();
+          setItemOnEdit('');
+          setInventory(newData);
+        } else {
+          // New
+          await axios.post(
+            `${API_URL}/inventory/rawgrocery`,
+            {
+              item,
+              weight,
+              quantity,
+              branch_Id,
+              user_Id,
+              rawCategory_Id: category,
+            },
+            {headers},
+          );
+          fetchItems();
+          setInventory(newData);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+      setCategory('');
+      setItem('');
+      setWeight('');
+      setQuantity('');
     }
-    setCategory('');
-    setItem('');
-    setWeight('');
-    setQuantity('');
   };
 
   const handleDeleteItem = async id => {
@@ -158,28 +169,51 @@ export default function Inventory() {
       console.error(error);
     }
   };
-  const handleFilter = (id) => {
-    if(id) {
-      const newData = inventory.filter(item => item.rawCategory.some(innerItem => innerItem.id === id))
-      setFilteredInventory(newData)
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDeleteItem(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+  const handleFilter = id => {
+    if (id) {
+      const newData = inventory.filter(item =>
+        item.rawCategories.some(innerItem => innerItem._id === id),
+      );
+      console.log({newData});
+      setFilteredInventory(newData);
+    } else {
+      setFilteredInventory(inventory);
     }
-    else {
-      setFilteredInventory(inventory)
-    }
-  }
+  };
 
   const handleEdit = items => {
-    setItemOnEdit(items.id);
+    setItemOnEdit(items._id);
     setItem(items.item);
     setWeight(items.weight);
     setQuantity(items.quantity);
-    setUpdateItem(items.id);
+    setUpdateItem(items._id);
   };
 
   const handleOpenModal = items => {
     setModalVisible(true);
-    setItemOnEdit(items.id);
-    console.log(items.id);
+    setItemOnEdit(items._id);
   };
 
   const handleAddQtyType = async () => {
@@ -208,17 +242,21 @@ export default function Inventory() {
   };
 
   const addQtyReady = () => {
-    handleAddQtyType();
-    setModalVisible(false);
-    setQuantityLogs('0');
-    setType('');
+    if (!type) {
+      setErrorTypeLog('Type is required');
+    } else {
+      setErrorTypeLog('');
+      handleAddQtyType();
+      setModalVisible(false);
+      setQuantityLogs('0');
+      setType('');
+    }
   };
 
   const fetchReadtQty = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log(branch_Id);
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -232,15 +270,17 @@ export default function Inventory() {
     }
   };
 
-  useEffect(() => {
-    fetchReadtQty();
-    fetchCategory();
-    fetchItems();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchReadtQty();
+      fetchCategory();
+      fetchItems();
+    }, []),
+  );
 
   useEffect(() => {
-    if(filteredInventory !== inventory) {
-      setFilteredInventory(inventory)
+    if (filteredInventory !== inventory) {
+      setFilteredInventory(inventory);
     }
   }, [inventory]);
 
@@ -264,6 +304,7 @@ export default function Inventory() {
                     InventoryStyle.dropdown,
                     isFocus && {borderColor: '#007FFF'},
                   ]}
+                  itemTextStyle={{color: '#585858'}}
                   placeholderStyle={InventoryStyle.placeholderStyle}
                   selectedTextStyle={InventoryStyle.selectedTextStyle}
                   inputSearchStyle={InventoryStyle.inputSearchStyle}
@@ -285,7 +326,7 @@ export default function Inventory() {
               <TextInput
                 mode="outlined"
                 style={InventoryStyle.inventoryInput}
-                placeholder="Title"
+                placeholder="Product Name"
                 placeholderTextColor="#777777"
                 value={item}
                 onChangeText={setItem}
@@ -314,77 +355,146 @@ export default function Inventory() {
                 <Text style={InventoryStyle.addInventTextBtn}>Save</Text>
               </TouchableOpacity>
             </View>
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+            )}
             <View style={InventoryStyle.invetoryFilter}>
-              {categories.map((c, key) => (                
-                <TouchableOpacity key={key} style={InventoryStyle.invetoryBtn} onPress={() => handleFilter(c.id)}>
-                  <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity style={{...InventoryStyle.invetoryBtn, backgroundColor: '#aaa'}} onPress={() => handleFilter(null)}>
-                  <Text style={InventoryStyle.filterTextBtn}>Clear</Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  ...InventoryStyle.invetoryBtnAll,
+                  backgroundColor: '#aaa',
+                }}
+                onPress={() => handleFilter(null)}>
+                <Text style={InventoryStyle.filterTextBtn}>All</Text>
+              </TouchableOpacity>
+              <ScrollView
+                horizontal={true}
+                style={InventoryStyle.invetoryFilter}>
+                {categories.map((c, key) => (
+                  <TouchableOpacity
+                    key={key}
+                    style={InventoryStyle.invetoryBtn}
+                    onPress={() => handleFilter(c._id)}>
+                    <Text style={InventoryStyle.filterTextBtn}>{c.title}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
             </View>
           </View>
           <View style={InventoryStyle.inventTable}>
             <ScrollView horizontal>
-              <View style={InventoryStyle.containerTable}>
-                <DataTable style={InventoryStyle.table}>
-                  <DataTable.Header style={InventoryStyle.tableHeader}>
-                    <DataTable.Title style={{flex: 0.3}}>
-                      <Text style={InventoryStyle.inventData}>ID</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 2.5}}>
-                      <Text style={InventoryStyle.inventData}>
-                        Product Name
-                      </Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Wt./Qty</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Type</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 1}}>
-                      <Text style={InventoryStyle.inventData}>Manage</Text>
-                    </DataTable.Title>
-                  </DataTable.Header>
-                  <ScrollView style={{height: 200}}>
-                  {filteredInventory.length > 0 ? 
-                  filteredInventory.map((items, index) => (
+              <View>
+                <View style={InventoryStyle.tableRow}>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.idCell]}>
+                    No.
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.productNameCell,
+                    ]}>
+                    Product Name
+                  </Text>
+
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.wtQtyCell,
+                    ]}>
+                    Wt.
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.wtQtyCell,
+                    ]}>
+                    Qty
+                  </Text>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.typeRW]}>
+                    Ready
+                  </Text>
+                  <Text
+                    style={[InventoryStyle.cellHeader, InventoryStyle.typeRW]}>
+                    Waste
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.columnWidth,
+                    ]}>
+                    Date
+                  </Text>
+                  <Text
+                    style={[
+                      InventoryStyle.cellHeader,
+                      InventoryStyle.columnWidth,
+                    ]}>
+                    Manage
+                  </Text>
+                </View>
+                <ScrollView style={{height: 200}}>
+                  {filteredInventory.length > 0 ? (
+                    filteredInventory.map((items, index) => (
                       <View key={index}>
-                        <DataTable.Row>
-                          <DataTable.Cell style={{flex: 0.5}}>
-                            {items.id}
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 2}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                {items.item}
-                              </Text>
-                              <Text>{items.createdAt}</Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                wt. {items.weight}
-                              </Text>
-                              <Text style={InventoryStyle.inventCellData}>
-                                qty {items.quantity}
-                              </Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
-                            <View style={{flexDirection: 'column'}}>
-                              <Text style={InventoryStyle.inventCellData}>
-                                ready: {items.readyQty}
-                              </Text>
-                              <Text style={InventoryStyle.inventCellData}>
-                                waste: {items.wasteQty}
-                              </Text>
-                            </View>
-                          </DataTable.Cell>
-                          <DataTable.Cell style={{flex: 1}}>
+                        <View style={InventoryStyle.tableRow}>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.idCell,
+                            ]}>
+                            {index + 1}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.productNameCell,
+                            ]}>
+                            {items.item}
+                          </Text>
+
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.wtQtyCell,
+                            ]}>
+                            {items.weight}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.wtQtyCell,
+                            ]}>
+                            {items.quantity}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.typeRW,
+                            ]}>
+                            {items.readyQty}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.typeRW,
+                            ]}>
+                            {items.wasteQty}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.columnWidth,
+                            ]}>
+                            {item.data}
+                            {/* <Text>{items.createdAt}</Text> */}
+                          </Text>
+                          <Text
+                            style={[
+                              InventoryStyle.cell,
+                              InventoryStyle.columnWidth,
+                            ]}>
                             <View style={InventoryStyle.itemBtn}>
                               <TouchableOpacity
                                 style={InventoryStyle.manageBtnOpacity}
@@ -406,7 +516,9 @@ export default function Inventory() {
                               </TouchableOpacity>
                               <TouchableOpacity
                                 style={InventoryStyle.manageBtnOpacity}
-                                onPress={() => handleDeleteItem(items.id)}>
+                                onPress={() =>
+                                  showDeleteConfirmation(items._id)
+                                }>
                                 <FontAweMaterialCommunityIconssome5
                                   name="delete"
                                   color={'#DB1B1B'}
@@ -414,12 +526,16 @@ export default function Inventory() {
                                 />
                               </TouchableOpacity>
                             </View>
-                          </DataTable.Cell>
-                        </DataTable.Row>
+                          </Text>
+                        </View>
                       </View>
-                    )) : (<View style={{width: '100%'}}><SkeletonItem /></View>)}
-                  </ScrollView>
-                </DataTable>
+                    ))
+                  ) : (
+                    <View style={{width: '100%'}}>
+                      <SkeletonItem />
+                    </View>
+                  )}
+                </ScrollView>
               </View>
             </ScrollView>
             <Modal
@@ -442,6 +558,10 @@ export default function Inventory() {
                       selectedTextStyle={InventoryStyle.selectedTextStyle}
                       inputSearchStyle={InventoryStyle.inputSearchStyle}
                       iconStyle={InventoryStyle.iconStyle}
+                      itemTextStyle={{
+                        color: '#585858',
+                        fontFamily: 'Quicksand-SemiBold',
+                      }}
                       data={invLogsType}
                       maxHeight={300}
                       labelField="label"
@@ -457,7 +577,7 @@ export default function Inventory() {
                     />
                     <View style={InventoryStyle.qtyContainer}>
                       <TouchableOpacity onPress={handleDecrease}>
-                        <Entypo name="minus" size={18} />
+                        <Entypo name="minus" size={18} color={'#000'} />
                       </TouchableOpacity>
                       <TextInput
                         style={InventoryStyle.input}
@@ -466,11 +586,13 @@ export default function Inventory() {
                         keyboardType="numeric"
                       />
                       <TouchableOpacity onPress={handleIncrease}>
-                        <Entypo name="plus" size={18} />
+                        <Entypo name="plus" size={18} color={'#000'} />
                       </TouchableOpacity>
                     </View>
                   </View>
-
+                  {errorTypeLog !== '' && (
+                    <Text style={{color: '#ff0000'}}>{errorTypeLog}</Text>
+                  )}
                   <TouchableOpacity
                     style={[InventoryStyle.modalButton]}
                     onPress={addQtyReady}>

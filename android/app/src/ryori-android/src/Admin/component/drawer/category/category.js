@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  Button,
+  Alert,
   ScrollView,
 } from 'react-native';
 import {CategoryStyle} from './category-style';
@@ -15,19 +15,23 @@ import {DataTable} from 'react-native-paper';
 import {Styles} from './../../../../layoutStyles';
 import ryoriLogo from '../../../images/redRyori.png';
 import axios from 'axios';
-import {API_URL} from '../../../../utils/constants'
-import SkeletonItem from '../../../../utils/skeletonItem'
+import {API_URL} from '../../../../utils/constants';
+import SkeletonItem from '../../../../utils/skeletonItem';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function Category() {
-  const [categoryName, setCategoryName] = useState('');
+  const [title, setTitle] = useState('');
   const [photo, setPhoto] = useState(null);
   const [itemOnEdit, setItemOnEdit] = useState('');
   const [items, setItems] = useState([]);
+  const [errors, setErrors] = useState('');
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const fetchItems = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      console.log({token});
       const response = await axios.get(
         `${API_URL}/menuCategory/?store_Id=${store_Id}`,
         {
@@ -42,23 +46,23 @@ export default function Category() {
     }
   };
 
-  const handleOpenCamera = () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 0.5,
-      includeBase64: false,
-    };
+  // const handleOpenCamera = () => {
+  //   const options = {
+  //     mediaType: 'photo',
+  //     quality: 0.5,
+  //     includeBase64: false,
+  //   };
 
-    launchCamera(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled camera picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        setPhoto(response.assets[0].uri);
-      }
-    });
-  };
+  //   launchCamera(options, response => {
+  //     if (response.didCancel) {
+  //       console.log('User cancelled camera picker');
+  //     } else if (response.error) {
+  //       console.log('ImagePicker Error: ', response.error);
+  //     } else {
+  //       setPhoto(response.assets[0].uri);
+  //     }
+  //   });
+  // };
   const handleChoosePhoto = () => {
     launchImageLibrary(
       {
@@ -74,46 +78,74 @@ export default function Category() {
     );
   };
   const addCategory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
-
-      const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
-      const randomFileName = new Date().valueOf().toString() + '.' + fileType;
-
-      const formData = new FormData();
-
-      formData.append('title', categoryName);
-      formData.append('photo', {
-        uri: photo,
-        name: randomFileName,
-        type: 'image/jpeg',
-      });
-      formData.append('store_Id', store_Id);
-
-      // Edit
-      if (itemOnEdit !== '') {
-        // Need to double check Edit bugs... still haveing issues found.
-        await axios.patch(`${API_URL}/menuCategory/${itemOnEdit}`, formData, {
-          headers,
-        });
-        fetchItems();
+    return new Promise(async (resolve, reject) => {
+      if (!title) {
+        setErrors('Category name is required');
+      } else if (!photo) {
+        setErrors('Photo is required.');
       } else {
-        // New
-        await axios.post(`${API_URL}/menuCategory/`, formData, {
-          headers: {
+        setErrors('');
+
+        try {
+          const token = await AsyncStorage.getItem('access_token');
+          const store_Id = await AsyncStorage.getItem('store_Id');
+          const headers = {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
-          },
-        });
-        fetchItems();
+          };
+          const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+          const randomFileName =
+            new Date().valueOf().toString() + '.' + fileType;
+          const formData = new FormData();
+          formData.append('title', title);
+          if (photo && photo.includes('file:///')) {
+            formData.append('photo', {
+              uri: photo,
+              name: randomFileName,
+              type: 'image/jpeg',
+            });
+          }
+          formData.append('store_Id', store_Id);
+
+          // Edit
+          if (itemOnEdit !== '') {
+            // Need to double check Edit bugs... still haveing issues found.
+            console.log(`${API_URL}/menuCategory/${itemOnEdit}`);
+            console.log({formData: JSON.stringify(formData)});
+            const response = await axios.patch(
+              `${API_URL}/menuCategory/${itemOnEdit}`,
+              formData,
+              {
+                headers,
+              },
+            );
+
+            fetchItems();
+            resolve(response.data._id);
+          } else {
+            // New
+            const response = await axios.post(
+              `${API_URL}/menuCategory/`,
+              formData,
+              {
+                headers,
+              },
+            );
+            fetchItems();
+            resolve(response.data._id);
+          }
+        } catch (error) {
+          console.error('error', error);
+          reject(error);
+        }
+        setTitle('');
+        setPhoto(null);
+        setItemOnEdit('');
       }
-    } catch (error) {
-      console.error(JSON.stringify(error));
-    }
+    });
   };
   const cancelEdit = () => {
-    setCategoryName('');
+    setTitle('');
     setPhoto(null);
     setItemOnEdit('');
   };
@@ -122,22 +154,22 @@ export default function Category() {
     const token = await AsyncStorage.getItem('access_token');
 
     const responsePhoto = await axios.get(
-      `${API_URL}/menuCategory/${item.id}`,
+      `${API_URL}/menuCategory/${item._id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
-    setItemOnEdit(item.id);
-    setCategoryName(item.title);
+    setItemOnEdit(item._id);
+    setTitle(item.title);
     setPhoto(responsePhoto.data.photo);
   };
 
-  const handleDelete = async id => {
+  const handleDelete = async _id => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      await axios.delete(`${API_URL}/menuCategory/${id}`, {
+      await axios.delete(`${API_URL}/menuCategory/${_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -146,6 +178,28 @@ export default function Category() {
     } catch (error) {
       console.error(error);
     }
+  };
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null),
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDelete(_id);
+            setItemToDelete(null);
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   useEffect(() => {
@@ -166,34 +220,36 @@ export default function Category() {
                 <DataTable.Title style={CategoryStyle.menuC2}>
                   <Text style={CategoryStyle.textHeader}>Action</Text>
                 </DataTable.Title>
-                <DataTable.Title></DataTable.Title>
               </DataTable.Header>
               <ScrollView style={{height: 300}}>
                 {/* <View key={item.id}> */}
-                {items.length > 0 ? items.map((item, index) => (
-                  <DataTable.Row key={index}>
-                    <DataTable.Cell>
-                      <Text style={CategoryStyle.textCell}>{item.title}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <View style={Styles.horContainer}>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnTertiary}}
-                          onPress={() => handleEdit(item)}>
-                          <Text style={Styles.btnText}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnWarning}}
-                          onPress={() => handleDelete(item.id)}>
-                          <Text style={Styles.btnText}>Delete</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </DataTable.Cell>
-                    <DataTable.Cell></DataTable.Cell>
-                  </DataTable.Row>
-                )): 
-                (<View><SkeletonItem /></View>)
-                }
+                {items.length > 0 ? (
+                  items.map((item, index) => (
+                    <DataTable.Row key={index}>
+                      <DataTable.Cell>
+                        <Text style={CategoryStyle.textCell}>{item.title}</Text>
+                      </DataTable.Cell>
+                      <DataTable.Cell>
+                        <View style={Styles.horContainer}>
+                          <TouchableOpacity
+                            style={{...Styles.btn, ...Styles.btnTertiary}}
+                            onPress={() => handleEdit(item)}>
+                            <Text style={Styles.btnText}>Edit</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{...Styles.btn, ...Styles.btnWarning}}
+                            onPress={() => showDeleteConfirmation(item._id)}>
+                            <Text style={Styles.btnText}>Delete</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  ))
+                ) : (
+                  <View>
+                    <SkeletonItem />
+                  </View>
+                )}
                 {/* </View> */}
               </ScrollView>
             </DataTable>
@@ -203,34 +259,37 @@ export default function Category() {
               <View
                 style={{
                   backgroundColor: '#ddd',
-                  borderColor: '#ddd',
-                  borderWidth: 1,
-                  padding: 5,
+                  borderRadius: 10,
                 }}>
                 <Image
                   source={photo ? {uri: photo} : ryoriLogo}
-                  style={{width: '100%', height: 150}}
+                  style={CategoryStyle.img}
                 />
+                <TouchableOpacity
+                  style={CategoryStyle.uploadLogoOpacity}
+                  onPress={handleChoosePhoto}>
+                  <Feather name="camera" color={'#fff'} size={16} />
+                  <Text style={CategoryStyle.uploadLogoTextBtn}>Upload</Text>
+                </TouchableOpacity>
               </View>
-              <View style={Styles.horContainer}>
-                <Button
-                  style={Styles.btn}
-                  title="Open Camera"
-                  onPress={handleOpenCamera}
-                />
-                <Button title="Choose Photo" onPress={handleChoosePhoto} />
-              </View>
+
               <TextInput
                 mode="outlined"
-                style={{...Styles.textInput, width: '100%'}}
-                // keyboardType="numeric"
-                placeholder="Category Name"
+                style={{
+                  ...Styles.textInput,
+                  width: '100%',
+                  fontFamily: 'Quicksand-SemiBold',
+                  marginTop: -5,
+                }}
+                placeholder="Category name"
                 placeholderTextColor="#777777"
-                value={categoryName.toString()}
-                secureTextEntry={false}
-                onChangeText={setCategoryName}
+                value={title.toString()}
+                onChangeText={setTitle}
               />
-              <View style={Styles.horContainer}>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000', top: -10}}>{errors}</Text>
+              )}
+              <View style={{...Styles.horContainer}}>
                 <TouchableOpacity
                   style={{...Styles.btn, ...Styles.btnPrimary}}
                   onPress={addCategory}>

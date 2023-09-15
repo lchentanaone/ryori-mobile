@@ -115,7 +115,13 @@ const RyoriDrawer = props => {
           />
           <Text style={drawerStyle.brachesText}>Braches</Text>
         </TouchableOpacity>
-        <DrawerItem label="Logout" onPress={handleLogout} />
+        <TouchableOpacity
+          underlayColor="red"
+          style={drawerStyle.drawerLogout}
+          onPress={handleLogout}>
+          <AntDesign name="logout" size={20} color={'#000'} />
+          <Text style={drawerStyle.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
   );
@@ -146,23 +152,6 @@ export default function DrawersNav({navigation}) {
         },
       }}>
       <Drawer.Screen
-        name="My Profile"
-        component={ProfileNavigators}
-        style={{top: -50}}
-        options={{
-          headerShown: false,
-          drawerIcon: ({focused, size}) => (
-            <>
-              <FontAwesome
-                name="bar-chart-o"
-                color={focused ? '#DB1B1B' : '#000'}
-                size={15}
-              />
-            </>
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="Dashboard"
         component={Dashboard}
         style={{top: -50}}
@@ -173,7 +162,24 @@ export default function DrawersNav({navigation}) {
               <FontAwesome
                 name="bar-chart-o"
                 color={focused ? '#DB1B1B' : '#000'}
-                size={15}
+                size={16}
+              />
+            </>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="My Profile"
+        component={ProfileNavigators}
+        style={{top: -50}}
+        options={{
+          headerShown: false,
+          drawerIcon: ({focused, size}) => (
+            <>
+              <Feather
+                name="user"
+                color={focused ? '#DB1B1B' : '#000'}
+                size={19}
               />
             </>
           ),
@@ -188,7 +194,7 @@ export default function DrawersNav({navigation}) {
             <MaterialIcons
               name="restaurant-menu"
               color={focused ? '#DB1B1B' : '#000'}
-              size={15}
+              size={18}
             />
           ),
         }}
@@ -202,13 +208,13 @@ export default function DrawersNav({navigation}) {
             <Feather
               name="menu"
               color={focused ? '#DB1B1B' : '#000'}
-              size={15}
+              size={18}
             />
           ),
         }}
       />
       <Drawer.Screen
-        name="Transactions"
+        name="Daily Transactions"
         component={TransactionDaily}
         options={{
           headerShown: false,
@@ -216,33 +222,19 @@ export default function DrawersNav({navigation}) {
             <Foundation
               name="clipboard-notes"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={22}
             />
           ),
         }}
       />
       <Drawer.Screen
-        name="Archive of Transaction"
+        name="Archive Transaction"
         component={TransactionArchive}
         options={{
           headerShown: false,
           drawerIcon: ({focused, size}) => (
             <MaterialCommunityIcons
               name="book-open-variant"
-              color={focused ? '#DB1B1B' : '#000'}
-              size={18}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Report of Food"
-        component={ReportOfFood}
-        options={{
-          headerShown: false,
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="newspaper-outline"
               color={focused ? '#DB1B1B' : '#000'}
               size={18}
             />
@@ -258,7 +250,7 @@ export default function DrawersNav({navigation}) {
             <FontAwesome5
               name="box-open"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={17}
             />
           ),
         }}
@@ -272,7 +264,7 @@ export default function DrawersNav({navigation}) {
             <FontAwesome5
               name="box-open"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={17}
             />
           ),
         }}
@@ -286,7 +278,7 @@ export default function DrawersNav({navigation}) {
             <AntDesign
               name="setting"
               color={focused ? '#DB1B1B' : '#000'}
-              size={18}
+              size={22}
             />
           ),
         }}

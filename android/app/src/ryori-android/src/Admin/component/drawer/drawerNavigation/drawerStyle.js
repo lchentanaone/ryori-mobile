@@ -40,4 +40,16 @@ export const drawerStyle = StyleSheet.create({
     color: '#000',
     marginLeft: 10,
   },
+  logoutText: {
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 15,
+    color: '#000',
+    marginLeft: 12,
+  },
+  drawerLogout: {
+    flexDirection: 'row',
+    marginLeft: 23,
+    marginTop: 18,
+    paddingBottom: 10,
+  },
 });

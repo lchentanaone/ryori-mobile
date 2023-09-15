@@ -21,13 +21,34 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default Products = ({navigation}) => {
   const [menu, setMenu] = useState([]);
+  const [userData, setUserData] = useState(null);
 
+  const fetchUserData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const response = await axios.get(`${API_URL}/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const updateQuantity = async (id, groupId, type) => {
     const token = await AsyncStorage.getItem('access_token');
-    const itemMenu = menu.find(i => i.id=== groupId).items.find(i => i.id === id)
-    const quantity = type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1
-    
+    const itemMenu = menu
+      .find(i => i.id === groupId)
+      .items.find(i => i.id === id);
+    const quantity =
+      type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1;
+
     await axios.patch(
       `${API_URL}/branchItem/${id}`,
       JSON.stringify({quantity}),
@@ -37,34 +58,38 @@ export default Products = ({navigation}) => {
           Authorization: `Bearer ${token}`,
         },
       },
-    );  
+    );
     fetchItems();
   };
-  const transformer = (input) => {
+  const transformer = input => {
     return input.reduce((result, item) => {
-        item.menuCategory.map(categoryObj => categoryObj.title).forEach(categoryTitle => {
-            const existingCategory = result.find(cat => cat.category === categoryTitle);
-            
-            const content = {
-              id: item.menuItemId,
-              title: item.menuItem.title,
-              quantity: item.quantity
-            }
+      item.menuCategory
+        .map(categoryObj => categoryObj.title)
+        .forEach(categoryTitle => {
+          const existingCategory = result.find(
+            cat => cat.category === categoryTitle,
+          );
 
-            if (existingCategory) {
-                existingCategory.items.push(content);
-            } else {
-                result.push({
-                    id: item.id,
-                    category: categoryTitle,
-                    items: [content]
-                });
-            }
+          const content = {
+            id: item.menuItemId,
+            title: item.menuItem.title,
+            quantity: item.quantity,
+          };
+
+          if (existingCategory) {
+            existingCategory.items.push(content);
+          } else {
+            result.push({
+              id: item.id,
+              category: categoryTitle,
+              items: [content],
+            });
+          }
         });
-        
-        return result;
+
+      return result;
     }, []);
-  }
+  };
 
   const fetchItems = async () => {
     try {
@@ -81,7 +106,7 @@ export default Products = ({navigation}) => {
           },
         },
         {headers},
-      );      
+      );
       setMenu(transformer(response.data));
     } catch (error) {
       console.error(error);
@@ -93,24 +118,26 @@ export default Products = ({navigation}) => {
   }, []);
   return (
     <>
-      <OrientationLocker
-        orientation={PORTRAIT}
-      />
+      <OrientationLocker orientation={PORTRAIT} />
       <View style={styles.products}>
         <View style={styles.crewHeader}>
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Products</Text>
           </View>
-          <TouchableOpacity
-            style={styles.viewProfile}
-            onPress={() => navigation.navigate('Profile Employee')}>
-            <Image source={male} style={styles.crewImage} />
-            <View style={{top: -5, left: 5}}>
-              <Text style={styles.crewName}>{'John Doe'}</Text>
-              <Text style={styles.viewProfileText}>View Profile</Text>
-            </View>
-          </TouchableOpacity>
+          {userData ? (
+            <TouchableOpacity
+              style={styles.viewProfile}
+              onPress={() => navigation.navigate('Profile Employee')}>
+              <Image source={male} style={styles.crewImage} />
+              <View style={{top: -5, left: 5}}>
+                <Text style={styles.crewName}>{userData.firstName}</Text>
+                <Text style={styles.viewProfileText}>View Profile</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <Text>Loading user...</Text>
+          )}
         </View>
         <View style={styles.searchInventory}>
           <View style={styles.searchbar}>
@@ -128,7 +155,7 @@ export default Products = ({navigation}) => {
             <FontAwesome5 name="box-open" color={'#464646'} size={25} />
           </TouchableOpacity>
         </View>
-        <View style={styles.Table}>
+        <View style={styles.table}>
           <ScrollView>
             {menu.map((item, index) => (
               <>
@@ -151,13 +178,19 @@ export default Products = ({navigation}) => {
                         </DataTable.Cell>
                         <DataTable.Cell style={{flex: 0.8}}>
                           <View style={styles.qtyContainer}>
-                            <TouchableOpacity onPress={() => updateQuantity(menuItem.id, item.id, '-') }>
+                            <TouchableOpacity
+                              onPress={() =>
+                                updateQuantity(menuItem.id, item.id, '-')
+                              }>
                               <Entypo name="minus" size={18} />
                             </TouchableOpacity>
-                            <Text
-                              style={styles.input}
-                            >{menuItem.quantity.toString()}</Text>
-                            <TouchableOpacity onPress={() => updateQuantity(menuItem.id, item.id, '+') }>
+                            <Text style={styles.input}>
+                              {menuItem.quantity.toString()}
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() =>
+                                updateQuantity(menuItem.id, item.id, '+')
+                              }>
                               <Entypo name="plus" size={18} />
                             </TouchableOpacity>
                           </View>
@@ -173,4 +206,4 @@ export default Products = ({navigation}) => {
       </View>
     </>
   );
-}
+};

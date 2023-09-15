@@ -10,7 +10,7 @@ export const InventoryStyle = StyleSheet.create({
   },
   inventContent: {
     width: '100%',
-    top: 15,
+    top: 10,
   },
   inventTitle: {
     fontSize: 20,
@@ -27,24 +27,43 @@ export const InventoryStyle = StyleSheet.create({
     height: 250,
     top: 10,
   },
-  containerTable: {
-    flex: 1,
-    paddingHorizontal: 10,
+  idCell: {
+    width: 50,
+    textAlign: 'center',
   },
-  table: {
-    minWidth: 720,
-  },
-  inventData: {
+  productNameCell: {
+    width: 250,
     fontSize: 16,
-    fontWeight: 500,
+  },
+  wtQtyCell: {
+    width: 60,
+    textAlign: 'center',
+  },
+  typeRW: {
+    width: 70,
+    textAlign: 'center',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#909090',
+    padding: 1,
+  },
+  cellHeader: {
+    paddingVertical: 10,
     color: '#000',
+    fontFamily: 'Quicksand-Bold',
+  },
+  cell: {
+    fontSize: 14,
+    paddingTop: 10,
+    color: '#303030',
     fontFamily: 'Quicksand-SemiBold',
   },
-  inventCellData: {
-    fontSize: 15,
-    color: '#000',
-    fontFamily: 'Quicksand-Medium',
-    marginBottom: 2,
+  columnWidth: {
+    flex: 1,
+    minWidth: 120,
+    padding: 8,
   },
   inventformCon: {
     width: '100%',
@@ -53,7 +72,6 @@ export const InventoryStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  //------------
   DropdownContainer: {
     width: '18%',
   },
@@ -68,12 +86,24 @@ export const InventoryStyle = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
   },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
   placeholderStyle: {
     fontSize: 15,
+    color: '#000',
+    fontFamily: 'Quicksand-Medium',
   },
   selectedTextStyle: {
     color: '#000',
     fontSize: 14,
+    fontFamily: 'Quicksand-SemiBold',
   },
   iconStyle: {
     width: 20,
@@ -81,7 +111,8 @@ export const InventoryStyle = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 14,
+    fontSize: 80,
+    color: '#000',
   },
 
   inventoryInput: {
@@ -128,9 +159,19 @@ export const InventoryStyle = StyleSheet.create({
   invetoryFilter: {
     flexDirection: 'row',
   },
+  invetoryBtnAll: {
+    marginLeft: 5,
+    width: 60,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#DB1B1B',
+    borderRadius: 3,
+    flexDirection: 'row',
+  },
   invetoryBtn: {
     marginLeft: 5,
-    width: '15%',
+    width: 120,
     height: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -201,19 +242,6 @@ export const InventoryStyle = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  qtyReady: {
-    width: '100%',
-    fontSize: 15,
-    height: 35,
-    padding: 8,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    marginBottom: 10,
-    shadowColor: '#000',
-    elevation: 5,
-    color: '#000',
-    fontFamily: 'Quicksand-SemiBold',
-  },
   qtyContainer: {
     width: 100,
     justifyContent: 'space-between',
@@ -233,6 +261,29 @@ export const InventoryStyle = StyleSheet.create({
 });
 
 export const CategoryInventoryStyle = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#909090',
+    padding: 1,
+  },
+
+  noWidth: {
+    width: 50,
+    textAlign: 'left',
+    padding: 10,
+  },
+  catName: {
+    textAlign: 'left',
+    minWidth: 400,
+    padding: 10,
+  },
+  textCell: {
+    marginTop: 5,
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-SemiBold',
+  },
   container: {
     backgroundColor: '#F9F9F9',
     flex: 1,
@@ -249,7 +300,7 @@ export const CategoryInventoryStyle = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   input: {
     width: '40%',
@@ -284,17 +335,15 @@ export const CategoryInventoryStyle = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     width: '100%',
-    height: 250,
+    height: 280,
+    marginTop: -5,
   },
   textHeader: {
     color: '#000',
     fontSize: 15,
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily: 'Quicksand-Bold',
   },
   horContainer: {
     flexDirection: 'row',
-  },
-  list: {
-    width: '95%',
   },
 });

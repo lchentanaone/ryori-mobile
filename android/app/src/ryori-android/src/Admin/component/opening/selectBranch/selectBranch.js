@@ -19,16 +19,9 @@ export default function Branches({navigation}) {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.get(
-        `${API_URL}/store/${store_Id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-
-        {headers},
-      );
+      const response = await axios.get(`${API_URL}/store/${store_Id}`, {
+        headers,
+      });
       setStoreData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -39,9 +32,7 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      console.log(`${API_URL}/branch/?store_Id=${store_Id}`);
       const response = await axios.get(
         `${API_URL}/branch/?store_Id=${store_Id}`,
         {
@@ -50,9 +41,9 @@ export default function Branches({navigation}) {
           },
           store_Id,
         },
-        {headers},
       );
       setBranchData(response.data);
+      console.log(response.data);
       // if (response.data.length === 1) {
       //   navigation.navigate('Drawer');
       // }
@@ -79,11 +70,10 @@ export default function Branches({navigation}) {
   const handleBranchSelection = async branchId => {
     try {
       await AsyncStorage.setItem('branch_Id', branchId.toString());
-      const getBranch_Id = await AsyncStorage.getItem('branch_Id');
 
       navigation.navigate('Drawer');
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error(error);
     }
   };
 
@@ -104,7 +94,7 @@ export default function Branches({navigation}) {
               <View key={index}>
                 <TouchableOpacity
                   style={styles.branchBtn}
-                  onPress={() => handleBranchSelection(branch.id)}>
+                  onPress={() => handleBranchSelection(branch._id)}>
                   <Text style={styles.branchText}>{branch.branchName}</Text>
                 </TouchableOpacity>
               </View>
@@ -112,7 +102,12 @@ export default function Branches({navigation}) {
           </ScrollView>
           <TouchableOpacity
             style={styles.addBranchBtn}
-            onPress={() => navigation.navigate('New-Store-Branch', {type: 'branch', store: storeData})}>
+            onPress={() =>
+              navigation.navigate('New-Store-Branch', {
+                type: 'branch',
+                store: storeData,
+              })
+            }>
             <Entypo name="plus" style={styles.addIcon} />
             <Text style={styles.addBranchText}>Add new Branch</Text>
           </TouchableOpacity>
@@ -121,7 +116,12 @@ export default function Branches({navigation}) {
       <TouchableOpacity
         style={{alignItems: 'center', marginTop: 30}}
         onPress={handleLogout}>
-        <Text style={{fontSize: 15, fontFamily: 'Quicksand-SemiBold'}}>
+        <Text
+          style={{
+            color: '#606060',
+            fontSize: 15,
+            fontFamily: 'Quicksand-SemiBold',
+          }}>
           Logout
         </Text>
       </TouchableOpacity>

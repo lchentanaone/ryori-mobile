@@ -19,7 +19,10 @@ export const DashboardStyle = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
   },
   storebranch: {
+    letterSpacing: 0.5,
     marginBottom: 5,
+    color: '#404040',
+    fontFamily: 'Quicksand-SemiBold',
   },
   dashBTitleSearchB: {
     alignItems: 'center',

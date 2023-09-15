@@ -19,108 +19,107 @@ import UserCredentials from '../Admin/component/drawer/profileAdmin/UserCredenti
 
 const Stack = createStackNavigator();
 export const StoreSettingsNavigators = () => (
-    <Stack.Navigator>
-        <Stack.Screen
-          component={StoreSetting}
-          name="Store Setting"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={UpdateStore}
-          name="Update Store"
-          options={{headerShown: false}}
-        />
-    </Stack.Navigator>
-)
+  <Stack.Navigator>
+    <Stack.Screen
+      component={StoreSetting}
+      name="Store Setting"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={UpdateStore}
+      name="Update Store"
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
 export const MenuNavigators = () => (
-    <Stack.Navigator>
-        <Stack.Screen
-          component={Menu}
-          name="Menu"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={AddMenu}
-          name="Add new menu"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={MenuDetails}
-          name="menu-details"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={UpdateMenu}
-          name="Update Menu"
-          options={{headerShown: false}}
-        />
-    </Stack.Navigator>
-)
+  <Stack.Navigator>
+    <Stack.Screen
+      component={Menu}
+      name="Menus"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={AddMenu}
+      name="Add new menu"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={MenuDetails}
+      name="menu-details"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={UpdateMenu}
+      name="Update Menu"
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
 export const ProfileNavigators = () => (
-    <Stack.Navigator>
-        <Stack.Screen
-          component={ProfileAdmin}
-          name="Profile"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={UserCredentials}
-          name="User Credential"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={UpdateProfileAdmin}
-          name="Update Admin"
-          options={{headerShown: false}}
-        />
-    </Stack.Navigator>
-)
+  <Stack.Navigator>
+    <Stack.Screen
+      component={ProfileAdmin}
+      name="Profile"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={UserCredentials}
+      name="User Credential"
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      component={UpdateProfileAdmin}
+      name="Update Admin"
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
 
 export const AdminNavigators = () => {
   return (
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: 'white',
-          },
-          headerTintColor: 'black',
-          headerBackTitle: 'Back',
-          headerTitleAlign: 'center',
-          animationEnabled: false,
-        }}>        
-        <Stack.Screen
-          component={Dashboard}
-          name="Dashboard"
-          options={{headerShown: false}}
-        />
-        
-        <Stack.Screen
-          component={ReportOfTransaction}
-          name="Report of Transaction"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={ReportOfFood}
-          name="Report of Food"
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          component={Inventory}
-          name="Inventory"
-          options={{headerShown: false}}
-        />
-        
-        <Stack.Screen
-          component={Employees}
-          name="Employees"
-          options={{headerShown: false}}
-        />
-        
-        <Stack.Screen
-          component={Branches}
-          name="Select Branch"
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'white',
+        },
+        headerTintColor: 'black',
+        headerBackTitle: 'Back',
+        headerTitleAlign: 'center',
+        animationEnabled: false,
+      }}>
+      <Stack.Screen
+        component={Dashboard}
+        name="Dashboard"
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        component={ReportOfTransaction}
+        name="Report of Transaction"
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        component={ReportOfFood}
+        name="Report of Food"
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        component={Inventory}
+        name="Inventory"
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        component={Employees}
+        name="Employees"
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        component={Branches}
+        name="Select Branch"
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
   );
 };

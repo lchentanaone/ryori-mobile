@@ -1,20 +1,24 @@
 import React, {useState} from 'react';
 import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import {openingStyles} from './opening-style';
-import ryoriText from '../../images/ryori-text.png';
+import ryoriText from '../../images/ryori-red.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../utils/constants'
-import {
-  OrientationLocker,
-  PORTRAIT,
-  LANDSCAPE,
-} from 'react-native-orientation-locker';
+import {API_URL} from '../../../utils/constants';
+import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
+import DialogModal from '../../../utils/dialog';
+import {Dialog} from '@rneui/themed';
 
 export default function Login({navigation}) {
-
-  const [email, setEmail] = useState('ryoriapp@gmail.com');
-  const [password, setPassword] = useState('ryori2023');
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [visible1, setVisible1] = useState(false);
+  // ryoriapp@gmail.com
+  // ryori2023
+  const toggleDialog1 = () => {
+    setVisible1(!visible1);
+  };
 
   const handleLogin = async () => {
     try {
@@ -38,22 +42,31 @@ export default function Login({navigation}) {
           response.data.branch_Id.toString(),
         );
       }
-      if (response.data.role === 'Kitchen') {
+      if (response.data.role === 'kitchen') {
         navigation.navigate('Kitchen');
-      } else if (response.data.role === 'Admin') {
+      } else if (response.data.role === 'admin') {
         if (response.data.store_Id) {
           navigation.navigate('Select Branch');
         } else {
           navigation.navigate('New-Store-Branch', {type: 'store'});
         }
-      } else if (response.data.role === 'Dining') {
+      } else if (response.data.role === 'dining') {
         navigation.navigate('DiningBottomNavigator');
+      } else if (response.data.role === 'manager') {
+        navigation.navigate('ManagerTab');
+      } else {
+        setError('Invalid email or password');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
+      if (error.response && error.response.status === 401) {
+        setError('Incorrect email or password');
+      } else {
+        setError('An error occurred, please try again');
+      }
     }
+    setEmail('');
+    setPassword('');
   };
-
   return (
     <>
       <OrientationLocker
@@ -75,23 +88,29 @@ export default function Login({navigation}) {
             mode="outlined"
             style={openingStyles.input}
             placeholder="Email"
+            placeholderTextColor={'#777777'}
             value={email}
             onChangeText={setEmail}
           />
           <TextInput
             mode="outlined"
             style={openingStyles.input}
+            secureTextEntry={true}
             placeholder="Password"
+            placeholderTextColor={'#777777'}
             value={password}
             // secureTextEntry={true}
             onChangeText={setPassword}
           />
           <View style={openingStyles.forgotBtn}>
-            <TouchableOpacity style={openingStyles.textBtbOpacity}>
+            <TouchableOpacity
+              style={openingStyles.textBtbOpacity}
+              onPress={toggleDialog1}>
               <Text style={openingStyles.forgotText}>Forgot Password</Text>
             </TouchableOpacity>
           </View>
           <View style={openingStyles.SignIn}>
+            {error ? <Text style={{color: '#ff0000'}}>{error}</Text> : null}
             <TouchableOpacity
               style={openingStyles.SignInOpacity}
               onPress={handleLogin}>
@@ -106,6 +125,9 @@ export default function Login({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
+        <Dialog isVisible={visible1} onBackdropPress={toggleDialog1}>
+          <DialogModal />
+        </Dialog>
       </View>
     </>
   );

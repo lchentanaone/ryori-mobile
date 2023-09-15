@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {CategoryInventoryStyle as styles} from './inventory-style';
 import {DataTable} from 'react-native-paper';
@@ -16,6 +17,8 @@ export default function InventoryCategory() {
   const [category, setCategory] = useState([]);
   const [title, setTitle] = useState('');
   const [itemOnEdit, setItemOnEdit] = useState('');
+  const [errors, setErrors] = useState([]);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const API_URL = 'http://10.0.2.2:3000';
 
@@ -40,48 +43,50 @@ export default function InventoryCategory() {
   };
 
   const handlePostInventory = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const newData = [...category, {title}];
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+    if (!title) {
+      setErrors('Category name is required');
+    } else {
+      setErrors('');
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const branch_Id = await AsyncStorage.getItem('branch_Id');
+        const newData = [...category, {title}];
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
-      if (itemOnEdit !== '') {
-        await axios.patch(
-          `${API_URL}/inventory/rawcategory/${itemOnEdit}`,
-          {
-            branch_Id,
-            title,
-          },
-          {headers},
-        );
-        setTitle('');
-        fetchItems();
-        setCategory(newData);
-      } else {
-        // New
-        const test = await axios.post(
-          `${API_URL}/inventory/rawcategory/`,
-          {
-            branch_Id,
-            title,
-          },
-          {headers},
-        );
-        setTitle('');
-        fetchItems();
-        setCategory(newData);
+        if (itemOnEdit) {
+          await axios.patch(
+            `${API_URL}/inventory/rawcategory/${itemOnEdit}`,
+            {
+              branch_Id,
+              title,
+            },
+            {headers},
+          );
+          fetchItems();
+          setCategory(newData);
+        } else {
+          await axios.post(
+            `${API_URL}/inventory/rawcategory/`,
+            {
+              branch_Id,
+              title,
+            },
+            {headers},
+          );
+          fetchItems();
+          setCategory(newData);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
     setTitle('');
   };
 
   const handleEdit = item => {
-    setItemOnEdit(item.id);
+    setItemOnEdit(item._id);
     setTitle(item.title);
   };
 
@@ -100,6 +105,28 @@ export default function InventoryCategory() {
       console.error(error);
     }
   };
+  const showDeleteConfirmation = _id => {
+    setItemToDelete(_id);
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => setItemToDelete(null), // Clear the item to delete
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            handleDeleteItem(_id); // Call the delete function if confirmed
+            setItemToDelete(null); // Clear the item to delete
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   useEffect(() => {
     fetchItems();
@@ -113,7 +140,7 @@ export default function InventoryCategory() {
           <TextInput
             mode="outlined"
             style={styles.input}
-            placeholder="Title"
+            placeholder="Category name"
             placeholderTextColor="#777777"
             value={title}
             onChangeText={setTitle}
@@ -124,49 +151,45 @@ export default function InventoryCategory() {
             <Text style={styles.btnText}>Save</Text>
           </TouchableOpacity>
         </View>
-
+        {errors ? (
+          <Text style={{color: '#ff0000', top: -9}}>{errors}</Text>
+        ) : null}
         <View style={styles.tableWidth}>
-          <DataTable style={styles.list}>
-            <DataTable.Header style={styles.tableHeader}>
-              <DataTable.Title>
-                <Text style={styles.textHeader}>ID</Text>
-              </DataTable.Title>
-              <DataTable.Title>
-                <Text style={styles.textHeader}>Name</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.menuC2}>
-                <Text style={styles.textHeader}>Action</Text>
-              </DataTable.Title>
-            </DataTable.Header>
-            <ScrollView>
+          <View>
+            <View style={styles.row}>
+              <Text style={[styles.textHeader, styles.noWidth]}>No.</Text>
+              <Text style={[styles.textHeader, styles.catName]}>
+                Category Name
+              </Text>
+              <Text style={[styles.textHeader, styles.catName]}>Action</Text>
+            </View>
+            <ScrollView style={{height: 230}}>
               {category.map((item, index) => (
-                <View key={index}>
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <Text style={styles.textCell}>{item.id}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <Text style={styles.textCell}>{item.title}</Text>
-                    </DataTable.Cell>
-                    <DataTable.Cell>
-                      <View style={Styles.horContainer}>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnTertiary}}
-                          onPress={() => handleEdit(item)}>
-                          <Text style={Styles.btnText}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{...Styles.btn, ...Styles.btnWarning}}
-                          onPress={() => handleDeleteItem(item.id)}>
-                          <Text style={Styles.btnText}>Delete</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                <View key={index} style={styles.row}>
+                  <Text style={[styles.textCell, styles.noWidth]}>
+                    {index + 1}
+                  </Text>
+                  <Text style={[styles.textCell, styles.catName]}>
+                    {item.title}
+                  </Text>
+                  <Text style={[styles.catName]}>
+                    <View style={Styles.horContainer}>
+                      <TouchableOpacity
+                        style={{...Styles.btn, ...Styles.btnTertiary}}
+                        onPress={() => handleEdit(item)}>
+                        <Text style={Styles.btnText}>Edit</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{...Styles.btn, ...Styles.btnWarning}}
+                        onPress={() => showDeleteConfirmation(item._id)}>
+                        <Text style={Styles.btnText}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </Text>
                 </View>
               ))}
             </ScrollView>
-          </DataTable>
+          </View>
         </View>
       </View>
     </View>

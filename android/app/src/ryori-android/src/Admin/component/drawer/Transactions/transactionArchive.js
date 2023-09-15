@@ -25,7 +25,7 @@ export default function TransactionArchive() {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(
-        `${API_URL}/pos/transaction?branch_Id=${branch_Id}`,
+        `${API_URL}/pos/transaction/nottoday?branch_Id=${branch_Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -34,12 +34,7 @@ export default function TransactionArchive() {
         {headers},
       );
 
-      // const status = response.data.filter(
-      //   transactionStatus => transactionStatus.status === 'done',
-      // );
-
       setTransactionData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -62,12 +57,18 @@ export default function TransactionArchive() {
               page={page}
               numberOfPages={Math.ceil(transactionData.length / itemsPerPage)}
               onPageChange={page => setPage(page)}
-              label={`${from + 1}-${to} of ${transactionData.length}`}
+              label={
+                <Text style={{color: '#000'}}>
+                  {from + 1}-{to} of {transactionData.length}
+                </Text>
+              }
               numberOfItemsPerPageList={numberOfItemsPerPageList}
               numberOfItemsPerPage={itemsPerPage}
               onItemsPerPageChange={onItemsPerPageChange}
               showFastPaginationControls
-              selectPageDropdownLabel={'Rows per page'}
+              selectPageDropdownLabel={
+                <Text style={{color: '#000'}}>Rows per page</Text>
+              }
             />
           </View>
           <View style={TransactionStyle.table}>
@@ -94,7 +95,9 @@ export default function TransactionArchive() {
                   <View key={index}>
                     <DataTable.Row style={{borderBottomWidth: 1}}>
                       <DataTable.Cell>
-                        <Text style={TransactionStyle.cellData}>{item.id}</Text>
+                        <Text style={TransactionStyle.cellData}>
+                          {index + 1}
+                        </Text>
                       </DataTable.Cell>
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>

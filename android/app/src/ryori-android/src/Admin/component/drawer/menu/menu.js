@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,9 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
-import SkeletonItem from '../../../../utils/skeletonItem'
+import SkeletonItem from '../../../../utils/skeletonItem';
 import defaultPhoto from '../../../images/no-image.png';
+import {useFocusEffect} from '@react-navigation/native';
 
 const filterAvalable = [
   {label: 'Available', value: 'Available'},
@@ -40,6 +41,9 @@ export default function Menu({navigation}) {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
+      console.log(
+        `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
+      );
       const response = await axios.get(
         `${API_URL}/menuItem?store_Id=${store_Id}&branch_Id=${branch_Id}`,
         {
@@ -57,7 +61,7 @@ export default function Menu({navigation}) {
   const handleMenuModal = async item => {
     setSelectedItem(item);
     try {
-      const response = await axios.get(`${API_URL}/menuItem/${item.id}`);
+      const response = await axios.get(`${API_URL}/menuItem/${item._id}`);
       setItemDetails(response.data);
       setModalVisible(true);
     } catch (error) {
@@ -65,9 +69,13 @@ export default function Menu({navigation}) {
     }
   };
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      console.log('menu is called');
+      fetchItems();
+    }, []),
+  );
+
   return (
     <View style={MenuStyle.menuContainer}>
       <View style={MenuStyle.menuContent}>
@@ -83,6 +91,8 @@ export default function Menu({navigation}) {
               </TouchableOpacity>
             </View>
           </View>
+          {/* 
+          FUTURE
           <View style={MenuStyle.menuC2}>
             <View style={MenuStyle.searchbar}>
               <FontAwesome name="search" style={MenuStyle.SearchIcon} />
@@ -143,40 +153,45 @@ export default function Menu({navigation}) {
                 />
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
 
         <View style={{height: 300}}>
           <ScrollView>
             <View style={MenuStyle.menuItemRow}>
-              {items.length > 0 ? 
-              items.map((item, index) => (
-                <View key={index}>
-                  <TouchableOpacity
-                    style={MenuStyle.menuItems}
-                    onPress={() => handleMenuModal(item)}>
-                    <Image
-                      source={item.photo ? {uri: item.photo} : defaultPhoto}
-                      style={MenuStyle.menuImages}
-                    />
-                    <View style={{paddingHorizontal: 10}}>
-                      <Text style={MenuStyle.menuLabels}>{item.title}</Text>
-                    </View>
-                    <View style={MenuStyle.priceQtyBottom}>
-                      <View style={MenuStyle.priceQty}>
-                        <View style={MenuStyle.price}>
-                          <Text style={MenuStyle.menuPrice}>
-                            ₱ {item.price}
+              {items.length > 0 ? (
+                items.map((item, index) => (
+                  <View key={index}>
+                    <TouchableOpacity
+                      style={MenuStyle.menuItems}
+                      onPress={() => handleMenuModal(item)}>
+                      <Image
+                        source={item.photo ? {uri: item.photo} : defaultPhoto}
+                        style={MenuStyle.menuImages}
+                      />
+                      <View style={{paddingHorizontal: 10}}>
+                        <Text style={MenuStyle.menuLabels}>{item.title}</Text>
+                      </View>
+                      <View style={MenuStyle.priceQtyBottom}>
+                        <View style={MenuStyle.priceQty}>
+                          <View style={MenuStyle.price}>
+                            <Text style={MenuStyle.menuPrice}>
+                              ₱ {item.price}
+                            </Text>
+                          </View>
+                          <Text style={MenuStyle.menuQty}>
+                            Qty: {item.quantity}
                           </Text>
                         </View>
-                        <Text style={MenuStyle.menuQty}>
-                          Qty: {item.quantity}
-                        </Text>
                       </View>
-                    </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                  </View>
+                ))
+              ) : (
+                <View>
+                  <SkeletonItem />
                 </View>
-              )) : (<View><SkeletonItem /></View>)}
+              )}
             </View>
           </ScrollView>
         </View>
@@ -196,7 +211,11 @@ export default function Menu({navigation}) {
                 <View style={MenuStyle.menuItems1}>
                   <View style={MenuStyle.menuImagesCon}>
                     <Image
-                      source={itemDetails.photo ? {uri: itemDetails.photo} : defaultPhoto}
+                      source={
+                        itemDetails.photo
+                          ? {uri: itemDetails.photo}
+                          : defaultPhoto
+                      }
                       style={MenuStyle.menuImages1}
                     />
                   </View>
@@ -214,22 +233,25 @@ export default function Menu({navigation}) {
                     {itemDetails.description}
                   </Text>
 
-                  <View style={MenuStyle.modalBtn}>
-                    <TouchableOpacity
-                      style={MenuStyle.updateModalBtn}
-                      onPress={() =>
-                        navigation.navigate('menu-details', {
-                          item: selectedItem,
-                          type: 'edit',
-                        })
-                      }>
-                      <Text style={MenuStyle.modalBtnText}>Update</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={MenuStyle.updateModalBtn}
-                      onPress={() => setModalVisible(false)}>
-                      <Text style={MenuStyle.modalBtnText}>Close</Text>
-                    </TouchableOpacity>
+                  <View style={MenuStyle.menuModalBtn}>
+                    <View style={MenuStyle.modalBtn}>
+                      <TouchableOpacity
+                        style={MenuStyle.updateModalBtn}
+                        onPress={() => {
+                          setModalVisible(false);
+                          navigation.navigate('menu-details', {
+                            item: selectedItem,
+                            type: 'edit',
+                          });
+                        }}>
+                        <Text style={MenuStyle.modalBtnText}>Update</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={MenuStyle.closeModal}
+                        onPress={() => setModalVisible(false)}>
+                        <Text style={MenuStyle.modalBtnText}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </>

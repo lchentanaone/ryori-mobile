@@ -4,16 +4,18 @@ import {setUpStoreStyles as setStore} from './opening-style';
 import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {API_URL} from '../../../utils/constants'
+import {API_URL} from '../../../utils/constants';
 import defaultPhoto from '../../../Admin/images/no-image.png';
 
 export default function SetupStore({navigation, route}) {
-
   const {type} = route.params;
   const title = type === 'branch' ? 'New Branch' : 'New Store';
-  const [photo, setPhoto] = useState(route.params.store.photo || null)
+  const [photo, setPhoto] = useState(route.params.store?.photo || null);
+  const [errors, setErrors] = useState('');
 
-  const [storeName, setStoreName] = useState(route.params.store.storeName || '');
+  const [storeName, setStoreName] = useState(
+    route.params.store?.storeName || '',
+  );
   const [store_Id, setStore_Id] = useState('');
   const [email, setEmail] = useState('');
   const [branchName, setBranchName] = useState('');
@@ -38,31 +40,34 @@ export default function SetupStore({navigation, route}) {
     const token = await AsyncStorage.getItem('access_token');
 
     const headers = {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'multipart/form-data',
     };
 
-    const fileType = /(?:\.([^.]+))?$/.exec(photo)[1]
-    const randomFileName = (new Date().valueOf()).toString() + "." +fileType
-    const formData = new FormData();
-    formData.append('storeName', storeName);
-    formData.append('photo', {
-      uri: photo,
-      name: randomFileName,
-      type: 'image/jpeg',
-    });
-    formData.append('branchName', branchName);
-    formData.append('email', email);
-    formData.append('contactNumber', contactNumber);
-    formData.append('address', address);
-    formData.append('store_Id', store_Id);
+    try {
+      const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
+      const randomFileName = new Date().valueOf().toString() + '.' + fileType;
+      const formData = new FormData();
+      formData.append('storeName', storeName);
+      formData.append('photo', {
+        uri: photo,
+        name: randomFileName,
+        type: 'image/jpeg',
+      });
+      formData.append('branchName', branchName);
+      formData.append('email', email);
+      formData.append('contactNumber', contactNumber);
+      formData.append('address', address);
+      formData.append('store_Id', store_Id);
 
-    const response = await axios.post(
-      `${API_URL}/store`,
-      formData,
-      {headers},
-    );
-    AsyncStorage.setItem('store_Id', response.data.id.toString());
+      const response = await axios.post(`${API_URL}/store`, formData, {
+        headers,
+      });
+      await AsyncStorage.setItem('store_Id', response.data._id.toString());
+      await AsyncStorage.setItem('branch_Id', response.data.branches[0]._id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleAddBranch = async () => {
@@ -70,29 +75,38 @@ export default function SetupStore({navigation, route}) {
     const store_Id = await AsyncStorage.getItem('store_Id');
     const headers = {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
-    const response = await axios.post(
-      `${API_URL}/branch`,
-      {
-        branchName,
-        email,
-        contactNumber,
-        address,
-        store_Id,
-      },
-      {headers},
-    );
+    try {
+      const response = await axios.post(
+        `${API_URL}/branch`,
+        {
+          branchName,
+          email,
+          contactNumber,
+          address,
+          store_Id,
+        },
+        {headers},
+      );
+      await AsyncStorage.setItem('branch_Id', response.data._id);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleSave = async () => {    
-    if(type === 'branch') {
-      await handleAddBranch();
+  const handleSave = async () => {
+    if (!photo || !storeName || !branchName) {
+      setErrors('Logo, Store, and Branch name must be provided');
+    } else {
+      setErrors('');
+      if (type === 'branch') {
+        await handleAddBranch();
+      } else {
+        await handleAddStoreWithBranch();
+      }
+      navigation.navigate('Drawer');
     }
-    else {
-      await handleAddStoreWithBranch();
-    }
-    navigation.navigate('Drawer');
   };
 
   return (
@@ -105,7 +119,7 @@ export default function SetupStore({navigation, route}) {
           <Text style={setStore.storeLogoText}>Store Logo</Text>
           <View style={setStore.logo}>
             <Image
-              source={ photo ? {uri: photo} : defaultPhoto}
+              source={photo ? {uri: photo} : defaultPhoto}
               style={{width: '100%', height: 150}}
             />
           </View>
@@ -113,24 +127,30 @@ export default function SetupStore({navigation, route}) {
             <View style={setStore.uploadLogoBtn}>
               <TouchableOpacity
                 style={setStore.uploadLogoOpacity}
-                onPress={handleChoosePhoto}
-                // onPress={() => navigation.navigate('BottomNavs')}
-                >
+                onPress={handleChoosePhoto}>
                 <Text style={setStore.uploadLogoTextBtn}>Upload</Text>
               </TouchableOpacity>
             </View>
           )}
         </View>
         <View style={setStore.uploadLogoC}>
+          <TextInput
+            mode="outlined"
+            style={setStore.storeInput}
+            placeholder="Store Name"
+            placeholderTextColor="#777777"
+            value={storeName}
+            onChangeText={setStoreName}
+            editable={type === 'store'}
+          />
           <View style={setStore.setupRow}>
             <TextInput
               mode="outlined"
               style={setStore.setupInput}
-              placeholder="Store Name"
+              placeholder="Branch Name"
               placeholderTextColor="#777777"
-              value={storeName}
-              onChangeText={setStoreName}
-              editable={type==='store'}
+              value={branchName}
+              onChangeText={setBranchName}
             />
             <TextInput
               mode="outlined"
@@ -145,35 +165,30 @@ export default function SetupStore({navigation, route}) {
             <TextInput
               mode="outlined"
               style={setStore.setupInput}
-              placeholder="Branch Name"
-              placeholderTextColor="#777777"
-              value={branchName}
-              onChangeText={setBranchName}
-            />
-            <TextInput
-              mode="outlined"
-              style={setStore.setupInput}
               placeholder="Address"
               placeholderTextColor="#777777"
               value={address}
               onChangeText={setAddress}
             />
-          </View>
-          <View style={setStore.setupRow}>
             <TextInput
               mode="outlined"
               style={setStore.setupInput}
               placeholder="Contact Number"
               placeholderTextColor="#777777"
+              keyboardType="numeric"
               value={contactNumber}
               onChangeText={setContactNumber}
             />
+          </View>
+
+          <View style={setStore.setupRow}>
             <View style={setStore.saveStore}>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+              )}
               <TouchableOpacity
                 style={setStore.saveStoreOpacity}
-                onPress={handleSave}
-                // onPress={() => navigation.navigate('Drawer')}
-              >
+                onPress={handleSave}>
                 <Text style={setStore.saveStoreTextBtn}>Save</Text>
               </TouchableOpacity>
             </View>

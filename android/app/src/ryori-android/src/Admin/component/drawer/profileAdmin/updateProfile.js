@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 
-export default function UpdateProfileAdmin({route}) {
+export default function UpdateProfileAdmin({route, navigation}) {
+  const [errors, setErrors] = useState('');
   const {userId} = route.params;
   const [userData, setUserData] = useState(null);
 
@@ -23,27 +24,39 @@ export default function UpdateProfileAdmin({route}) {
       console.error('Error fetching user data:', error);
     }
   };
+
   const updateUserData = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      await axios.patch(
-        `${API_URL}/user/${userId}`,
-        {
-          username: userData.username,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          phone: userData.phone,
-          role: userData.role,
-        },
-        {headers},
-      );
-      console.log({userData});
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    if (
+      !userData.firstName ||
+      !userData.lastName ||
+      !userData.username ||
+      !userData.phone
+    ) {
+      setErrors('All fields are required.');
+    } else {
+      setErrors('');
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        await axios.patch(
+          `${API_URL}/user/${userId}`,
+          {
+            username: userData.username,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            phone: userData.phone,
+            role: userData.role,
+          },
+          {headers},
+        );
+        console.log({userData});
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     }
+    navigation.navigate('Profile');
   };
 
   const handleChangeText = (key, value) => {
@@ -65,9 +78,6 @@ export default function UpdateProfileAdmin({route}) {
             <View style={styles.columnView}>
               <View style={styles.profileUpdate}>
                 <Image source={adminImg} style={styles.profilepic} />
-                <TouchableOpacity style={styles.updateBtn}>
-                  <Text style={styles.buttonsText}>Upload</Text>
-                </TouchableOpacity>
               </View>
               <View style={styles.updateAdminInfo}>
                 <View style={styles.updateInput}>
@@ -128,6 +138,9 @@ export default function UpdateProfileAdmin({route}) {
                   }}
                 />
                 <View style={styles.saveAdminInfo}>
+                  {errors !== '' && (
+                    <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+                  )}
                   <TouchableOpacity
                     style={styles.updateBtn}
                     onPress={updateUserData}>

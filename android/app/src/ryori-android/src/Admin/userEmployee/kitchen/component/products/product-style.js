@@ -5,7 +5,7 @@ export const prodStyle = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     position: 'relative',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 20,
   },
   crewHeader: {
@@ -86,7 +86,7 @@ export const prodStyle = StyleSheet.create({
     color: '#000',
   },
   //Tables
-  Table: {
+  table: {
     marginTop: 20,
     width: '100%',
   },
@@ -125,15 +125,15 @@ export const prodStyle = StyleSheet.create({
     paddingRight: 10,
     fontFamily: 'Quicksand-Bold',
   },
-  qtyIcon: {
-    width: 30,
-    height: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  porklistQty: {
-    color: '#000',
-    fontSize: 15,
-    fontFamily: 'Quicksand-Bold',
-  },
+  // qtyIcon: {
+  //   width: 30,
+  //   height: 20,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+  // porklistQty: {
+  //   color: '#000',
+  //   fontSize: 15,
+  //   fontFamily: 'Quicksand-Bold',
+  // },
 });
