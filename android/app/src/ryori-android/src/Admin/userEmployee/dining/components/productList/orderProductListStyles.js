@@ -115,7 +115,7 @@ export const OrderListStyles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Quicksand-SemiBold',
     color: '#000',
-    fontSize: 16,
+    fontSize: 14,
   },
   viewProfileText: {
     fontFamily: 'Quicksand-SemiBold',

@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Products from './component/products/product';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PreparingOrderTab from './component/activeOrder/preparingOrderTab';
@@ -26,9 +26,9 @@ export default function KitchenBottomNavigator() {
           tabBarLabel: 'Active Order',
           tabBarIcon: ({focused, size}) => (
             <FontAwesome
-              name="shopping-cart"
+              name="list-alt"
               color={focused ? '#db1a1c' : '#464646'}
-              size={40}
+              size={30}
             />
           ),
         }}
@@ -40,10 +40,10 @@ export default function KitchenBottomNavigator() {
           headerShown: false,
           tabBarLabel: 'Product',
           tabBarIcon: ({focused, size}) => (
-            <MaterialCommunityIcons
-              name="food-turkey"
+            <MaterialIcons
+              name="inventory"
               color={focused ? '#db1a1c' : '#464646'}
-              size={45}
+              size={30}
             />
           ),
         }}

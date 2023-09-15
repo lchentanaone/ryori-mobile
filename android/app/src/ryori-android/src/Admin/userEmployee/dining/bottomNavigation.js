@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import OrderProductList from './components/productList/orderProductList';
 import DoneOrder from './components/productList/doneOrderTab';
 
@@ -23,11 +23,11 @@ export default function DiningBottomNavigator() {
         options={{
           headerShown: false,
           tabBarLabel: 'Product',
-          tabBarIcon: ({focused}) => (
-            <FontAwesome
-              name="shopping-cart"
+          tabBarIcon: ({focused, size}) => (
+            <MaterialCommunityIcons
+              name="cart"
               color={focused ? '#db1a1c' : '#464646'}
-              size={40}
+              size={30}
             />
           ),
         }}
@@ -38,11 +38,11 @@ export default function DiningBottomNavigator() {
         options={{
           headerShown: false,
           tabBarLabel: 'Done',
-          tabBarIcon: ({focused}) => (
-            <FontAwesome
+          tabBarIcon: ({focused, size}) => (
+            <MaterialCommunityIcons
               name="check-circle"
-              color={focused ? '#db1a1c' : '#464646'}
-              size={40}
+              color={focused ? '#12BF38' : '#464646'}
+              size={30}
             />
           ),
         }}
