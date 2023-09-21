@@ -277,7 +277,7 @@ export default function Employees() {
                     </Text>
 
                     <Text style={[styles.cell, styles.nameCell]}>
-                      {user.firstName}
+                      {user.lastName}
                     </Text>
                     <Text style={[styles.cell, styles.usernameEmail]}>
                       {user.username}
