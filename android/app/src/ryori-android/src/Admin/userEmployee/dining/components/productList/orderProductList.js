@@ -23,11 +23,13 @@ import SkeletonItem from '../../../../../utils/skeletonItem';
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [expanded, setExpanded] = useState(false);
-  const handlePress = () => setExpanded(!expanded);
+  const handlePress = () => {
+    setExpanded(!expanded);
+  };
   const [total, setTotal] = useState(0);
   const [transactionData, setTransactionData] = useState([]);
   const [table, setTable] = useState();
-  const [charge, setCharge] = useState(null);
+  const [charges, setCharges] = useState(null);
   const [discount, setDiscount] = useState(null);
 
   const fetchUserData = async () => {
@@ -52,7 +54,6 @@ export default function OrderProductList({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -75,14 +76,14 @@ export default function OrderProductList({navigation}) {
     }
   };
 
-  const updateTransStatus = async (id, newStatus) => {
+  const updateTransStatus = async (_id, newStatus) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.patch(
-        `${API_URL}/pos/transaction/${id}`,
+        `${API_URL}/pos/transaction/${_id}`,
         {
           status: newStatus,
           table,
@@ -96,14 +97,14 @@ export default function OrderProductList({navigation}) {
     }
   };
 
-  const updateTransactionItem = async (id, newStatus) => {
+  const updateTransactionItem = async (_id, newStatus) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.patch(
-        `${API_URL}/pos/transactionItem/${id}`,
+        `${API_URL}/pos/transactionItem/${_id}`,
         {
           status: newStatus,
         },
@@ -115,11 +116,11 @@ export default function OrderProductList({navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
-  const deleteTransactionItem = async id => {
+  const deleteTransactionItem = async _id => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const response = await axios.delete(
-        `${API_URL}/pos/transactionItem/${id}`,
+        `${API_URL}/pos/transactionItem/${_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -143,213 +144,6 @@ export default function OrderProductList({navigation}) {
     setTransactionData(tempData);
   };
 
-  // return (
-  //   <>
-  //     <OrientationLocker
-  //       orientation={PORTRAIT}
-  //       onChange={orientation => console.log('onChange', orientation)}
-  //       onDeviceChange={orientation =>
-  //         console.log('onDeviceChange', orientation)
-  //       }
-  //     />
-  //     <View style={styles.orderProducts}>
-  //       <View style={styles.crewHeader}>
-  //         <View style={styles.ryoriIconTitle}>
-  //           <Image source={redRyori} style={styles.ryori} />
-  //           <Text style={styles.ryoriIconText}>Orders</Text>
-  //         </View>
-  //         {userData ? (
-  //           <TouchableOpacity
-  //             style={styles.viewProfile}
-  //             onPress={() => navigation.navigate('Profile Employee')}>
-  //             <Image source={male} style={styles.crewImage} />
-  //             <View style={{top: -5, left: 5}}>
-  //               <Text style={styles.crewName}>{userData.firstName}</Text>
-  //               <Text style={styles.viewProfileText}>View Profile</Text>
-  //             </View>
-  //           </TouchableOpacity>
-  //         ) : (
-  //           <Text>Loading user...</Text>
-  //         )}
-  //       </View>
-  //       <View
-  //         style={{
-  //           width: '100%',
-  //         }}>
-  //         <View style={styles.accordions}>
-  //           <ScrollView>
-  //             {transactionData.map((item, index) => (
-  //               <List.Section key={index}>
-  //                 <View style={styles.accordionList}>
-  //                   <List.Accordion
-  //                     title={`Table # ${item.table} ${item.id}`}
-  //                     titleStyle={{
-  //                       fontFamily: 'Quicksand-SemiBold',
-  //                       fontSize: 18,
-  //                     }}
-  //                     theme={{colors: {primary: '#000'}}}
-  //                     onPress={handlePress}
-  //                     left={props => (
-  //                       <FontAwesome
-  //                         name="circle"
-  //                         color={'#FF7A00'}
-  //                         size={20}
-  //                       />
-  //                     )}>
-  //                     {item.transactionItem.map((transItem, transIndex) => (
-  //                       <View key={transIndex} style={styles.table}>
-  //                         <View style={styles.qtyItem}>
-  //                           <Text style={styles.quantity}>
-  //                             {transItem.quantity}
-  //                           </Text>
-  //                           <Text style={styles.item}>
-  //                             {transItem.menuItem.title || ''}
-  //                           </Text>
-  //                         </View>
-  //                         <View style={styles.buttons}>
-  //                           {transItem.status === 'new' && (
-  //                             <View
-  //                               style={{
-  //                                 flexDirection: 'row',
-  //                               }}>
-  //                               <TouchableOpacity
-  //                                 style={styles.newOrder}
-  //                                 onPress={() =>
-  //                                   updateTransactionItem(
-  //                                     transItem.id,
-  //                                     'preparing',
-  //                                   )
-  //                                 }>
-  //                                 <AntDesign
-  //                                   name="checkcircle"
-  //                                   color={'#0085ff'}
-  //                                   size={25}
-  //                                 />
-  //                               </TouchableOpacity>
-  //                               <TouchableOpacity
-  //                                 style={styles.newOrder}
-  //                                 onPress={() =>
-  //                                   updateTransactionItem(
-  //                                     transItem.id,
-  //                                     'cancel',
-  //                                   )
-  //                                 }>
-  //                                 <MaterialIcons
-  //                                   name="cancel"
-  //                                   color={'#DB1B1B'}
-  //                                   size={27}
-  //                                 />
-  //                               </TouchableOpacity>
-  //                             </View>
-  //                           )}
-  //                           {transItem.status === 'cancel' && (
-  //                             <TouchableOpacity style={styles.preparingBtn}>
-  //                               <Text style={styles.btnText}>Canceled</Text>
-  //                             </TouchableOpacity>
-  //                           )}
-
-  //                           {transItem.status === 'preparing' && (
-  //                             <TouchableOpacity
-  //                               style={styles.preparingBtn}
-  //                               onPress={() => {
-  //                                 updateTransactionItem(
-  //                                   transItem.id,
-  //                                   'serving',
-  //                                 );
-  //                               }}>
-  //                               <Text style={styles.btnText}>serving</Text>
-  //                             </TouchableOpacity>
-  //                           )}
-  //                           {transItem.status === 'serving' && (
-  //                             <TouchableOpacity
-  //                               style={styles.servingBtn}
-  //                               onPress={() => {
-  //                                 updateTransactionItem(transItem.id, 'served');
-  //                               }}>
-  //                               <Text style={styles.btnText}>served</Text>
-  //                             </TouchableOpacity>
-  //                           )}
-  //                           {transItem.status === 'served' && (
-  //                             <View style={styles.servedBtn}>
-  //                               <Text style={styles.btnText}>Served</Text>
-  //                             </View>
-  //                           )}
-
-  //                           {/* {transItem.status !== 'new' && (
-  //                             <View style={styles.newOrder}>
-  //                               <Text style={styles.btnText}>
-  //                                 {transItem.status}
-  //                               </Text>
-  //                             </View>
-  //                           )} */}
-  //                         </View>
-  //                       </View>
-  //                     ))}
-  //                     {item.status === 'new' && (
-  //                       <TouchableOpacity
-  //                         style={styles.toPrepareBtn}
-  //                         onPress={() => {
-  //                           updateTransStatus(item.id, 'to_prepare');
-  //                         }}>
-  //                         <Text style={styles.btnText}>To Prepare</Text>
-  //                       </TouchableOpacity>
-  //                     )}
-  //                     {item.status === 'to_prepare' && (
-  //                       <View
-  //                         style={styles.toPrepareBtn}
-  //                         // onPress={() => {
-  //                         //   updateTransStatus(item.id, 'to_prepare');
-  //                         // }}
-  //                       >
-  //                         <Text style={styles.btnText}>Preparing</Text>
-  //                       </View>
-  //                     )}
-  //                     {item.status === 'preparing' && (
-  //                       <View style={styles.toPrepareBtn}>
-  //                         <Text style={styles.btnText}>{item.status}</Text>
-  //                       </View>
-  //                     )}
-  //                     {item.status === 'serving' && (
-  //                       <View style={styles.toPrepareBtn}>
-  //                         <Text style={styles.btnText}>{item.status}</Text>
-  //                       </View>
-  //                     )}
-  //                     {item.status === 'served' && (
-  //                       <View style={styles.toPrepareBtn}>
-  //                         <Text style={styles.btnText}>{item.status}</Text>
-  //                       </View>
-  //                     )}
-  //                     {/* {-----------Pay cash-------------} */}
-
-  //                     {item.status === 'to_pay_cash' && (
-  //                       <View style={styles.toCash}>
-  //                         <Text style={styles.payCashBtnText}>
-  //                           Pay Cash: ₱{' '}
-  //                         </Text>
-  //                         <Text style={styles.payCashBtnText}>
-  //                           {item.total}
-  //                         </Text>
-  //                       </View>
-  //                     )}
-  //                     {item.status === 'to_pay_cash' && (
-  //                       <TouchableOpacity
-  //                         style={styles.toPrepareBtn}
-  //                         onPress={() => {
-  //                           updateTransStatus(item.id, 'done');
-  //                         }}>
-  //                         <Text style={styles.btnText}>Confirm</Text>
-  //                       </TouchableOpacity>
-  //                     )}
-  //                   </List.Accordion>
-  //                 </View>
-  //               </List.Section>
-  //             ))}
-  //           </ScrollView>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   </>
-  // );
   return (
     <>
       <OrientationLocker
@@ -391,9 +185,7 @@ export default function OrderProductList({navigation}) {
                   <TouchableOpacity onPress={handlePress} style={styles.title}>
                     <FontAwesome name="circle" color={'#FF7A00'} size={20} />
                     <Text
-                      style={
-                        styles.tableText
-                      }>{`Table ${item.table} ${item.id}`}</Text>
+                      style={styles.tableText}>{`Table ${item.table} `}</Text>
                     {item.status === 'to_pay_cash' && (
                       <View style={styles.toCash}>
                         <Text style={styles.payCashBtnText}>Pay Cash</Text>
@@ -404,7 +196,7 @@ export default function OrderProductList({navigation}) {
                   {expanded && (
                     <View style={styles.content}>
                       <View style={styles.textFields}>
-                        <Text style={{color: '#000'}}>Table No.</Text>
+                        <Text style={styles.label}>Table No.</Text>
                         <TextInput
                           mode="outlined"
                           style={[styles.input, styles.inputs]}
@@ -415,85 +207,109 @@ export default function OrderProductList({navigation}) {
                             handleChangeText('table', value);
                           }}
                         />
+                      </View>
+                      <View style={styles.textFields}>
+                        <Text style={styles.label}>Charges:</Text>
                         <TextInput
                           mode="outlined"
-                          style={[styles.chargeDiscountInput, styles.inputs]}
+                          style={[styles.input, styles.inputs]}
                           keyboardType="numeric"
+                          placeholderTextColor={'#777777'}
                           placeholder="Charges"
-                          value={charge}
-                          onChangeText={setCharge}
+                          value={charges}
+                          onChangeText={setCharges}
                         />
+                      </View>
+                      <View style={styles.textFields}>
+                        <Text style={styles.label}>Discount:</Text>
                         <TextInput
                           mode="outlined"
-                          style={[styles.chargeDiscountInput, styles.inputs]}
+                          style={[styles.input, styles.inputs]}
                           keyboardType="numeric"
                           placeholder="Discount"
+                          placeholderTextColor={'#777777'}
                           value={discount}
                           onChangeText={setDiscount}
                         />
                       </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          marginTop: 5,
-                          marginBottom: 10,
-                        }}>
-                        <Text style={styles.payCashBtnText}>
-                          Total: ₱ {item.total}
-                        </Text>
-                        <View
-                          style={{
-                            alignItems: 'flex-end',
-                            width: 180,
+                      <View style={styles.savebtn}>
+                        <TouchableOpacity
+                          style={styles.save}
+                          onPress={() => {
+                            updateTransStatus(item._id, 'to_prepare');
                           }}>
-                          {item.status === 'new' && (
-                            <TouchableOpacity
-                              style={styles.toPrepareBtn}
-                              onPress={() => {
-                                updateTransStatus(item.id, 'to_prepare');
-                              }}>
-                              <Text style={styles.btnText}>Confirm</Text>
-                            </TouchableOpacity>
-                          )}
-                          {item.status === 'to_prepare' && (
-                            <View
-                              style={styles.toPrepareBtn}
-                              // onPress={() => {
-                              //   updateTransStatus(item.id, 'to_prepare');
-                              // }}
-                            >
-                              <Text style={styles.btnText}>Preparing</Text>
-                            </View>
-                          )}
-                          {item.status === 'preparing' && (
-                            <View style={styles.toPrepareBtn}>
-                              <Text style={styles.btnText}>{item.status}</Text>
-                            </View>
-                          )}
-                          {item.status === 'serving' && (
-                            <View style={styles.toPrepareBtn}>
-                              <Text style={styles.btnText}>{item.status}</Text>
-                            </View>
-                          )}
-                          {item.status === 'served' && (
-                            <View style={styles.toPrepareBtn}>
-                              <Text style={styles.btnText}>{item.status}</Text>
-                            </View>
-                          )}
-                          {/* {-----------Pay cash-------------} */}
+                          <Text style={styles.btnText}>Save</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.textFields}>
+                        <Text style={styles.label}>Set Status:</Text>
+                        {item.status === 'new' && (
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'to_prepare');
+                            }}>
+                            <Text style={styles.btnText}>To prepare</Text>
+                          </TouchableOpacity>
+                        )}
+                        {item.status === 'to_prepare' && (
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'preparing');
+                            }}>
+                            <Text style={styles.btnText}>Preparing</Text>
+                          </TouchableOpacity>
+                        )}
+                        {item.status === 'preparing' && (
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'serving');
+                            }}>
+                            <Text style={styles.btnText}>Serving</Text>
+                          </TouchableOpacity>
+                        )}
+                        {item.status === 'serving' && (
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'served');
+                            }}>
+                            <Text style={styles.btnText}>Serve</Text>
+                          </TouchableOpacity>
+                        )}
+                        {item.status === 'served' && (
+                          <TouchableOpacity style={styles.toPrepareBtn}>
+                            <Text style={styles.btnText}>Served</Text>
+                          </TouchableOpacity>
+                        )}
+                        {/* {-----------Pay cash-------------} */}
 
-                          {item.status === 'to_pay_cash' && (
-                            <TouchableOpacity
-                              style={styles.toPrepareBtn}
-                              onPress={() => {
-                                updateTransStatus(item.id, 'done');
-                              }}>
-                              <Text style={styles.btnText}>Confirm</Text>
-                            </TouchableOpacity>
-                          )}
+                        {item.status === 'to_pay_cash' && (
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'done');
+                            }}>
+                            <Text style={styles.btnText}>Confirmed</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                      <View style={styles.textFields}>
+                        <Text style={styles.label}>
+                          Total: {'   '} ₱{item.total}
+                        </Text>
+                      </View>
+                      <View style={styles.textFields}>
+                        <Text style={styles.label}>Notes:</Text>
+                        <View style={styles.notes}>
+                          <Text style={{color: '#000', padding: 5}}>
+                            {item.notes}
+                          </Text>
                         </View>
                       </View>
-                      <Text> Notes: {item.notes} </Text>
+
                       <View style={styles.tableContainer}>
                         <View style={styles.tableRow}>
                           <Text style={[styles.columnQty, styles.headerText]}>
@@ -508,104 +324,111 @@ export default function OrderProductList({navigation}) {
                           </Text>
                         </View>
                         <ScrollView>
-                          {item.transactionItem.map((transItem, transIndex) => (
-                            <View key={transIndex} style={styles.tableRow}>
-                              <Text style={[styles.columnQty, styles.textItem]}>
-                                {transItem.quantity}
-                              </Text>
-                              <Text
-                                style={[styles.columnItems, styles.textItem]}>
-                                {transItem.menuItem.title || ''}
-                              </Text>
-                              <Text style={[styles.mngBtn, styles.textItem]}>
-                                <View style={styles.buttons}>
-                                  {transItem.status === 'new' && (
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                      }}>
+                          {item.transactionItems.map(
+                            (transItem, transIndex) => (
+                              <View key={transIndex} style={styles.tableRow}>
+                                <Text
+                                  style={[styles.columnQty, styles.textItem]}>
+                                  {transItem.quantity}
+                                </Text>
+                                <Text
+                                  style={[styles.columnItems, styles.textItem]}>
+                                  {transItem.menuItem.title || ''}
+                                </Text>
+                                <Text style={[styles.mngBtn, styles.textItem]}>
+                                  <View style={styles.buttons}>
+                                    {transItem.status === 'new' && (
+                                      <View
+                                        style={{
+                                          flexDirection: 'row',
+                                        }}>
+                                        <TouchableOpacity
+                                          style={styles.newOrder}
+                                          onPress={() =>
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'preparing',
+                                            )
+                                          }>
+                                          <AntDesign
+                                            name="checkcircle"
+                                            color={'#0085ff'}
+                                            size={25}
+                                          />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                          style={styles.newOrder}
+                                          onPress={() =>
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'cancel',
+                                            )
+                                          }>
+                                          <MaterialIcons
+                                            name="cancel"
+                                            color={'#DB1B1B'}
+                                            size={27}
+                                          />
+                                        </TouchableOpacity>
+                                      </View>
+                                    )}
+                                    {transItem.status === 'cancel' && (
                                       <TouchableOpacity
-                                        style={styles.newOrder}
-                                        onPress={() =>
-                                          updateTransactionItem(
-                                            transItem.id,
-                                            'preparing',
-                                          )
-                                        }>
-                                        <AntDesign
-                                          name="checkcircle"
-                                          color={'#0085ff'}
-                                          size={25}
-                                        />
+                                        style={styles.preparingBtn}>
+                                        <Text style={styles.btnText}>
+                                          Canceled
+                                        </Text>
                                       </TouchableOpacity>
+                                    )}
+
+                                    {transItem.status === 'preparing' && (
                                       <TouchableOpacity
-                                        style={styles.newOrder}
-                                        onPress={() =>
+                                        style={styles.preparingBtn}
+                                        onPress={() => {
                                           updateTransactionItem(
-                                            transItem.id,
-                                            'cancel',
-                                          )
-                                        }>
-                                        <MaterialIcons
-                                          name="cancel"
-                                          color={'#DB1B1B'}
-                                          size={27}
-                                        />
+                                            transItem._id,
+                                            'serving',
+                                          );
+                                        }}>
+                                        <Text style={styles.btnText}>
+                                          serving
+                                        </Text>
                                       </TouchableOpacity>
-                                    </View>
-                                  )}
-                                  {transItem.status === 'cancel' && (
-                                    <TouchableOpacity
-                                      style={styles.preparingBtn}>
-                                      <Text style={styles.btnText}>
-                                        Canceled
-                                      </Text>
-                                    </TouchableOpacity>
-                                  )}
+                                    )}
+                                    {transItem.status === 'serving' && (
+                                      <TouchableOpacity
+                                        style={styles.servingBtn}
+                                        onPress={() => {
+                                          updateTransactionItem(
+                                            transItem._id,
+                                            'served',
+                                          );
+                                        }}>
+                                        <Text style={styles.btnText}>
+                                          served
+                                        </Text>
+                                      </TouchableOpacity>
+                                    )}
+                                    {transItem.status === 'served' && (
+                                      <View style={styles.servedBtn}>
+                                        <Text style={styles.btnText}>
+                                          Served
+                                        </Text>
+                                      </View>
+                                    )}
 
-                                  {transItem.status === 'preparing' && (
-                                    <TouchableOpacity
-                                      style={styles.preparingBtn}
-                                      onPress={() => {
-                                        updateTransactionItem(
-                                          transItem.id,
-                                          'serving',
-                                        );
-                                      }}>
-                                      <Text style={styles.btnText}>
-                                        serving
-                                      </Text>
-                                    </TouchableOpacity>
-                                  )}
-                                  {transItem.status === 'serving' && (
-                                    <TouchableOpacity
-                                      style={styles.servingBtn}
-                                      onPress={() => {
-                                        updateTransactionItem(
-                                          transItem.id,
-                                          'served',
-                                        );
-                                      }}>
-                                      <Text style={styles.btnText}>served</Text>
-                                    </TouchableOpacity>
-                                  )}
-                                  {transItem.status === 'served' && (
-                                    <View style={styles.servedBtn}>
-                                      <Text style={styles.btnText}>Served</Text>
-                                    </View>
-                                  )}
-
-                                  {/* {transItem.status !== 'new' && (
+                                    {/* {transItem.status !== 'new' && (
                               <View style={styles.newOrder}>
                                 <Text style={styles.btnText}>
                                   {transItem.status}
                                 </Text>
                               </View>
                             )} */}
-                                </View>
-                              </Text>
-                            </View>
-                          ))}
+                                  </View>
+                                </Text>
+                              </View>
+                            ),
+                          )}
                         </ScrollView>
                       </View>
                     </View>

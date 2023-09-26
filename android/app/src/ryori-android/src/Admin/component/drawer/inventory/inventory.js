@@ -487,7 +487,7 @@ export default function Inventory() {
                               InventoryStyle.cell,
                               InventoryStyle.columnWidth,
                             ]}>
-                            {item.data}
+                            {item.date}
                             {/* <Text>{items.createdAt}</Text> */}
                           </Text>
                           <Text

@@ -64,11 +64,16 @@ export const OrderListStyles = StyleSheet.create({
   textFields: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 5,
+  },
+  label: {
+    color: '#000',
+    fontSize: 15,
+    fontFamily: 'Quicksand-Medium',
   },
   input: {
-    width: 40,
-
-    marginLeft: 5,
+    width: 140,
     borderColor: '#757575',
   },
   inputs: {
@@ -86,6 +91,26 @@ export const OrderListStyles = StyleSheet.create({
   chargeDiscountInput: {
     width: 80,
     marginLeft: 10,
+  },
+  notes: {
+    width: 280,
+    borderRadius: 5,
+    borderColor: '#7777777',
+    borderWidth: 1,
+    marginTop: 5,
+  },
+  savebtn: {
+    width: '100%',
+    alignItems: 'flex-end',
+    marginTop: 5,
+  },
+  save: {
+    backgroundColor: '#DB1B1B',
+    width: 140,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
   },
 
   //-----
@@ -127,7 +152,7 @@ export const OrderListStyles = StyleSheet.create({
     height: 50,
   },
   ryoriIconText: {
-    fontFamily: 'Quicksand-Bold',
+    fontFamily: 'Quicksand-SemiBold',
     color: '#000',
     fontSize: 27,
     top: 6,
@@ -263,6 +288,12 @@ export const OrderListStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
     width: 160,
+  },
+  total: {
+    color: '#000',
+    fontSize: 16,
+    fontFamily: 'Quicksand-SemiBold',
+    width: 100,
   },
   toPrepareBtn: {
     backgroundColor: '#4285F4',

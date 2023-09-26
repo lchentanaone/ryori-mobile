@@ -18,7 +18,6 @@ export default function PreparingOrderTab({route}) {
   const fetchTransactionsData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -32,6 +31,8 @@ export default function PreparingOrderTab({route}) {
         },
         {headers},
       );
+      // const data = await response.data;
+      console.log('Response Data:', response.data);
       const statusNew = response.data.filter(
         transactionStatus =>
           transactionStatus.status !== 'new' &&
@@ -56,6 +57,7 @@ export default function PreparingOrderTab({route}) {
         },
         {headers},
       );
+
       fetchTransactionsData();
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -123,73 +125,76 @@ export default function PreparingOrderTab({route}) {
                           </Text>
                         </View>
                         <ScrollView>
-                          {item.transactionItem.map((transItem, transIndex) => (
-                            <View key={transIndex} style={styles.tableRow}>
-                              <Text style={[styles.columnQty, styles.textItem]}>
-                                {transItem.quantity}
-                              </Text>
-                              <Text
-                                style={[styles.columnItems, styles.textItem]}>
-                                {transItem.menuItem.title || ''}
-                              </Text>
-                              <Text style={[styles.mngBtn, styles.textItem]}>
-                                <View style={styles.buttons}>
+                          {item.transactionItems.map(
+                            (transItem, transIndex) => (
+                              <View key={transIndex} style={styles.tableRow}>
+                                <Text
+                                  style={[styles.columnQty, styles.textItem]}>
+                                  {transItem.quantity}
+                                </Text>
+                                <Text
+                                  style={[styles.columnItems, styles.textItem]}>
+                                  {transItem.menuItem.title || ''}
+                                </Text>
+                                <Text style={[styles.mngBtn, styles.textItem]}>
                                   <View style={styles.buttons}>
-                                    {transItem.status === 'new' && (
-                                      <TouchableOpacity
-                                        style={styles.newOrderBtn}
-                                        onPress={() => {
-                                          updateTransactionItem(
-                                            transItem._id,
-                                            'preparing',
-                                          );
-                                        }}>
-                                        <Text style={styles.newBtnText}>
-                                          Preparing
-                                        </Text>
-                                      </TouchableOpacity>
-                                    )}
-                                    {transItem.status === 'preparing' && (
-                                      <TouchableOpacity
-                                        style={styles.preparingBtn}
-                                        onPress={() => {
-                                          updateTransactionItem(
-                                            transItem._id,
-                                            'serving',
-                                          );
-                                        }}>
-                                        <Text style={styles.preparingBtnText}>
-                                          Serving
-                                        </Text>
-                                      </TouchableOpacity>
-                                    )}
+                                    <View style={styles.buttons}>
+                                      {transItem.status === 'new' && (
+                                        <TouchableOpacity
+                                          style={styles.newOrderBtn}
+                                          onPress={() => {
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'preparing',
+                                            );
+                                          }}>
+                                          <Text style={styles.newBtnText}>
+                                            Preparing
+                                          </Text>
+                                        </TouchableOpacity>
+                                      )}
+                                      {transItem.status === 'preparing' && (
+                                        <TouchableOpacity
+                                          style={styles.preparingBtn}
+                                          onPress={() => {
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'serving',
+                                            );
+                                          }}>
+                                          <Text style={styles.preparingBtnText}>
+                                            Serving
+                                          </Text>
+                                        </TouchableOpacity>
+                                      )}
 
-                                    {transItem.status === 'serving' && (
-                                      <TouchableOpacity
-                                        style={styles.servingBtn}
-                                        onPress={() => {
-                                          updateTransactionItem(
-                                            transItem._id,
-                                            'served',
-                                          );
-                                        }}>
-                                        <Text style={styles.preparingBtnText}>
-                                          Served
-                                        </Text>
-                                      </TouchableOpacity>
-                                    )}
-                                    {transItem.status === 'served' && (
-                                      <View style={styles.servedBtn}>
-                                        <Text style={styles.preparingBtnText}>
-                                          Served
-                                        </Text>
-                                      </View>
-                                    )}
+                                      {transItem.status === 'serving' && (
+                                        <TouchableOpacity
+                                          style={styles.servingBtn}
+                                          onPress={() => {
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'served',
+                                            );
+                                          }}>
+                                          <Text style={styles.preparingBtnText}>
+                                            Served
+                                          </Text>
+                                        </TouchableOpacity>
+                                      )}
+                                      {transItem.status === 'served' && (
+                                        <View style={styles.servedBtn}>
+                                          <Text style={styles.preparingBtnText}>
+                                            Served
+                                          </Text>
+                                        </View>
+                                      )}
+                                    </View>
                                   </View>
-                                </View>
-                              </Text>
-                            </View>
-                          ))}
+                                </Text>
+                              </View>
+                            ),
+                          )}
                         </ScrollView>
                       </View>
                     </View>

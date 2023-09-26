@@ -77,10 +77,10 @@ export default function TransactionDaily() {
                   <Text style={TransactionStyle.tableHeaderText}>ID</Text>
                 </DataTable.Title>
                 <DataTable.Title>
-                  <Text style={TransactionStyle.tableHeaderText}>table</Text>
+                  <Text style={TransactionStyle.tableHeaderText}>Table</Text>
                 </DataTable.Title>
                 <DataTable.Title>
-                  <Text style={TransactionStyle.tableHeaderText}>Pay Id</Text>
+                  <Text style={TransactionStyle.tableHeaderText}>Pay ID</Text>
                 </DataTable.Title>
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Amount</Text>

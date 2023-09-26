@@ -21,6 +21,7 @@ export default function Opening() {
     async function checkIfTokenExist() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
       const role = await AsyncStorage.getItem('role');
       if (role === 'admin') {
         if (store_Id) {
@@ -33,7 +34,7 @@ export default function Opening() {
           }, 2000);
         }
       } else if (role === 'manager') {
-        if (store_Id) {
+        if (branch_Id) {
           setTimeout(() => {
             navigation.navigate('ManagerTab');
           }, 2000);

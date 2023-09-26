@@ -17,7 +17,6 @@ export default function DoneOrder() {
   const fetchTransactionsData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -99,7 +98,7 @@ export default function DoneOrder() {
                         </Text>
                       </View>
                       <ScrollView>
-                        {item.transactionItem.map((transItem, transIndex) => (
+                        {item.transactionItems.map((transItem, transIndex) => (
                           <View key={transIndex} style={styles.tableRow}>
                             <Text style={[styles.columnQty, styles.textItem]}>
                               {transItem.quantity}
