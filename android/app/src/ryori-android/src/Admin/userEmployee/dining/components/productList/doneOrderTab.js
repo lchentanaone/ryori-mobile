@@ -10,9 +10,13 @@ import {API_URL} from '../../../../../utils/constants';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 
 export default function DoneOrder() {
-  const [expanded, setExpanded] = React.useState(true);
-  const handlePress = () => setExpanded(!expanded);
   const [transactionData, setTransactionData] = useState([]);
+
+  const handlePress = index => {
+    const tempData = [...transactionData];
+    tempData[index].expanded = !tempData[index].expanded;
+    setTransactionData(tempData);
+  };
 
   const fetchTransactionsData = async () => {
     try {
@@ -39,6 +43,7 @@ export default function DoneOrder() {
       console.error('Error fetching user data:', error);
     }
   };
+
   useEffect(() => {
     fetchTransactionsData();
   }, []);
@@ -67,7 +72,7 @@ export default function DoneOrder() {
             {transactionData.map((item, index) => (
               <View key={index} style={styles.itemContainer}>
                 <TouchableOpacity
-                  onPress={() => handlePress()}
+                  onPress={() => handlePress(index)}
                   style={styles.title}>
                   <FontAwesome name="circle" color={'#FF7A00'} size={20} />
                   <Text style={styles.tableText}>{`Table ${item.table} `}</Text>
@@ -78,7 +83,7 @@ export default function DoneOrder() {
                   )}
                 </TouchableOpacity>
 
-                {expanded && (
+                {item.expanded && (
                   <View style={styles.content}>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Charges:</Text>

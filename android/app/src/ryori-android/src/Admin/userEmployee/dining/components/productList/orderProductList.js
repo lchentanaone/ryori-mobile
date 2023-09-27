@@ -64,7 +64,6 @@ export default function OrderProductList({navigation}) {
             Authorization: `Bearer ${token}`,
           },
         },
-
         {headers},
       );
       const statusPreparing = response.data
@@ -99,7 +98,7 @@ export default function OrderProductList({navigation}) {
       const response = await axios.patch(
         `${API_URL}/pos/transaction/${_id}`,
         {
-          // table: transactionData[index].table,
+          table: transactionData[index].table,
           charges: transactionData[index].charges,
           discount: transactionData[index].discount,
         },

@@ -14,10 +14,13 @@ import {useFocusEffect} from '@react-navigation/native';
 
 export default function PreparingOrderTab({navigation}) {
   const [userData, setUserData] = useState(null);
-  const [expanded, setExpanded] = React.useState(true);
-  const handlePress = () => setExpanded(!expanded);
-
   const [transactionData, setTransactionData] = useState([]);
+
+  const handlePress = index => {
+    const tempData = [...transactionData];
+    tempData[index].expanded = !tempData[index].expanded;
+    setTransactionData(tempData);
+  };
 
   const fetchUserData = async () => {
     try {
@@ -147,7 +150,7 @@ export default function PreparingOrderTab({navigation}) {
               {transactionData.map((item, index) => (
                 <View key={index} style={styles.itemContainer}>
                   <TouchableOpacity
-                    onPress={() => handlePress(item)}
+                    onPress={() => handlePress(index)}
                     style={styles.title}>
                     <FontAwesome name="circle" color={'#FF7A00'} size={20} />
                     <Text
@@ -159,7 +162,7 @@ export default function PreparingOrderTab({navigation}) {
                     )}
                   </TouchableOpacity>
 
-                  {expanded && (
+                  {item.expanded && (
                     <View style={styles.content}>
                       <View style={styles.textFields}>
                         <Text style={styles.label}>Set Status:</Text>
