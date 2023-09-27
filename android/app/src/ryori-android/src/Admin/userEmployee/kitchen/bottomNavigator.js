@@ -14,7 +14,7 @@ export default function KitchenBottomNavigator() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: 'red',
         tabBarStyle: {
-          borderTopColor: 'white',
+          borderTopColor: '#000',
           shadowColor: 0,
         },
       }}>

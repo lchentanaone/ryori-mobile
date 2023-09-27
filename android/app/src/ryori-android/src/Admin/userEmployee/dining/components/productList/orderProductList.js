@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
 import {OrderListStyles as styles} from './orderProductListStyles';
 import male from '../../../../images/male3.png';
 import redRyori from '../../../../images/redRyori.png';
-import {List} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -19,18 +18,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
 import SkeletonItem from '../../../../../utils/skeletonItem';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
-  const [expanded, setExpanded] = useState(false);
-  const handlePress = () => {
-    setExpanded(!expanded);
-  };
-  const [total, setTotal] = useState(0);
   const [transactionData, setTransactionData] = useState([]);
-  const [table, setTable] = useState();
-  const [charges, setCharges] = useState(null);
-  const [discount, setDiscount] = useState(null);
+
+  const handlePress = index => {
+    const tempData = [...transactionData];
+    tempData[index].expanded = !tempData[index].expanded;
+    setTransactionData(tempData);
+  };
 
   const fetchUserData = async () => {
     try {
@@ -46,9 +44,11 @@ export default function OrderProductList({navigation}) {
     }
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, []),
+  );
 
   const fetchTransactionsData = async () => {
     try {
@@ -67,10 +67,46 @@ export default function OrderProductList({navigation}) {
 
         {headers},
       );
-      const statusPreparing = response.data.filter(
-        transactionStatus => transactionStatus.status !== 'done',
-      );
+      const statusPreparing = response.data
+        .filter(transactionStatus => transactionStatus.status !== 'done')
+        .map(tempData => {
+          tempData.grandTotal = tempData.total;
+
+          if (tempData.charges > 0) {
+            tempData.grandTotal =
+              parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
+          }
+          if (tempData.discount > 0) {
+            tempData.grandTotal =
+              parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
+          }
+          return tempData;
+        });
+
       setTransactionData(statusPreparing);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  const chargeDiscount = async (_id, index) => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.patch(
+        `${API_URL}/pos/transaction/${_id}`,
+        {
+          // table: transactionData[index].table,
+          charges: transactionData[index].charges,
+          discount: transactionData[index].discount,
+        },
+        {headers},
+      );
+      fetchTransactionsData();
+      console.log({response});
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -86,12 +122,11 @@ export default function OrderProductList({navigation}) {
         `${API_URL}/pos/transaction/${_id}`,
         {
           status: newStatus,
-          table,
         },
         {headers},
       );
       fetchTransactionsData();
-      console.log(response);
+      console.log({response});
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -111,11 +146,11 @@ export default function OrderProductList({navigation}) {
         {headers},
       );
       fetchTransactionsData();
-      console.log(response);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
+
   const deleteTransactionItem = async _id => {
     try {
       const token = await AsyncStorage.getItem('access_token');
@@ -134,15 +169,29 @@ export default function OrderProductList({navigation}) {
     }
   };
 
+  const handleChangeText = (key, value, index) => {
+    const tempData = [...transactionData];
+    tempData[index][key] = value;
+
+    tempData[index].grandTotal = tempData[index].total;
+
+    if (tempData[index].charges > 0) {
+      tempData[index].grandTotal =
+        parseFloat(tempData[index].grandTotal) +
+        parseFloat(tempData[index].charges);
+    }
+    if (tempData[index].discount > 0) {
+      tempData[index].grandTotal =
+        parseFloat(tempData[index].grandTotal) -
+        parseFloat(tempData[index].discount);
+    }
+
+    setTransactionData(tempData);
+  };
+
   useEffect(() => {
     fetchTransactionsData();
   }, []);
-
-  const handleChangeText = (key, value) => {
-    const tempData = {...transactionData};
-    tempData[key] = value;
-    setTransactionData(tempData);
-  };
 
   return (
     <>
@@ -182,7 +231,9 @@ export default function OrderProductList({navigation}) {
             <ScrollView>
               {transactionData.map((item, index) => (
                 <View key={index} style={styles.itemContainer}>
-                  <TouchableOpacity onPress={handlePress} style={styles.title}>
+                  <TouchableOpacity
+                    onPress={() => handlePress(index)}
+                    style={styles.title}>
                     <FontAwesome name="circle" color={'#FF7A00'} size={20} />
                     <Text
                       style={styles.tableText}>{`Table ${item.table} `}</Text>
@@ -193,7 +244,7 @@ export default function OrderProductList({navigation}) {
                     )}
                   </TouchableOpacity>
 
-                  {expanded && (
+                  {item.expanded && (
                     <View style={styles.content}>
                       <View style={styles.textFields}>
                         <Text style={styles.label}>Table No.</Text>
@@ -201,10 +252,9 @@ export default function OrderProductList({navigation}) {
                           mode="outlined"
                           style={[styles.input, styles.inputs]}
                           keyboardType="numeric"
-                          value={item.table}
-                          // onChangeText={setTable}
+                          value={item.table ? item.table.toString() : ''}
                           onChangeText={value => {
-                            handleChangeText('table', value);
+                            handleChangeText('table', value, index);
                           }}
                         />
                       </View>
@@ -216,8 +266,10 @@ export default function OrderProductList({navigation}) {
                           keyboardType="numeric"
                           placeholderTextColor={'#777777'}
                           placeholder="Charges"
-                          value={charges}
-                          onChangeText={setCharges}
+                          value={item.charges ? item.charges.toString() : ''} // Convert to string
+                          onChangeText={value => {
+                            handleChangeText('charges', value, index);
+                          }}
                         />
                       </View>
                       <View style={styles.textFields}>
@@ -228,15 +280,17 @@ export default function OrderProductList({navigation}) {
                           keyboardType="numeric"
                           placeholder="Discount"
                           placeholderTextColor={'#777777'}
-                          value={discount}
-                          onChangeText={setDiscount}
+                          value={item.discount ? item.discount.toString() : ''} // Convert to string
+                          onChangeText={value => {
+                            handleChangeText('discount', value, index);
+                          }}
                         />
                       </View>
                       <View style={styles.savebtn}>
                         <TouchableOpacity
                           style={styles.save}
                           onPress={() => {
-                            updateTransStatus(item._id, 'to_prepare');
+                            chargeDiscount(item._id, index);
                           }}>
                           <Text style={styles.btnText}>Save</Text>
                         </TouchableOpacity>
@@ -245,7 +299,7 @@ export default function OrderProductList({navigation}) {
                         <Text style={styles.label}>Set Status:</Text>
                         {item.status === 'new' && (
                           <TouchableOpacity
-                            style={styles.toPrepareBtn}
+                            style={[styles.toPrepareBtn]}
                             onPress={() => {
                               updateTransStatus(item._id, 'to_prepare');
                             }}>
@@ -276,12 +330,16 @@ export default function OrderProductList({navigation}) {
                             onPress={() => {
                               updateTransStatus(item._id, 'served');
                             }}>
-                            <Text style={styles.btnText}>Serve</Text>
+                            <Text style={styles.btnText}>Served</Text>
                           </TouchableOpacity>
                         )}
                         {item.status === 'served' && (
-                          <TouchableOpacity style={styles.toPrepareBtn}>
-                            <Text style={styles.btnText}>Served</Text>
+                          <TouchableOpacity
+                            style={styles.toPrepareBtn}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'done');
+                            }}>
+                            <Text style={styles.btnText}>Done</Text>
                           </TouchableOpacity>
                         )}
                         {/* {-----------Pay cash-------------} */}
@@ -298,7 +356,7 @@ export default function OrderProductList({navigation}) {
                       </View>
                       <View style={styles.textFields}>
                         <Text style={styles.label}>
-                          Total: {'   '} ₱{item.total}
+                          Total: {'   '} ₱{item.grandTotal || item.total}
                         </Text>
                       </View>
                       <View style={styles.textFields}>
@@ -416,14 +474,6 @@ export default function OrderProductList({navigation}) {
                                         </Text>
                                       </View>
                                     )}
-
-                                    {/* {transItem.status !== 'new' && (
-                              <View style={styles.newOrder}>
-                                <Text style={styles.btnText}>
-                                  {transItem.status}
-                                </Text>
-                              </View>
-                            )} */}
                                   </View>
                                 </Text>
                               </View>

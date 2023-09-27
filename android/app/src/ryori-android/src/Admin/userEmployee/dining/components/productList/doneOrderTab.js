@@ -66,25 +66,53 @@ export default function DoneOrder() {
           <ScrollView>
             {transactionData.map((item, index) => (
               <View key={index} style={styles.itemContainer}>
-                <TouchableOpacity onPress={handlePress} style={styles.title}>
-                  <FontAwesome name="circle" color={'#12BF38'} size={20} />
-                  <Text style={styles.tableText}>
-                    {`Table ${item.table} ${item.id}`}
-                  </Text>
-                  <Text style={[styles.toCash, styles.payCashBtnText]}>
-                    Total: ₱ {item.total}
-                  </Text>
+                <TouchableOpacity
+                  onPress={() => handlePress()}
+                  style={styles.title}>
+                  <FontAwesome name="circle" color={'#FF7A00'} size={20} />
+                  <Text style={styles.tableText}>{`Table ${item.table} `}</Text>
+                  {item.status === 'to_pay_cash' && (
+                    <View style={styles.toCash}>
+                      <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                    </View>
+                  )}
                 </TouchableOpacity>
 
                 {expanded && (
                   <View style={styles.content}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        marginTop: 5,
-                        marginBottom: 10,
-                      }}></View>
+                    <View style={styles.textFields}>
+                      <Text style={styles.label}>Charges:</Text>
+                      <Text style={styles.label}>{item.charges}</Text>
+                    </View>
+                    <View style={styles.textFields}>
+                      <Text style={styles.label}>Discount:</Text>
+                      <Text style={styles.label}>{item.discount}</Text>
+                    </View>
+
+                    <View style={styles.textFields}>
+                      <Text style={styles.label}>Set Status:</Text>
+                      <Text style={styles.label}>{item.status}</Text>
+
+                      {/* {-----------Pay cash-------------} */}
+
+                      {item.status === 'to_pay_cash' && (
+                        <TouchableOpacity
+                          style={styles.toPrepareBtn}
+                          onPress={() => {
+                            updateTransStatus(item._id, 'done');
+                          }}>
+                          <Text style={styles.btnText}>Confirmed</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    <View style={styles.textFields}>
+                      <Text style={styles.label}>Total: </Text>
+                      <Text style={styles.label}>
+                        ₱ {'   '}
+                        {item.total}
+                      </Text>
+                    </View>
+
                     <View style={styles.tableContainer}>
                       <View style={styles.tableRow}>
                         <Text style={[styles.columnQty, styles.headerText]}>
@@ -94,7 +122,7 @@ export default function DoneOrder() {
                           Order Item
                         </Text>
                         <Text style={[styles.columnMngBtn, styles.headerText]}>
-                          Status
+                          Manage
                         </Text>
                       </View>
                       <ScrollView>
@@ -107,10 +135,12 @@ export default function DoneOrder() {
                               {transItem.menuItem.title || ''}
                             </Text>
                             <Text style={[styles.mngBtn, styles.textItem]}>
-                              <View style={styles.doneStatus}>
-                                <Text style={styles.btnText}>
-                                  {transItem.status}
-                                </Text>
+                              <View style={styles.buttons}>
+                                <View style={styles.servedBtn}>
+                                  <Text style={styles.btnText}>
+                                    {transItem.status}
+                                  </Text>
+                                </View>
                               </View>
                             </Text>
                           </View>
