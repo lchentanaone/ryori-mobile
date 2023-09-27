@@ -22,10 +22,10 @@ export default function DialogModal() {
           fontSize: 20,
           top: -10,
         }}>
-        Comming Soon
+        Coming Soon
       </Text>
       <Text style={{color: '#505050', fontFamily: 'Quicksand-SemiBold'}}>
-        This feature is comming soon. For urgent concerns, please email us at
+        This feature is coming soon. For urgent concerns, please email us at
         <Text
           onPress={handleEmailPress}
           style={{textDecorationLine: 'underline', color: '#BD0A0A'}}>
