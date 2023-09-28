@@ -56,7 +56,8 @@ export default function PreparingOrderTab({navigation}) {
       const statusNew = response.data.filter(
         transactionStatus =>
           transactionStatus.status !== 'new' &&
-          transactionStatus.status !== 'done',
+          transactionStatus.status !== 'done' &&
+          transactionStatus.status !== 'cancel',
       );
       setTransactionData(statusNew);
     } catch (error) {
@@ -74,7 +75,6 @@ export default function PreparingOrderTab({navigation}) {
         `${API_URL}/pos/transaction/${_id}`,
         {
           status: newStatus,
-          table,
         },
         {headers},
       );
@@ -152,14 +152,20 @@ export default function PreparingOrderTab({navigation}) {
                   <TouchableOpacity
                     onPress={() => handlePress(index)}
                     style={styles.title}>
-                    <FontAwesome name="circle" color={'#FF7A00'} size={20} />
+                    {item.status === 'to_prepare' && (
+                      <FontAwesome name="circle" color={'#4285F4'} size={20} />
+                    )}
+                    {item.status === 'preparing' && (
+                      <FontAwesome name="circle" color={'#FF7A00'} size={20} />
+                    )}
+                    {item.status === 'serving' && (
+                      <FontAwesome name="circle" color={'#efb700'} size={20} />
+                    )}
+                    {item.status === 'served' && (
+                      <FontAwesome name="circle" color={'#12BF38'} size={20} />
+                    )}
                     <Text
                       style={styles.tableText}>{`Table ${item.table} `}</Text>
-                    {item.status === 'to_pay_cash' && (
-                      <View style={styles.toCash}>
-                        <Text style={styles.payCashBtnText}>Pay Cash</Text>
-                      </View>
-                    )}
                   </TouchableOpacity>
 
                   {item.expanded && (
@@ -168,7 +174,7 @@ export default function PreparingOrderTab({navigation}) {
                         <Text style={styles.label}>Set Status:</Text>
                         {item.status === 'new' && (
                           <TouchableOpacity
-                            style={styles.toPrepareBtn}
+                            style={[styles.TBtn, styles.toPrepareColor]}
                             onPress={() => {
                               updateTransStatus(item._id, 'to_prepare');
                             }}>
@@ -177,7 +183,7 @@ export default function PreparingOrderTab({navigation}) {
                         )}
                         {item.status === 'to_prepare' && (
                           <TouchableOpacity
-                            style={styles.toPrepareBtn}
+                            style={[styles.TBtn, styles.toPrepareColor]}
                             onPress={() => {
                               updateTransStatus(item._id, 'preparing');
                             }}>
@@ -186,7 +192,7 @@ export default function PreparingOrderTab({navigation}) {
                         )}
                         {item.status === 'preparing' && (
                           <TouchableOpacity
-                            style={styles.toPrepareBtn}
+                            style={[styles.TBtn, styles.preparingColor]}
                             onPress={() => {
                               updateTransStatus(item._id, 'serving');
                             }}>
@@ -195,28 +201,17 @@ export default function PreparingOrderTab({navigation}) {
                         )}
                         {item.status === 'serving' && (
                           <TouchableOpacity
-                            style={styles.toPrepareBtn}
+                            style={[styles.TBtn, styles.servingColor]}
                             onPress={() => {
                               updateTransStatus(item._id, 'served');
                             }}>
-                            <Text style={styles.btnText}>Served</Text>
+                            <Text style={styles.btnText}>Serve</Text>
                           </TouchableOpacity>
                         )}
                         {item.status === 'served' && (
-                          <TouchableOpacity style={styles.toPrepareBtn}>
+                          <View style={[styles.TBtn, styles.doneColor]}>
                             <Text style={styles.btnText}>Served</Text>
-                          </TouchableOpacity>
-                        )}
-                        {/* {-----------Pay cash-------------} */}
-
-                        {item.status === 'to_pay_cash' && (
-                          <TouchableOpacity
-                            style={styles.toPrepareBtn}
-                            onPress={() => {
-                              updateTransStatus(item._id, 'done');
-                            }}>
-                            <Text style={styles.btnText}>Confirmed</Text>
-                          </TouchableOpacity>
+                          </View>
                         )}
                       </View>
 
@@ -293,7 +288,10 @@ export default function PreparingOrderTab({navigation}) {
                                     )}
                                     {transItem.status === 'cancel' && (
                                       <TouchableOpacity
-                                        style={styles.preparingBtn}>
+                                        style={[
+                                          styles.TiBtn,
+                                          styles.cancelColor,
+                                        ]}>
                                         <Text style={styles.btnText}>
                                           Canceled
                                         </Text>
@@ -302,7 +300,10 @@ export default function PreparingOrderTab({navigation}) {
 
                                     {transItem.status === 'preparing' && (
                                       <TouchableOpacity
-                                        style={styles.preparingBtn}
+                                        style={[
+                                          styles.TiBtn,
+                                          styles.preparingColor,
+                                        ]}
                                         onPress={() => {
                                           updateTransactionItem(
                                             transItem._id,
@@ -316,7 +317,10 @@ export default function PreparingOrderTab({navigation}) {
                                     )}
                                     {transItem.status === 'serving' && (
                                       <TouchableOpacity
-                                        style={styles.servingBtn}
+                                        style={[
+                                          styles.TiBtn,
+                                          styles.servingColor,
+                                        ]}
                                         onPress={() => {
                                           updateTransactionItem(
                                             transItem._id,
@@ -324,12 +328,16 @@ export default function PreparingOrderTab({navigation}) {
                                           );
                                         }}>
                                         <Text style={styles.btnText}>
-                                          Served
+                                          Serve
                                         </Text>
                                       </TouchableOpacity>
                                     )}
                                     {transItem.status === 'served' && (
-                                      <View style={styles.servedBtn}>
+                                      <View
+                                        style={[
+                                          styles.TiBtn,
+                                          styles.doneColor,
+                                        ]}>
                                         <Text style={styles.btnText}>
                                           Served
                                         </Text>

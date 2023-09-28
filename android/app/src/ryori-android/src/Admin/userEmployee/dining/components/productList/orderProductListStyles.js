@@ -173,29 +173,7 @@ export const OrderListStyles = StyleSheet.create({
     backgroundColor: '#fff',
     overflow: 'hidden',
   },
-  // accordItem: {
-  //   color: '#000',
-  //   fontSize: 16,
-  //   fontFamily: 'Quicksand-Bold',
-  // },
-  // itemlist: {
-  //   color: '#000',
-  //   fontSize: 16,
-  //   fontFamily: 'Quicksand-Bold',
-  // },
-  // toPreparing: {
-  //   alignItems: 'center',
-  //   backgroundColor: '#0085FF',
-  //   borderRadius: 4,
-  //   left: 20,
-  //   width: 100,
-  //   height: 25,
-  // },
-  // preparingText: {
-  //   color: '#fff',
-  //   fontSize: 14,
-  //   fontFamily: 'Quicksand-Bold',
-  // },
+
   item: {
     left: 10,
     color: '#000',
@@ -229,6 +207,17 @@ export const OrderListStyles = StyleSheet.create({
     width: 40,
     height: 30,
   },
+
+  cancelOrder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
+  cancelColor: {
+    backgroundColor: '#B3ACAC',
+  },
   servedBtn: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -248,27 +237,12 @@ export const OrderListStyles = StyleSheet.create({
   servingBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4285F4',
+    backgroundColor: '#efb700',
     borderRadius: 4,
     width: 80,
     height: 30,
   },
-  // cancelOrder: {
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#B3ACAC',
-  //   borderRadius: 4,
-  //   width: 80,
-  //   height: 30,
-  // },
-  // readyServeBtn: {
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#FF7A00',
-  //   borderRadius: 4,
-  //   width: 80,
-  //   height: 30,
-  // },
+
   btnText: {
     color: '#fff',
   },
@@ -295,20 +269,34 @@ export const OrderListStyles = StyleSheet.create({
     fontFamily: 'Quicksand-SemiBold',
     width: 100,
   },
-  toPrepareBtn: {
-    backgroundColor: '#4285F4',
+  TiBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    width: 80,
+    height: 30,
+  },
+
+  TBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
     width: 140,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
   },
-  doneStatus: {
+  toPrepareColor: {
     backgroundColor: '#4285F4',
-    height: 30,
-    width: 100,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  servingColor: {
+    backgroundColor: '#efb700',
+  },
+  preparingColor: {
+    backgroundColor: '#FF7A00',
+  },
+  toPrepareColor: {
+    backgroundColor: '#4285F4',
+  },
+  doneColor: {
+    backgroundColor: '#12BF38',
   },
 });

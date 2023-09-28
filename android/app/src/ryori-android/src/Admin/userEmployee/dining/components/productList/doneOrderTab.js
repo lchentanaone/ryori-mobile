@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {List, DataTable} from 'react-native-paper';
 import redRyori from '../../../../images/redRyori.png';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {API_URL} from '../../../../../utils/constants';
 import {OrientationLocker, PORTRAIT} from 'react-native-orientation-locker';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function DoneOrder() {
   const [transactionData, setTransactionData] = useState([]);
@@ -27,26 +28,35 @@ export default function DoneOrder() {
       };
       const response = await axios.get(
         `${API_URL}/pos/transaction?branch_Id=${branch_Id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-
         {headers},
       );
-      const statusDone = response.data.filter(
-        transactionStatus => transactionStatus.status === 'done',
-      );
+      const statusDone = response.data
+        .filter(transactionStatus => transactionStatus.status === 'done')
+        .map(tempData => {
+          tempData.grandTotal = tempData.total;
+
+          if (tempData.charges > 0) {
+            tempData.grandTotal =
+              parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
+          }
+          if (tempData.discount > 0) {
+            tempData.grandTotal =
+              parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
+          }
+          return tempData;
+        });
       setTransactionData(statusDone);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
 
-  useEffect(() => {
-    fetchTransactionsData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactionsData();
+    }, []),
+  );
+
   return (
     <>
       <OrientationLocker
@@ -74,7 +84,7 @@ export default function DoneOrder() {
                 <TouchableOpacity
                   onPress={() => handlePress(index)}
                   style={styles.title}>
-                  <FontAwesome name="circle" color={'#FF7A00'} size={20} />
+                  <FontAwesome name="circle" color={'#12BF38'} size={20} />
                   <Text style={styles.tableText}>{`Table ${item.table} `}</Text>
                   {item.status === 'to_pay_cash' && (
                     <View style={styles.toCash}>
@@ -87,34 +97,30 @@ export default function DoneOrder() {
                   <View style={styles.content}>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Charges:</Text>
-                      <Text style={styles.label}>{item.charges}</Text>
+                      <Text style={styles.label}>₱ {item.charges}</Text>
                     </View>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Discount:</Text>
-                      <Text style={styles.label}>{item.discount}</Text>
+                      <Text style={styles.label}>₱ {item.discount}</Text>
                     </View>
 
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Set Status:</Text>
-                      <Text style={styles.label}>{item.status}</Text>
-
-                      {/* {-----------Pay cash-------------} */}
-
-                      {item.status === 'to_pay_cash' && (
-                        <TouchableOpacity
-                          style={styles.toPrepareBtn}
-                          onPress={() => {
-                            updateTransStatus(item._id, 'done');
-                          }}>
-                          <Text style={styles.btnText}>Confirmed</Text>
-                        </TouchableOpacity>
+                      {item.status === 'done' && (
+                        <Text>
+                          <Text style={styles.label}>Done</Text>
+                        </Text>
                       )}
+                    </View>
+
+                    <View style={styles.textFields}>
+                      <Text style={styles.label}>Subtotal: </Text>
+                      <Text style={styles.label}>₱ {item.total}</Text>
                     </View>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Total: </Text>
                       <Text style={styles.label}>
-                        ₱ {'   '}
-                        {item.total}
+                        ₱ {item.grandTotal || item.total}
                       </Text>
                     </View>
 
@@ -141,11 +147,34 @@ export default function DoneOrder() {
                             </Text>
                             <Text style={[styles.mngBtn, styles.textItem]}>
                               <View style={styles.buttons}>
-                                <View style={styles.servedBtn}>
-                                  <Text style={styles.btnText}>
-                                    {transItem.status}
-                                  </Text>
-                                </View>
+                                {transItem.status === 'cancel' && (
+                                  <View
+                                    style={[styles.TiBtn, styles.cancelColor]}>
+                                    <Text style={styles.btnText}>Canceled</Text>
+                                  </View>
+                                )}
+
+                                {transItem.status === 'preparing' && (
+                                  <View
+                                    style={[
+                                      styles.TiBtn,
+                                      styles.preparingColor,
+                                    ]}>
+                                    <Text style={styles.btnText}>Serving</Text>
+                                  </View>
+                                )}
+                                {transItem.status === 'serving' && (
+                                  <View
+                                    style={[styles.TiBtn, styles.servingColor]}>
+                                    <Text style={styles.btnText}>Serve</Text>
+                                  </View>
+                                )}
+                                {transItem.status === 'served' && (
+                                  <View
+                                    style={[styles.TiBtn, styles.doneColor]}>
+                                    <Text style={styles.btnText}>Served</Text>
+                                  </View>
+                                )}
                               </View>
                             </Text>
                           </View>
