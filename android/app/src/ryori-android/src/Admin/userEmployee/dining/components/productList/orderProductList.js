@@ -21,6 +21,11 @@ import SkeletonItem from '../../../../../utils/skeletonItem';
 import {useFocusEffect} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+import PushNotification from 'react-native-push-notification';
+import io from 'socket.io-client';
+
+
+
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
@@ -43,6 +48,37 @@ export default function OrderProductList({navigation}) {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
+  };
+
+  useEffect(() => {
+    createChannel();
+
+    const socket = io(API_URL)
+    socket.on('connection', () => {
+      console.log('Connected to server');
+    })
+    socket.on('message', (data) => {
+      console.log('got something here...')
+      PushNotification.localNotification({
+        channelId: 'Testing',
+        title: data.title,
+        message: data.message,
+      });
+    })
+
+    socket.emit('joinRoom', {room: 'store-1'})
+
+    return () => {
+      socket.disconnect();
+    }
+
+  }, []);
+
+  const createChannel = () => {
+    PushNotification.createChannel({
+      channelId: 'Testing',
+      channelName: 'Test Channel',
+    });
   };
 
   useFocusEffect(

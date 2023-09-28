@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import {OpeningSytle as styles} from './openingStyle';
 import ryoriText from '../../images/ryori-text.png';
-import PushNotification from 'react-native-push-notification';
 import {
   OrientationLocker,
   PORTRAIT,
   LANDSCAPE,
 } from 'react-native-orientation-locker';
+import PushNotification from 'react-native-push-notification';
 import io from 'socket.io-client';
 import {API_URL} from '../../../utils/constants'
 
@@ -24,36 +24,7 @@ export default function LoginEmployee({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    createChannel();
-
-    const socket = io(API_URL)
-    socket.on('connection', () => {
-      console.log('Connected to server');
-    })
-    socket.on('message', (data) => {
-      console.log('got something here...')
-      PushNotification.localNotification({
-        channelId: 'Testing',
-        title: data.title,
-        message: data.message,
-      });
-    })
-
-    socket.emit('joinRoom', {room: 'store-1'})
-
-    return () => {
-      socket.disconnect();
-    }
-
-  }, []);
-
-  const createChannel = () => {
-    PushNotification.createChannel({
-      channelId: 'Testing',
-      channelName: 'Test Channel',
-    });
-  };
+  
 
   const handleNotification = () => {
     
