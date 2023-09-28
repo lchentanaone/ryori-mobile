@@ -165,6 +165,7 @@ export const EmployeeStyle = StyleSheet.create({
     backgroundColor: '#4285F4',
     borderRadius: 10,
     flexDirection: 'row',
+    marginTop: 10,
   },
   cancelModalBtn: {
     width: '22%',
@@ -174,6 +175,7 @@ export const EmployeeStyle = StyleSheet.create({
     backgroundColor: '#909090',
     borderRadius: 10,
     flexDirection: 'row',
+    marginTop: 10,
   },
   // deleteEmploye: {
   //   width: '48%',
