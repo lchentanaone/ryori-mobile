@@ -78,7 +78,7 @@ export default function UserCredentials({route}) {
   return (
     <View style={ProfileStyle.userCred}>
       <View style={ProfileStyle.userCredForm}>
-        <Text style={ProfileStyle.changeText}>Change Email and Password</Text>
+        <Text style={ProfileStyle.changeText}>Change Password</Text>
         <View style={{width: '100%', alignItems: 'center', marginTop: 20}}>
           {userData ? (
             <>

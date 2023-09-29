@@ -6,7 +6,8 @@ export const MenuStyle = StyleSheet.create({
     flex: 1,
     position: 'relative',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   menuContent: {
     width: '100%',
@@ -192,70 +193,21 @@ export const MenuStyle = StyleSheet.create({
   },
 
   menuItemRow: {
-    marginTop: 10,
     flexDirection: 'row',
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    gap: 5,
   },
-  // menuTable: {
-  //   justifyContent: 'flex-start',
-  //   backgroundColor: '#fff',
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   borderRadius: 5,
-  //   width: '100%',
-  //   height: 280,
-  //   top: 10,
-  // },
-  // tableHeader: {
-  //   backgroundColor: '#E3E7EB',
-  // },
-  // menuData: {
-  //   fontSize: 16,
-  //   fontWeight: 500,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
-  // menuCellData: {
-  //   fontSize: 14,
-  //   fontWeight: 500,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
 
-  // MODAL
-  // Modal: {
-  //   width: '100%',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginTop: 22,
-  // },
-  // modalView: {
-  //   width: '100%',
-  //   margin: 20,
-  //   backgroundColor: '#fff',
-  //   borderRadius: 20,
-  //   padding: 35,
-  //   alignItems: 'center',
-  //   shadowColor: '#000',
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: 2,
-  //   },
-  //   shadowOpacity: 0.25,
-  //   shadowRadius: 4,
-  //   elevation: 5,
-  // },
-  //----------------------------------------------------------------
   menuItems: {
     backgroundColor: '#fff',
     shadowColor: '#000',
     elevation: 6,
     height: 180,
-    width: '95%',
+    width: '100%',
     borderRadius: 3,
     margin: 5,
     marginLeft: 10,

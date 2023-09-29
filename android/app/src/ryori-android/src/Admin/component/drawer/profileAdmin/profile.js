@@ -52,15 +52,22 @@ export default function ProfileAdmin({navigation}) {
                 <View style={ProfileStyle.nameEmail}>
                   <View style={{alignItems: 'center'}}>
                     <Text style={ProfileStyle.profileInfoText}>
-                      {userData.username}
-                    </Text>
-                    <Text style={ProfileStyle.profileInfoText}>
                       {userData.email}
                     </Text>
                   </View>
                 </View>
               </View>
               <View style={ProfileStyle.profileDetailsCol}>
+                <View style={ProfileStyle.detailColored}>
+                  <View style={ProfileStyle.infoCol}>
+                    <Text style={ProfileStyle.infoTetx}>Username</Text>
+                  </View>
+                  <View style={ProfileStyle.infoCol2}>
+                    <Text style={ProfileStyle.infoTetx}>
+                      {userData.username}
+                    </Text>
+                  </View>
+                </View>
                 <View style={ProfileStyle.detailColored}>
                   <View style={ProfileStyle.infoCol}>
                     <Text style={ProfileStyle.infoTetx}>Full Name</Text>
@@ -89,14 +96,14 @@ export default function ProfileAdmin({navigation}) {
                   </View>
                 </View>
 
-                <View style={ProfileStyle.detailColored}>
+                {/* <View style={ProfileStyle.detailColored}>
                   <View style={ProfileStyle.infoCol}>
                     <Text style={ProfileStyle.infoTetx}>Address</Text>
                   </View>
                   <View style={ProfileStyle.infoCol2}>
                     <Text style={ProfileStyle.infoTetx}>{'Davao City'}</Text>
                   </View>
-                </View>
+                </View> */}
                 <TouchableOpacity
                   style={ProfileStyle.buttonsOpacity}
                   onPress={getUserId}>

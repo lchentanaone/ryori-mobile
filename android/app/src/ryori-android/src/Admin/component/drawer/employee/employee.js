@@ -34,6 +34,7 @@ export default function Employees() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
   const [phone, setPhone] = useState('');
   const [user, setUser] = useState([]);
@@ -140,13 +141,16 @@ export default function Employees() {
       !email ||
       !role ||
       !password ||
-      !phone
+      !phone ||
+      !confirmPassword
     ) {
       setErrors('All fields are required.');
     } else if (!isValidEmail(email)) {
       setErrors('Invalid email format.');
     } else if (password.length < 6) {
       setErrors('Password must be at least 6 characters.');
+    } else if (password !== confirmPassword) {
+      setErrors('Passwords do not match.');
     } else {
       setErrors('');
       addStoreUser();
@@ -220,6 +224,8 @@ export default function Employees() {
     setPassword('');
     setRole('');
     setPhone('');
+    setConfirmPassword('');
+    setErrors('');
   };
   const add = user => {
     setModalVisible(true);
@@ -414,31 +420,40 @@ export default function Employees() {
                     disabled={employeeExist}
                   />
                 )}
-              </View>
-              <View style={styles.modalButton}>
-                {/* <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="Roles"
-                  placeholderTextColor="#777777"
-                  value={role}
-                  onChangeText={setRole}
-                /> */}
-                {employeeExist ? null : (
-                  <TextInput
-                    mode="outlined"
-                    style={styles.modalInput}
-                    placeholder="password"
-                    placeholderTextColor="#777777"
-                    value={password}
-                    onChangeText={setPassword}
-                  />
-                )}
                 {!employeeExist ? null : (
                   <Text style={styles.employeeCellData}>
                     Please Contact us for Email and {'\n'} Password Recovery
                   </Text>
                 )}
+              </View>
+              <View style={styles.modalForm}>
+                {employeeExist ? null : (
+                  <>
+                    <TextInput
+                      mode="outlined"
+                      style={styles.modalInput}
+                      placeholder="password"
+                      placeholderTextColor="#777777"
+                      value={password}
+                      secureTextEntry={true}
+                      onChangeText={setPassword}
+                    />
+                    <TextInput
+                      mode="outlined"
+                      style={styles.modalInput}
+                      placeholder="Confirm Password"
+                      placeholderTextColor="#777777"
+                      value={confirmPassword}
+                      secureTextEntry={true}
+                      onChangeText={setConfirmPassword}
+                    />
+                  </>
+                )}
+              </View>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000'}}>{errors}</Text>
+              )}
+              <View style={styles.modalButton}>
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}
                   onPress={SaveUser}>
@@ -450,9 +465,6 @@ export default function Employees() {
                   <Text style={styles.filterTextBtn}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-              {errors !== '' && (
-                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
-              )}
             </View>
           </View>
         </View>

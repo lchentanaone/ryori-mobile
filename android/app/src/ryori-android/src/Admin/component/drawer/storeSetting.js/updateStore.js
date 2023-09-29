@@ -49,7 +49,7 @@ export default function UpdateStore({route, navigation}) {
       });
       setPhoto(response.data.photo);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('');
     }
   };
 
@@ -113,7 +113,7 @@ export default function UpdateStore({route, navigation}) {
           navigation.navigate('Store Setting');
         }
       } catch (error) {
-        console.error('Error', error);
+        console.error('');
       }
     }
   };
