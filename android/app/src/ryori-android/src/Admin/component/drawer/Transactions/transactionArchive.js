@@ -75,7 +75,7 @@ export default function TransactionArchive() {
             <DataTable>
               <DataTable.Header style={TransactionStyle.tableHeader}>
                 <DataTable.Title>
-                  <Text style={TransactionStyle.tableHeaderText}>ID</Text>
+                  <Text style={TransactionStyle.tableHeaderText}>No.</Text>
                 </DataTable.Title>
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>table</Text>
