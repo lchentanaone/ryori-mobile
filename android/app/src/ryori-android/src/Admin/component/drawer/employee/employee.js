@@ -79,7 +79,6 @@ export default function Employees() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log('--', {branch_Id});
       const newUser = [
         ...user,
         {username, email, firstName, lastName, password, role, phone},
@@ -87,40 +86,21 @@ export default function Employees() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      if (userOnEdit) {
-        await axios.patch(
-          `${API_URL}/user/${userOnEdit}`,
-          {
-            store_Id,
-            branch_Id,
-            username,
-            email,
-            firstName,
-            lastName,
-            password,
-            role,
-            phone,
-          },
-          {headers},
-        );
-        fetchUsers();
-        setUser(newUser);
-      } else {
-        await axios.post(`${API_URL}/auth/register`, {
-          store_Id,
-          branch_Id,
-          username,
-          email,
-          firstName,
-          lastName,
-          password,
-          role,
-          phone,
-        });
-        fetchUsers();
-        setUser(newUser);
-        console.log('--', {branch_Id});
-      }
+
+      await axios.post(`${API_URL}/auth/register`, {
+        store_Id,
+        branch_Id,
+        username,
+        email,
+        firstName,
+        lastName,
+        password,
+        role,
+        phone,
+      });
+      fetchUsers();
+      setUser(newUser);
+      console.log('--', {branch_Id});
     } catch (error) {
       console.error('Error registering:', error);
     }
@@ -131,6 +111,49 @@ export default function Employees() {
     setPassword('');
     setRole('');
     setPhone('');
+  };
+
+  const updateEmployee = async () => {
+    if (!username || !firstName || !lastName || !phone) {
+      setErrors('All fields are required.');
+    } else {
+      setErrors('');
+      const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      try {
+        await axios.patch(
+          `${API_URL}/user/${userOnEdit}`,
+          {
+            username,
+            firstName,
+            lastName,
+            role,
+            phone,
+            branch_Id,
+            store_Id,
+          },
+          {headers},
+        );
+        fetchUsers();
+        setUser(newUser);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const editEmployee = () => {
+    if (!username || !firstName || !lastName || !role || !phone) {
+      setErrors('All fields are required.');
+    } else {
+      setErrors('');
+      updateEmployee();
+      Cancel();
+    }
   };
 
   const SaveUser = () => {
@@ -456,7 +479,7 @@ export default function Employees() {
               <View style={styles.modalButton}>
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}
-                  onPress={SaveUser}>
+                  onPress={userOnEdit ? editEmployee : SaveUser}>
                   <Text style={styles.filterTextBtn}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

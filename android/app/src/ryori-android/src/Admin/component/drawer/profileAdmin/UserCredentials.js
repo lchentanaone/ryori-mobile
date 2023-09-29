@@ -99,7 +99,7 @@ export default function UserCredentials({route}) {
                 placeholder="Password"
                 placeholderTextColor="#777777"
                 value={password}
-                // secureTextEntry={true}
+                secureTextEntry={true}
                 onChangeText={setPassword}
               />
               <TextInput
@@ -108,7 +108,7 @@ export default function UserCredentials({route}) {
                 placeholder="confirm Password"
                 placeholderTextColor="#777777"
                 value={confirmPassword}
-                // secureTextEntry={true}
+                secureTextEntry={true}
                 onChangeText={setConfirmPassword}
               />
               {errors !== '' && (
