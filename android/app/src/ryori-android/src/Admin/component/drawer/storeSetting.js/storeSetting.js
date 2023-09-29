@@ -30,12 +30,13 @@ export default function StoreSetting({navigation}) {
         photo: response.data.photo,
         appId: response.data.appId,
         appSecret: response.data.appSecret,
-        branchName: response.data.branches[0].branchName,
-        email: response.data.branches[0].email,
-        contactNumber: response.data.branches[0].contactNumber,
-        address: response.data.branches[0].address,
+
+        branchName: response.data.branch.branchName,
+        email: response.data.branch.email,
+        contactNumber: response.data.branch.contactNumber,
+        address: response.data.branch.address,
       });
-      console.log(response.data.branches[0].branchName);
+      console.log(response.data.branch.branchName);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }

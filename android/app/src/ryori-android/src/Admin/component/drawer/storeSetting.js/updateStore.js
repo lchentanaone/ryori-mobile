@@ -42,10 +42,11 @@ export default function UpdateStore({route, navigation}) {
         photo: response.data.photo,
         appId: response.data.appId,
         appSecret: response.data.appSecret,
-        branchName: response.data.branches[0].branchName,
-        email: response.data.branches[0].email,
-        contactNumber: response.data.branches[0].contactNumber,
-        address: response.data.branches[0].address,
+
+        branchName: response.data.branch.branchName,
+        email: response.data.branch.email,
+        contactNumber: response.data.branch.contactNumber,
+        address: response.data.branch.address,
       });
       setPhoto(response.data.photo);
     } catch (error) {
