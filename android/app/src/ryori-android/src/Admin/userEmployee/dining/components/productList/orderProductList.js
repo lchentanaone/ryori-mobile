@@ -27,12 +27,17 @@ import io from 'socket.io-client';
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
+  const [randomNumber, setRandomNumber] = useState(0);
 
   const handlePress = index => {
     const tempData = [...transactionData];
     tempData[index].expanded = !tempData[index].expanded;
     setTransactionData(tempData);
   };
+
+  const changeRandomNumber = () => {
+    setRandomNumber(Math.floor(Math.random() * 10))
+  }
 
   const fetchUserData = async () => {
     try {
@@ -49,51 +54,6 @@ export default function OrderProductList({navigation}) {
       console.error('Error fetching user data:', error);
     }
   };
-
-  const watchPushNotifications = async () => {
-    const branch_Id = await AsyncStorage.getItem('branch_Id');
-    const socket = io(API_URL);
-    socket.on('connection', () => {
-      console.log('Connected to server');
-    });
-    socket.on('message', data => {
-      if (data) {
-        const options = {
-          channelId: data.channelId,
-          title: data.title,
-          message: data.message,
-          playSound: true,
-          vibrate: true,
-        };
-        PushNotification.localNotification(options);
-      }
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  };
-
-  useEffect(() => {
-    createChannel();
-    watchPushNotifications();
-  }, []);
-
-  const createChannel = async () => {
-    const branch_Id = await AsyncStorage.getItem('branch_Id');
-    PushNotification.createChannel({
-      channelId: 'sc-channel-' + branch_Id,
-      channelName: 'sc-channel-' + branch_Id,
-      playSound: true,
-      vibrate: true,
-    });
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchUserData();
-    }, []),
-  );
 
   const fetchTransactionsData = async () => {
     try {
@@ -136,6 +96,57 @@ export default function OrderProductList({navigation}) {
     }
   };
 
+  const watchPushNotifications = async () => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
+    const socket = io(API_URL);
+    socket.on('connection', () => {
+      console.log('Connected to server');
+    });
+    socket.on('message', data => {
+      if (data) {
+        const options = {
+          channelId: data.channelId,
+          title: data.title,
+          message: data.message,
+          playSound: true,
+          vibrate: true,
+        };
+        PushNotification.localNotification(options);
+        if(data.channelId === 'sc-channel-' + branch_Id) {
+          fetchTransactionsData();
+        }
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  };
+
+  useEffect(() => {
+    createChannel();
+    watchPushNotifications();
+  }, []);
+
+  const createChannel = async () => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
+    PushNotification.createChannel({
+      channelId: 'sc-channel-' + branch_Id,
+      channelName: 'sc-channel-' + branch_Id,
+      playSound: true,
+      vibrate: true,
+    });
+    
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, []),
+  );
+
+  
+
   const chargeDiscount = async (_id, index) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
@@ -152,7 +163,6 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      fetchTransactionsData();
       console.log({response});
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -179,7 +189,7 @@ export default function OrderProductList({navigation}) {
     }
   };
 
-  const updateTransactionItem = async (_id, newStatus) => {
+  const updateTransactionItem = async (_id, newStatus, transactionKey) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const headers = {
@@ -192,7 +202,9 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      fetchTransactionsData();
+      const _transaction = transactionData[transactionKey].find(item => item._id === _id);
+      _transaction.status = newStatus;
+      
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -236,7 +248,9 @@ export default function OrderProductList({navigation}) {
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Orders</Text>
+            
           </View>
+          
           {userData ? (
             <TouchableOpacity
               style={styles.viewProfile}
@@ -512,6 +526,7 @@ export default function OrderProductList({navigation}) {
                                               updateTransactionItem(
                                                 transItem._id,
                                                 'preparing',
+                                                index
                                               )
                                             }>
                                             <AntDesign
@@ -526,6 +541,7 @@ export default function OrderProductList({navigation}) {
                                               updateTransactionItem(
                                                 transItem._id,
                                                 'cancel',
+                                                index
                                               )
                                             }>
                                             <MaterialIcons
@@ -558,6 +574,7 @@ export default function OrderProductList({navigation}) {
                                             updateTransactionItem(
                                               transItem._id,
                                               'serving',
+                                              index
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
@@ -575,6 +592,7 @@ export default function OrderProductList({navigation}) {
                                             updateTransactionItem(
                                               transItem._id,
                                               'served',
+                                              index
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
