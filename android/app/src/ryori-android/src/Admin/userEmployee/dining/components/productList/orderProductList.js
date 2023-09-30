@@ -47,7 +47,7 @@ export default function OrderProductList({navigation}) {
           Authorization: `Bearer ${token}`,
         },
       });
-      if(response.data) {
+      if (response.data) {
         setUserData(response.data);
       }
     } catch (error) {
@@ -57,35 +57,34 @@ export default function OrderProductList({navigation}) {
 
   const watchPushNotifications = async () => {
     const branch_Id = await AsyncStorage.getItem('branch_Id');
-    const socket = io(API_URL)
+    const socket = io(API_URL);
     socket.on('connection', () => {
       console.log('Connected to server');
-
-    })
-    socket.on('message', (data) => {
-      if(data) {
+    });
+    socket.on('message', data => {
+      if (data) {
         const options = {
           channelId: data.channelId,
           title: data.title,
           message: data.message,
           playSound: true,
-          vibrate: true
-        }
+          vibrate: true,
+        };
         PushNotification.localNotification(options);
         if(data.channelId === 'sc-channel-' + branch_Id) {
           fetchUserData();
         }
       }
-    })
+    });
 
     return () => {
       socket.disconnect();
-    }
-  }
+    };
+  };
 
   useEffect(() => {
     createChannel();
-    watchPushNotifications()
+    watchPushNotifications();
   }, []);
 
   const createChannel = async () => {
@@ -94,7 +93,7 @@ export default function OrderProductList({navigation}) {
       channelId: 'sc-channel-' + branch_Id,
       channelName: 'sc-channel-' + branch_Id,
       playSound: true,
-      vibrate: true
+      vibrate: true,
     });
     
   };
@@ -122,7 +121,7 @@ export default function OrderProductList({navigation}) {
         {headers},
       );
 
-      if(response.data) {
+      if (response.data) {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status !== 'done')
           .map(tempData => {
@@ -138,7 +137,6 @@ export default function OrderProductList({navigation}) {
             }
             return tempData;
           });
-        
 
         setTransactionData(statusPreparing);
       }
@@ -309,14 +307,33 @@ export default function OrderProductList({navigation}) {
                           size={20}
                         />
                       )}
-                      {item.status === 'to_pay_cash' && (
-                        <FontAwesome name="circle" color={'red'} size={20} />
+                      {item.status === 'served' && (
+                        <FontAwesome
+                          name="circle"
+                          color={'#12BF38'}
+                          size={20}
+                        />
+                      )}
+                      {item.status === 'awaiting_payment_method' && (
+                        <FontAwesome
+                          name="circle"
+                          color={'#4285F4'}
+                          size={20}
+                        />
                       )}
                       <Text
                         style={styles.tableText}>{`Table ${item.table} `}</Text>
                       {item.status === 'to_pay_cash' && (
                         <View style={styles.toCash}>
                           <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                        </View>
+                      )}
+
+                      {item.status === 'awaiting_payment_method' && (
+                        <View style={styles.toCash}>
+                          <Text style={styles.payCashBtnText}>
+                            Pay via Gcash
+                          </Text>
                         </View>
                       )}
                     </TouchableOpacity>
@@ -431,6 +448,15 @@ export default function OrderProductList({navigation}) {
                           {/* {-----------Pay cash-------------} */}
 
                           {item.status === 'to_pay_cash' && (
+                            <TouchableOpacity
+                              style={[styles.TBtn, styles.toPrepareColor]}
+                              onPress={() => {
+                                updateTransStatus(item._id, 'done');
+                              }}>
+                              <Text style={styles.btnText}>Confirmed</Text>
+                            </TouchableOpacity>
+                          )}
+                          {item.status === 'awaiting_payment_method' && (
                             <TouchableOpacity
                               style={[styles.TBtn, styles.toPrepareColor]}
                               onPress={() => {
