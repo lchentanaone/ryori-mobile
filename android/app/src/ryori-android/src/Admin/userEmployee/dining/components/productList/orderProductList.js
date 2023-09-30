@@ -311,7 +311,7 @@ export default function OrderProductList({navigation}) {
                           size={20}
                         />
                       )}
-                      {item.status === 'served' && (
+                      {item.status === 'done' && (
                         <FontAwesome
                           name="circle"
                           color={'#12BF38'}
