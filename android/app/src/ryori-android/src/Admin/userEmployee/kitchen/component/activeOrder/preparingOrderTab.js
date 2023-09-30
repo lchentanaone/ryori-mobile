@@ -84,47 +84,49 @@ export default function PreparingOrderTab({navigation}) {
     }
   };
 
-  const updateTransactionItem = async (_id, newStatus, transactionKey) => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const response = await axios.patch(
-        `${API_URL}/pos/transactionItem/${_id}`,
-        {
-          status: newStatus,
-        },
-        {headers},
-      );
-      const _transaction = transactionData[transactionKey].find(
-        item => item._id === _id,
-      );
-      _transaction.status = newStatus;
-    } catch (error) {
-      console.error('Error fetching transaction item data:', error);
-    }
-  };
-
-  // const updateTransactionItem = async (id, newStatus) => {
+  // const updateTransactionItem = async (_id, newStatus, transactionKey) => {
   //   try {
   //     const token = await AsyncStorage.getItem('access_token');
   //     const headers = {
   //       Authorization: `Bearer ${token}`,
   //     };
   //     const response = await axios.patch(
-  //       `${API_URL}/pos/transactionItem/${id}`,
+  //       `${API_URL}/pos/transactionItem/${_id}`,
   //       {
   //         status: newStatus,
   //       },
   //       {headers},
   //     );
-
-  //     fetchTransactionsData();
+  //     const _transaction = [...transactionData];
+  //     _transaction[transactionKey]; //.find(item => item._id === _id).status = newStatus;
+  //     _transaction[transactionKey].transactionItems.find(
+  //       item => item._id === _id,
+  //     ).status = newStatus;
+  //     setTransactionData(_transaction);
   //   } catch (error) {
-  //     console.error('Error fetching user data:', error);
+  //     console.error('Error updating transaction data:', error);
   //   }
   // };
+
+  const updateTransactionItem = async (id, newStatus) => {
+    try {
+      const token = await AsyncStorage.getItem('access_token');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.patch(
+        `${API_URL}/pos/transactionItem/${id}`,
+        {
+          status: newStatus,
+        },
+        {headers},
+      );
+
+      fetchTransactionsData();
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
