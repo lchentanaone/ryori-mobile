@@ -24,8 +24,6 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import PushNotification from 'react-native-push-notification';
 import io from 'socket.io-client';
 
-
-
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
@@ -53,25 +51,24 @@ export default function OrderProductList({navigation}) {
   useEffect(() => {
     createChannel();
 
-    const socket = io(API_URL)
+    const socket = io(API_URL);
     socket.on('connection', () => {
       console.log('Connected to server');
-    })
-    socket.on('message', (data) => {
-      console.log('got something here...')
+    });
+    socket.on('message', data => {
+      console.log('got something here...');
       PushNotification.localNotification({
         channelId: 'Testing',
         title: data.title,
         message: data.message,
       });
-    })
+    });
 
-    socket.emit('joinRoom', {room: 'store-1'})
+    socket.emit('joinRoom', {room: 'store-1'});
 
     return () => {
       socket.disconnect();
-    }
-
+    };
   }, []);
 
   const createChannel = () => {
@@ -285,14 +282,33 @@ export default function OrderProductList({navigation}) {
                           size={20}
                         />
                       )}
-                      {item.status === 'to_pay_cash' && (
-                        <FontAwesome name="circle" color={'red'} size={20} />
+                      {item.status === 'served' && (
+                        <FontAwesome
+                          name="circle"
+                          color={'#12BF38'}
+                          size={20}
+                        />
+                      )}
+                      {item.status === 'awaiting_payment_method' && (
+                        <FontAwesome
+                          name="circle"
+                          color={'#4285F4'}
+                          size={20}
+                        />
                       )}
                       <Text
                         style={styles.tableText}>{`Table ${item.table} `}</Text>
                       {item.status === 'to_pay_cash' && (
                         <View style={styles.toCash}>
                           <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                        </View>
+                      )}
+
+                      {item.status === 'awaiting_payment_method' && (
+                        <View style={styles.toCash}>
+                          <Text style={styles.payCashBtnText}>
+                            Pay via Gcash
+                          </Text>
                         </View>
                       )}
                     </TouchableOpacity>
@@ -407,6 +423,15 @@ export default function OrderProductList({navigation}) {
                           {/* {-----------Pay cash-------------} */}
 
                           {item.status === 'to_pay_cash' && (
+                            <TouchableOpacity
+                              style={[styles.TBtn, styles.toPrepareColor]}
+                              onPress={() => {
+                                updateTransStatus(item._id, 'done');
+                              }}>
+                              <Text style={styles.btnText}>Confirmed</Text>
+                            </TouchableOpacity>
+                          )}
+                          {item.status === 'awaiting_payment_method' && (
                             <TouchableOpacity
                               style={[styles.TBtn, styles.toPrepareColor]}
                               onPress={() => {
