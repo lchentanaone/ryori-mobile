@@ -78,7 +78,7 @@ export default function UserCredentials({route}) {
   return (
     <View style={ProfileStyle.userCred}>
       <View style={ProfileStyle.userCredForm}>
-        <Text style={ProfileStyle.changeText}>Change Email and Password</Text>
+        <Text style={ProfileStyle.changeText}>Change Password</Text>
         <View style={{width: '100%', alignItems: 'center', marginTop: 20}}>
           {userData ? (
             <>
@@ -99,7 +99,7 @@ export default function UserCredentials({route}) {
                 placeholder="Password"
                 placeholderTextColor="#777777"
                 value={password}
-                // secureTextEntry={true}
+                secureTextEntry={true}
                 onChangeText={setPassword}
               />
               <TextInput
@@ -108,7 +108,7 @@ export default function UserCredentials({route}) {
                 placeholder="confirm Password"
                 placeholderTextColor="#777777"
                 value={confirmPassword}
-                // secureTextEntry={true}
+                secureTextEntry={true}
                 onChangeText={setConfirmPassword}
               />
               {errors !== '' && (

@@ -80,6 +80,17 @@ export default function UpdateProfileAdmin({route, navigation}) {
                 <Image source={adminImg} style={styles.profilepic} />
               </View>
               <View style={styles.updateAdminInfo}>
+                <TextInput
+                  mode="outlined"
+                  style={styles.addressInput}
+                  placeholder="Email"
+                  placeholderTextColor="#777777"
+                  value={userData.email}
+                  editable={false}
+                  onChangeText={value => {
+                    handleChangeText('email', value);
+                  }}
+                />
                 <View style={styles.updateInput}>
                   <TextInput
                     mode="outlined"
@@ -126,17 +137,7 @@ export default function UpdateProfileAdmin({route, navigation}) {
                     }}
                   />
                 </View>
-                <TextInput
-                  mode="outlined"
-                  style={styles.addressInput}
-                  placeholder="Address"
-                  placeholderTextColor="#777777"
-                  value={userData.address}
-                  secureTextEntry={false}
-                  onChangeText={value => {
-                    handleChangeText('address', value);
-                  }}
-                />
+
                 <View style={styles.saveAdminInfo}>
                   {errors !== '' && (
                     <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>

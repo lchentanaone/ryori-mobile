@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export const BranchStyle = StyleSheet.create({
   branchesContainer: {
-    backgroundColor: '#F9F9F9', //
+    backgroundColor: '#F9F9F9',
     flex: 1,
     position: 'relative',
     alignItems: 'center',
@@ -16,7 +16,6 @@ export const BranchStyle = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     width: 400,
-    height: '60%',
   },
   container: {
     width: '100%',
@@ -57,6 +56,7 @@ export const BranchStyle = StyleSheet.create({
     borderRadius: 3,
     marginBottom: 2,
     flexDirection: 'row',
+    marginTop: 5,
   },
   addBranchText: {
     fontSize: 15,

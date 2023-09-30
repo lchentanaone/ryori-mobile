@@ -337,7 +337,6 @@ export default function Inventory() {
                 placeholder="Net Weight"
                 placeholderTextColor="#777777"
                 value={weight}
-                keyboardType="numeric"
                 onChangeText={setWeight}
               />
               <TextInput

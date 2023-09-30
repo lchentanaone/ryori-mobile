@@ -31,7 +31,6 @@ export default function Category() {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log({token});
       const response = await axios.get(
         `${API_URL}/menuCategory/?store_Id=${store_Id}`,
         {
@@ -42,7 +41,7 @@ export default function Category() {
       );
       setItems(response.data);
     } catch (error) {
-      console.error(error);
+      console.error('');
     }
   };
 
@@ -110,8 +109,6 @@ export default function Category() {
           // Edit
           if (itemOnEdit !== '') {
             // Need to double check Edit bugs... still haveing issues found.
-            console.log(`${API_URL}/menuCategory/${itemOnEdit}`);
-            console.log({formData: JSON.stringify(formData)});
             const response = await axios.patch(
               `${API_URL}/menuCategory/${itemOnEdit}`,
               formData,
@@ -135,7 +132,7 @@ export default function Category() {
             resolve(response.data._id);
           }
         } catch (error) {
-          console.error('error', error);
+          console.error('');
           reject(error);
         }
         setTitle('');
@@ -176,7 +173,7 @@ export default function Category() {
       });
       fetchItems();
     } catch (error) {
-      console.error(error);
+      console.error('');
     }
   };
   const showDeleteConfirmation = _id => {

@@ -34,6 +34,7 @@ export default function Employees() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('');
   const [phone, setPhone] = useState('');
   const [user, setUser] = useState([]);
@@ -78,7 +79,6 @@ export default function Employees() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      console.log('--', {branch_Id});
       const newUser = [
         ...user,
         {username, email, firstName, lastName, password, role, phone},
@@ -86,40 +86,21 @@ export default function Employees() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      if (userOnEdit) {
-        await axios.patch(
-          `${API_URL}/user/${userOnEdit}`,
-          {
-            store_Id,
-            branch_Id,
-            username,
-            email,
-            firstName,
-            lastName,
-            password,
-            role,
-            phone,
-          },
-          {headers},
-        );
-        fetchUsers();
-        setUser(newUser);
-      } else {
-        await axios.post(`${API_URL}/auth/register`, {
-          store_Id,
-          branch_Id,
-          username,
-          email,
-          firstName,
-          lastName,
-          password,
-          role,
-          phone,
-        });
-        fetchUsers();
-        setUser(newUser);
-        console.log('--', {branch_Id});
-      }
+
+      await axios.post(`${API_URL}/auth/register`, {
+        store_Id,
+        branch_Id,
+        username,
+        email,
+        firstName,
+        lastName,
+        password,
+        role,
+        phone,
+      });
+      fetchUsers();
+      setUser(newUser);
+      console.log('--', {branch_Id});
     } catch (error) {
       console.error('Error registering:', error);
     }
@@ -132,6 +113,49 @@ export default function Employees() {
     setPhone('');
   };
 
+  const updateEmployee = async () => {
+    if (!username || !firstName || !lastName || !phone) {
+      setErrors('All fields are required.');
+    } else {
+      setErrors('');
+      const token = await AsyncStorage.getItem('access_token');
+      const store_Id = await AsyncStorage.getItem('store_Id');
+      const branch_Id = await AsyncStorage.getItem('branch_Id');
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      try {
+        await axios.patch(
+          `${API_URL}/user/${userOnEdit}`,
+          {
+            username,
+            firstName,
+            lastName,
+            role,
+            phone,
+            branch_Id,
+            store_Id,
+          },
+          {headers},
+        );
+        fetchUsers();
+        setUser(newUser);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const editEmployee = () => {
+    if (!username || !firstName || !lastName || !role || !phone) {
+      setErrors('All fields are required.');
+    } else {
+      setErrors('');
+      updateEmployee();
+      Cancel();
+    }
+  };
+
   const SaveUser = () => {
     if (
       !username ||
@@ -140,13 +164,16 @@ export default function Employees() {
       !email ||
       !role ||
       !password ||
-      !phone
+      !phone ||
+      !confirmPassword
     ) {
       setErrors('All fields are required.');
     } else if (!isValidEmail(email)) {
       setErrors('Invalid email format.');
     } else if (password.length < 6) {
       setErrors('Password must be at least 6 characters.');
+    } else if (password !== confirmPassword) {
+      setErrors('Passwords do not match.');
     } else {
       setErrors('');
       addStoreUser();
@@ -220,6 +247,8 @@ export default function Employees() {
     setPassword('');
     setRole('');
     setPhone('');
+    setConfirmPassword('');
+    setErrors('');
   };
   const add = user => {
     setModalVisible(true);
@@ -414,34 +443,43 @@ export default function Employees() {
                     disabled={employeeExist}
                   />
                 )}
-              </View>
-              <View style={styles.modalButton}>
-                {/* <TextInput
-                  mode="outlined"
-                  style={styles.modalInput}
-                  placeholder="Roles"
-                  placeholderTextColor="#777777"
-                  value={role}
-                  onChangeText={setRole}
-                /> */}
-                {employeeExist ? null : (
-                  <TextInput
-                    mode="outlined"
-                    style={styles.modalInput}
-                    placeholder="password"
-                    placeholderTextColor="#777777"
-                    value={password}
-                    onChangeText={setPassword}
-                  />
-                )}
                 {!employeeExist ? null : (
                   <Text style={styles.employeeCellData}>
                     Please Contact us for Email and {'\n'} Password Recovery
                   </Text>
                 )}
+              </View>
+              <View style={styles.modalForm}>
+                {employeeExist ? null : (
+                  <>
+                    <TextInput
+                      mode="outlined"
+                      style={styles.modalInput}
+                      placeholder="password"
+                      placeholderTextColor="#777777"
+                      value={password}
+                      secureTextEntry={true}
+                      onChangeText={setPassword}
+                    />
+                    <TextInput
+                      mode="outlined"
+                      style={styles.modalInput}
+                      placeholder="Confirm Password"
+                      placeholderTextColor="#777777"
+                      value={confirmPassword}
+                      secureTextEntry={true}
+                      onChangeText={setConfirmPassword}
+                    />
+                  </>
+                )}
+              </View>
+              {errors !== '' && (
+                <Text style={{color: '#ff0000'}}>{errors}</Text>
+              )}
+              <View style={styles.modalButton}>
                 <TouchableOpacity
                   style={styles.addEmployeeBtn}
-                  onPress={SaveUser}>
+                  onPress={userOnEdit ? editEmployee : SaveUser}>
                   <Text style={styles.filterTextBtn}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -450,9 +488,6 @@ export default function Employees() {
                   <Text style={styles.filterTextBtn}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-              {errors !== '' && (
-                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
-              )}
             </View>
           </View>
         </View>

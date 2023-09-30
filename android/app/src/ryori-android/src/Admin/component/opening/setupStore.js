@@ -180,18 +180,15 @@ export default function SetupStore({navigation, route}) {
               onChangeText={setContactNumber}
             />
           </View>
-
-          <View style={setStore.setupRow}>
-            <View style={setStore.saveStore}>
-              {errors !== '' && (
-                <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
-              )}
-              <TouchableOpacity
-                style={setStore.saveStoreOpacity}
-                onPress={handleSave}>
-                <Text style={setStore.saveStoreTextBtn}>Save</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={setStore.saveStore}>
+            {errors !== '' && (
+              <Text style={{color: '#ff0000', top: -7}}>{errors}</Text>
+            )}
+            <TouchableOpacity
+              style={setStore.saveStoreOpacity}
+              onPress={handleSave}>
+              <Text style={setStore.saveStoreTextBtn}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

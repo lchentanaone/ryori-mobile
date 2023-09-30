@@ -156,45 +156,43 @@ export default function Menu({navigation}) {
           </View> */}
         </View>
 
-        <View style={{height: 300}}>
-          <ScrollView>
-            <View style={MenuStyle.menuItemRow}>
-              {items.length > 0 ? (
-                items.map((item, index) => (
-                  <View key={index}>
-                    <TouchableOpacity
-                      style={MenuStyle.menuItems}
-                      onPress={() => handleMenuModal(item)}>
-                      <Image
-                        source={item.photo ? {uri: item.photo} : defaultPhoto}
-                        style={MenuStyle.menuImages}
-                      />
-                      <View style={{paddingHorizontal: 10}}>
-                        <Text style={MenuStyle.menuLabels}>{item.title}</Text>
-                      </View>
-                      <View style={MenuStyle.priceQtyBottom}>
-                        <View style={MenuStyle.priceQty}>
-                          <View style={MenuStyle.price}>
-                            <Text style={MenuStyle.menuPrice}>
-                              ₱ {item.price}
-                            </Text>
-                          </View>
-                          <Text style={MenuStyle.menuQty}>
-                            Qty: {item.quantity}
+        <ScrollView style={{height: 300, marginTop: 10}}>
+          <View style={MenuStyle.menuItemRow}>
+            {items.length > 0 ? (
+              items.map((item, index) => (
+                <View key={index}>
+                  <TouchableOpacity
+                    style={MenuStyle.menuItems}
+                    onPress={() => handleMenuModal(item)}>
+                    <Image
+                      source={item.photo ? {uri: item.photo} : defaultPhoto}
+                      style={MenuStyle.menuImages}
+                    />
+                    <View style={{paddingHorizontal: 10}}>
+                      <Text style={MenuStyle.menuLabels}>{item.title}</Text>
+                    </View>
+                    <View style={MenuStyle.priceQtyBottom}>
+                      <View style={MenuStyle.priceQty}>
+                        <View style={MenuStyle.price}>
+                          <Text style={MenuStyle.menuPrice}>
+                            ₱ {item.price}
                           </Text>
                         </View>
+                        <Text style={MenuStyle.menuQty}>
+                          Qty: {item.quantity}
+                        </Text>
                       </View>
-                    </TouchableOpacity>
-                  </View>
-                ))
-              ) : (
-                <View>
-                  <SkeletonItem />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              )}
-            </View>
-          </ScrollView>
-        </View>
+              ))
+            ) : (
+              <View>
+                <SkeletonItem />
+              </View>
+            )}
+          </View>
+        </ScrollView>
       </View>
       <Modal
         animationType="fade"

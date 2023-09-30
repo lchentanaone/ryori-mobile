@@ -162,6 +162,13 @@ export default function AddMenu({route, navigation}) {
   const handleSaveMenu = async () => {
     const menuItemId = await handleAddMenu();
     navigation.navigate('Menus');
+    setCategory('');
+    setPhoto('');
+    setTitle('');
+    setPrice('');
+    setQty('');
+    setDescription('');
+    setCookingTime('');
   };
 
   const handleChoosePhoto = () => {
