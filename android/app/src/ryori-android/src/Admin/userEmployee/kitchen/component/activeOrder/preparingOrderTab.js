@@ -84,25 +84,47 @@ export default function PreparingOrderTab({navigation}) {
     }
   };
 
-  const updateTransactionItem = async (id, newStatus) => {
+  const updateTransactionItem = async (_id, newStatus, transactionKey) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.patch(
-        `${API_URL}/pos/transactionItem/${id}`,
+        `${API_URL}/pos/transactionItem/${_id}`,
         {
           status: newStatus,
         },
         {headers},
       );
-
-      fetchTransactionsData();
+      const _transaction = transactionData[transactionKey].find(
+        item => item._id === _id,
+      );
+      _transaction.status = newStatus;
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching transaction item data:', error);
     }
   };
+
+  // const updateTransactionItem = async (id, newStatus) => {
+  //   try {
+  //     const token = await AsyncStorage.getItem('access_token');
+  //     const headers = {
+  //       Authorization: `Bearer ${token}`,
+  //     };
+  //     const response = await axios.patch(
+  //       `${API_URL}/pos/transactionItem/${id}`,
+  //       {
+  //         status: newStatus,
+  //       },
+  //       {headers},
+  //     );
+
+  //     fetchTransactionsData();
+  //   } catch (error) {
+  //     console.error('Error fetching user data:', error);
+  //   }
+  // };
 
   useFocusEffect(
     useCallback(() => {
@@ -164,6 +186,9 @@ export default function PreparingOrderTab({navigation}) {
                     {item.status === 'served' && (
                       <FontAwesome name="circle" color={'#12BF38'} size={20} />
                     )}
+                    {item.status === 'awaiting_payment_method' && (
+                      <FontAwesome name="circle" color={'#4285F4'} size={20} />
+                    )}
                     <Text
                       style={styles.tableText}>{`Table ${item.table} `}</Text>
                   </TouchableOpacity>
@@ -209,6 +234,16 @@ export default function PreparingOrderTab({navigation}) {
                           </TouchableOpacity>
                         )}
                         {item.status === 'served' && (
+                          <View style={[styles.TBtn, styles.doneColor]}>
+                            <Text style={styles.btnText}>Served</Text>
+                          </View>
+                        )}
+                        {item.status === 'done' && (
+                          <View style={[styles.TBtn, styles.doneColor]}>
+                            <Text style={styles.btnText}>Served</Text>
+                          </View>
+                        )}
+                        {item.status === 'awaiting_payment_method' && (
                           <View style={[styles.TBtn, styles.doneColor]}>
                             <Text style={styles.btnText}>Served</Text>
                           </View>
