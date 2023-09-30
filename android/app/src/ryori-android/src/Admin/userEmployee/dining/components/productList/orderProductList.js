@@ -24,17 +24,20 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import PushNotification from 'react-native-push-notification';
 import io from 'socket.io-client';
 
-
-
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
+  const [randomNumber, setRandomNumber] = useState(0);
 
   const handlePress = index => {
     const tempData = [...transactionData];
     tempData[index].expanded = !tempData[index].expanded;
     setTransactionData(tempData);
   };
+
+  const changeRandomNumber = () => {
+    setRandomNumber(Math.floor(Math.random() * 10))
+  }
 
   const fetchUserData = async () => {
     try {
@@ -69,6 +72,9 @@ export default function OrderProductList({navigation}) {
           vibrate: true
         }
         PushNotification.localNotification(options);
+        if(data.channelId === 'sc-channel-' + branch_Id) {
+          fetchUserData();
+        }
       }
     })
 
@@ -90,6 +96,7 @@ export default function OrderProductList({navigation}) {
       playSound: true,
       vibrate: true
     });
+    
   };
 
   useFocusEffect(
@@ -240,7 +247,9 @@ export default function OrderProductList({navigation}) {
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Orders</Text>
+            
           </View>
+          
           {userData ? (
             <TouchableOpacity
               style={styles.viewProfile}
