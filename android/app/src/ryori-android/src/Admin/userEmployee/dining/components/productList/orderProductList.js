@@ -42,39 +42,50 @@ export default function OrderProductList({navigation}) {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUserData(response.data);
+      if (response.data) {
+        setUserData(response.data);
+      }
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
 
-  useEffect(() => {
-    createChannel();
-
+  const watchPushNotifications = async () => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
     const socket = io(API_URL);
     socket.on('connection', () => {
       console.log('Connected to server');
     });
     socket.on('message', data => {
-      console.log('got something here...');
-      PushNotification.localNotification({
-        channelId: 'Testing',
-        title: data.title,
-        message: data.message,
-      });
+      if (data) {
+        const options = {
+          channelId: data.channelId,
+          title: data.title,
+          message: data.message,
+          playSound: true,
+          vibrate: true,
+        };
+        PushNotification.localNotification(options);
+      }
     });
-
-    socket.emit('joinRoom', {room: 'store-1'});
 
     return () => {
       socket.disconnect();
     };
+  };
+
+  useEffect(() => {
+    createChannel();
+    watchPushNotifications();
   }, []);
 
-  const createChannel = () => {
+  const createChannel = async () => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
     PushNotification.createChannel({
-      channelId: 'Testing',
-      channelName: 'Test Channel',
+      channelId: 'sc-channel-' + branch_Id,
+      channelName: 'sc-channel-' + branch_Id,
+      playSound: true,
+      vibrate: true,
     });
   };
 
@@ -100,23 +111,26 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      const statusPreparing = response.data
-        .filter(transactionStatus => transactionStatus.status !== 'done')
-        .map(tempData => {
-          tempData.grandTotal = tempData.total;
 
-          if (tempData.charges > 0) {
-            tempData.grandTotal =
-              parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
-          }
-          if (tempData.discount > 0) {
-            tempData.grandTotal =
-              parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
-          }
-          return tempData;
-        });
+      if (response.data) {
+        const statusPreparing = await response.data
+          .filter(transactionStatus => transactionStatus.status !== 'done')
+          .map(tempData => {
+            tempData.grandTotal = tempData.total;
 
-      setTransactionData(statusPreparing);
+            if (tempData.charges > 0) {
+              tempData.grandTotal =
+                parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
+            }
+            if (tempData.discount > 0) {
+              tempData.grandTotal =
+                parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
+            }
+            return tempData;
+          });
+
+        setTransactionData(statusPreparing);
+      }
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
