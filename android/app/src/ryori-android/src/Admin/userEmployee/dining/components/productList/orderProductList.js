@@ -202,11 +202,12 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      const _transaction = transactionData[transactionKey].find(item => item._id === _id);
-      _transaction.status = newStatus;
-      
+      const _transaction = [...transactionData]
+      _transaction[transactionKey]//.find(item => item._id === _id).status = newStatus;
+      _transaction[transactionKey].transactionItems.find(item => item._id === _id).status = newStatus
+      setTransactionData(_transaction)
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error updating transaction data:', error);
     }
   };
 
