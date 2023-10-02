@@ -83,7 +83,8 @@ export const prodStyle = StyleSheet.create({
   },
   SearchIcon: {
     left: 10,
-    color: '#000',
+    // color: '#000',
+    color: '#6b6b6d', // temporary color for disable
   },
   //Tables
   table: {

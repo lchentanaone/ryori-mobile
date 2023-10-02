@@ -141,14 +141,18 @@ export default Products = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.searchInventory}>
-          <View style={styles.searchbar}>
-            <FontAwesome name="search" size={20} style={styles.SearchIcon} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search Food here"
-              placeholderTextColor="#6b6b6d"
-              numberOfLines={1}
-            />
+          <View style={{backgroundColor: '#fff', opacity: 0.5}}>
+            <View style={styles.searchbar}>
+              <FontAwesome name="search" size={20} style={styles.SearchIcon} />
+
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search Food here"
+                placeholderTextColor="#6b6b6d"
+                numberOfLines={1}
+                editable={false}
+              />
+            </View>
           </View>
           <TouchableOpacity
             style={styles.invetoryIcon}
