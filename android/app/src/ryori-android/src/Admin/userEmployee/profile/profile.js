@@ -42,21 +42,29 @@ export default function ProfileEmployee({navigation}) {
           <Image source={redRyori} style={styles.ryori} />
           <Text style={styles.ryoriIconText}>My Profile</Text>
         </View>
-        {userData ? (
-          <>
-            <View style={styles.crewImageCon}>
-              <Image source={male} style={styles.crewImage} />
+
+        <View style={styles.crewImageCon}>
+          <Image source={male} style={styles.crewImage} />
+          {userData ? (
+            <>
               <Text style={styles.crewName}>{userData.username}</Text>
               <Text style={styles.crewName}>{userData.email}</Text>
-            </View>
-            <View style={styles.crewInfo}>
-              <View style={{width: '40%'}}>
-                <Text style={styles.columnText}>First name</Text>
-                <Text style={styles.columnText}>Last name</Text>
-                <Text style={styles.columnText}>Position</Text>
-                <Text style={styles.columnText}>Contact no.</Text>
-                <Text style={styles.columnText}>Address</Text>
-              </View>
+            </>
+          ) : (
+            <Text>Loading user data...</Text>
+          )}
+        </View>
+
+        <View style={styles.crewInfo}>
+          <View style={{width: '40%'}}>
+            <Text style={styles.columnText}>First name</Text>
+            <Text style={styles.columnText}>Last name</Text>
+            <Text style={styles.columnText}>Position</Text>
+            <Text style={styles.columnText}>Contact no.</Text>
+            <Text style={styles.columnText}>Address</Text>
+          </View>
+          {userData ? (
+            <>
               <View style={{width: '60%', marginLeft: 10, paddingRight: 10}}>
                 <Text style={styles.columnText}>{userData.firstName}</Text>
                 <Text style={styles.columnText}>{userData.lastName}</Text>
@@ -64,16 +72,17 @@ export default function ProfileEmployee({navigation}) {
                 <Text style={styles.columnText}>{userData.phone}</Text>
                 <Text style={styles.columnText}>{'Mintal'}</Text>
               </View>
-            </View>
-            <View style={{alignItems: 'center', marginTop: 20}}>
-              <TouchableOpacity style={styles.btn} onPress={handleLogout}>
-                <Text style={styles.btnText}>Log out</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <Text>Loading user data...</Text>
-        )}
+            </>
+          ) : (
+            <Text>Loading user data...</Text>
+          )}
+        </View>
+
+        <View style={{alignItems: 'center', marginTop: 20}}>
+          <TouchableOpacity style={styles.btn} onPress={handleLogout}>
+            <Text style={styles.btnText}>Log out</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

@@ -125,19 +125,20 @@ export default Products = ({navigation}) => {
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Products</Text>
           </View>
-          {userData ? (
-            <TouchableOpacity
-              style={styles.viewProfile}
-              onPress={() => navigation.navigate('Profile Employee')}>
-              <Image source={male} style={styles.crewImage} />
+
+          <TouchableOpacity
+            style={styles.viewProfile}
+            onPress={() => navigation.navigate('Profile Employee')}>
+            <Image source={male} style={styles.crewImage} />
+            {userData ? (
               <View style={{top: -5, left: 5}}>
                 <Text style={styles.crewName}>{userData.firstName}</Text>
                 <Text style={styles.viewProfileText}>View Profile</Text>
               </View>
-            </TouchableOpacity>
-          ) : (
-            <Text>Loading user...</Text>
-          )}
+            ) : (
+              <Text>Loading user...</Text>
+            )}
+          </TouchableOpacity>
         </View>
         <View style={styles.searchInventory}>
           <View style={styles.searchbar}>

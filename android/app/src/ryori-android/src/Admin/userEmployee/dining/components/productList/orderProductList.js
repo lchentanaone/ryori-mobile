@@ -36,8 +36,8 @@ export default function OrderProductList({navigation}) {
   };
 
   const changeRandomNumber = () => {
-    setRandomNumber(Math.floor(Math.random() * 10))
-  }
+    setRandomNumber(Math.floor(Math.random() * 10));
+  };
 
   const fetchUserData = async () => {
     try {
@@ -112,7 +112,7 @@ export default function OrderProductList({navigation}) {
           vibrate: true,
         };
         PushNotification.localNotification(options);
-        if(data.channelId === 'sc-channel-' + branch_Id) {
+        if (data.channelId === 'sc-channel-' + branch_Id) {
           fetchTransactionsData();
         }
       }
@@ -136,7 +136,6 @@ export default function OrderProductList({navigation}) {
       playSound: true,
       vibrate: true,
     });
-    
   };
 
   useFocusEffect(
@@ -144,8 +143,6 @@ export default function OrderProductList({navigation}) {
       fetchUserData();
     }, []),
   );
-
-  
 
   const chargeDiscount = async (_id, index) => {
     try {
@@ -202,10 +199,12 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      const _transaction = [...transactionData]
-      _transaction[transactionKey]//.find(item => item._id === _id).status = newStatus;
-      _transaction[transactionKey].transactionItems.find(item => item._id === _id).status = newStatus
-      setTransactionData(_transaction)
+      const _transaction = [...transactionData];
+      _transaction[transactionKey]; //.find(item => item._id === _id).status = newStatus;
+      _transaction[transactionKey].transactionItems.find(
+        item => item._id === _id,
+      ).status = newStatus;
+      setTransactionData(_transaction);
     } catch (error) {
       console.error('Error updating transaction data:', error);
     }
@@ -249,22 +248,21 @@ export default function OrderProductList({navigation}) {
           <View style={styles.ryoriIconTitle}>
             <Image source={redRyori} style={styles.ryori} />
             <Text style={styles.ryoriIconText}>Orders</Text>
-            
           </View>
-          
-          {userData ? (
-            <TouchableOpacity
-              style={styles.viewProfile}
-              onPress={() => navigation.navigate('Profile Employee')}>
-              <Image source={male} style={styles.crewImage} />
+
+          <TouchableOpacity
+            style={styles.viewProfile}
+            onPress={() => navigation.navigate('Profile Employee')}>
+            <Image source={male} style={styles.crewImage} />
+            {userData ? (
               <View style={{top: -5}}>
                 <Text style={styles.crewName}>{userData.firstName}</Text>
                 <Text style={styles.viewProfileText}>View Profile</Text>
               </View>
-            </TouchableOpacity>
-          ) : (
-            <Text>Loading user...</Text>
-          )}
+            ) : (
+              <Text>Loading user...</Text>
+            )}
+          </TouchableOpacity>
         </View>
         <KeyboardAwareScrollView>
           <View
@@ -527,7 +525,7 @@ export default function OrderProductList({navigation}) {
                                               updateTransactionItem(
                                                 transItem._id,
                                                 'preparing',
-                                                index
+                                                index,
                                               )
                                             }>
                                             <AntDesign
@@ -542,7 +540,7 @@ export default function OrderProductList({navigation}) {
                                               updateTransactionItem(
                                                 transItem._id,
                                                 'cancel',
-                                                index
+                                                index,
                                               )
                                             }>
                                             <MaterialIcons
@@ -575,7 +573,7 @@ export default function OrderProductList({navigation}) {
                                             updateTransactionItem(
                                               transItem._id,
                                               'serving',
-                                              index
+                                              index,
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
@@ -593,7 +591,7 @@ export default function OrderProductList({navigation}) {
                                             updateTransactionItem(
                                               transItem._id,
                                               'served',
-                                              index
+                                              index,
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
