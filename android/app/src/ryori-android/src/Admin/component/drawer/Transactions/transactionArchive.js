@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {TransactionStyle} from './transactionStyle';
 import {DataTable, Provider} from 'react-native-paper';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function TransactionArchive() {
   const [transactionData, setTransactionData] = useState([]);
@@ -25,7 +26,7 @@ export default function TransactionArchive() {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(
-        `${API_URL}/pos/transaction/nottoday?branch_Id=${branch_Id}`,
+        `${API_URL}/pos/transactionarchive/nottoday?branch_Id=${branch_Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,15 +34,18 @@ export default function TransactionArchive() {
         },
         {headers},
       );
-
+      console.log(response);
       setTransactionData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-  useEffect(() => {
-    fetchTransactionsData();
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactionsData();
+    }, []),
+  );
 
   useEffect(() => {
     setPage(0);
@@ -111,7 +115,7 @@ export default function TransactionArchive() {
                       </DataTable.Cell>
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
-                          {item.total}
+                          {item.amount}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell>

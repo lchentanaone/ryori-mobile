@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import {TransactionStyle} from './transactionStyle';
 import {DataTable, Provider} from 'react-native-paper';
 import axios from 'axios';
 import {API_URL} from '../../../../utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function TransactionDaily() {
   const [transactionData, setTransactionData] = useState([]);
@@ -19,28 +20,26 @@ export default function TransactionDaily() {
   const fetchTransactionsData = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const store_Id = await AsyncStorage.getItem('store_Id');
       const branch_Id = await AsyncStorage.getItem('branch_Id');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
       const response = await axios.get(
-        `${API_URL}/pos/transaction/today?branch_Id=${branch_Id}`,
+        `${API_URL}/pos/transactionarchive/today?branch_Id=${branch_Id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
-        {headers},
       );
+      console.log(response.data);
       setTransactionData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-  useEffect(() => {
-    fetchTransactionsData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactionsData();
+    }, []),
+  );
 
   useEffect(() => {
     setPage(0);
@@ -110,7 +109,7 @@ export default function TransactionDaily() {
                       </DataTable.Cell>
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
-                          {item.total}
+                          {item.amount}
                         </Text>
                       </DataTable.Cell>
                       <DataTable.Cell>
