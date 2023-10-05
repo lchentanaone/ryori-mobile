@@ -4,6 +4,7 @@ import {StatusBar} from 'react-native';
 import {OrientationLocker, LANDSCAPE} from 'react-native-orientation-locker';
 import OutsideNavigators from './android/app/src/ryori-android/src/navigations/outsideNavigators';
 import {createStackNavigator} from '@react-navigation/stack';
+import codePush from 'react-native-code-push';
 const Stack = createStackNavigator();
 const App = () => {
   return (
@@ -24,4 +25,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default codePush(App);
