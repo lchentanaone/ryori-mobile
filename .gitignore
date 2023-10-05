@@ -67,3 +67,5 @@ android/gradlew
 .env
 
 package-lock.json
+android/app/src/main/assets/appcenter-config.json
+android/app/src/ryori-android/src/utils/constants.js
