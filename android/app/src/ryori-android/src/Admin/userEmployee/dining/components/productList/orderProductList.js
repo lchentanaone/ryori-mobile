@@ -71,7 +71,7 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-
+      console.log(response.data);
       if (response.data) {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status !== 'done')
