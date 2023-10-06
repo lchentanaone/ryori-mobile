@@ -41,16 +41,12 @@ export default Products = ({navigation}) => {
     fetchUserData();
   }, []);
 
-  const updateQuantity = async (_id, groupId, type) => {
+  const updateQuantity = async (id, groupId, type) => {
     const token = await AsyncStorage.getItem('access_token');
-    const itemMenu = menu
-      .find(i => i._id === groupId)
-      .items.find(i => i._id === _id);
-    const quantity =
-      type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1;
-
+    const itemMenu = menu.find(i => i._id=== groupId).items.find(i => i._id === id)
+    const quantity = type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1
     await axios.patch(
-      `${API_URL}/branchItem/${_id}`,
+      `${API_URL}/branchItem/${groupId}`,
       JSON.stringify({quantity}),
       {
         headers: {
@@ -58,12 +54,12 @@ export default Products = ({navigation}) => {
           Authorization: `Bearer ${token}`,
         },
       },
-    );
+    );  
     fetchItems();
   };
   const transformer = input => {
     return input.reduce((result, item) => {
-      item.menuCategory
+      item.menuItem.menuCategories
         .map(categoryObj => categoryObj.title)
         .forEach(categoryTitle => {
           const existingCategory = result.find(
@@ -71,11 +67,10 @@ export default Products = ({navigation}) => {
           );
 
           const content = {
-            _id: item.menuItemId,
+            _id: item.menuItem._id,
             title: item.menuItem.title,
             quantity: item.quantity,
           };
-
           if (existingCategory) {
             existingCategory.items.push(content);
           } else {
@@ -86,7 +81,6 @@ export default Products = ({navigation}) => {
             });
           }
         });
-
       return result;
     }, []);
   };
@@ -107,8 +101,8 @@ export default Products = ({navigation}) => {
         },
         {headers},
       );
-      setMenu(transformer(response.data));
-      // setMenu(response.data);
+      const result = transformer(response.data);
+      setMenu(result);
     } catch (error) {
       console.error(error);
     }
@@ -162,50 +156,44 @@ export default Products = ({navigation}) => {
         </View>
         <View style={styles.table}>
           <ScrollView style={{maxHeight: 560}}>
-            <>
-              <View style={styles.productTable}>
-                <DataTable>
-                  <DataTable.Header>
-                    <DataTable.Title style={{flex: 2.4}}>
-                      <Text style={styles.tableProductHeader}>Item</Text>
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 0.8}}>
-                      <Text style={styles.productQty}>Quantity</Text>
-                    </DataTable.Title>
-                  </DataTable.Header>
-                  {/* {item.menuItem.map((menuItem, menuIndex) => ( */}
-                  {menu.map((item, index) => (
-                    <DataTable.Row key={index}>
-                      <DataTable.Cell style={{flex: 2.4}}>
-                        <Text style={styles.porklist}>
-                          {item.menuItem.title}
+            {menu.map((item, index) => (
+              <>
+                <View key={index} style={styles.productTable}>
+                  <DataTable>
+                    <DataTable.Header>
+                      <DataTable.Title style={{flex: 2.4}}>
+                        <Text style={styles.tableProductHeader}>
+                          {item.category}
                         </Text>
-                      </DataTable.Cell>
-                      <DataTable.Cell style={{flex: 0.8}}>
-                        <View style={styles.qtyContainer}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              updateQuantity(item.menuItem._id, item._id, '-')
-                            }>
-                            <Entypo name="minus" size={18} />
-                          </TouchableOpacity>
-                          <Text style={styles.input}>
-                            {item.quantity.toString()}
-                          </Text>
-                          <TouchableOpacity
-                            onPress={() =>
-                              updateQuantity(item.menuItem._id, item._id, '+')
-                            }>
-                            <Entypo name="plus" size={18} />
-                          </TouchableOpacity>
-                        </View>
-                      </DataTable.Cell>
-                    </DataTable.Row>
-                  ))}
-                  {/* ))} */}
-                </DataTable>
-              </View>
-            </>
+                      </DataTable.Title>
+                      <DataTable.Title style={{flex: 0.8}}>
+                        <Text style={styles.productQty}>Quantity</Text>
+                      </DataTable.Title>
+                    </DataTable.Header>
+                    {item.items.map((menuItem, menuIndex) => (
+                      <DataTable.Row key={menuIndex}>
+                        <DataTable.Cell style={{flex: 2.4}}>
+                          <Text style={styles.porklist}>{menuItem.title}</Text>
+                        </DataTable.Cell>
+                        <DataTable.Cell style={{flex: 0.8}}>
+                          <View style={styles.qtyContainer}>
+                            <TouchableOpacity onPress={() => updateQuantity(menuItem._id, item._id, '-') }>
+                              <Entypo name="minus" size={18} />
+                            </TouchableOpacity>
+                            <Text
+                              style={styles.input}
+                            >{menuItem.quantity.toString()}</Text>
+                            <TouchableOpacity onPress={() => updateQuantity(menuItem._id, item._id, '+') }>
+                              <Entypo name="plus" size={18} />
+                            </TouchableOpacity>
+                          </View>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    ))}
+                  </DataTable>
+                </View>
+              </>
+            ))}
           </ScrollView>
         </View>
       </View>
