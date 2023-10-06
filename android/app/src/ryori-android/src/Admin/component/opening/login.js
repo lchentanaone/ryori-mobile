@@ -123,7 +123,9 @@ export default function Login({navigation}) {
               onPress={() => navigation.navigate('Register-admin')}>
               <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
             </TouchableOpacity>
+            <Text style={{top:10, fontSize:9}}>Version 0.1</Text>
           </View>
+          
         </View>
         <Dialog isVisible={visible1} onBackdropPress={toggleDialog1}>
           <DialogModal />
