@@ -123,7 +123,7 @@ export default function Login({navigation}) {
               onPress={() => navigation.navigate('Register-admin')}>
               <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
             </TouchableOpacity>
-            <Text style={{top:10, fontSize:9}}>Version 0.1</Text>
+            <Text style={{top:10, fontSize:9}}>Version 0.1 {API_URL}/auth/login</Text>
           </View>
           
         </View>
