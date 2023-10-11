@@ -43,8 +43,11 @@ export default Products = ({navigation}) => {
 
   const updateQuantity = async (id, groupId, type) => {
     const token = await AsyncStorage.getItem('access_token');
-    const itemMenu = menu.find(i => i._id=== groupId).items.find(i => i._id === id)
-    const quantity = type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1
+    const itemMenu = menu
+      .find(i => i._id === groupId)
+      .items.find(i => i._id === id);
+    const quantity =
+      type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1;
     await axios.patch(
       `${API_URL}/branchItem/${groupId}`,
       JSON.stringify({quantity}),
@@ -54,7 +57,7 @@ export default Products = ({navigation}) => {
           Authorization: `Bearer ${token}`,
         },
       },
-    );  
+    );
     fetchItems();
   };
   const transformer = input => {
@@ -157,7 +160,7 @@ export default Products = ({navigation}) => {
         <View style={styles.table}>
           <ScrollView style={{maxHeight: 560}}>
             {menu.map((item, index) => (
-              <>
+              <View key={index}>
                 <View key={index} style={styles.productTable}>
                   <DataTable>
                     <DataTable.Header>
@@ -177,13 +180,19 @@ export default Products = ({navigation}) => {
                         </DataTable.Cell>
                         <DataTable.Cell style={{flex: 0.8}}>
                           <View style={styles.qtyContainer}>
-                            <TouchableOpacity onPress={() => updateQuantity(menuItem._id, item._id, '-') }>
+                            <TouchableOpacity
+                              onPress={() =>
+                                updateQuantity(menuItem._id, item._id, '-')
+                              }>
                               <Entypo name="minus" size={18} />
                             </TouchableOpacity>
-                            <Text
-                              style={styles.input}
-                            >{menuItem.quantity.toString()}</Text>
-                            <TouchableOpacity onPress={() => updateQuantity(menuItem._id, item._id, '+') }>
+                            <Text style={styles.input}>
+                              {menuItem.quantity.toString()}
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() =>
+                                updateQuantity(menuItem._id, item._id, '+')
+                              }>
                               <Entypo name="plus" size={18} />
                             </TouchableOpacity>
                           </View>
@@ -192,7 +201,7 @@ export default Products = ({navigation}) => {
                     ))}
                   </DataTable>
                 </View>
-              </>
+              </View>
             ))}
           </ScrollView>
         </View>
