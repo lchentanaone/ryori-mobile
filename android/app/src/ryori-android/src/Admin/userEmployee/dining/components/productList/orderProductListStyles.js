@@ -19,9 +19,6 @@ export const OrderListStyles = StyleSheet.create({
   content: {
     padding: 5,
   },
-  tableContainer: {
-    // backgroundColor: 'red',
-  },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -29,6 +26,7 @@ export const OrderListStyles = StyleSheet.create({
     paddingVertical: 5,
   },
   textItem: {fontFamily: 'Quicksand-SemiBold', fontSize: 15, color: '#000'},
+  nameItem: {fontFamily: 'Quicksand-SemiBold', fontSize: 12, color: '#000'},
 
   columnItems: {width: 210, textAlign: 'left'},
 
@@ -285,7 +283,7 @@ export const OrderListStyles = StyleSheet.create({
     height: 30,
   },
   toPrepareColor: {
-    backgroundColor: '#4285F4',
+    backgroundColor: '#DB1B1B',
   },
   servingColor: {
     backgroundColor: '#efb700',
@@ -293,10 +291,29 @@ export const OrderListStyles = StyleSheet.create({
   preparingColor: {
     backgroundColor: '#FF7A00',
   },
-  toPrepareColor: {
+  doneColor: {
+    backgroundColor: '#12BF38',
+  },
+  //--------------
+  statusDraft: {
+    backgroundColor: '#DB1B1B',
+  },
+  statusNew: {
     backgroundColor: '#4285F4',
   },
-  doneColor: {
+  statusCooking: {
+    backgroundColor: '#FF7A00',
+  },
+  statusReady: {
+    backgroundColor: '#efb700',
+  },
+  statusServed: {
+    backgroundColor: '#12BF38',
+  },
+  statusPaying: {
+    backgroundColor: 'red',
+  },
+  statusComplete: {
     backgroundColor: '#12BF38',
   },
 });

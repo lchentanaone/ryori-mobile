@@ -74,7 +74,7 @@ export default function OrderProductList({navigation}) {
       console.log(response.data);
       if (response.data) {
         const statusPreparing = await response.data
-          .filter(transactionStatus => transactionStatus.status !== 'done')
+          .filter(transactionStatus => transactionStatus.status !== 'complete')
           .map(tempData => {
             tempData.grandTotal = tempData.total;
 
@@ -277,25 +277,28 @@ export default function OrderProductList({navigation}) {
                     <TouchableOpacity
                       onPress={() => handlePress(index)}
                       style={styles.title}>
-                      {/* <FontAwesome name="circle" color={'#FF7A00'} size={20} /> */}
-                      {item.status === 'new' && (
-                        <FontAwesome name="circle" color={'red'} size={20} />
+                      {item.status === 'draft' && (
+                        <FontAwesome
+                          name="circle"
+                          color={'#DB1B1B'}
+                          size={20}
+                        />
                       )}
-                      {item.status === 'to_prepare' && (
+                      {item.status === 'new' && (
                         <FontAwesome
                           name="circle"
                           color={'#4285F4'}
                           size={20}
                         />
                       )}
-                      {item.status === 'preparing' && (
+                      {item.status === 'cooking' && (
                         <FontAwesome
                           name="circle"
                           color={'#FF7A00'}
                           size={20}
                         />
                       )}
-                      {item.status === 'serving' && (
+                      {item.status === 'ready' && (
                         <FontAwesome
                           name="circle"
                           color={'#efb700'}
@@ -309,7 +312,10 @@ export default function OrderProductList({navigation}) {
                           size={20}
                         />
                       )}
-                      {item.status === 'done' && (
+                      {item.status === 'paying' && (
+                        <FontAwesome name="circle" color={'red'} size={20} />
+                      )}
+                      {item.status === 'complete' && (
                         <FontAwesome
                           name="circle"
                           color={'#12BF38'}
@@ -325,7 +331,7 @@ export default function OrderProductList({navigation}) {
                       )}
                       <Text
                         style={styles.tableText}>{`Table ${item.table} `}</Text>
-                      {item.status === 'to_pay_cash' && (
+                      {item.status === 'paying' && (
                         <View style={styles.toCash}>
                           <Text style={styles.payCashBtnText}>Pay Cash</Text>
                         </View>
@@ -395,49 +401,49 @@ export default function OrderProductList({navigation}) {
                         </View>
                         <View style={styles.textFields}>
                           <Text style={styles.label}>Set Status:</Text>
+                          {item.status === 'draft' && (
+                            <TouchableOpacity
+                              style={[styles.TBtn, styles.statusDraft]}
+                              onPress={() => {
+                                updateTransStatus(item._id, 'new');
+                              }}>
+                              <Text style={styles.btnText}>New</Text>
+                            </TouchableOpacity>
+                          )}
                           {item.status === 'new' && (
                             <TouchableOpacity
-                              style={[styles.TBtn, styles.toPrepareColor]}
+                              style={[styles.TBtn, styles.statusNew]}
                               onPress={() => {
-                                updateTransStatus(item._id, 'to_prepare');
+                                updateTransStatus(item._id, 'cooking');
                               }}>
-                              <Text style={styles.btnText}>To prepare</Text>
+                              <Text style={styles.btnText}>Cooking</Text>
                             </TouchableOpacity>
                           )}
-                          {item.status === 'to_prepare' && (
+                          {item.status === 'cooking' && (
                             <TouchableOpacity
-                              style={[styles.TBtn, styles.toPrepareColor]}
+                              style={[styles.TBtn, styles.statusCooking]}
                               onPress={() => {
-                                updateTransStatus(item._id, 'preparing');
+                                updateTransStatus(item._id, 'ready');
                               }}>
-                              <Text style={styles.btnText}>Preparing</Text>
+                              <Text style={styles.btnText}>Ready</Text>
                             </TouchableOpacity>
                           )}
-                          {item.status === 'preparing' && (
+                          {item.status === 'ready' && (
                             <TouchableOpacity
-                              style={[styles.TBtn, styles.preparingColor]}
-                              onPress={() => {
-                                updateTransStatus(item._id, 'serving');
-                              }}>
-                              <Text style={styles.btnText}>Serving</Text>
-                            </TouchableOpacity>
-                          )}
-                          {item.status === 'serving' && (
-                            <TouchableOpacity
-                              style={[styles.TBtn, styles.servingColor]}
+                              style={[styles.TBtn, styles.statusReady]}
                               onPress={() => {
                                 updateTransStatus(item._id, 'served');
                               }}>
-                              <Text style={styles.btnText}>Serve</Text>
+                              <Text style={styles.btnText}>Served</Text>
                             </TouchableOpacity>
                           )}
                           {item.status === 'served' && (
                             <TouchableOpacity
                               style={[styles.TBtn, styles.doneColor]}
                               onPress={() => {
-                                updateTransStatus(item._id, 'done');
+                                updateTransStatus(item._id, 'paying');
                               }}>
-                              <Text style={styles.btnText}>Done</Text>
+                              <Text style={styles.btnText}>Paying</Text>
                             </TouchableOpacity>
                           )}
                           {item.status === 'cancel' && (
@@ -449,13 +455,13 @@ export default function OrderProductList({navigation}) {
 
                           {/* {-----------Pay cash-------------} */}
 
-                          {item.status === 'to_pay_cash' && (
+                          {item.status === 'paying' && (
                             <TouchableOpacity
                               style={[styles.TBtn, styles.toPrepareColor]}
                               onPress={() => {
-                                updateTransStatus(item._id, 'done');
+                                updateTransStatus(item._id, 'complete');
                               }}>
-                              <Text style={styles.btnText}>Confirmed</Text>
+                              <Text style={styles.btnText}>Complete</Text>
                             </TouchableOpacity>
                           )}
                           {item.status === 'awaiting_payment_method' && (
@@ -504,17 +510,22 @@ export default function OrderProductList({navigation}) {
                                     style={[styles.columnQty, styles.textItem]}>
                                     {transItem.quantity}
                                   </Text>
-                                  <Text
-                                    style={[
-                                      styles.columnItems,
-                                      styles.textItem,
-                                    ]}>
-                                    {transItem.menuItem.title || ''}
-                                  </Text>
+                                  <View>
+                                    <Text
+                                      style={[
+                                        styles.columnItems,
+                                        styles.textItem,
+                                      ]}>
+                                      {transItem.menuItem.title || ''}
+                                    </Text>
+                                    <Text style={styles.nameItem}>
+                                      {transItem.customer_name || ''}
+                                    </Text>
+                                  </View>
                                   <Text
                                     style={[styles.mngBtn, styles.textItem]}>
                                     <View style={styles.buttons}>
-                                      {transItem.status === 'new' && (
+                                      {transItem.status === 'draft' && (
                                         <View
                                           style={{
                                             flexDirection: 'row',
@@ -524,7 +535,7 @@ export default function OrderProductList({navigation}) {
                                             onPress={() =>
                                               updateTransactionItem(
                                                 transItem._id,
-                                                'preparing',
+                                                'new',
                                                 index,
                                               )
                                             }>
@@ -563,7 +574,7 @@ export default function OrderProductList({navigation}) {
                                         </TouchableOpacity>
                                       )}
 
-                                      {transItem.status === 'preparing' && (
+                                      {transItem.status === 'new' && (
                                         <TouchableOpacity
                                           style={[
                                             styles.TiBtn,
@@ -572,16 +583,34 @@ export default function OrderProductList({navigation}) {
                                           onPress={() => {
                                             updateTransactionItem(
                                               transItem._id,
-                                              'serving',
+                                              'cooking',
                                               index,
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
-                                            Serving
+                                            Cooking
                                           </Text>
                                         </TouchableOpacity>
                                       )}
-                                      {transItem.status === 'serving' && (
+                                      {transItem.status === 'cooking' && (
+                                        <TouchableOpacity
+                                          style={[
+                                            styles.TiBtn,
+                                            styles.statusCooking,
+                                          ]}
+                                          onPress={() => {
+                                            updateTransactionItem(
+                                              transItem._id,
+                                              'ready',
+                                              index,
+                                            );
+                                          }}>
+                                          <Text style={styles.btnText}>
+                                            Ready
+                                          </Text>
+                                        </TouchableOpacity>
+                                      )}
+                                      {transItem.status === 'ready' && (
                                         <TouchableOpacity
                                           style={[
                                             styles.TiBtn,
@@ -595,7 +624,7 @@ export default function OrderProductList({navigation}) {
                                             );
                                           }}>
                                           <Text style={styles.btnText}>
-                                            Serve
+                                            Served
                                           </Text>
                                         </TouchableOpacity>
                                       )}
