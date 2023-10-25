@@ -98,49 +98,62 @@ export default function OrderProductList({navigation}) {
 
   const watchPushNotifications = async () => {
     const branch_Id = await AsyncStorage.getItem('branch_Id');
+    const channelName = `channel-branch-${branch_Id}`;
     const socket = io(API_URL);
-    socket.on('connection', () => {
-      console.log('Connected to server');
+    PushNotification.createChannel({
+      channelId: channelName,
+      channelName: channelName,
+      playSound: true,
+      vibrate: true,
     });
-    socket.on('message', data => {
+    socket.emit('join-channel-branch', {branch_Id});
+    socket.on('join-channel-branch-response', () => {
+      console.log('Connected to branch ' + branch_Id);
+    });
+    socket.on('message-to-branch', data => {
       if (data) {
+        
         const options = {
-          channelId: data.channelId,
+          channelId: channelName,
           title: data.title,
           message: data.message,
           playSound: true,
           vibrate: true,
         };
+        console.log({options})
         PushNotification.localNotification(options);
-        if (data.channelId === 'sc-channel-' + branch_Id) {
-          fetchTransactionsData();
-        }
+        fetchTransactionsData();
       }
     });
-
-    return () => {
-      socket.disconnect();
-    };
   };
 
-  useEffect(() => {
-    createChannel();
-    watchPushNotifications();
-  }, []);
+  // useEffect(() => {
 
-  const createChannel = async () => {
-    const branch_Id = await AsyncStorage.getItem('branch_Id');
-    PushNotification.createChannel({
-      channelId: 'sc-channel-' + branch_Id,
-      channelName: 'sc-channel-' + branch_Id,
-      playSound: true,
-      vibrate: true,
-    });
-  };
+    // const options = {
+    //   channelId: '6502cb1a99d74f680c854e0c',
+    //   title: 'test',
+    //   message: 'message here....',
+    //   playSound: true,
+    //   vibrate: true,
+    // };
+    // console.log({options})
+    // PushNotification.localNotification(options);
+
+    // createChannel();
+   
+
+  // }, []);
+
+  // const createChannel = async () => {
+  //   const branch_Id = await AsyncStorage.getItem('branch_Id');
+  //   const channelName = `channel-branch-${branch_Id}`;
+    
+  // };
 
   useFocusEffect(
     useCallback(() => {
       fetchUserData();
+      
     }, []),
   );
 
@@ -232,6 +245,7 @@ export default function OrderProductList({navigation}) {
 
   useEffect(() => {
     fetchTransactionsData();
+    watchPushNotifications()
   }, []);
 
   return (
