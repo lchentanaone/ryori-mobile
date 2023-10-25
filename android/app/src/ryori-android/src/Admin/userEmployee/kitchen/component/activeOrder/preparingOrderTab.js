@@ -55,8 +55,8 @@ export default function PreparingOrderTab({navigation}) {
       console.log('Response Data:', response.data);
       const statusNew = response.data.filter(
         transactionStatus =>
-          transactionStatus.status !== 'new' &&
-          transactionStatus.status !== 'done' &&
+          transactionStatus.status !== 'draft' &&
+          transactionStatus.status !== 'complete' &&
           transactionStatus.status !== 'cancel',
       );
       setTransactionData(statusNew);
@@ -177,16 +177,25 @@ export default function PreparingOrderTab({navigation}) {
                   <TouchableOpacity
                     onPress={() => handlePress(index)}
                     style={styles.title}>
-                    {item.status === 'to_prepare' && (
+                    {item.status === 'draft' && (
+                      <FontAwesome name="circle" color={'#DB1B1B'} size={20} />
+                    )}
+                    {item.status === 'new' && (
                       <FontAwesome name="circle" color={'#4285F4'} size={20} />
                     )}
-                    {item.status === 'preparing' && (
+                    {item.status === 'cooking' && (
                       <FontAwesome name="circle" color={'#FF7A00'} size={20} />
                     )}
-                    {item.status === 'serving' && (
+                    {item.status === 'ready' && (
                       <FontAwesome name="circle" color={'#efb700'} size={20} />
                     )}
                     {item.status === 'served' && (
+                      <FontAwesome name="circle" color={'#12BF38'} size={20} />
+                    )}
+                    {item.status === 'paying' && (
+                      <FontAwesome name="circle" color={'red'} size={20} />
+                    )}
+                    {item.status === 'complete' && (
                       <FontAwesome name="circle" color={'#12BF38'} size={20} />
                     )}
                     {item.status === 'awaiting_payment_method' && (
@@ -200,51 +209,47 @@ export default function PreparingOrderTab({navigation}) {
                     <View style={styles.content}>
                       <View style={styles.textFields}>
                         <Text style={styles.label}>Set Status:</Text>
+                        {item.status === 'draft' && (
+                          <TouchableOpacity
+                            style={[styles.TBtn, styles.statusDraft]}
+                            onPress={() => {
+                              updateTransStatus(item._id, 'new');
+                            }}>
+                            <Text style={styles.btnText}>New</Text>
+                          </TouchableOpacity>
+                        )}
                         {item.status === 'new' && (
                           <TouchableOpacity
-                            style={[styles.TBtn, styles.toPrepareColor]}
+                            style={[styles.TBtn, styles.statusNew]}
                             onPress={() => {
-                              updateTransStatus(item._id, 'to_prepare');
+                              updateTransStatus(item._id, 'cooking');
                             }}>
-                            <Text style={styles.btnText}>To prepare</Text>
+                            <Text style={styles.btnText}>Cooking</Text>
                           </TouchableOpacity>
                         )}
-                        {item.status === 'to_prepare' && (
+                        {item.status === 'cooking' && (
                           <TouchableOpacity
-                            style={[styles.TBtn, styles.toPrepareColor]}
+                            style={[styles.TBtn, styles.statusCooking]}
                             onPress={() => {
-                              updateTransStatus(item._id, 'preparing');
+                              updateTransStatus(item._id, 'ready');
                             }}>
-                            <Text style={styles.btnText}>Preparing</Text>
+                            <Text style={styles.btnText}>Ready</Text>
                           </TouchableOpacity>
                         )}
-                        {item.status === 'preparing' && (
+                        {item.status === 'ready' && (
                           <TouchableOpacity
-                            style={[styles.TBtn, styles.preparingColor]}
-                            onPress={() => {
-                              updateTransStatus(item._id, 'serving');
-                            }}>
-                            <Text style={styles.btnText}>Serving</Text>
-                          </TouchableOpacity>
-                        )}
-                        {item.status === 'serving' && (
-                          <TouchableOpacity
-                            style={[styles.TBtn, styles.servingColor]}
+                            style={[styles.TBtn, styles.statusReady]}
                             onPress={() => {
                               updateTransStatus(item._id, 'served');
                             }}>
-                            <Text style={styles.btnText}>Serve</Text>
+                            <Text style={styles.btnText}>Served</Text>
                           </TouchableOpacity>
                         )}
                         {item.status === 'served' && (
-                          <View style={[styles.TBtn, styles.doneColor]}>
+                          <TouchableOpacity
+                            style={[styles.TBtn, styles.doneColor]}>
                             <Text style={styles.btnText}>Served</Text>
-                          </View>
-                        )}
-                        {item.status === 'done' && (
-                          <View style={[styles.TBtn, styles.doneColor]}>
-                            <Text style={styles.btnText}>Served</Text>
-                          </View>
+                          </TouchableOpacity>
                         )}
                         {item.status === 'awaiting_payment_method' && (
                           <View style={[styles.TBtn, styles.doneColor]}>
@@ -262,7 +267,7 @@ export default function PreparingOrderTab({navigation}) {
                         </View>
                       </View>
 
-                      <View style={styles.tableContainer}>
+                      <View>
                         <View style={styles.tableRow}>
                           <Text style={[styles.columnQty, styles.headerText]}>
                             Qty
@@ -289,7 +294,7 @@ export default function PreparingOrderTab({navigation}) {
                                 </Text>
                                 <Text style={[styles.mngBtn, styles.textItem]}>
                                   <View style={styles.buttons}>
-                                    {transItem.status === 'new' && (
+                                    {transItem.status === 'draft' && (
                                       <View
                                         style={{
                                           flexDirection: 'row',
@@ -299,7 +304,7 @@ export default function PreparingOrderTab({navigation}) {
                                           onPress={() =>
                                             updateTransactionItem(
                                               transItem._id,
-                                              'preparing',
+                                              'new',
                                             )
                                           }>
                                           <AntDesign
@@ -336,7 +341,7 @@ export default function PreparingOrderTab({navigation}) {
                                       </TouchableOpacity>
                                     )}
 
-                                    {transItem.status === 'preparing' && (
+                                    {transItem.status === 'new' && (
                                       <TouchableOpacity
                                         style={[
                                           styles.TiBtn,
@@ -345,15 +350,32 @@ export default function PreparingOrderTab({navigation}) {
                                         onPress={() => {
                                           updateTransactionItem(
                                             transItem._id,
-                                            'serving',
+                                            'cooking',
                                           );
                                         }}>
                                         <Text style={styles.btnText}>
-                                          Serving
+                                          Cooking
                                         </Text>
                                       </TouchableOpacity>
                                     )}
-                                    {transItem.status === 'serving' && (
+                                    {transItem.status === 'cooking' && (
+                                      <TouchableOpacity
+                                        style={[
+                                          styles.TiBtn,
+                                          styles.statusCooking,
+                                        ]}
+                                        onPress={() => {
+                                          updateTransactionItem(
+                                            transItem._id,
+                                            'ready',
+                                          );
+                                        }}>
+                                        <Text style={styles.btnText}>
+                                          Ready
+                                        </Text>
+                                      </TouchableOpacity>
+                                    )}
+                                    {transItem.status === 'ready' && (
                                       <TouchableOpacity
                                         style={[
                                           styles.TiBtn,
@@ -366,7 +388,7 @@ export default function PreparingOrderTab({navigation}) {
                                           );
                                         }}>
                                         <Text style={styles.btnText}>
-                                          Serve
+                                          Served
                                         </Text>
                                       </TouchableOpacity>
                                     )}

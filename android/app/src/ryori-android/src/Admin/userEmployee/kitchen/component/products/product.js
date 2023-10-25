@@ -44,13 +44,12 @@ export default Products = ({navigation}) => {
   const updateQuantity = async (id, groupId, type) => {
     const token = await AsyncStorage.getItem('access_token');
     const itemMenu = menu
-      .find(i => i.id === groupId)
-      .items.find(i => i.id === id);
+      .find(i => i._id === groupId)
+      .items.find(i => i._id === id);
     const quantity =
       type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1;
-
     await axios.patch(
-      `${API_URL}/branchItem/${id}`,
+      `${API_URL}/branchItem/${groupId}`,
       JSON.stringify({quantity}),
       {
         headers: {
@@ -63,7 +62,7 @@ export default Products = ({navigation}) => {
   };
   const transformer = input => {
     return input.reduce((result, item) => {
-      item.menuCategory
+      item.menuItem.menuCategories
         .map(categoryObj => categoryObj.title)
         .forEach(categoryTitle => {
           const existingCategory = result.find(
@@ -71,22 +70,20 @@ export default Products = ({navigation}) => {
           );
 
           const content = {
-            id: item.menuItemId,
+            _id: item.menuItem._id,
             title: item.menuItem.title,
             quantity: item.quantity,
           };
-
           if (existingCategory) {
             existingCategory.items.push(content);
           } else {
             result.push({
-              id: item.id,
+              _id: item._id,
               category: categoryTitle,
               items: [content],
             });
           }
         });
-
       return result;
     }, []);
   };
@@ -107,7 +104,8 @@ export default Products = ({navigation}) => {
         },
         {headers},
       );
-      setMenu(transformer(response.data));
+      const result = transformer(response.data);
+      setMenu(result);
     } catch (error) {
       console.error(error);
     }
@@ -144,7 +142,6 @@ export default Products = ({navigation}) => {
           <View style={{backgroundColor: '#fff', opacity: 0.5}}>
             <View style={styles.searchbar}>
               <FontAwesome name="search" size={20} style={styles.SearchIcon} />
-
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search Food here"
@@ -161,9 +158,9 @@ export default Products = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.table}>
-          <ScrollView>
+          <ScrollView style={{maxHeight: 560}}>
             {menu.map((item, index) => (
-              <>
+              <View key={index}>
                 <View key={index} style={styles.productTable}>
                   <DataTable>
                     <DataTable.Header>
@@ -185,7 +182,7 @@ export default Products = ({navigation}) => {
                           <View style={styles.qtyContainer}>
                             <TouchableOpacity
                               onPress={() =>
-                                updateQuantity(menuItem.id, item.id, '-')
+                                updateQuantity(menuItem._id, item._id, '-')
                               }>
                               <Entypo name="minus" size={18} />
                             </TouchableOpacity>
@@ -194,7 +191,7 @@ export default Products = ({navigation}) => {
                             </Text>
                             <TouchableOpacity
                               onPress={() =>
-                                updateQuantity(menuItem.id, item.id, '+')
+                                updateQuantity(menuItem._id, item._id, '+')
                               }>
                               <Entypo name="plus" size={18} />
                             </TouchableOpacity>
@@ -204,7 +201,7 @@ export default Products = ({navigation}) => {
                     ))}
                   </DataTable>
                 </View>
-              </>
+              </View>
             ))}
           </ScrollView>
         </View>

@@ -27,25 +27,11 @@ export default function DoneOrder() {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(
-        `${API_URL}/pos/transaction?branch_Id=${branch_Id}`,
+        `${API_URL}/pos/transactionarchive/today?branch_Id=${branch_Id}`,
         {headers},
       );
-      const statusDone = response.data
-        .filter(transactionStatus => transactionStatus.status === 'done')
-        .map(tempData => {
-          tempData.grandTotal = tempData.total;
 
-          if (tempData.charges > 0) {
-            tempData.grandTotal =
-              parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
-          }
-          if (tempData.discount > 0) {
-            tempData.grandTotal =
-              parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
-          }
-          return tempData;
-        });
-      setTransactionData(statusDone);
+      setTransactionData(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -151,6 +137,15 @@ export default function DoneOrder() {
                                   <View
                                     style={[styles.TiBtn, styles.cancelColor]}>
                                     <Text style={styles.btnText}>Canceled</Text>
+                                  </View>
+                                )}
+                                {transItem.status === 'new' && (
+                                  <View
+                                    style={[
+                                      styles.TiBtn,
+                                      styles.toPrepareColor,
+                                    ]}>
+                                    <Text style={styles.btnText}>New</Text>
                                   </View>
                                 )}
 
