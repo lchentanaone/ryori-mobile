@@ -27,16 +27,12 @@ import io from 'socket.io-client';
 export default function OrderProductList({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
-  const [randomNumber, setRandomNumber] = useState(0);
+  const socket = io(API_URL);
 
   const handlePress = index => {
     const tempData = [...transactionData];
     tempData[index].expanded = !tempData[index].expanded;
     setTransactionData(tempData);
-  };
-
-  const changeRandomNumber = () => {
-    setRandomNumber(Math.floor(Math.random() * 10));
   };
 
   const fetchUserData = async () => {
@@ -99,7 +95,6 @@ export default function OrderProductList({navigation}) {
   const watchPushNotifications = async () => {
     const branch_Id = await AsyncStorage.getItem('branch_Id');
     const channelName = `channel-branch-${branch_Id}`;
-    const socket = io(API_URL);
     PushNotification.createChannel({
       channelId: channelName,
       channelName: channelName,
@@ -112,7 +107,6 @@ export default function OrderProductList({navigation}) {
     });
     socket.on('message-to-branch', data => {
       if (data) {
-        
         const options = {
           channelId: channelName,
           title: data.title,
@@ -120,40 +114,15 @@ export default function OrderProductList({navigation}) {
           playSound: true,
           vibrate: true,
         };
-        console.log({options})
         PushNotification.localNotification(options);
         fetchTransactionsData();
       }
     });
   };
 
-  // useEffect(() => {
-
-    // const options = {
-    //   channelId: '6502cb1a99d74f680c854e0c',
-    //   title: 'test',
-    //   message: 'message here....',
-    //   playSound: true,
-    //   vibrate: true,
-    // };
-    // console.log({options})
-    // PushNotification.localNotification(options);
-
-    // createChannel();
-   
-
-  // }, []);
-
-  // const createChannel = async () => {
-  //   const branch_Id = await AsyncStorage.getItem('branch_Id');
-  //   const channelName = `channel-branch-${branch_Id}`;
-    
-  // };
-
   useFocusEffect(
     useCallback(() => {
       fetchUserData();
-      
     }, []),
   );
 
@@ -194,6 +163,7 @@ export default function OrderProductList({navigation}) {
       );
       fetchTransactionsData();
       console.log({response});
+
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -212,6 +182,11 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
+      // This will send a blank message to the customer to update their current page.
+      socket.emit('message-to-customer', {
+        customer_socket: response.data.customer_socket,
+      });
+
       const _transaction = [...transactionData];
       _transaction[transactionKey]; //.find(item => item._id === _id).status = newStatus;
       _transaction[transactionKey].transactionItems.find(
