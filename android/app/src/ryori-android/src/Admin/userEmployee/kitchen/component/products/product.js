@@ -41,7 +41,7 @@ export default Products = ({navigation}) => {
     fetchUserData();
   }, []);
 
-  const updateQuantity = async (id, groupId, type) => {
+  const updateQuantity = async (id, groupId, branchItem_Id, type) => {
     const token = await AsyncStorage.getItem('access_token');
     const itemMenu = menu
       .find(i => i._id === groupId)
@@ -49,7 +49,7 @@ export default Products = ({navigation}) => {
     const quantity =
       type === '+' ? itemMenu.quantity + 1 : itemMenu.quantity - 1;
     await axios.patch(
-      `${API_URL}/branchItem/${groupId}`,
+      `${API_URL}/branchItem/${branchItem_Id}`,
       JSON.stringify({quantity}),
       {
         headers: {
@@ -63,23 +63,24 @@ export default Products = ({navigation}) => {
   const transformer = input => {
     return input.reduce((result, item) => {
       item.menuItem.menuCategories
-        .map(categoryObj => categoryObj.title)
-        .forEach(categoryTitle => {
+        .map(categoryObj => categoryObj)
+        .forEach(category => {
           const existingCategory = result.find(
-            cat => cat.category === categoryTitle,
+            cat => cat.category === category.title,
           );
 
           const content = {
             _id: item.menuItem._id,
             title: item.menuItem.title,
             quantity: item.quantity,
+            branchItem_Id: item._id,
           };
           if (existingCategory) {
             existingCategory.items.push(content);
           } else {
             result.push({
-              _id: item._id,
-              category: categoryTitle,
+              _id: category._id,
+              category: category.title,
               items: [content],
             });
           }
@@ -182,7 +183,12 @@ export default Products = ({navigation}) => {
                           <View style={styles.qtyContainer}>
                             <TouchableOpacity
                               onPress={() =>
-                                updateQuantity(menuItem._id, item._id, '-')
+                                updateQuantity(
+                                  menuItem._id,
+                                  item._id,
+                                  menuItem.branchItem_Id,
+                                  '-',
+                                )
                               }>
                               <Entypo name="minus" size={18} />
                             </TouchableOpacity>
@@ -191,7 +197,12 @@ export default Products = ({navigation}) => {
                             </Text>
                             <TouchableOpacity
                               onPress={() =>
-                                updateQuantity(menuItem._id, item._id, '+')
+                                updateQuantity(
+                                  menuItem._id,
+                                  item._id,
+                                  menuItem.branchItem_Id,
+                                  '+',
+                                )
                               }>
                               <Entypo name="plus" size={18} />
                             </TouchableOpacity>
