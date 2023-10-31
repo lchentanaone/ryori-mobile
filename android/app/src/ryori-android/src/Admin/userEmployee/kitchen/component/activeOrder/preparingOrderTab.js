@@ -52,7 +52,6 @@ export default function PreparingOrderTab({navigation}) {
         },
         {headers},
       );
-      console.log('Response Data:', response.data);
       const statusNew = response.data.filter(
         transactionStatus =>
           transactionStatus.status !== 'draft' &&
@@ -329,8 +328,8 @@ export default function PreparingOrderTab({navigation}) {
                                         </TouchableOpacity>
                                       </View>
                                     )}
-                                    {transItem.status === 'cancel' && (
-                                      <TouchableOpacity
+                                    {transItem.status === 'cancelled' && (
+                                      <View
                                         style={[
                                           styles.TiBtn,
                                           styles.cancelColor,
@@ -338,7 +337,7 @@ export default function PreparingOrderTab({navigation}) {
                                         <Text style={styles.btnText}>
                                           Canceled
                                         </Text>
-                                      </TouchableOpacity>
+                                      </View>
                                     )}
 
                                     {transItem.status === 'new' && (

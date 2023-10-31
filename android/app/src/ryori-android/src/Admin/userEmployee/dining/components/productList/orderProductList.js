@@ -67,7 +67,6 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      console.log(response.data);
       if (response.data) {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status !== 'complete')
@@ -142,7 +141,6 @@ export default function OrderProductList({navigation}) {
         },
         {headers},
       );
-      console.log({response});
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -162,8 +160,6 @@ export default function OrderProductList({navigation}) {
         {headers},
       );
       fetchTransactionsData();
-      console.log({response});
-
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -220,7 +216,7 @@ export default function OrderProductList({navigation}) {
 
   useEffect(() => {
     fetchTransactionsData();
-    watchPushNotifications()
+    watchPushNotifications();
   }, []);
 
   return (
@@ -322,7 +318,16 @@ export default function OrderProductList({navigation}) {
                         style={styles.tableText}>{`Table ${item.table} `}</Text>
                       {item.status === 'paying' && (
                         <View style={styles.toCash}>
-                          <Text style={styles.payCashBtnText}>Pay Cash</Text>
+                          <Text style={styles.payCashBtnText}>
+                            Requesting Payment
+                          </Text>
+                        </View>
+                      )}
+                      {item.status === 'to_pay_gcash' && (
+                        <View style={styles.toCash}>
+                          <Text style={styles.payCashBtnText}>
+                            Pay via GCash
+                          </Text>
                         </View>
                       )}
 
@@ -435,7 +440,7 @@ export default function OrderProductList({navigation}) {
                               <Text style={styles.btnText}>Paying</Text>
                             </TouchableOpacity>
                           )}
-                          {item.status === 'cancel' && (
+                          {item.status === 'cancelled' && (
                             <TouchableOpacity
                               style={[styles.TBtn, styles.cancelColor]}>
                               <Text style={styles.btnText}>Canceled</Text>
@@ -477,7 +482,7 @@ export default function OrderProductList({navigation}) {
                           </View>
                         </View>
 
-                        <View style={styles.tableContainer}>
+                        <View>
                           <View style={styles.tableRow}>
                             <Text style={[styles.columnQty, styles.headerText]}>
                               Qty
@@ -539,7 +544,7 @@ export default function OrderProductList({navigation}) {
                                             onPress={() =>
                                               updateTransactionItem(
                                                 transItem._id,
-                                                'cancel',
+                                                'cancelled',
                                                 index,
                                               )
                                             }>
@@ -551,7 +556,7 @@ export default function OrderProductList({navigation}) {
                                           </TouchableOpacity>
                                         </View>
                                       )}
-                                      {transItem.status === 'cancel' && (
+                                      {transItem.status === 'cancelled' && (
                                         <TouchableOpacity
                                           style={[
                                             styles.TiBtn,

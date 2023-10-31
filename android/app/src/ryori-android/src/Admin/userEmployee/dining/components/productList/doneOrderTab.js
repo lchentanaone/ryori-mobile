@@ -33,9 +33,7 @@ export default function DoneOrder() {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status === 'complete')
           .map(tempData => {
-            console.log({tempData});
             tempData.grandTotal = tempData.amount;
-            console.log(tempData.grandTotal);
             if (tempData.charges > 0) {
               tempData.grandTotal =
                 parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
