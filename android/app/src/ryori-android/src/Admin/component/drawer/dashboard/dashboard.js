@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import {DashboardStyle} from './dashboard-style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -64,6 +64,7 @@ export default function Dashboard() {
       );
       setTimeout(() => {
         setDashboard(response.data);
+        checkAlert(response.data.totalCustomers);
       }, 2000);
       setConsumption(response.data.totalCustomers);
     } catch (error) {
@@ -82,7 +83,7 @@ export default function Dashboard() {
 
   // Pie Chart
   const widthAndHeight = 150;
-  const limit = 300 - consumption;
+  const limit = 100 - consumption;
   const series = [limit, consumption];
   const sliceColor = ['#DB1B1B', '#12BF38'];
 
@@ -93,6 +94,17 @@ export default function Dashboard() {
     setDoneOrder(dashboard.orderSummary[type].done);
     setCancelled(dashboard.orderSummary[type].cancelled);
     setWaitingPayment(dashboard.orderSummary[type].awaiting_payment);
+  };
+
+  const checkAlert = totalCustomers => {
+    if (100 - totalCustomers <= 50) {
+      showAlert();
+    }
+  };
+  const showAlert = () => {
+    Alert.alert('Alert', 'Remaining Transactions are 50 or less!', [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
   };
 
   return (
@@ -222,7 +234,7 @@ export default function Dashboard() {
                   coverRadius={0.7}
                 />
                 <Text style={DashboardStyle.chartText}>
-                  {dashboard.totalCustomers} of 300{'\n'} Transactions
+                  {dashboard.totalCustomers} of 100{'\n'} Transactions
                 </Text>
               </View>
             </View>
