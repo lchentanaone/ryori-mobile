@@ -1,6 +1,5 @@
 import React, {useState, useCallback} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import {List, DataTable} from 'react-native-paper';
 import redRyori from '../../../../images/redRyori.png';
 import {OrderListStyles as styles} from './orderProductListStyles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -30,8 +29,27 @@ export default function DoneOrder() {
         `${API_URL}/pos/transactionarchive/today?branch_Id=${branch_Id}`,
         {headers},
       );
+      if (response.data) {
+        const statusPreparing = await response.data
+          .filter(transactionStatus => transactionStatus.status === 'complete')
+          .map(tempData => {
+            console.log({tempData});
+            tempData.grandTotal = tempData.amount;
+            console.log(tempData.grandTotal);
+            if (tempData.charges > 0) {
+              tempData.grandTotal =
+                parseFloat(tempData.grandTotal) + parseFloat(tempData.charges);
+            }
+            if (tempData.discount > 0) {
+              tempData.grandTotal =
+                parseFloat(tempData.grandTotal) - parseFloat(tempData.discount);
+            }
 
-      setTransactionData(response.data);
+            return tempData;
+          });
+
+        setTransactionData(statusPreparing);
+      }
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -83,16 +101,16 @@ export default function DoneOrder() {
                   <View style={styles.content}>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Charges:</Text>
-                      <Text style={styles.label}>₱ {item.charges}</Text>
+                      <Text style={styles.label}>₱ {item.charges || '0'}</Text>
                     </View>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Discount:</Text>
-                      <Text style={styles.label}>₱ {item.discount}</Text>
+                      <Text style={styles.label}>₱ {item.discount || '0'}</Text>
                     </View>
 
                     <View style={styles.textFields}>
-                      <Text style={styles.label}>Set Status:</Text>
-                      {item.status === 'done' && (
+                      <Text style={styles.label}>Status:</Text>
+                      {item.status === 'complete' && (
                         <Text>
                           <Text style={styles.label}>Done</Text>
                         </Text>
@@ -101,16 +119,16 @@ export default function DoneOrder() {
 
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Subtotal: </Text>
-                      <Text style={styles.label}>₱ {item.total}</Text>
+                      <Text style={styles.label}>₱ {item.amount}</Text>
                     </View>
                     <View style={styles.textFields}>
                       <Text style={styles.label}>Total: </Text>
                       <Text style={styles.label}>
-                        ₱ {item.grandTotal || item.total}
+                        ₱ {item.grandTotal || item.amount}
                       </Text>
                     </View>
 
-                    <View style={styles.tableContainer}>
+                    <View>
                       <View style={styles.tableRow}>
                         <Text style={[styles.columnQty, styles.headerText]}>
                           Qty
