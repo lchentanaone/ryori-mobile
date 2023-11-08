@@ -88,10 +88,10 @@ export default function Dashboard() {
   const sliceColor = ['#DB1B1B', '#12BF38'];
 
   const changeFilter = type => {
-    setNewOrders(dashboard.orderSummary[type].new);
-    setPreparing(dashboard.orderSummary[type].preparing);
+    setNewOrders(dashboard.orderSummary[type].draft);
+    setPreparing(dashboard.orderSummary[type].cooking);
     setServed(dashboard.orderSummary[type].served);
-    setDoneOrder(dashboard.orderSummary[type].done);
+    setDoneOrder(dashboard.orderSummary[type].complete);
     setCancelled(dashboard.orderSummary[type].cancelled);
     setWaitingPayment(dashboard.orderSummary[type].awaiting_payment);
   };
@@ -102,7 +102,7 @@ export default function Dashboard() {
     }
   };
   const showAlert = () => {
-    Alert.alert('Alert', 'Remaining Transactions are 50 or less!', [
+    Alert.alert('Consumption', 'Remaining Transactions are 50 or less!', [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]);
   };
@@ -173,11 +173,11 @@ export default function Dashboard() {
               <View style={DashboardStyle.orderDetails}>
                 <View style={DashboardStyle.newOrder}>
                   <Text style={DashboardStyle.orderTotal}>{newOrders}</Text>
-                  <Text style={DashboardStyle.orderText}>new</Text>
+                  <Text style={DashboardStyle.orderText}>Draft</Text>
                 </View>
                 <View style={DashboardStyle.preparing}>
                   <Text style={DashboardStyle.orderTotal}>{preparing}</Text>
-                  <Text style={DashboardStyle.orderText}>Preparing</Text>
+                  <Text style={DashboardStyle.orderText}>Cooking</Text>
                 </View>
                 <View style={DashboardStyle.served}>
                   <Text style={DashboardStyle.orderTotal}>{served}</Text>
