@@ -47,7 +47,7 @@ export default function OrderProductList({navigation}) {
         setUserData(response.data);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 
@@ -87,7 +87,7 @@ export default function OrderProductList({navigation}) {
         setTransactionData(statusPreparing);
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 

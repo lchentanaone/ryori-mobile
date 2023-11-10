@@ -32,7 +32,7 @@ export default function PreparingOrderTab({navigation}) {
       });
       setUserData(response.data);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 
@@ -60,7 +60,7 @@ export default function PreparingOrderTab({navigation}) {
       );
       setTransactionData(statusNew);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 

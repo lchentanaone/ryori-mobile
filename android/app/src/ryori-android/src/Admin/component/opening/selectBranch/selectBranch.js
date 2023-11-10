@@ -24,7 +24,7 @@ export default function Branches({navigation}) {
       });
       setStoreData(response.data);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 

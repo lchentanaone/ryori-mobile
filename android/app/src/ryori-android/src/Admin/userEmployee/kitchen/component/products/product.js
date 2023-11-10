@@ -33,7 +33,7 @@ export default Products = ({navigation}) => {
       });
       setUserData(response.data);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 
