@@ -84,9 +84,9 @@ export default function TransactionArchive() {
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>table</Text>
                 </DataTable.Title>
-                <DataTable.Title>
+                {/* <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Pay Id</Text>
-                </DataTable.Title>
+                </DataTable.Title> */}
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Amount</Text>
                 </DataTable.Title>
@@ -108,11 +108,11 @@ export default function TransactionArchive() {
                           {item.table}
                         </Text>
                       </DataTable.Cell>
-                      <DataTable.Cell>
+                      {/* <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
                           {item.paymongo_pi_id}
                         </Text>
-                      </DataTable.Cell>
+                      </DataTable.Cell> */}
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
                           {item.amount}

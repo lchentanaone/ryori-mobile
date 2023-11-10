@@ -78,9 +78,9 @@ export default function TransactionDaily() {
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Table</Text>
                 </DataTable.Title>
-                <DataTable.Title>
+                {/* <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Pay ID</Text>
-                </DataTable.Title>
+                </DataTable.Title> */}
                 <DataTable.Title>
                   <Text style={TransactionStyle.tableHeaderText}>Amount</Text>
                 </DataTable.Title>
@@ -102,11 +102,11 @@ export default function TransactionDaily() {
                           {item.table}
                         </Text>
                       </DataTable.Cell>
-                      <DataTable.Cell>
+                      {/* <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
                           {item.paymongo_pi_id}
                         </Text>
-                      </DataTable.Cell>
+                      </DataTable.Cell> */}
                       <DataTable.Cell>
                         <Text style={TransactionStyle.cellData}>
                           {item.amount}

@@ -43,6 +43,10 @@ export default function Dashboard() {
         },
       });
       setBranch(response.data);
+      setTimeout(() => {
+        checkAlert(response.data.used);
+      }, 2000);
+      setConsumption(response.data.used);
     } catch (error) {
       console.error(error);
     }
@@ -62,11 +66,7 @@ export default function Dashboard() {
           },
         },
       );
-      setTimeout(() => {
-        setDashboard(response.data);
-        checkAlert(response.data.totalCustomers);
-      }, 2000);
-      setConsumption(response.data.totalCustomers);
+      setDashboard(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -234,7 +234,8 @@ export default function Dashboard() {
                   coverRadius={0.7}
                 />
                 <Text style={DashboardStyle.chartText}>
-                  {dashboard.totalCustomers} of 100{'\n'} Transactions
+                  {branch.used} of {branch.limit}
+                  {'\n'} Transactions
                 </Text>
               </View>
             </View>
