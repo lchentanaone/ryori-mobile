@@ -124,7 +124,7 @@ export default function Login({navigation}) {
               <Text style={openingStyles.SignInTextBtn}>Create Account</Text>
             </TouchableOpacity>
             <Text style={{top: 10, fontSize: 9, color: '#808080'}}>
-              Version 0.2 {API_URL}/auth/login
+              Version 0.4 {API_URL}/auth/login
             </Text>
           </View>
         </View>

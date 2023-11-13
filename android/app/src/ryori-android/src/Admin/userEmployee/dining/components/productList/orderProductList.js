@@ -70,6 +70,7 @@ export default function OrderProductList({navigation}) {
       if (response.data) {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status !== 'complete')
+          .filter(transactionStatus => transactionStatus.status !== 'complete')
           .map(tempData => {
             tempData.grandTotal = tempData.total;
 

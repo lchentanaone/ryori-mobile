@@ -79,7 +79,7 @@ export default function PreparingOrderTab({navigation}) {
       );
       fetchTransactionsData();
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
 

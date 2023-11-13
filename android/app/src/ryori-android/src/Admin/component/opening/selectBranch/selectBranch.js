@@ -48,7 +48,7 @@ export default function Branches({navigation}) {
       //   navigation.navigate('Drawer');
       // }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      navigation.navigate('Login-admin');
     }
   };
   const handleLogout = async () => {
