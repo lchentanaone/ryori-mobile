@@ -4,10 +4,7 @@ export const OrderListStyles = StyleSheet.create({
   title: {
     flexDirection: 'row',
   },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
+
   itemContainer: {
     padding: 20,
     marginBottom: 10,
@@ -86,10 +83,7 @@ export const OrderListStyles = StyleSheet.create({
     color: '#000',
     borderColor: '#757575',
   },
-  chargeDiscountInput: {
-    width: 80,
-    marginLeft: 10,
-  },
+
   notes: {
     width: 280,
     borderRadius: 5,
@@ -157,21 +151,6 @@ export const OrderListStyles = StyleSheet.create({
     left: 10,
   },
 
-  //-----------
-  accordions: {
-    width: '100%',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    height: '98%',
-    marginTop: 20,
-  },
-  accordionList: {
-    borderWidth: 0.7,
-    borderRadius: 15,
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-  },
-
   item: {
     left: 10,
     color: '#000',
@@ -183,11 +162,7 @@ export const OrderListStyles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  qtyItem: {
-    flexDirection: 'row',
-    width: '80%',
-    marginLeft: -40,
-  },
+
   quantity: {
     color: '#000',
     fontSize: 16,
@@ -206,39 +181,8 @@ export const OrderListStyles = StyleSheet.create({
     height: 30,
   },
 
-  cancelOrder: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
   cancelColor: {
     backgroundColor: '#B3ACAC',
-  },
-  servedBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#12BF38',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
-  preparingBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FF7A00',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
-  },
-  servingBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#efb700',
-    borderRadius: 4,
-    width: 80,
-    height: 30,
   },
 
   btnText: {
@@ -248,25 +192,14 @@ export const OrderListStyles = StyleSheet.create({
     marginLeft: 100,
     justifyContent: 'flex-end',
   },
-  toCashDone: {
-    width: 200,
-    height: 30,
-    marginLeft: 60,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
+
   payCashBtnText: {
     color: '#000',
     fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
     width: 160,
   },
-  total: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'Quicksand-SemiBold',
-    width: 100,
-  },
+
   TiBtn: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -282,19 +215,9 @@ export const OrderListStyles = StyleSheet.create({
     width: 140,
     height: 30,
   },
-  toPrepareColor: {
-    backgroundColor: '#DB1B1B',
-  },
-  servingColor: {
-    backgroundColor: '#efb700',
-  },
-  preparingColor: {
-    backgroundColor: '#FF7A00',
-  },
   doneColor: {
     backgroundColor: '#12BF38',
   },
-  //--------------
   statusDraft: {
     backgroundColor: '#DB1B1B',
   },
