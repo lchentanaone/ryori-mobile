@@ -9,15 +9,6 @@ export default function Opening() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Login-admin');
-    }, 2000);
-    let isMounted = true;
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-  useEffect(() => {
     async function checkIfTokenExist() {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
@@ -40,13 +31,13 @@ export default function Opening() {
           }, 2000);
         }
       } else if (role === 'dining') {
-        if (store_Id) {
+        if (branch_Id) {
           setTimeout(() => {
             navigation.navigate('DiningBottomNavigator');
           }, 2000);
         }
       } else if (role === 'kitchen') {
-        if (store_Id) {
+        if (branch_Id) {
           setTimeout(() => {
             navigation.navigate('Kitchen');
           }, 2000);
@@ -56,7 +47,6 @@ export default function Opening() {
           navigation.navigate('Login-admin');
         }, 2000);
       }
-
       let isMounted = true;
       return () => {
         isMounted = false;
