@@ -29,6 +29,34 @@ export default function OrderProductList({navigation}) {
   const [transactionData, setTransactionData] = useState([]);
   const socket = io(API_URL);
 
+  const sendToSocket = async (socket, data) => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
+    socket.emit('join-channel-branch', {branch_Id});
+    listenToSocket(socket);
+    socket.emit('message-to-branch', {
+      title: 'Customer Just Ordered',
+      message: `The dining has been update the order of #${data.table}`,
+      branch_Id,
+    });
+  };
+  const listenToSocket = async socket => {
+    socket.on('join-channel-branch-response', data => {
+      if (data) {
+        console.log('You are connected to the branch socket.', {
+          data,
+          socket,
+        });
+      }
+    });
+    socket.on('message-to-branch-response', data => {
+      if (data) {
+        setTimeout(() => {
+          console.log('Message successfully sent..', {data, socket});
+        }, 100);
+      }
+    });
+  };
+
   const handlePress = index => {
     const tempData = [...transactionData];
     tempData[index].expanded = !tempData[index].expanded;
@@ -70,7 +98,7 @@ export default function OrderProductList({navigation}) {
       if (response.data) {
         const statusPreparing = await response.data
           .filter(transactionStatus => transactionStatus.status !== 'complete')
-          .filter(transactionStatus => transactionStatus.status !== 'complete')
+          .filter(transactionStatus => transactionStatus.status !== 'cancelled')
           .map(tempData => {
             tempData.grandTotal = tempData.total;
 
@@ -167,11 +195,24 @@ export default function OrderProductList({navigation}) {
   };
 
   const updateTransactionItem = async (_id, newStatus, transactionKey) => {
+    const token = await AsyncStorage.getItem('access_token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     try {
-      const token = await AsyncStorage.getItem('access_token');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      // socket.on('connect', async () => {
+      //   cart.forEach(item => {
+      //     urlencoded.append(
+      //       'item',
+      //       JSON.stringify({
+      //         _id: item._id,
+      //         qty: item.quantity,
+      //         customer_name: customer_name,
+      //         customer_socket: socket.id,
+      //       }),
+      //     );
+      //   });
+
       const response = await axios.patch(
         `${API_URL}/pos/transactionItem/${_id}`,
         {
@@ -183,13 +224,15 @@ export default function OrderProductList({navigation}) {
       socket.emit('message-to-customer', {
         customer_socket: response.data.customer_socket,
       });
+      sendToSocket(socket, response);
 
       const _transaction = [...transactionData];
-      _transaction[transactionKey]; //.find(item => item._id === _id).status = newStatus;
+      _transaction[transactionKey];
       _transaction[transactionKey].transactionItems.find(
         item => item._id === _id,
       ).status = newStatus;
       setTransactionData(_transaction);
+      // });
     } catch (error) {
       console.error('Error updating transaction data:', error);
     }
@@ -452,7 +495,7 @@ export default function OrderProductList({navigation}) {
 
                           {item.status === 'paying' && (
                             <TouchableOpacity
-                              style={[styles.TBtn, styles.toPrepareColor]}
+                              style={[styles.TBtn, styles.statusDraft]}
                               onPress={() => {
                                 updateTransStatus(item._id, 'complete');
                               }}>
@@ -461,7 +504,7 @@ export default function OrderProductList({navigation}) {
                           )}
                           {item.status === 'awaiting_payment_method' && (
                             <TouchableOpacity
-                              style={[styles.TBtn, styles.toPrepareColor]}
+                              style={[styles.TBtn, styles.statusDraft]}
                               onPress={() => {
                                 updateTransStatus(item._id, 'done');
                               }}>
@@ -573,7 +616,7 @@ export default function OrderProductList({navigation}) {
                                         <TouchableOpacity
                                           style={[
                                             styles.TiBtn,
-                                            styles.preparingColor,
+                                            styles.statusNew,
                                           ]}
                                           onPress={() => {
                                             updateTransactionItem(
@@ -609,7 +652,7 @@ export default function OrderProductList({navigation}) {
                                         <TouchableOpacity
                                           style={[
                                             styles.TiBtn,
-                                            styles.servingColor,
+                                            styles.statusReady,
                                           ]}
                                           onPress={() => {
                                             updateTransactionItem(

@@ -149,7 +149,7 @@ export default function DoneOrder() {
                             </Text>
                             <Text style={[styles.mngBtn, styles.textItem]}>
                               <View style={styles.buttons}>
-                                {transItem.status === 'cancel' && (
+                                {transItem.status === 'cancelled' && (
                                   <View
                                     style={[styles.TiBtn, styles.cancelColor]}>
                                     <Text style={styles.btnText}>Canceled</Text>
@@ -157,27 +157,23 @@ export default function DoneOrder() {
                                 )}
                                 {transItem.status === 'new' && (
                                   <View
-                                    style={[
-                                      styles.TiBtn,
-                                      styles.toPrepareColor,
-                                    ]}>
+                                    style={[styles.TiBtn, styles.statusNew]}>
                                     <Text style={styles.btnText}>New</Text>
                                   </View>
                                 )}
-
-                                {transItem.status === 'preparing' && (
+                                {transItem.status === 'cooking' && (
                                   <View
                                     style={[
                                       styles.TiBtn,
-                                      styles.preparingColor,
+                                      styles.statusCooking,
                                     ]}>
-                                    <Text style={styles.btnText}>Serving</Text>
+                                    <Text style={styles.btnText}>Cooking</Text>
                                   </View>
                                 )}
-                                {transItem.status === 'serving' && (
+                                {transItem.status === 'ready' && (
                                   <View
-                                    style={[styles.TiBtn, styles.servingColor]}>
-                                    <Text style={styles.btnText}>Serve</Text>
+                                    style={[styles.TiBtn, styles.statusReady]}>
+                                    <Text style={styles.btnText}>Ready</Text>
                                   </View>
                                 )}
                                 {transItem.status === 'served' && (

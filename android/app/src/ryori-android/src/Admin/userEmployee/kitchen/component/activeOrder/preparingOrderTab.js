@@ -11,11 +11,41 @@ import male from '../../../../images/male3.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFocusEffect} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
+import io from 'socket.io-client';
 
 export default function PreparingOrderTab({navigation}) {
   const [userData, setUserData] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
+  const socket = io(API_URL);
 
+  const sendToSocket = async (socket, data) => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
+    socket.emit('join-channel-branch', {branch_Id});
+    listenToSocket(socket);
+    socket.emit('message-to-branch', {
+      title: 'Customer Just Ordered',
+      message: `A customer has placed an order on table #${data.table}`,
+      branch_Id,
+    });
+  };
+  const listenToSocket = async socket => {
+    socket.on('join-channel-branch-response', data => {
+      if (data) {
+        console.log('You are connected to the branch socket.', {
+          data,
+          socket,
+        });
+      }
+    });
+    socket.on('message-to-branch-response', data => {
+      if (data) {
+        setTimeout(() => {
+          console.log('Message successfully sent..', {data, socket});
+        }, 100);
+      }
+    });
+  };
   const handlePress = index => {
     const tempData = [...transactionData];
     tempData[index].expanded = !tempData[index].expanded;
@@ -31,6 +61,7 @@ export default function PreparingOrderTab({navigation}) {
         },
       });
       setUserData(response.data);
+      console.log({token});
     } catch (error) {
       navigation.navigate('Login-admin');
     }
@@ -83,29 +114,33 @@ export default function PreparingOrderTab({navigation}) {
     }
   };
 
-  // const updateTransactionItem = async (_id, newStatus, transactionKey) => {
-  //   try {
-  //     const token = await AsyncStorage.getItem('access_token');
-  //     const headers = {
-  //       Authorization: `Bearer ${token}`,
-  //     };
-  //     const response = await axios.patch(
-  //       `${API_URL}/pos/transactionItem/${_id}`,
-  //       {
-  //         status: newStatus,
-  //       },
-  //       {headers},
-  //     );
-  //     const _transaction = [...transactionData];
-  //     _transaction[transactionKey]; //.find(item => item._id === _id).status = newStatus;
-  //     _transaction[transactionKey].transactionItems.find(
-  //       item => item._id === _id,
-  //     ).status = newStatus;
-  //     setTransactionData(_transaction);
-  //   } catch (error) {
-  //     console.error('Error updating transaction data:', error);
-  //   }
-  // };
+  const watchPushNotifications = async () => {
+    const branch_Id = await AsyncStorage.getItem('branch_Id');
+    const channelName = `channel-branch-${branch_Id}`;
+    PushNotification.createChannel({
+      channelId: channelName,
+      channelName: channelName,
+      playSound: true,
+      vibrate: true,
+    });
+    socket.emit('join-channel-branch', {branch_Id});
+    socket.on('join-channel-branch-response', () => {
+      console.log('Connected to branch ' + branch_Id);
+    });
+    socket.on('message-to-branch', data => {
+      if (data) {
+        const options = {
+          channelId: channelName,
+          title: data.title,
+          message: data.message,
+          playSound: true,
+          vibrate: true,
+        };
+        PushNotification.localNotification(options);
+        fetchTransactionsData();
+      }
+    });
+  };
 
   const updateTransactionItem = async (id, newStatus) => {
     try {
@@ -120,7 +155,7 @@ export default function PreparingOrderTab({navigation}) {
         },
         {headers},
       );
-
+      sendToSocket(socket, response);
       fetchTransactionsData();
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -131,9 +166,9 @@ export default function PreparingOrderTab({navigation}) {
     useCallback(() => {
       fetchUserData();
       fetchTransactionsData();
+      watchPushNotifications();
     }, []),
   );
-
   return (
     <>
       <OrientationLocker
@@ -250,6 +285,12 @@ export default function PreparingOrderTab({navigation}) {
                             <Text style={styles.btnText}>Served</Text>
                           </TouchableOpacity>
                         )}
+                        {item.status === 'paying' && (
+                          <TouchableOpacity
+                            style={[styles.TBtn, styles.statusPaying]}>
+                            <Text style={styles.btnText}>Paying</Text>
+                          </TouchableOpacity>
+                        )}
                         {item.status === 'awaiting_payment_method' && (
                           <View style={[styles.TBtn, styles.doneColor]}>
                             <Text style={styles.btnText}>Served</Text>
@@ -342,10 +383,7 @@ export default function PreparingOrderTab({navigation}) {
 
                                     {transItem.status === 'new' && (
                                       <TouchableOpacity
-                                        style={[
-                                          styles.TiBtn,
-                                          styles.preparingColor,
-                                        ]}
+                                        style={[styles.TiBtn, styles.statusNew]}
                                         onPress={() => {
                                           updateTransactionItem(
                                             transItem._id,
@@ -378,7 +416,7 @@ export default function PreparingOrderTab({navigation}) {
                                       <TouchableOpacity
                                         style={[
                                           styles.TiBtn,
-                                          styles.servingColor,
+                                          styles.statusReady,
                                         ]}
                                         onPress={() => {
                                           updateTransactionItem(
