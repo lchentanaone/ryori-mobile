@@ -34,8 +34,8 @@ export default function OrderProductList({navigation}) {
     socket.emit('join-channel-branch', {branch_Id});
     listenToSocket(socket);
     socket.emit('message-to-branch', {
-      title: 'Customer Just Ordered',
-      message: `The dining has been update the order of #${data.table}`,
+      title: 'Dining Updated Order',
+      message: `The dining has been updated the order of table#${data.table}`,
       branch_Id,
     });
   };

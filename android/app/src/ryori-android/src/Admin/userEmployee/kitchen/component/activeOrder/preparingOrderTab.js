@@ -24,8 +24,8 @@ export default function PreparingOrderTab({navigation}) {
     socket.emit('join-channel-branch', {branch_Id});
     listenToSocket(socket);
     socket.emit('message-to-branch', {
-      title: 'Customer Just Ordered',
-      message: `A customer has placed an order on table #${data.table}`,
+      title: 'Kitchen Updated Order',
+      message: `The kitchen has been updated the order of table #${data.table}`,
       branch_Id,
     });
   };
