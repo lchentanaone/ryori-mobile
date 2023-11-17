@@ -75,9 +75,7 @@ export const CategoryStyle = StyleSheet.create({
   },
   // Column2
   menuC2: {
-    // backgroundColor: 'blue',
     width: '30%',
-    // left: -40
   },
 
   img: {
@@ -127,123 +125,6 @@ export const CategoryStyle = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Quicksand-SemiBold',
   },
-  // SearchIcon: {
-  //   fontSize: 18,
-  //   left: 10,
-  //   color: '#B1B1B1',
-  // },
-  // filterDropdown: {
-  //   width: '100%',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   right: 2,
-  //   top: 5,
-  // },
-  // allDropdown: {
-  //   width: '48%',
-  // },
-  // menuDropdown: {
-  //   left: 2,
-  //   backgroundColor: 'white',
-  //   borderColor: '#E6E6E6',
-  //   height: 34,
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   borderRadius: 8,
-  //   paddingHorizontal: 8,
-  // },
-  // placeholderStyle: {
-  //   fontSize: 15,
-  // },
-  // selectedTextStyle: {
-  //   color: '#000',
-  //   fontSize: 14,
-  // },
-  // iconStyle: {
-  //   width: 20,
-  //   height: 20,
-  // },
-  // inputSearchStyle: {
-  //   height: 40,
-  //   fontSize: 14,
-  // },
-  // menuList: {
-  //   top: 5,
-  // },
-
-  // menuItem: {
-  //   backgroundColor: '#fff',
-  //   shadowColor: '#000',
-  //   elevation: 6,
-  //   marginBottom: 10,
-  //   height: 130,
-  //   width: 200,
-  //   borderRadius: 10,
-  //   margin: 5,
-  //   paddingHorizontal: 5,
-  //   // alignItems: 'center',
-  // },
-  // menuItemIcon: {
-  //   alignItems: 'flex-end',
-  // },
-  // ImageLabe: {
-  //   flexDirection: 'row',
-  //   left: 10,
-  // },
-  // menuImage: {
-  //   top: -15,
-  //   height: 70,
-  //   width: 70,
-  //   borderRadius: 35,
-  // },
-  // menuLabelPrice: {
-  //   top: -15,
-  //   left: 15,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // menuLabel: {
-  //   color: '#000',
-  //   fontSize: 18,
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
-  // menuPrice: {
-  //   color: '#000',
-  //   fontSize: 16,
-  //   fontFamily: 'Quicksand-Medium',
-  // },
-  // menuDescrip: {
-  //   top: -10,
-  //   fontSize: 14,
-  // },
-  // menuItemRow: {
-  //   flexDirection: 'row',
-  // },
-  // menuTable: {
-  //   justifyContent: 'flex-start',
-  //   backgroundColor: '#fff',
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   borderRadius: 5,
-  //   width: '100%',
-  //   height: 280,
-  //   top: 10,
-  // },
-  // tableHeader: {
-  //   backgroundColor: '#E3E7EB',
-  // },
-  // menuData: {
-  //   fontSize: 16,
-  //   fontWeight: 500,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
-  // menuCellData: {
-  //   fontSize: 14,
-  //   fontWeight: 500,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
 
   // MODAL
   Modal: {
@@ -419,7 +300,6 @@ export const AddMenuStyle = StyleSheet.create({
   uploadIm2: {
     backgroundColor: 'orange',
     width: '100%',
-    // height:200,
   },
   uploadMenuImg: {
     width: '50%',

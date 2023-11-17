@@ -13,7 +13,6 @@ export const MenuStyle = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 15,
-    // backgroundColor: '#fff',
   },
   menu: {
     flexDirection: 'row',
@@ -91,19 +90,6 @@ export const MenuStyle = StyleSheet.create({
     right: 2,
     top: 5,
   },
-  // allDropdown: {
-  //   width: '48%',
-  // },
-  // menuDropdown: {
-  //   left: 2,
-  //   backgroundColor: 'white',
-  //   borderColor: '#E6E6E6',
-  //   height: 34,
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   borderRadius: 8,
-  //   paddingHorizontal: 8,
-  // },
   placeholderStyle: {
     fontSize: 15,
   },
@@ -248,10 +234,7 @@ export const MenuStyle = StyleSheet.create({
   modalContent: {
     width: '100%',
   },
-  // modalForm: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  // },
+
   menuItems1: {
     paddingVertical: 10,
     height: 180,
@@ -478,27 +461,10 @@ export const AddMenuStyle = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Quicksand-Bold',
   },
-  // uploadIm2: {
-  //   backgroundColor: 'orange',
-  //   width: '100%',
-  //   // height:200,
-  // },
+
   uploadMenuImg: {
     width: '50%',
     paddingHorizontal: 30,
     paddingVertical: 8,
   },
-  //--------------------
-  // actionOpacity: {
-  //   width: 40,
-  //   height: 35,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // actionText: {
-  //   fontWeight: 500,
-  //   fontSize: 10,
-  //   color: '#f6be00',
-  //   justifyContent: 'center',
-  // },
 });

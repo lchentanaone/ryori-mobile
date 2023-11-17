@@ -8,10 +8,7 @@ export const EmployeeStyle = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  // employeeContent: {
-  //   width: '100%',
-  //   top: 15,
-  // },
+
   employeeTitle: {
     fontSize: 20,
     color: '#000',
@@ -40,15 +37,7 @@ export const EmployeeStyle = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Quicksand-SemiBold',
   },
-  // tableHeader: {
-  //   backgroundColor: '#E3E7EB',
-  // },
-  // tableTitle: {
-  //   fontSize: 14,
-  //   fontWeight: 500,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
+
   employeeCellData: {
     fontSize: 14,
     fontWeight: 500,
@@ -119,20 +108,7 @@ export const EmployeeStyle = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Quicksand-SemiBold',
   },
-  // ----------
-  // modalInput: {
-  //   width: '100%',
-  //   fontSize: 12,
-  //   height: 35,
-  //   padding: 10,
-  //   backgroundColor: '#fff',
-  //   borderRadius: 8,
-  //   marginBottom: 10,
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
+
   modalInput: {
     width: '48%',
     fontSize: 15,

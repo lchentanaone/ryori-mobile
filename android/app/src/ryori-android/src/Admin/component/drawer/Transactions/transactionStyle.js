@@ -46,38 +46,4 @@ export const TransactionStyle = StyleSheet.create({
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
   },
-  // reportButtons: {
-  //   width: '100%',
-  //   alignItems: 'flex-end',
-  //   top: 20,
-  // },
-  // buttons: {
-  //   flexDirection: 'row',
-  // },
-
-  // reportDownloadOpacity: {
-  //   marginRight: 10,
-  //   width: '25%',
-  //   height: 35,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#12BF38',
-  //   borderRadius: 10,
-  //   flexDirection: 'row',
-  // },
-  // addMenuTextBtn: {
-  //   fontSize: 15,
-  //   color: 'white',
-  //   justifyContent: 'center',
-  //   fontFamily: 'Quicksand-Bold',
-  // },
-  // reportDeleteOpacity: {
-  //   width: '25%',
-  //   height: 35,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#DB1B1B',
-  //   borderRadius: 10,
-  //   flexDirection: 'row',
-  // },
 });

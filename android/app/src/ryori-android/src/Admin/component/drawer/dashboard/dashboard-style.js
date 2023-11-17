@@ -27,39 +27,7 @@ export const DashboardStyle = StyleSheet.create({
   dashBTitleSearchB: {
     alignItems: 'center',
   },
-  // dashboardTitle: {
-  //   fontSize: 25,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-SemiBold',
-  //   marginBottom: 10,
-  // },
-  // searchbar: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#FFFFFF',
-  //   height: 35,
-  //   borderRadius: 10,
-  //   width: '35%',
-  //   borderWidth: 0.5,
-  //   borderColor: '#E6E6E6',
-  // },
-  // searchInput: {
-  //   backgroundColor: '#fff',
-  //   color: '#000',
-  //   left: 10,
-  //   height: 30,
-  //   borderRadius: 10,
-  //   fontSize: 14,
-  //   width: '90%',
-  //   paddingLeft: 8,
-  //   padding: 0,
-  //   fontFamily: 'Quicksand-Medium',
-  // },
-  // SearchIcon: {
-  //   fontSize: 18,
-  //   left: 10,
-  //   color: '#B1B1B1',
-  // },
+
   overAll: {
     backgroundColor: '#DB1B1B',
     borderRadius: 8,
@@ -110,10 +78,7 @@ export const DashboardStyle = StyleSheet.create({
     flexDirection: 'row',
     top: -10,
   },
-  // forgotBtn: {
-  //   alignItems: 'flex-end',
-  //   marginTop: -15,
-  // },
+
   textBtnOpacity: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -129,12 +94,7 @@ export const DashboardStyle = StyleSheet.create({
     fontSize: 24,
     margin: 2,
   },
-  // newWaitingOrder: {
-  //   width: '100%',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   borderRadius: 10,
-  // },
+
   newOrder: {
     width: '30%',
     padding: 10,
@@ -156,17 +116,7 @@ export const DashboardStyle = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
-  // newOrderText: {
-  //   fontFamily: 'Quicksand-SemiBold',
-  //   color: '#fff',
-  //   fontSize: 15,
-  // },
-  // manageText: {
-  //   fontSize: 14,
-  //   color: '#fff',
-  //   justifyContent: 'center',
-  //   fontFamily: 'Quicksand-SemiBold',
-  // },
+
   orderDetails: {
     width: '100%',
     flexDirection: 'row',
@@ -206,18 +156,7 @@ export const DashboardStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Quicksand-SemiBold',
   },
-  // categoryRevenue: {
-  //   top: -10,
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  // },
-  // catRevenBtns: {
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   width: '24%',
-  //   height: 35,
-  //   backgroundColor: '#B1B1B1',
-  // },
+
   Revenue: {
     alignItems: 'center',
     fontSize: 12,

@@ -13,25 +13,7 @@ export const StoreSetStyle = StyleSheet.create({
     color: '#000',
     fontFamily: 'Quicksand-SemiBold',
   },
-  // setStoreContent: {
-  //   backgroundColor: '#fff',
-  //   shadowColor: '#000',
-  //   elevation: 5,
-  //   borderRadius: 10,
-  //   paddingHorizontal: 30,
-  //   paddingVertical: 20,
-  //   width: '100%',
-  // },
-  // storeInfo: {
-  //   fontSize: 16,
-  //   color: '#000',
-  //   fontFamily: 'Quicksand-Meduim',
-  // },
-  // storeDetail: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   width: '100%',
-  // },
+
   storeDetailsContainer: {
     marginTop: 2,
     backgroundColor: '#fff',
@@ -42,19 +24,7 @@ export const StoreSetStyle = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
   },
-  // storeDetails: {
-  //   width: '65%',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   backgroundColor: '#E2E7EF',
-  //   paddingHorizontal: 20,
-  //   paddingVertical: 20,
-  //   borderRadius: 10,
-  // },
-  // infoTitle: {
-  //   justifyContent: 'space-between',
-  //   width: '40%',
-  // },
+
   storeName: {
     fontSize: 16,
     color: '#000',
@@ -63,19 +33,7 @@ export const StoreSetStyle = StyleSheet.create({
     textDecorationLine: 'underline',
     letterSpacing: 1,
   },
-  // info: {
-  //   width: '60%',
-  //   alignItems: 'flex-start',
-  // },
 
-  // storePhoto: {
-  //   width: '100%',
-  //   alignItems: 'center',
-  // },
-  // buttons: {
-  //   top: 10,
-  //   alignItems: 'center',
-  // },
   buttonsOpacity: {
     width: 150,
     height: 30,
@@ -241,15 +199,7 @@ export const updateStoreStyle = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Quicksand-SemiBold',
   },
-  // updatebtnOpacity: {
-  //   width: 150,
-  //   height: 30,
-  //   top: 10,
-  //   backgroundColor: '#12BF38',
-  //   borderRadius: 2,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
+
   saveUpdateOpacity: {
     width: 200,
     height: 30,
