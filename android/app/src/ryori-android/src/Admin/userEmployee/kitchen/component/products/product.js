@@ -190,7 +190,11 @@ export default Products = ({navigation}) => {
                                   '-',
                                 )
                               }>
-                              <Entypo name="minus" size={18} />
+                              <Entypo
+                                name="minus"
+                                size={18}
+                                color={'#666666'}
+                              />
                             </TouchableOpacity>
                             <Text style={styles.input}>
                               {menuItem.quantity.toString()}
@@ -204,7 +208,7 @@ export default Products = ({navigation}) => {
                                   '+',
                                 )
                               }>
-                              <Entypo name="plus" size={18} />
+                              <Entypo name="plus" size={18} color={'#666666'} />
                             </TouchableOpacity>
                           </View>
                         </DataTable.Cell>

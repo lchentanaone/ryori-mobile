@@ -117,6 +117,8 @@ export const prodStyle = StyleSheet.create({
     backgroundColor: '#F6F6F8',
     height: 35,
     borderRadius: 5,
+    width: 85,
+    paddingHorizontal: 10,
   },
   input: {
     textAlign: 'center',
