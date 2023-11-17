@@ -76,6 +76,7 @@ export default function Category() {
       },
     );
   };
+
   const addCategory = async () => {
     return new Promise(async (resolve, reject) => {
       if (!title) {
@@ -92,11 +93,14 @@ export default function Category() {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           };
+
           const fileType = /(?:\.([^.]+))?$/.exec(photo)[1];
           const randomFileName =
             new Date().valueOf().toString() + '.' + fileType;
+
           const formData = new FormData();
           formData.append('title', title);
+          formData.append('store_Id', store_Id);
           if (photo && photo.includes('file:///')) {
             formData.append('photo', {
               uri: photo,
@@ -104,10 +108,9 @@ export default function Category() {
               type: 'image/jpeg',
             });
           }
-          formData.append('store_Id', store_Id);
 
           // Edit
-          if (itemOnEdit !== '') {
+          if (itemOnEdit) {
             // Need to double check Edit bugs... still haveing issues found.
             const response = await axios.patch(
               `${API_URL}/menuCategory/${itemOnEdit}`,
@@ -116,7 +119,6 @@ export default function Category() {
                 headers,
               },
             );
-
             fetchItems();
             resolve(response.data._id);
           } else {
@@ -132,7 +134,7 @@ export default function Category() {
             resolve(response.data._id);
           }
         } catch (error) {
-          console.error('');
+          console.error(error);
           reject(error);
         }
         setTitle('');
@@ -161,6 +163,7 @@ export default function Category() {
     setItemOnEdit(item._id);
     setTitle(item.title);
     setPhoto(responsePhoto.data.photo);
+    // console.log(item._id);
   };
 
   const handleDelete = async _id => {

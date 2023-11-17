@@ -32,7 +32,6 @@ export default function Branches({navigation}) {
     try {
       const token = await AsyncStorage.getItem('access_token');
       const store_Id = await AsyncStorage.getItem('store_Id');
-      console.log(`${API_URL}/branch/?store_Id=${store_Id}`);
       const response = await axios.get(
         `${API_URL}/branch/?store_Id=${store_Id}`,
         {
@@ -43,10 +42,6 @@ export default function Branches({navigation}) {
         },
       );
       setBranchData(response.data);
-      console.log(response.data);
-      // if (response.data.length === 1) {
-      //   navigation.navigate('Drawer');
-      // }
     } catch (error) {
       navigation.navigate('Login-admin');
     }
